@@ -1,7 +1,7 @@
 {
-    "name": "catapult",
+    "name": "bandwidth",
     "version": "0.0.1",
-    "description": "Node.js module which provides an iNetwork Catapult API client",
+    "description": "Node.js module which provides an Bandwidth API client",
     "main": "index.js",
     "author": "Scott Barstow ",
     "keywords": ["catapult", "sms api", "voip api"],

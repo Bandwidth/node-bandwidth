@@ -1,6 +1,6 @@
 # Node Catapult
 
-This is a simple node module for integrating with the iNetwork Catapult API
+This is a simple node module for integrating with the Bandwidth  API
 
 It is just now getting started.
 
@@ -9,7 +9,7 @@ It is just now getting started.
 # Pre-Requisites and Installation
 ## Prerequisites
 
-You will need to create an account on Catapult and create your API tokens.
+You will need to create an account on Bandwidth and create your API tokens.
 This client presumes you have a valid account and API token already configured
 
 ## Installation 

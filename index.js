@@ -1,1 +1,1 @@
-module.exports = require('./lib/catapult')
+module.exports = require('./lib/bandwidth')
