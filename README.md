@@ -14,7 +14,7 @@ This client presumes you have a valid account and API token already configured
 
 ## Installation 
 ```shell
-npm install catapult
+npm install bandwidth
 
 ```
 
@@ -22,11 +22,11 @@ npm install catapult
 
 # Using Node Catapult
 
-## Initializing the Catapult client
+## Initializing the Bandwidth client
 
 ```
-var catapult = require('catapult');
-var client = new catapult.Client('host', 'user_id', 'apiToken', 'secret');
+var bandwidth = require('bandwidth');
+var client = new bandwidth.Client('host', 'user_id', 'apiToken', 'secret');
 ```
 ## Sending an SMS
 ```
