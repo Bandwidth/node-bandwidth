@@ -30,7 +30,7 @@ var client = new catapult.Client('host', 'user_id', 'apiToken', 'secret');
 ```
 ## Sending an SMS
 ```
-client.sendSMS('from', 'to', 'body', function(err,response){
+client.sendMessage('from', 'to', 'body', function(err,response){
 	if(err)
 	{
 		console.log("Error: " + err.message)
@@ -41,5 +41,17 @@ client.sendSMS('from', 'to', 'body', function(err,response){
 	
 });
 ```
+## Getting SMS Details
+```
+client.getMessage('messageId', function(err,response){
+	if(err)
+	{
+		console.log("Error: " + err.message)
+	}
+	else {
+		console.log("message ID " + response.entityId)
+	}
+});
+
 ---
 
