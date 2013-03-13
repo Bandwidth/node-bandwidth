@@ -20,49 +20,17 @@ npm install catapult
 
 ---
 
-# Using Node SwitchCoder
+# Using Node Catapult
 
-## Initializing the SwitchCoder client
+## Initializing the Catapult client
 
 ```
-var switchCoder = require('node-switchcoder');
-var client = new switchCoder.Client('apiToken', 'host');
+var catapult = require('catapult');
+var client = new catapult.Client('host', 'user_id', 'apiToken', 'secret');
 ```
-## Getting a Phone Number Object
+## Sending an SMS
 ```
-var phoneNumber = client.getPhoneNumber("yourNumber", opts);
-```
-
-## Getting a Code Object  
-```
-// get an instance of the script from the client
-var code = client.getCode(scriptId, phoneNumber, opts);
-```
-# Invoking the Code
-```
-//invoke the code with all parameters
-code.invoke(queryParameters, requestBody, function(response, err){});
-
-//invoke script with just the callback
-code.invoke(function(response,err){});
-```
-## Putting it all together
-```
-var switchCoder = require('node-switchcoder');
-var client = new switchCoder.Client('1231232123', 'api.switchcoder.com');
-var phoneNumber = client.getPhoneNumber('19195551212');
-var code = client.getCode(123);
-var requestParameters = {parameter1:'parameter1Value', parameter2:'parameter2Value'};
-var requestBody = {bodyValue1:'my text'};
-
-code.invoke(requestParameters, requestBody, function(response,err) {
-  if(err){
-    console.log("Got an error: " + err.message)
-  } else {
-    console.log("Response status: " response.statusCode + " with data: "  + response.data);
-  }
-});
-
+client.sendSMS('from', 'to', 'body');
 ```
 ---
 
