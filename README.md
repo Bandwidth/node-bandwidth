@@ -20,7 +20,7 @@ npm install bandwidth
 
 ---
 
-# Using Node Catapult
+# Using Bandwidth Client
 
 ## Initializing the Bandwidth client
 
