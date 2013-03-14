@@ -53,5 +53,17 @@ client.getMessage('messageId', function(err,response){
 	}
 });
 
+```
+## Getting all SMS for a user
+```
+client.getMessages(function(err,response){
+	client.getMessages(function(err, response){
+		if(response){
+			console.log("messages: " + response.data)
+		}
+	});
+});
+
+
 ---
 

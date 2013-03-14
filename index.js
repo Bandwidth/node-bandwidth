@@ -1,1 +1,1 @@
-module.exports = require('./lib/bandwidth')
+module.exports = require('./lib')
