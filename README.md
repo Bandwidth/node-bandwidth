@@ -31,12 +31,12 @@ var client = new bandwidth.Client('host', 'user_id', 'apiToken', 'secret');
 ## SMS Messages
 ### Message Attributes
 ```
-+ messageId - Unique ID for the message
-+ direction - in for inbound, out for outbound
-+ from - From number
-+ to - To number
-+ state - Message state
-+ time - Date time when the message was created.  Timestamp follows ISO8601 format
+messageId - Unique ID for the message
+direction - in for inbound, out for outbound
+from - From number
+to - To number
+state - Message state
+time - Date time when the message was created.  Timestamp follows ISO8601 format
 ```
 ### Sending an SMS
 ```
@@ -76,8 +76,7 @@ client.getMessages(function(err,messages){
 		console.log("messages: " + messages.length)
 	}
 });
-
-
+```
 ## Phone Numbers
 ### Phone Number Attributes
 ```
