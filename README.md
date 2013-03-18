@@ -28,41 +28,63 @@ npm install bandwidth
 var bandwidth = require('bandwidth');
 var client = new bandwidth.Client('host', 'user_id', 'apiToken', 'secret');
 ```
-## Sending an SMS
+## SMS Messages
+### Message Attributes
 ```
-client.sendMessage('from', 'to', 'body', function(err,response){
++ messageId - Unique ID for the message
++ direction - in for inbound, out for outbound
++ from - From number
++ to - To number
++ state - Message state
++ time - Date time when the message was created.  Timestamp follows ISO8601 format
+```
+### Sending an SMS
+```
+var message = new bandwidth.Message("from", "to", "message")
+client.sendMessage(message, function(err, response) {
+	if(err)
+ 	{
+ 		console.log("Error: " + err.message)
+ 	}
+ 	else {
+ 		console.log("message ID " + response.entityId)
+ 		messageId = response.entityId;
+ 		client.getMessage(messageId, function(e,msg){
+ 			console.log("got message:" + msg.messageId + "  " + msg.text + "   " + msg.direction);
+ 		});
+ 	}
+ }
+);
+```
+### Getting SMS Details
+```
+client.getMessage('messageId', function(err,message){
 	if(err)
 	{
 		console.log("Error: " + err.message)
 	}
 	else {
-		console.log("message ID " + response.entityId)
-	}
-	
-});
-```
-## Getting SMS Details
-```
-client.getMessage('messageId', function(err,response){
-	if(err)
-	{
-		console.log("Error: " + err.message)
-	}
-	else {
-		console.log("message ID " + response.entityId)
+		console.log("Got message " + message.messageId)
 	}
 });
 
 ```
-## Getting all SMS for a user
+### Getting all SMS for a user
 ```
-client.getMessages(function(err,response){
-	client.getMessages(function(err, response){
-		if(response){
-			console.log("messages: " + response.data)
-		}
-	});
+client.getMessages(function(err,messages){
+	if(messages){
+		console.log("messages: " + messages.length)
+	}
 });
+
+
+## Phone Numbers
+### Phone Number Attributes
+```
+```
+### Buying a new Phone Number
+```
+```
 
 
 ---

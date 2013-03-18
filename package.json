@@ -7,7 +7,11 @@
     "keywords": ["catapult", "sms api", "voip api"],
     "repository" : {
         "type": "git",
-        "url": "https://github.com/scottbarstow/node-catapult.git"
-    },
+        "url": "https://github.com/scottbarstow/node-bandwidth.git"
+	},
+	"dependencies": { 
+		"querystring": "latest"
+	},
+
     "engines": { "node": "*" }
 }
