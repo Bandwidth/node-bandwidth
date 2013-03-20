@@ -169,6 +169,7 @@ client.getPhoneNumber("numberId", function(err, number){
 });
 ```
 ### Getting All Phone Numbers 
+This method returns all phone numbers for the authenticated user
 ```
 client.getPhoneNumbers(function(error, numbers){
 	if(error){
