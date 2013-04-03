@@ -209,7 +209,7 @@ Note: You can specify callback urls or script, but not both.
 ```
 
 ### Getting All Applications 
-This method returns all phone numbers for the authenticated user
+This method returns all applicatons for the authenticated user
 ```
 client.getApplications(function(error, applications){
 	if(error){
