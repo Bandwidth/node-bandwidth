@@ -183,6 +183,46 @@ client.getPhoneNumbers(function(error, numbers){
 });
 ```
 
+### Deleting a Phone Number 
+This method deletes the identified number
+```
+client.deletePhoneNumber("numberId", function(err,response){
+    if(err){
+		console.log("Error: " + err.message)
+	}else {
+		console.log("response: " + response.statusCode) //should be 200
+	}
+
+})
+```
+
+## Applications
+### Phone Number Attributes
+```
+id - Unique ID for the number
+name - The name you give the application
+incomingSmsUrl - The callback url for handling incoming SMS events
+incomingCallUrl - The callback url for handling call events
+script - The script to be run
+
+Note: You can specify callback urls or script, but not both.
+```
+
+### Getting All Applications 
+This method returns all phone numbers for the authenticated user
+```
+client.getApplications(function(error, applications){
+	if(error){
+		console.log("Error: " + error.message)
+	}else {
+		for(var i = 0; i < applications.length; i++)
+		{
+			console.log("Application: " + applications[i].id + "  name: " + applications[i].name)
+		}
+	}	
+})
+```
+
 
 ---
 
