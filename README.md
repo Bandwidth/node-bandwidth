@@ -197,9 +197,9 @@ client.deletePhoneNumber("numberId", function(err,response){
 ```
 
 ## Applications
-### Phone Number Attributes
+### Application Attributes
 ```
-id - Unique ID for the number
+id - Unique ID for the application
 name - The name you give the application
 incomingSmsUrl - The callback url for handling incoming SMS events
 incomingCallUrl - The callback url for handling call events
