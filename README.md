@@ -143,7 +143,7 @@ numberState - Either enabled or disabled
 ```
 ### Buying a new Phone Number
 ```
-var phoneNumber = new bandwidth.PhoneNumber("+19191112222","Home Phone");
+var phoneNumber = new bandwidth.PhoneNumber("+19191112222","Home Phone", "application_id"); //application_id is optional
 client.acquirePhoneNumber(phoneNumber, function(err,response){
 	if(err)
  	{
