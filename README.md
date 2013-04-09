@@ -227,19 +227,22 @@ client.getApplications(function(error, applications){
 Bandwidth currently only automates porting numbers in.  Port out support is coming in future releases.
 ### Port In Availability Check
 Use this method to check whether or not a number can be ported to Bandwidth
-
-If the number can be ported, the response will look like this:
+```
+Available Response:
 {
     number:"+19199991212",
     available:true
 }
 
-If the number cannot be ported, the response will look like this:
+Unavailable Response:
 {
     number:"+19195551212",
     available:false,
     reason: some reason
 }
+
+```
+
 ```
 var availabilityCheck = new bandwidth.LNPAvailabilityCheck("+19195551212")
 client.checkPortInAvailability(availabilityCheck, function(error, availabilityResponse){
