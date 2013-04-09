@@ -224,10 +224,7 @@ client.getApplications(function(error, applications){
 ```
 
 ## Porting A Number In
-```
-Bandwidth currently only automates porting numbers in.  Port out support is coming in 
-future releases.
-```
+Bandwidth currently only automates porting numbers in.  Port out support is coming in future releases.
 ### Port In Availability Check
 Use this method to check whether or not a number can be ported to Bandwidth
 
