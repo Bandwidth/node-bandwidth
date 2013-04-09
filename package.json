@@ -1,6 +1,6 @@
 {
     "name": "bandwidth",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "description": "Node.js module which provides an Bandwidth API client",
     "main": "index.js",
     "author": "Scott Barstow ",
