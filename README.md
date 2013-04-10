@@ -90,6 +90,7 @@ state - "started", "active", "completed", "transferring"
 startTime - timestamp when call started
 activeTime - timestamp when call was answered
 endTime - timestamp when the call ended
+chargeableDuration - Billable time of call
 whisperAudio - Audio played when a call is being transferred
 transferCallerId - the caller ID used on the transferred call
 ``` 
@@ -108,6 +109,18 @@ client.sendCall(call, function(error, response){
 	})
 })
 ```
+### Get a call
+```
+var call = client.getCall(callId, function(error, call){
+    if(error){
+        console.log("Error: " + error.message)
+    }else {
+        console.log("Call duration: " + call.chargeableDuration)
+    }
+})
+```
+
+
 
 ### Play audio in a call
 ```
