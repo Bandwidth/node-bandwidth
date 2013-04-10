@@ -77,6 +77,64 @@ client.getMessages(function(err,messages){
 	}
 });
 ```
+
+## Calls
+### Call Attributes
+```
+id - Call Unique ID
+direction - "in" or "out"
+from - caller ID
+to - called ID
+callbackUrl - the url where call events will be sent
+state - "started", "active", "completed", "transferring"
+startTime - timestamp when call started
+activeTime - timestamp when call was answered
+endTime - timestamp when the call ended
+whisperAudio - Audio played when a call is being transferred
+transferCallerId - the caller ID used on the transferred call
+``` 
+
+### Start a call
+```
+var call = new bandwidth.Call("+19199991111", "+19199992222")
+client.sendCall(call, function(error, response){
+    if(error){
+    	console.log("Error: " + error.message)
+    }else {
+    	console.log("call ID: " + response.entityId)
+    	client.getCall(response.entityId, function(err, c){
+    		console.log("Got call: " + c.id);
+    	})
+	})
+})
+```
+
+### Play audio in a call
+```
+Audio attributes
+callId - the call Id where audio should be played
+fileUrl - the url of the audio to be played.  Note audio file must be on Bandwidth servers.  Mutually exclusive with sentence
+sentence - words to speak to call.  Mutually exclusive with fileUrl
+gender - "male" or "female" - only used with sentence
+locale - "en", "en_US", "es", "es_MX", "fr", "fr_FR", "de", "de_DE", "it", "it_IT" - used only with sentence
+```
+```
+var callAudio = new bandwidth.Audio("callId");
+callAudio.gender = "female";
+callAudio.sentence = "Thank you for trying Bandwidth"
+callAudio.locale = "en_US";
+client.playCallAudio(callAudio, function(error,response){
+  if(error){
+    console.log("Error: " + error.message)
+  }else
+  {
+    console.log("response: " + response.statusCode)
+  }
+})
+```
+
+
+
 ## Searching Phone Number Inventory
 ### Search Criteria Attributes
 ```
