@@ -31,7 +31,7 @@ describe 'bandwidth', ->
   ###
 
   it 'should be available for phone number porting', (done) ->
-    check = new bandwidth.LNPAvailabilityCheck("+19193499473")
+    check = new bandwidth.LNPAvailabilityCheck("+19193499479")
     client.checkPortInAvailability check, (err, res) ->
       should.not.exist(err)
       should.exist(res)
@@ -48,6 +48,14 @@ describe 'bandwidth', ->
       res.available.should.be.false
       done()
 
+
+  it 'should get port in state', (done) ->
+    client.getPortInState "lnpin-pwjoyuxvij5xthd3tuxctdi", (err, res) ->
+      should.not.exist(err)
+      should.exist(res)
+      # "state" : "submitted" | "created" | "pending-documents" | "submitted" | "foc" | "exception" | "requested-cancel" | "cancelled" | "complete"
+      res.should.have.property 'state'
+      done()
 
   it 'should port in phone number', (done) ->
     data = new bandwidth.PortInData "+16882010226",
