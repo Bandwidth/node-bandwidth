@@ -52,7 +52,7 @@ describe 'bandwidth', ->
   it 'should port in phone number', (done) ->
     data = new bandwidth.PortInData "+16882010226",
       # If you don't send requestedFocDate, IRIS picks the earliest available for the losing carrier (recommended)
-      requestedFocDate: "2013-04-08T14:42:47.692Z"
+      # requestedFocDate: "2013-04-08T14:42:47.692Z"
 
       # Not necessarily the ported number, but the main number on the account, E.164 format
       billingNumber: "+15551112222"
@@ -88,8 +88,7 @@ describe 'bandwidth', ->
     client.portIn data, (err, res) ->
       should.not.exist(err)
       should.exist(res)
-      res.should.have.property 'state'
-      res.state.should.be.equal 'created'
+      res.should.have.property 'entityId'
       done()
 
 
