@@ -49,6 +49,49 @@ describe 'bandwidth', ->
       done()
 
 
+  it 'should port in phone number', (done) ->
+    data = new bandwidth.PortInData "+16882010226",
+      # If you don't send requestedFocDate, IRIS picks the earliest available for the losing carrier (recommended)
+      requestedFocDate: "2013-04-08T14:42:47.692Z"
+
+      # Not necessarily the ported number, but the main number on the account, E.164 format
+      billingNumber: "+15551112222"
+
+      # Full name of the authorizing person
+      loaAuthorizingPerson: "Shaw Terwilliger"
+
+      subscriberType: "business" # or "residential"
+
+      # Required if subscriberType is business
+      subscriberBusinessName: "Smith BBQ"
+
+      subscriberFirstName: "John"
+      subscriberMiddleInitial: "Q"
+      subscriberLastName: "Smith"
+
+      # Only addressHouseNumber, addressStreetName, addressCity, addressStateCode, and addressZip are required
+      addressHouseNumber: "5307"
+      addressPreDirectional: "NE"
+      addressStreetName: "Chrimbus"
+      addressStreetSuffix: "Blvd"
+      addressPostDirectional: "S"
+      addressLine2: "Apartment 123"
+      addressCity: "Durham"
+      addressStateCode: "NC"
+      addressZip: "27713"
+      addressZipFour: "6789"
+
+      # For ports from wireless carriers, these may be required
+      wirelessAccountNumber: "1234567"
+      wirelessPin: "1234"
+
+    client.portIn data, (err, res) ->
+      should.not.exist(err)
+      should.exist(res)
+      res.should.have.property 'state'
+      res.state.should.be.equal 'created'
+      done()
+
 
   it 'should get two local phone numbers', (done) ->
   
