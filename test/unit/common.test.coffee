@@ -1,5 +1,6 @@
-should = require 'should'
+should    = require 'should'
 bandwidth = require '../../'
+path      = require 'path'
 
 describe 'bandwidth', ->
   client = null
@@ -55,6 +56,23 @@ describe 'bandwidth', ->
       should.exist(res)
       # "state" : "submitted" | "created" | "pending-documents" | "submitted" | "foc" | "exception" | "requested-cancel" | "cancelled" | "complete"
       res.should.have.property 'state'
+      done()
+
+  it 'should cancel port in', (done) ->
+    client.cancelPortIn "lnpin-pwjoyuxvij5xthd3tuxctdi", (err, res) ->
+      should.not.exist(err)
+      should.exist(res)
+      res.should.have.property 'statusCode'
+      res.statusCode.should.equal 202
+      done()
+
+  it 'should upload LOA', (done) ->
+    file = path.resolve(__dirname, './MyLetter.pdf')
+    client.uploadLOA "lnpin-pwjoyuxvij5xthd3tuxctdi", file, (err, res) ->
+      should.not.exist(err)
+      should.exist(res)
+      res.should.have.property 'statusCode'
+      res.statusCode.should.equal 200
       done()
 
   it 'should port in phone number', (done) ->
