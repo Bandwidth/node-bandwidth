@@ -1,6 +1,6 @@
 {
   "name": "bandwidth",
-  "version": "0.0.9",
+  "version": "0.0.11",
   "description": "Node.js module which provides an Bandwidth API client",
   "main": "index.js",
   "author": "Scott Barstow ",
@@ -11,7 +11,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/scottbarstow/node-bandwidth.git"
+    "url": "https://github.com/bandwidthcom/node-bandwidth.git"
   },
   "dependencies": {
     "querystring": "latest",
