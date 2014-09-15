@@ -254,6 +254,19 @@ client.getPhoneNumbers(function(error, numbers){
 });
 ```
 
+### Updating a Phone Number 
+This method updates the identified number
+```
+client.updatePhoneNumber("numberId", parameters, function(err,response){
+    if(err){
+    console.log("Error: " + err.message)
+  }else {
+    console.log("response: " + response.statusCode) //should be 200
+  }
+
+})
+```
+
 ### Deleting a Phone Number 
 This method deletes the identified number
 ```
@@ -266,6 +279,8 @@ client.deletePhoneNumber("numberId", function(err,response){
 
 })
 ```
+
+
 
 ## Applications
 ### Application Attributes
