@@ -19,7 +19,7 @@ var catapult = require("bandwidth");
 
 //Using client directly
 var client = new catapult.Client("userId", "apiToken", "apiSecret");
-catapult.Call.list(client, function(err, calls){...});
+catapult.Call.list(client, {page: 1}, function(err, calls){...});
 
 //Or you can use default client instance.
 //You should set up its global options before using of api functions.
@@ -31,7 +31,7 @@ catapult.Client.globalOptions.userId = "userId";
 
 //Now you can call any functions without first arg 'client'
 
-catapult.Call.list(function(err, calls){
+catapult.Call.list({page: 1}, function(err, calls){
   //Default client will be used to do this calls
 });
 
