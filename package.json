@@ -1,0 +1,32 @@
+{
+  "name": "bandwidth",
+  "version": "0.0.1",
+  "description": "NodeJs Client library for Catapult API",
+  "main": "index.js",
+  "scripts": {
+    "test": "NODE_ENV=test ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bandwidthcom/node-bandwidth.git"
+  },
+  "keywords": [
+    "bandwidth",
+    "catapult"
+  ],
+  "author": "bandwidth",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bandwidthcom/node-bandwidth/issues"
+  },
+  "homepage": "https://github.com/bandwidthcom/node-bandwidth",
+  "dependencies": {
+    "superagent": "^0.21.0"
+  },
+  "devDependencies": {
+    "istanbul": "^0.3.2",
+    "mocha": "^2.0.1",
+    "nock": "^0.50.0",
+    "should": "^4.3.0"
+  }
+}
