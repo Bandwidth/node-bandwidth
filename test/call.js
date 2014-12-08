@@ -144,7 +144,7 @@ describe("Call", function(){
   describe("#update", function(){
     it("should update a call", function(done){
       var data = {state: "rejected" };
-      helper.nock().put("/v1/users/FakeUserId/calls/1", data).reply(200);
+      helper.nock().post("/v1/users/FakeUserId/calls/1", data).reply(200);
       var call = new Call();
       call.id = 1;
       call.client = helper.createClient();
@@ -371,7 +371,7 @@ describe("Call", function(){
   describe("#hangUp", function(){
     it("should make hang up", function(done){
       var data = {state: "completed" };
-      helper.nock().put("/v1/users/FakeUserId/calls/1", data).reply(200);
+      helper.nock().post("/v1/users/FakeUserId/calls/1", data).reply(200);
       helper.nock().get("/v1/users/FakeUserId/calls/1").reply(200, data);
       var call = new Call();
       call.id = 1;
@@ -380,7 +380,7 @@ describe("Call", function(){
     });
     it("should fail if remote request failed", function(done){
       var data = {state: "completed" };
-      helper.nock().put("/v1/users/FakeUserId/calls/1", data).reply(400);
+      helper.nock().post("/v1/users/FakeUserId/calls/1", data).reply(400);
       var call = new Call();
       call.id = 1;
       call.client = helper.createClient();
@@ -393,7 +393,7 @@ describe("Call", function(){
     });
     it("should fail if refreshing of call failed", function(done){
       var data = {state: "completed" };
-      helper.nock().put("/v1/users/FakeUserId/calls/1", data).reply(200);
+      helper.nock().post("/v1/users/FakeUserId/calls/1", data).reply(200);
       helper.nock().get("/v1/users/FakeUserId/calls/1").reply(500);
       var call = new Call();
       call.id = 1;
@@ -409,7 +409,7 @@ describe("Call", function(){
   describe("#answerOnIncoming", function(){
     it("should answer to incoming call", function(done){
       var data = {state: "active" };
-      helper.nock().put("/v1/users/FakeUserId/calls/1", data).reply(200);
+      helper.nock().post("/v1/users/FakeUserId/calls/1", data).reply(200);
       helper.nock().get("/v1/users/FakeUserId/calls/1").reply(200, data);
       var call = new Call();
       call.id = 1;
@@ -418,7 +418,7 @@ describe("Call", function(){
     });
     it("should fail if remote request failed", function(done){
       var data = {state: "active" };
-      helper.nock().put("/v1/users/FakeUserId/calls/1", data).reply(400);
+      helper.nock().post("/v1/users/FakeUserId/calls/1", data).reply(400);
       var call = new Call();
       call.id = 1;
       call.client = helper.createClient();
@@ -431,7 +431,7 @@ describe("Call", function(){
     });
     it("should fail if refreshing of call failed", function(done){
       var data = {state: "active" };
-      helper.nock().put("/v1/users/FakeUserId/calls/1", data).reply(200);
+      helper.nock().post("/v1/users/FakeUserId/calls/1", data).reply(200);
       helper.nock().get("/v1/users/FakeUserId/calls/1").reply(500);
       var call = new Call();
       call.id = 1;
@@ -447,7 +447,7 @@ describe("Call", function(){
   describe("#rejectIncoming", function(){
     it("should reject a call", function(done){
       var data = {state: "rejected" };
-      helper.nock().put("/v1/users/FakeUserId/calls/1", data).reply(200);
+      helper.nock().post("/v1/users/FakeUserId/calls/1", data).reply(200);
       helper.nock().get("/v1/users/FakeUserId/calls/1").reply(200, data);
       var call = new Call();
       call.id = 1;
@@ -456,7 +456,7 @@ describe("Call", function(){
     });
     it("should fail if remote request failed", function(done){
       var data = {state: "rejected" };
-      helper.nock().put("/v1/users/FakeUserId/calls/1", data).reply(400);
+      helper.nock().post("/v1/users/FakeUserId/calls/1", data).reply(400);
       var call = new Call();
       call.id = 1;
       call.client = helper.createClient();
@@ -469,7 +469,7 @@ describe("Call", function(){
     });
     it("should fail if refreshing of call failed", function(done){
       var data = {state: "rejected" };
-      helper.nock().put("/v1/users/FakeUserId/calls/1", data).reply(200);
+      helper.nock().post("/v1/users/FakeUserId/calls/1", data).reply(200);
       helper.nock().get("/v1/users/FakeUserId/calls/1").reply(500);
       var call = new Call();
       call.id = 1;
@@ -485,7 +485,7 @@ describe("Call", function(){
   describe("#recordingOn", function(){
     it("should tune on recording of a call", function(done){
       var data = { recordingEnabled: true };
-      helper.nock().put("/v1/users/FakeUserId/calls/1", data).reply(200);
+      helper.nock().post("/v1/users/FakeUserId/calls/1", data).reply(200);
       helper.nock().get("/v1/users/FakeUserId/calls/1").reply(200, data);
       var call = new Call();
       call.id = 1;
@@ -494,7 +494,7 @@ describe("Call", function(){
     });
     it("should fail if remote request failed", function(done){
       var data = { recordingEnabled: true };
-      helper.nock().put("/v1/users/FakeUserId/calls/1", data).reply(400);
+      helper.nock().post("/v1/users/FakeUserId/calls/1", data).reply(400);
       var call = new Call();
       call.id = 1;
       call.client = helper.createClient();
@@ -507,7 +507,7 @@ describe("Call", function(){
     });
     it("should fail if refreshing of call failed", function(done){
       var data = { recordingEnabled: true };
-      helper.nock().put("/v1/users/FakeUserId/calls/1", data).reply(200);
+      helper.nock().post("/v1/users/FakeUserId/calls/1", data).reply(200);
       helper.nock().get("/v1/users/FakeUserId/calls/1").reply(500);
       var call = new Call();
       call.id = 1;
@@ -523,7 +523,7 @@ describe("Call", function(){
   describe("#recordingOff", function(){
     it("should tune on recording of a call", function(done){
       var data = { recordingEnabled: false };
-      helper.nock().put("/v1/users/FakeUserId/calls/1", data).reply(200);
+      helper.nock().post("/v1/users/FakeUserId/calls/1", data).reply(200);
       helper.nock().get("/v1/users/FakeUserId/calls/1").reply(200, data);
       var call = new Call();
       call.id = 1;
@@ -532,7 +532,7 @@ describe("Call", function(){
     });
     it("should fail if remote request failed", function(done){
       var data = { recordingEnabled: false };
-      helper.nock().put("/v1/users/FakeUserId/calls/1", data).reply(400);
+      helper.nock().post("/v1/users/FakeUserId/calls/1", data).reply(400);
       var call = new Call();
       call.id = 1;
       call.client = helper.createClient();
@@ -545,7 +545,7 @@ describe("Call", function(){
     });
     it("should fail if refreshing of call failed", function(done){
       var data = { recordingEnabled: false };
-      helper.nock().put("/v1/users/FakeUserId/calls/1", data).reply(200);
+      helper.nock().post("/v1/users/FakeUserId/calls/1", data).reply(200);
       helper.nock().get("/v1/users/FakeUserId/calls/1").reply(500);
       var call = new Call();
       call.id = 1;
