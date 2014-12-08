@@ -127,7 +127,7 @@ describe("Application", function(){
         incomingCallUrl: "http://host1"
     };
     it("should create an application", function(done){
-      helper.nock().post("/v1/users/FakeUserId/applications", data).reply(201, "", {"Location": "/v1/users/FakeUserId/apps/1"});
+      helper.nock().post("/v1/users/FakeUserId/applications", data).reply(201, "", {"Location": "/v1/users/FakeUserId/applications/1"});
       helper.nock().get("/v1/users/FakeUserId/applications/1").reply(200, item);
       Application.create(helper.createClient(), data,  function(err, i){
         if(err){
@@ -139,7 +139,7 @@ describe("Application", function(){
       });
     });
     it("should create an application (with default client)", function(done){
-      helper.nock().post("/v1/users/FakeUserId/applications", data).reply(201, "", {"Location": "/v1/users/FakeUserId/apps/1"});
+      helper.nock().post("/v1/users/FakeUserId/applications", data).reply(201, "", {"Location": "/v1/users/FakeUserId/applications/1"});
       helper.nock().get("/v1/users/FakeUserId/applications/1").reply(200, item);
       Application.create(data,  function(err, i){
         if(err){
