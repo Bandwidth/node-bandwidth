@@ -127,7 +127,7 @@ describe("Application", function(){
         incomingCallUrl: "http://host1"
     };
     it("should create an application", function(done){
-      helper.nock().post("/v1/users/FakeUserId/applications", data).reply(201, "", {"Location": "/v1/users/FakeUserId/calls/1"});
+      helper.nock().post("/v1/users/FakeUserId/applications", data).reply(201, "", {"Location": "/v1/users/FakeUserId/apps/1"});
       helper.nock().get("/v1/users/FakeUserId/applications/1").reply(200, item);
       Application.create(helper.createClient(), data,  function(err, i){
         if(err){
@@ -139,7 +139,7 @@ describe("Application", function(){
       });
     });
     it("should create an application (with default client)", function(done){
-      helper.nock().post("/v1/users/FakeUserId/applications", data).reply(201, "", {"Location": "/v1/users/FakeUserId/calls/1"});
+      helper.nock().post("/v1/users/FakeUserId/applications", data).reply(201, "", {"Location": "/v1/users/FakeUserId/apps/1"});
       helper.nock().get("/v1/users/FakeUserId/applications/1").reply(200, item);
       Application.create(data,  function(err, i){
         if(err){
@@ -163,21 +163,21 @@ describe("Application", function(){
   describe("#update", function(){
     it("should update an application", function(done){
       var data = {incomingCallUrl: "http://host2" };
-      helper.nock().put("/v1/users/FakeUserId/applications/1", data).reply(200);
-      var call = new Application();
-      call.id = 1;
-      call.client = helper.createClient();
-      call.update(data, done);
+      helper.nock().post("/v1/users/FakeUserId/applications/1", data).reply(200);
+      var app = new Application();
+      app.id = 1;
+      app.client = helper.createClient();
+      app.update(data, done);
     });
   });
 
   describe("#delete", function(){
     it("should remove an application", function(done){
       helper.nock().delete("/v1/users/FakeUserId/applications/1").reply(200);
-      var call = new Application();
-      call.id = 1;
-      call.client = helper.createClient();
-      call.delete(done);
+      var app = new Application();
+      app.id = 1;
+      app.client = helper.createClient();
+      app.delete(done);
     });
   });
 });
