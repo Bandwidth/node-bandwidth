@@ -26,8 +26,8 @@ describe("Call", function(){
       }
     ];
     it("should return list of calls", function(done){
-      helper.nock().get("/v1/users/FakeUserId/calls").reply(200, items);
-      Call.list(helper.createClient(), {}, function(err, list){
+      helper.nock().get("/v1/users/FakeUserId/calls?page=1").reply(200, items);
+      Call.list(helper.createClient(), {page: 1}, function(err, list){
         if(err){
           return done(err);
         }
@@ -39,6 +39,28 @@ describe("Call", function(){
     it("should return list of calls (with default client)", function(done){
       helper.nock().get("/v1/users/FakeUserId/calls?page=1").reply(200, items);
       Call.list({page: 1}, function(err, list){
+        if(err){
+          return done(err);
+        }
+        list.forEach(function(i){delete i.client;});
+        list.should.eql(items);
+        done();
+      });
+    });
+    it("should return list of calls (without query)", function(done){
+      helper.nock().get("/v1/users/FakeUserId/calls").reply(200, items);
+      Call.list(helper.createClient(), function(err, list){
+        if(err){
+          return done(err);
+        }
+        list.forEach(function(i){delete i.client;});
+        list.should.eql(items);
+        done();
+      });
+    });
+    it("should return list of calls (with default client, without query)", function(done){
+      helper.nock().get("/v1/users/FakeUserId/calls").reply(200, items);
+      Call.list(function(err, list){
         if(err){
           return done(err);
         }
