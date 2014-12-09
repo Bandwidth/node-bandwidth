@@ -2,7 +2,7 @@
 
 [![Build](https://travis-ci.org/bandwidthcom/node-bandwidth.png)](https://travis-ci.org/bandwidthcom/node-bandwidth)
 
-NodeJs Client library for Catapult API
+Node Client library for Catapult API
 
 ### Install
 
@@ -37,6 +37,6 @@ catapult.Call.list({page: 1}, function(err, calls){
 
 ```
 
-Read Catapult  Api documentation for more details
+Read [Catapult Api documentation](https://catapult.inetwork.com/docs/api-docs/) for more details
 
 
