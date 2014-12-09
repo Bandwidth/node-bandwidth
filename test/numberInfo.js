@@ -28,7 +28,6 @@ describe("NumberInfo", function(){
     });
     it("should return numberInfo info (with default client)", function(done){
       helper.nock().get("/v1/phoneNumbers/numberInfo/11111").reply(200, item);
-      debugger;
       NumberInfo.get("11111", function(err, i){
         if(err){
           return done(err);

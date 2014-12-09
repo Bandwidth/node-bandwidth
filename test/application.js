@@ -58,7 +58,6 @@ describe("Application", function(){
     });
     it("should return list of applications (with default client, without query)", function(done){
       helper.nock().get("/v1/users/FakeUserId/applications").reply(200, items);
-      debugger;
       Application.list(function(err, list){
         if(err){
           return done(err);
