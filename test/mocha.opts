@@ -1,5 +1,0 @@
--c
--t 20000
---compilers coffee:coffee-script
--r should
--r coffee-script
