@@ -1,4 +1,5 @@
-var Client = require("../").Client;
+var lib = require("../");
+var Client = lib.Client;
 var nock = require("nock");
 var helper = require("./helper");
 
@@ -393,6 +394,20 @@ describe("Client compatibility functions", function(){
         }
         done("An error is estimated");
       });
+    });
+  });
+  describe("obsolete types", function(){
+    it("should allow to create instances of obsolete types", function(){
+      new lib.Application("test");
+      new lib.Audio("test");
+      new lib.AvailableNumber("test");
+      new lib.AvailableNumberSearchCriteria("test");
+      new lib.Call("test");
+      new lib.CallTransfer("test");
+      new lib.LNPAvailabilityCheck("test");
+      new lib.Message("test");
+      new lib.PhoneNumber("test");
+      new lib.PortInData("test");
     });
   });
 });
