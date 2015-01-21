@@ -163,93 +163,30 @@ describe("Media", function(){
       fs.writeFile(tmpFile, "12345", "utf8", done);
     });
     beforeEach(function(){
-      var items = [
-        {mediaName: "fileName", content: "url1", contentLength: 5},
-        {mediaName: "file2", content: "url2", contentLength: 200}
-      ];
       helper.nock().put("/v1/users/FakeUserId/media/fileName", "12345", {"Content-Type": "text/plain"}).reply(200);
-      helper.nock().get("/v1/users/FakeUserId/media?page=0&size=5").reply(200, items);
     });
     it("should upload file to the server", function(done){
-      Media.upload(helper.createClient(), "fileName", tmpFile, "text/plain", function(err, file){
-        if(err){
-          return done(err);
-        }
-        file.should.eql({mediaName: "fileName", content: "url1", contentLength: 5});
-        done();
-      });
+      Media.upload(helper.createClient(), "fileName", tmpFile, "text/plain", done);
     });
     it("should upload file to the server (with default client)", function(done){
-      Media.upload("fileName", tmpFile, "text/plain", function(err, file){
-        if(err){
-          return done(err);
-        }
-        file.should.eql({mediaName: "fileName", content: "url1", contentLength: 5});
-        done();
-      });
+      Media.upload("fileName", tmpFile, "text/plain", done);
     });
     it("should upload file to the server (without media type)", function(done){
       helper.nock().put("/v1/users/FakeUserId/media/fileName", "12345", {"Content-Type": "application/octet-stream"}).reply(200);
-      Media.upload(helper.createClient(), "fileName", tmpFile, function(err, file){
-        if(err){
-          return done(err);
-        }
-        file.should.eql({mediaName: "fileName", content: "url1", contentLength: 5});
-        done();
-      });
+      Media.upload(helper.createClient(), "fileName", tmpFile, done);
     });
     it("should upload file to the server (with default client, without media type)", function(done){
       helper.nock().put("/v1/users/FakeUserId/media/fileName", "12345", {"Content-Type": "application/octet-stream"}).reply(200);
-      Media.upload("fileName", tmpFile, function(err, file){
-        if(err){
-          return done(err);
-        }
-        file.should.eql({mediaName: "fileName", content: "url1", contentLength: 5});
-        done();
-      });
+      Media.upload("fileName", tmpFile, done);
     });
     it("should upload stream to the server", function(done){
-      Media.upload(helper.createClient(), "fileName", fs.createReadStream(tmpFile), "text/plain", function(err, file){
-        if(err){
-          return done(err);
-        }
-        file.should.eql({mediaName: "fileName", content: "url1", contentLength: 5});
-        done();
-      });
+      Media.upload(helper.createClient(), "fileName", fs.createReadStream(tmpFile), "text/plain", done);
     });
     it("should upload buffer to the server", function(done){
-      Media.upload(helper.createClient(), "fileName", new Buffer("12345", "utf8"), "text/plain", function(err, file){
-        if(err){
-          return done(err);
-        }
-        file.should.eql({mediaName: "fileName", content: "url1", contentLength: 5});
-        done();
-      });
+      Media.upload(helper.createClient(), "fileName", new Buffer("12345", "utf8"), "text/plain", done);
     });
     it("should fail for invalid data to upload", function(done){
-      Media.upload(helper.createClient(), "fileName", {data: 1}, "text/plain", function(err, file){
-        if(err){
-          return done();
-        }
-        done(new Error("An error is estimated"));
-      });
-    });
-    it("should fail on getting  uploaded file info error", function(done){
-      nock.cleanAll();
-      helper.nock().put("/v1/users/FakeUserId/media/fileName", "12345", {"Content-Type": "text/plain"}).reply(200);
-      helper.nock().get("/v1/users/FakeUserId/media?page=0&size=5").reply(404);
-      Media.upload(helper.createClient(), "fileName", tmpFile, "text/plain", function(err, file){
-        if(err){
-          return done();
-        }
-        done(new Error("An error is estimated"));
-      });
-    });
-    it("should fail on if uploaded file info missing on the server", function(done){
-      nock.cleanAll();
-      helper.nock().put("/v1/users/FakeUserId/media/fileName", "12345", {"Content-Type": "text/plain"}).reply(200);
-      helper.nock().get("/v1/users/FakeUserId/media?page=0&size=5").reply(200, []);
-      Media.upload(helper.createClient(), "fileName", tmpFile, "text/plain", function(err, file){
+      Media.upload(helper.createClient(), "fileName", {data: 1}, "text/plain", function(err){
         if(err){
           return done();
         }
