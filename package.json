@@ -1,6 +1,6 @@
 {
   "name": "bandwidth",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "NodeJs Client library for Catapult API",
   "main": "index.js",
   "scripts": {
@@ -21,12 +21,13 @@
   },
   "homepage": "https://github.com/bandwidthcom/node-bandwidth",
   "dependencies": {
-    "superagent": "^0.21.0"
+    "superagent": "^0.21.0",
+    "xmlbuilder": "2.4.3"
   },
   "devDependencies": {
     "istanbul": "^0.3.2",
     "mocha": "^2.0.1",
     "nock": "^0.50.0",
-    "should": "4.3.1"
+    "should": "4.3.0"
   }
 }
