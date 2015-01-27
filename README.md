@@ -9,13 +9,13 @@ Node Client library for Catapult API
 Run
 
 ```
-npm install bandwidth
+npm install node-bandwidth
 ```
 
 ### Usage
 
 ```
-var catapult = require("bandwidth");
+var catapult = require("node-bandwidth");
 
 //Using client directly
 var client = new catapult.Client("userId", "apiToken", "apiSecret");
