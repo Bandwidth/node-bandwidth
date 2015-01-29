@@ -178,8 +178,8 @@ describe("Domain", function(){
         name: "point1"
     };
     it("should create an endpoint", function(done){
-      helper.nock().post("/v1/users/FakeUserId/domains/1/endPoints", data).reply(201, "", {"Location": "/v1/users/FakeUserId/domains/1/endPoints/10"});
-      helper.nock().get("/v1/users/FakeUserId/domains/1/endPoints/10").reply(200, item);
+      helper.nock().post("/v1/users/FakeUserId/domains/1/endpoints", data).reply(201, "", {"Location": "/v1/users/FakeUserId/domains/1/endpoints/10"});
+      helper.nock().get("/v1/users/FakeUserId/domains/1/endpoints/10").reply(200, item);
       var domain = new Domain();
       domain.id = 1;
       domain.client = helper.createClient();
@@ -194,7 +194,7 @@ describe("Domain", function(){
       });
     });
     it("should fail on remote request error", function(done){
-      helper.nock().post("/v1/users/FakeUserId/domains/1/endPoints").reply(500);
+      helper.nock().post("/v1/users/FakeUserId/domains/1/endpoints").reply(500);
       var domain = new Domain();
       domain.id = 1;
       domain.client = helper.createClient();
@@ -208,7 +208,7 @@ describe("Domain", function(){
   });
   describe("#deleteEndPoint", function(){
     it("should delete an endPoint", function(done){
-      helper.nock().delete("/v1/users/FakeUserId/domains/1/endpoints/10").reply(200, item);
+      helper.nock().delete("/v1/users/FakeUserId/domains/1/endpoints/10").reply(200);
       var domain = new Domain();
       domain.id = 1;
       domain.client = helper.createClient();
