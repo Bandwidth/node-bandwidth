@@ -237,7 +237,7 @@ describe("Client compatibility functions", function(){
       });
     });
     it("should return local numbers", function(done){
-      helper.nock().get("/v1/users/FakeUserId/availableNumbers/local?criteria1=1").reply(200, items);
+      helper.nock().get("/v1/availableNumbers/local?criteria1=1").reply(200, items);
       client.getAvailableNumbers({criteria1: 1, numberType: "local"},function(err, list){
         if(err){
           return done(err);
