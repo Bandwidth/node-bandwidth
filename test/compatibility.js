@@ -227,7 +227,7 @@ describe("Client compatibility functions", function(){
       state: "State2"
     }];
     it("should return tollFree numbers", function(done){
-      helper.nock().get("/v1/users/FakeUserId/availableNumbers/tollFree?criteria1=1").reply(200, items);
+      helper.nock().get("/v1/availableNumbers/tollFree?criteria1=1").reply(200, items);
       client.getAvailableNumbers({criteria1: 1, numberType: "tollFree"},function(err, list){
         if(err){
           return done(err);
