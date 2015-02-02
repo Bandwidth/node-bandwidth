@@ -25,6 +25,7 @@
     "xmlbuilder": "2.4.3"
   },
   "devDependencies": {
+    "async": "^0.9.0",
     "istanbul": "^0.3.2",
     "mocha": "^2.0.1",
     "nock": "^0.50.0",
