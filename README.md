@@ -32,7 +32,7 @@ npm install node-bandwidth
 ## Getting Started
 
 * Install `node-bandwidth`,
-* **Get user id, api token and secret**- to use the Catapult API you need these data.  You can get them [here](https://catapult.inetwork.com/pages/catapult.jsf) on the tab "Account",
+* **Get user id, api token and secret** - to use the Catapult API you need these data.  You can get them [here](https://catapult.inetwork.com/pages/catapult.jsf) on the tab "Account",
 * **Set user id, api token and secret** - you can do that with 2 ways:
 
 ```
@@ -88,7 +88,7 @@ List all received messages
 Send SMS
 
 ```
-  catapult.Message.create({from: "+19195551212", to: ""+191955512142", text: "Test"}, function(err, message){...});
+  catapult.Message.create({from: "+19195551212", to: "+191955512142", text: "Test"}, function(err, message){...});
 ```
 
 Upload file 
@@ -100,7 +100,7 @@ Upload file
 Make a call
 
 ```
-  catapult.Call.create({from: "+19195551212", to: ""+191955512142"}, function(err, call){...});
+  catapult.Call.create({from: "+19195551212", to: "+191955512142"}, function(err, call){...});
 ```
 
 Reject incoming call
@@ -129,7 +129,7 @@ Get CNAM info for a number
 Buy a phone number
 
 ```
-  catapult.PhoneNumber.create({number: ("+19195551212"}, function(err, phoneNumber){...});
+  catapult.PhoneNumber.create({number: "+19195551212"}, function(err, phoneNumber){...});
 ```
 
 See directory `samples` for more examples.
