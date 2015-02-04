@@ -35,7 +35,7 @@ npm install node-bandwidth
 * **Get user id, api token and secret** - to use the Catapult API you need these data.  You can get them [here](https://catapult.inetwork.com/pages/catapult.jsf) on the tab "Account",
 * **Set user id, api token and secret** - you can do that with 2 ways:
 
-```
+```js
 var catapult = require("node-bandwidth");
 
 //Using client directly
@@ -53,7 +53,7 @@ catapult.Client.globalOptions.userId = "userId";
 
 All "static" functions support 2 ways to be called: with client instance as first arg or without client instance (default client instance will be used then)
 
-```
+```js
 var catapult = require("node-bandwidth");
 
 //Using client directly
@@ -75,71 +75,71 @@ Read [Catapult Api documentation](https://catapult.inetwork.com/docs/api-docs/) 
 
 List all calls from special number
 
-```
+```js
   catapult.Call.list({from: "+19195551212"}, function(err, list) {...});
 ```
 
 List all received messages
 
-```
+```js
   catapult.Message.list({state: "received"}, function(err, list){...});
 ```
 
 Send SMS
 
-```
+```js
   catapult.Message.create({from: "+19195551212", to: "+191955512142", text: "Test"}, function(err, message){...});
 ```
 
 Upload file 
 
-```
+```js
   catapult.Media.upload("avatar.png", "/local/path/to/file.png", "image/png", function(err){...});
 ```
 
 Make a call
 
-```
+```js
   catapult.Call.create({from: "+19195551212", to: "+191955512142"}, function(err, call){...});
 ```
 
 Reject incoming call
 
-```
+```js
   call.rejectIncoming(function(err){...});
 ```
 
 Connect 2 calls to a bridge
 
-```
+```js
   catapult.Bridge.create({callIds: [callId1, callId2]}, function(err, bridge){...});
 ```
 
 Search available local numbers to buy
 
-```
+```js
   catapult.AvailableNumber.searchLocal({state: "NC", city: "Cary"}, function(err, numbers){...});
 ```
 Get CNAM info for a number
 
-```
+```js
   catapult.NumberInfo.get("+19195551212", function(err, info){...});
 ```
 
 Buy a phone number
 
-```
+```js
   catapult.PhoneNumber.create({number: "+19195551212"}, function(err, phoneNumber){...});
 ```
 
 List recordings
 
-```
+```js
   catapult.Recording.list(function(err, list){...});
 ```
 
 Generate Bandwidth XML
-```
+```js
    var xml = require("bandwidth").xml;
    var response = new xml.Response();
    var speakSentence = new xml.SpeakSentence({sentence: "Transferring your call, please wait.", voice: "paul", gender: "male", locale: "en_US"});
