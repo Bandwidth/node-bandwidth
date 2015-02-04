@@ -109,6 +109,23 @@ Reject incoming call
   call.rejectIncoming(function(err){...});
 ```
 
+Create a gather
+```js
+  call.createGather({maxDigits: 3, interDigitTimeout: 5, prompt: {sentence: "Please enter 3 digits"}}, function(err, gather){...});
+```
+
+Start a conference
+```js
+  catapult.Conference.create({from: "+19195551212"}, function(err, conference){...});
+```
+
+Add a member to the conference
+
+```js
+  conference.createMember({callId => "id_of_call_to_add_to_this_conference", joinTone: true, leavingTone: true}, function(err, member){...})
+```
+
+
 Connect 2 calls to a bridge
 
 ```js
