@@ -132,6 +132,39 @@ Buy a phone number
   catapult.PhoneNumber.create({number: "+19195551212"}, function(err, phoneNumber){...});
 ```
 
+List recordings
+
+```
+  catapult.Recording.list(function(err, list){...});
+```
+
+Generate Bandwidth XML
+```
+   var xml = require("bandwidth").xml;
+   var response = new xml.Response();
+   var speakSentence = new xml.SpeakSentence({sentence: "Transferring your call, please wait.", voice: "paul", gender: "male", locale: "en_US"});
+   var transfer = new xml.Transfer({
+        transferTo: "+13032218749",
+        transferCallerId: "private",
+        speakSentence: {
+            sentence: "Inner speak sentence.",
+            voice: "paul",
+            gender: "male",
+            locale: "en_US"
+        }
+    });
+    var hangup = new xml.Hangup();
+
+    response.push(speakSentence);
+    response.push(transfer);
+    response.push(hangup);
+
+    //as alternative we can pass list of verbs to constructor of Response
+    //response = new xml.Response([speakSentence, transfer, hangup]);
+
+    console.log(response.toXml());
+```
+
 See directory `samples` for more examples.
 See [node-bandwidth-example](https://github.com/bandwidthcom/node-bandwidth-example) for more complex examples of using this module.
 
