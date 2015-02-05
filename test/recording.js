@@ -1,3 +1,4 @@
+"use strict";
 var lib = require("../");
 var helper = require("./helper");
 var nock = require("nock");
@@ -112,6 +113,73 @@ describe("Recording", function(){
           return done();
         }
         done(new Error("An error is estimated"));
+      });
+    });
+  });
+  describe("#createTranscription", function(){
+    it("should create a transcription", function(done){
+      var item = {id: "101"};
+      helper.nock().post("/v1/users/FakeUserId/recordings/1/transcriptions").reply(201, "", {"Location": "/v1/users/FakeUserId/recordings/1/transcriptions/101"});
+      helper.nock().get("/v1/users/FakeUserId/recordings/1/transcriptions/101").reply(200, item);
+      var recording = new Recording();
+      recording.id = 1;
+      recording.client = helper.createClient();
+      recording.createTranscription(function(err, i){
+        if(err){
+          return done(err);
+        }
+        i.should.eql(item);
+        done();
+      });
+    });
+    it("should fail on remote request failing", function(done){
+      helper.nock().post("/v1/users/FakeUserId/recordings/1/transcriptions").reply(500);
+      var recording = new Recording();
+      recording.id = 1;
+      recording.client = helper.createClient();
+      recording.createTranscription(function(err){
+        if(err){
+          return done();
+        }
+        done(new Error("An error is estimated"));
+      });
+    });
+  });
+  describe("#getTranscription", function(){
+    var item = {
+        id: "101"
+    };
+    it("should return a transcription", function(done){
+      helper.nock().get("/v1/users/FakeUserId/recordings/1/transcriptions/101").reply(200, item);
+      var recording = new Recording();
+      recording.id = 1;
+      recording.client = helper.createClient();
+      recording.getTranscription("101", function(err, i){
+        if(err){
+          return done(err);
+        }
+        i.should.eql(item);
+        done();
+      });
+    });
+  });
+  describe("#getTranscriptions", function(){
+    var items = [{
+        id: "101"
+    }, {
+      id: "102"
+    }];
+    it("should return transcriptions", function(done){
+      helper.nock().get("/v1/users/FakeUserId/recordings/1/transcriptions").reply(200, items);
+      var recording = new Recording();
+      recording.id = 1;
+      recording.client = helper.createClient();
+      recording.getTranscriptions(function(err, list){
+        if(err){
+          return done(err);
+        }
+        list.should.eql(items);
+        done();
       });
     });
   });
