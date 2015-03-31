@@ -91,6 +91,13 @@ Send SMS
   catapult.Message.create({from: "+19195551212", to: "+191955512142", text: "Test"}, function(err, message){...});
 ```
 
+
+Send some SMSes
+
+```js
+  catapult.Message.create([{from: "+19195551212", to: "+191955512142", text: "Test"}, {from: "+19195551212", to: "+191955512143", text: "Test2"}], function(err, statuses){...});
+```
+
 Upload file 
 
 ```js
