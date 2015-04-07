@@ -73,6 +73,35 @@ describe("Media", function(){
       Media.delete("fileName", done);
     });
   });
+  describe("#getInfo", function(){
+    it("should get info on file from server", function(done){
+      helper.nock().head("/v1/users/FakeUserId/media/file1").reply(200, "OK", {'Content-Length': 100});
+      Media.getInfo(helper.createClient(), "file1", function(err, result) {
+        if (err){
+          return done(err);
+        }
+        result.contentLength.should.eql(100);
+        done();
+      });
+    });
+    it("should get info on file from server (with default client)", function(done){
+      helper.nock().head("/v1/users/FakeUserId/media/file1").reply(200, "OK", {'Content-Length': 100});
+      Media.getInfo("file1", function(err, result){
+        if (err){
+          return done(err);
+        }
+        result.contentLength.should.eql(100);
+        done();
+      });
+    });
+    it("should error on getting info on non existing file", function(done){
+        helper.nock().head("/v1/users/FakeUserId/media/nonexistingfile").reply(404);
+        Media.getInfo("nonexistingfile", function(err, result){
+          err.httpStatus.should.eql(404);
+          done();
+        });
+      });
+  });
   describe("#download", function(){
     beforeEach(function(){
       helper.nock().get("/v1/users/FakeUserId/media/fileName").reply(200, "12345", {"Content-Type": "text/plain"});
