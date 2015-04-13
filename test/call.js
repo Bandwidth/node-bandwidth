@@ -214,6 +214,29 @@ describe("Call", function(){
       call.client = helper.createClient();
       call.speakSentence("test", done);
     });
+    it("should speak a sentense with different voice", function(done){
+      var data = {
+        gender: "male",
+        locale: "en_US",
+        voice: "tom",
+        sentence: "test",
+        tag: "tag"
+      };
+      helper.nock().post("/v1/users/FakeUserId/calls/1/audio", data).reply(200);
+      var call = new Call();
+      call.id = 1;
+      call.client = helper.createClient();
+      call.speakSentence("test", "tag", "male", "tom", done);
+    });
+    it("should throw error if gender is passed without voice", function(done){
+      var call = new Call();
+      call.id = 1;
+      call.client = helper.createClient();
+      call.speakSentence("test", "tag", "male", function(err){
+        err.should.be.ok;
+        done();
+      });
+    });
   });
   describe("#playRecording", function(){
     it("should play a recording", function(done){
