@@ -173,6 +173,14 @@ describe("Call", function(){
       call.update(data, done);
     });
   });
+  describe("#updateStatic", function(){
+    it("should update a call statically", function(done){
+      var data = {state: "rejected" };
+      helper.nock().post("/v1/users/FakeUserId/calls/1", data).reply(200);
+      var client = helper.createClient();
+      Call.update(client, "1", data, done);
+    });
+  });
 
   describe("#playAudio", function(){
     it("should play audio", function(done){
