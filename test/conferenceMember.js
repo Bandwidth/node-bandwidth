@@ -6,7 +6,6 @@ var ConferenceMember = lib.ConferenceMember;
 describe("ConferenceMember", function(){
   before(function(){
     nock.disableNetConnect();
-    helper.setupGlobalOptions();
   });
   after(function(){
     nock.cleanAll();

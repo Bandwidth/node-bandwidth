@@ -6,7 +6,6 @@ var Bridge = lib.Bridge;
 describe("Bridge", function(){
   before(function(){
     nock.disableNetConnect();
-    helper.setupGlobalOptions();
   });
   after(function(){
     nock.cleanAll();
@@ -24,17 +23,6 @@ describe("Bridge", function(){
     it("should return list of bridges", function(done){
       helper.nock().get("/v1/users/FakeUserId/bridges").reply(200, items);
       Bridge.list(helper.createClient(),  function(err, list){
-        if(err){
-          return done(err);
-        }
-        list.forEach(function(i){delete i.client;});
-        list.should.eql(items);
-        done();
-      });
-    });
-    it("should return list of bridges (with default client)", function(done){
-      helper.nock().get("/v1/users/FakeUserId/bridges").reply(200, items);
-      Bridge.list(function(err, list){
         if(err){
           return done(err);
         }
@@ -69,17 +57,6 @@ describe("Bridge", function(){
         done();
       });
     });
-    it("should return a bridge (with default client)", function(done){
-      helper.nock().get("/v1/users/FakeUserId/bridges/1").reply(200, item);
-      Bridge.get("1", function(err, i){
-        if(err){
-          return done(err);
-        }
-        delete i.client;
-        i.should.eql(item);
-        done();
-      });
-    });
     it("should fail on remote request failing", function(done){
       helper.nock().get("/v1/users/FakeUserId/bridges/1").reply(500);
       Bridge.get(helper.createClient(), "1", function(err){
@@ -102,18 +79,6 @@ describe("Bridge", function(){
       helper.nock().post("/v1/users/FakeUserId/bridges", data).reply(201, "", {"Location": "/v1/users/FakeUserId/bridges/1"});
       helper.nock().get("/v1/users/FakeUserId/bridges/1").reply(200, item);
       Bridge.create(helper.createClient(), data,  function(err, i){
-        if(err){
-          return done(err);
-        }
-        delete i.client;
-        i.should.eql(item);
-        done();
-      });
-    });
-    it("should create a bridge (with default client)", function(done){
-      helper.nock().post("/v1/users/FakeUserId/bridges", data).reply(201, "", {"Location": "/v1/users/FakeUserId/bridges/1"});
-      helper.nock().get("/v1/users/FakeUserId/bridges/1").reply(200, item);
-      Bridge.create(data,  function(err, i){
         if(err){
           return done(err);
         }

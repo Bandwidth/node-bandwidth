@@ -11,7 +11,6 @@ var tmpFile = path.join(os.tmpdir(), "dest.txt");
 describe("Media", function(){
   before(function(){
     nock.disableNetConnect();
-    helper.setupGlobalOptions();
   });
   after(function(){
     nock.cleanAll();
@@ -32,29 +31,9 @@ describe("Media", function(){
         done();
       });
     });
-    it("should return account info (with default client)", function(done){
-      helper.nock().get("/v1/users/FakeUserId/media?page=1").reply(200, items);
-      Media.list({page: 1}, function(err, list){
-        if(err){
-          return done(err);
-        }
-        list.should.eql(items);
-        done();
-      });
-    });
     it("should return list of files (without query)", function(done){
       helper.nock().get("/v1/users/FakeUserId/media").reply(200, items);
       Media.list(helper.createClient(), function(err, list){
-        if(err){
-          return done(err);
-        }
-        list.should.eql(items);
-        done();
-      });
-    });
-    it("should return account info (with default client, without query)", function(done){
-      helper.nock().get("/v1/users/FakeUserId/media").reply(200, items);
-      Media.list(function(err, list){
         if(err){
           return done(err);
         }
@@ -68,10 +47,6 @@ describe("Media", function(){
       helper.nock().delete("/v1/users/FakeUserId/media/fileName").reply(200);
       Media.delete(helper.createClient(), "fileName", done);
     });
-    it("should delete file from the server (with default client)", function(done){
-      helper.nock().delete("/v1/users/FakeUserId/media/fileName").reply(200);
-      Media.delete("fileName", done);
-    });
   });
   describe("#getInfo", function(){
     it("should get info on file from server", function(done){
@@ -84,19 +59,9 @@ describe("Media", function(){
         done();
       });
     });
-    it("should get info on file from server (with default client)", function(done){
-      helper.nock().head("/v1/users/FakeUserId/media/file1").reply(200, "OK", {'Content-Length': 100});
-      Media.getInfo("file1", function(err, result){
-        if (err){
-          return done(err);
-        }
-        result.contentLength.should.eql(100);
-        done();
-      });
-    });
     it("should error on getting info on non existing file", function(done){
         helper.nock().head("/v1/users/FakeUserId/media/nonexistingfile").reply(404);
-        Media.getInfo("nonexistingfile", function(err, result){
+        Media.getInfo(helper.createClient(), "nonexistingfile", function(err, result){
           err.httpStatus.should.eql(404);
           done();
         });
@@ -122,34 +87,9 @@ describe("Media", function(){
         });
       });
     });
-    it("should download file to destination file (with default client)", function(done){
-      var stream = Media.download("fileName", tmpFile);
-      stream.on("finish", function(){
-        fs.readFile(tmpFile, "utf8", function(err, text){
-          if(err){
-            done(err);
-          }
-          text.should.equal("12345");
-          done();
-        });
-      });
-    });
     it("should download file to destination stream", function(done){
       var outputStream = fs.createWriteStream(tmpFile);
       var stream = Media.download(helper.createClient(), "fileName", outputStream);
-      stream.on("finish", function(){
-        fs.readFile(tmpFile, "utf8", function(err, text){
-          if(err){
-            done(err);
-          }
-          text.should.equal("12345");
-          done();
-        });
-      });
-    });
-    it("should download file to destination stream (with default client)", function(done){
-      var outputStream = fs.createWriteStream(tmpFile);
-      var stream = Media.download("fileName", outputStream);
       stream.on("finish", function(){
         fs.readFile(tmpFile, "utf8", function(err, text){
           if(err){
@@ -173,19 +113,6 @@ describe("Media", function(){
         });
       });
     });
-    it("should allow access to request (with default client)", function(done){
-      var outputStream = fs.createWriteStream(tmpFile);
-      var stream = Media.download("fileName").pipe(outputStream);
-      stream.on("finish", function(){
-        fs.readFile(tmpFile, "utf8", function(err, text){
-          if(err){
-            done(err);
-          }
-          text.should.equal("12345");
-          done();
-        });
-      });
-    });
   });
   describe("#upload", function(){
     before(function(done){
@@ -197,16 +124,9 @@ describe("Media", function(){
     it("should upload file to the server", function(done){
       Media.upload(helper.createClient(), "fileName", tmpFile, "text/plain", done);
     });
-    it("should upload file to the server (with default client)", function(done){
-      Media.upload("fileName", tmpFile, "text/plain", done);
-    });
     it("should upload file to the server (without media type)", function(done){
       helper.nock().put("/v1/users/FakeUserId/media/fileName", "12345", {"Content-Type": "application/octet-stream"}).reply(200);
       Media.upload(helper.createClient(), "fileName", tmpFile, done);
-    });
-    it("should upload file to the server (with default client, without media type)", function(done){
-      helper.nock().put("/v1/users/FakeUserId/media/fileName", "12345", {"Content-Type": "application/octet-stream"}).reply(200);
-      Media.upload("fileName", tmpFile, done);
     });
     it("should upload stream to the server", function(done){
       Media.upload(helper.createClient(), "fileName", fs.createReadStream(tmpFile), "text/plain", done);

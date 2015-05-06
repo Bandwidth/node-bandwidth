@@ -25,7 +25,6 @@ describe("AvailableNumber", function(){
   }];
   before(function(){
     nock.disableNetConnect();
-    helper.setupGlobalOptions();
   });
   after(function(){
     nock.cleanAll();
@@ -42,29 +41,9 @@ describe("AvailableNumber", function(){
         done();
       });
     });
-    it("should return numbers (with default client)", function(done){
-      helper.nock().get("/v1/availableNumbers/tollFree?criteria1=1").reply(200, items);
-      AvailableNumber.searchTollFree({criteria1: 1},function(err, list){
-        if(err){
-          return done(err);
-        }
-        list.should.eql(items);
-        done();
-      });
-    });
     it("should return numbers (without query)", function(done){
       helper.nock().get("/v1/availableNumbers/tollFree").reply(200, items);
       AvailableNumber.searchTollFree(helper.createClient(), function(err, list){
-        if(err){
-          return done(err);
-        }
-        list.should.eql(items);
-        done();
-      });
-    });
-    it("should return numbers (with default client, without query)", function(done){
-      helper.nock().get("/v1/availableNumbers/tollFree").reply(200, items);
-      AvailableNumber.searchTollFree(function(err, list){
         if(err){
           return done(err);
         }
@@ -84,29 +63,9 @@ describe("AvailableNumber", function(){
         done();
       });
     });
-    it("should return numbers (with default client)", function(done){
-      helper.nock().get("/v1/availableNumbers/local?criteria1=1").reply(200, items);
-      AvailableNumber.searchLocal({criteria1: 1}, function(err, list){
-        if(err){
-          return done(err);
-        }
-        list.should.eql(items);
-        done();
-      });
-    });
     it("should return numbers (without query)", function(done){
       helper.nock().get("/v1/availableNumbers/local").reply(200, items);
       AvailableNumber.searchLocal(helper.createClient(), function(err, list){
-        if(err){
-          return done(err);
-        }
-        list.should.eql(items);
-        done();
-      });
-    });
-    it("should return numbers (with default client, without query)", function(done){
-      helper.nock().get("/v1/availableNumbers/local").reply(200, items);
-      AvailableNumber.searchLocal(function(err, list){
         if(err){
           return done(err);
         }

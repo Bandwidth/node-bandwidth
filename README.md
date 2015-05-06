@@ -38,34 +38,17 @@ npm install node-bandwidth
 ```js
 var catapult = require("node-bandwidth");
 
-//Using client directly
 var client = new catapult.Client("userId", "apiToken", "apiSecret");
-
-//Or you can use default client instance.
-//Do that only once
-catapult.Client.globalOptions.apiToken = "token";
-catapult.Client.globalOptions.apiSecret = "secret";
-catapult.Client.globalOptions.userId = "userId";
 
 
 ```
 ## Usage
 
-All "static" functions support 2 ways to be called: with client instance as first arg or without client instance (default client instance will be used then)
-
 ```js
 var catapult = require("node-bandwidth");
 
-//Using client directly
 var client = new catapult.Client("userId", "apiToken", "apiSecret");
 catapult.Call.list(client, {page: 1}, function(err, calls){...});
-
-//Or you can use default client instance.
-//You should set up its global options before using of api functions.
-
-catapult.Call.list({page: 1}, function(err, calls){
-  //Default client will be used to do this calls
-});
 
 ```
 Read [Catapult Api documentation](https://catapult.inetwork.com/docs/api-docs/) for more details
@@ -76,38 +59,38 @@ Read [Catapult Api documentation](https://catapult.inetwork.com/docs/api-docs/) 
 List all calls from special number
 
 ```js
-  catapult.Call.list({from: "+19195551212"}, function(err, list) {...});
+  catapult.Call.list(client, {from: "+19195551212"}, function(err, list) {...});
 ```
 
 List all received messages
 
 ```js
-  catapult.Message.list({state: "received"}, function(err, list){...});
+  catapult.Message.list(client, {state: "received"}, function(err, list){...});
 ```
 
 Send SMS
 
 ```js
-  catapult.Message.create({from: "+19195551212", to: "+191955512142", text: "Test"}, function(err, message){...});
+  catapult.Message.create(client, {from: "+19195551212", to: "+191955512142", text: "Test"}, function(err, message){...});
 ```
 
 
 Send some SMSes
 
 ```js
-  catapult.Message.create([{from: "+19195551212", to: "+191955512142", text: "Test"}, {from: "+19195551212", to: "+191955512143", text: "Test2"}], function(err, statuses){...});
+  catapult.Message.create(client, [{from: "+19195551212", to: "+191955512142", text: "Test"}, {from: "+19195551212", to: "+191955512143", text: "Test2"}], function(err, statuses){...});
 ```
 
 Upload file 
 
 ```js
-  catapult.Media.upload("avatar.png", "/local/path/to/file.png", "image/png", function(err){...});
+  catapult.Media.upload(client, "avatar.png", "/local/path/to/file.png", "image/png", function(err){...});
 ```
 
 Make a call
 
 ```js
-  catapult.Call.create({from: "+19195551212", to: "+191955512142"}, function(err, call){...});
+  catapult.Call.create(client, {from: "+19195551212", to: "+191955512142"}, function(err, call){...});
 ```
 
 Reject incoming call
@@ -123,7 +106,7 @@ Create a gather
 
 Start a conference
 ```js
-  catapult.Conference.create({from: "+19195551212"}, function(err, conference){...});
+  catapult.Conference.create(client, {from: "+19195551212"}, function(err, conference){...});
 ```
 
 Add a member to the conference
@@ -136,30 +119,30 @@ Add a member to the conference
 Connect 2 calls to a bridge
 
 ```js
-  catapult.Bridge.create({callIds: [callId1, callId2]}, function(err, bridge){...});
+  catapult.Bridge.create(client, {callIds: [callId1, callId2]}, function(err, bridge){...});
 ```
 
 Search available local numbers to buy
 
 ```js
-  catapult.AvailableNumber.searchLocal({state: "NC", city: "Cary"}, function(err, numbers){...});
+  catapult.AvailableNumber.searchLocal(client, {state: "NC", city: "Cary"}, function(err, numbers){...});
 ```
 Get CNAM info for a number
 
 ```js
-  catapult.NumberInfo.get("+19195551212", function(err, info){...});
+  catapult.NumberInfo.get(client, "+19195551212", function(err, info){...});
 ```
 
 Buy a phone number
 
 ```js
-  catapult.PhoneNumber.create({number: "+19195551212"}, function(err, phoneNumber){...});
+  catapult.PhoneNumber.create(client, {number: "+19195551212"}, function(err, phoneNumber){...});
 ```
 
 List recordings
 
 ```js
-  catapult.Recording.list(function(err, list){...});
+  catapult.Recording.list(client, function(err, list){...});
 ```
 
 Generate Bandwidth XML

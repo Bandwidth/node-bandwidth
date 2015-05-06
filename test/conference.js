@@ -6,7 +6,6 @@ var Conference = lib.Conference;
 describe("Conference", function(){
   before(function(){
     nock.disableNetConnect();
-    helper.setupGlobalOptions();
   });
   after(function(){
     nock.cleanAll();
@@ -21,17 +20,6 @@ describe("Conference", function(){
     it("should return a conference", function(done){
       helper.nock().get("/v1/users/FakeUserId/conferences/1").reply(200, item);
       Conference.get(helper.createClient(), "1", function(err, i){
-        if(err){
-          return done(err);
-        }
-        delete i.client;
-        i.should.eql(item);
-        done();
-      });
-    });
-    it("should return a conference (with default client)", function(done){
-      helper.nock().get("/v1/users/FakeUserId/conferences/1").reply(200, item);
-      Conference.get("1", function(err, i){
         if(err){
           return done(err);
         }
@@ -64,18 +52,6 @@ describe("Conference", function(){
       helper.nock().post("/v1/users/FakeUserId/conferences", data).reply(201, "", {"Location": "/v1/users/FakeUserId/conferences/1"});
       helper.nock().get("/v1/users/FakeUserId/conferences/1").reply(200, item);
       Conference.create(helper.createClient(), data,  function(err, i){
-        if(err){
-          return done(err);
-        }
-        delete i.client;
-        i.should.eql(item);
-        done();
-      });
-    });
-    it("should create a conference (with default client)", function(done){
-      helper.nock().post("/v1/users/FakeUserId/conferences", data).reply(201, "", {"Location": "/v1/users/FakeUserId/conferences/1"});
-      helper.nock().get("/v1/users/FakeUserId/conferences/1").reply(200, item);
-      Conference.create(data,  function(err, i){
         if(err){
           return done(err);
         }

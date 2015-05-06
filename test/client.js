@@ -11,9 +11,11 @@ describe("client tests", function(){
   });
   describe("#constructor", function(){
     it("should create client instance", function(){
-      var client = new Client();
-      client.should.be.instanceof(Client);
-      Client().should.be.instanceof(Client);
+      (new Client("FakeUserId", "FakeApiToken", "FakeApiSecret")).should.be.instanceof(Client);
+    });
+
+    it("should return an instance if invoked without new", function () {
+      Client("FakeUserId", "FakeApiToken", "FakeApiSecret").should.be.instanceof(Client);
     });
   });
   describe("#makeRequest", function(){
@@ -120,7 +122,7 @@ describe("client tests", function(){
   });
   describe("#concatUserPath", function(){
     it("should return formatted url", function(){
-      var client = new Client({userId: "userId"});
+      var client = new Client({userId: "userId", apiToken: "token", apiSecret: "secret"});
       client.concatUserPath("test").should.equal("/users/userId/test");
       client.concatUserPath("/test1").should.equal("/users/userId/test1");
     });
