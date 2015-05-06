@@ -6,7 +6,6 @@ var Application = lib.Application;
 describe("Application", function(){
   before(function(){
     nock.disableNetConnect();
-    helper.setupGlobalOptions();
   });
   after(function(){
     nock.cleanAll();
@@ -34,31 +33,9 @@ describe("Application", function(){
         done();
       });
     });
-    it("should return list of applications (with default client)", function(done){
-      helper.nock().get("/v1/users/FakeUserId/applications?page=1").reply(200, items);
-      Application.list({page: 1}, function(err, list){
-        if(err){
-          return done(err);
-        }
-        list.forEach(function(i){delete i.client;});
-        list.should.eql(items);
-        done();
-      });
-    });
     it("should return list of applications (without query)", function(done){
       helper.nock().get("/v1/users/FakeUserId/applications").reply(200, items);
       Application.list(helper.createClient(), function(err, list){
-        if(err){
-          return done(err);
-        }
-        list.forEach(function(i){delete i.client;});
-        list.should.eql(items);
-        done();
-      });
-    });
-    it("should return list of applications (with default client, without query)", function(done){
-      helper.nock().get("/v1/users/FakeUserId/applications").reply(200, items);
-      Application.list(function(err, list){
         if(err){
           return done(err);
         }
@@ -94,17 +71,6 @@ describe("Application", function(){
         done();
       });
     });
-    it("should return an application (with default client)", function(done){
-      helper.nock().get("/v1/users/FakeUserId/applications/1").reply(200, item);
-      Application.get("1", function(err, i){
-        if(err){
-          return done(err);
-        }
-        delete i.client;
-        i.should.eql(item);
-        done();
-      });
-    });
     it("should fail on remote request failing", function(done){
       helper.nock().get("/v1/users/FakeUserId/applications/1").reply(500);
       Application.get(helper.createClient(), "1", function(err){
@@ -129,18 +95,6 @@ describe("Application", function(){
       helper.nock().post("/v1/users/FakeUserId/applications", data).reply(201, "", {"Location": "/v1/users/FakeUserId/applications/1"});
       helper.nock().get("/v1/users/FakeUserId/applications/1").reply(200, item);
       Application.create(helper.createClient(), data,  function(err, i){
-        if(err){
-          return done(err);
-        }
-        delete i.client;
-        i.should.eql(item);
-        done();
-      });
-    });
-    it("should create an application (with default client)", function(done){
-      helper.nock().post("/v1/users/FakeUserId/applications", data).reply(201, "", {"Location": "/v1/users/FakeUserId/applications/1"});
-      helper.nock().get("/v1/users/FakeUserId/applications/1").reply(200, item);
-      Application.create(data,  function(err, i){
         if(err){
           return done(err);
         }

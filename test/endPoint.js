@@ -7,7 +7,6 @@ var EndPoint = lib.EndPoint;
 describe("EndPoint", function(){
   before(function(){
     nock.disableNetConnect();
-    helper.setupGlobalOptions();
   });
   after(function(){
     nock.cleanAll();

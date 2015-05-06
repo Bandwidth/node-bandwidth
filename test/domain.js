@@ -7,7 +7,6 @@ var Domain = lib.Domain;
 describe("Domain", function(){
   before(function(){
     nock.disableNetConnect();
-    helper.setupGlobalOptions();
   });
   after(function(){
     nock.cleanAll();
@@ -27,17 +26,6 @@ describe("Domain", function(){
     it("should return domains", function(done){
       helper.nock().get("/v1/users/FakeUserId/domains").reply(200, items);
       Domain.list(helper.createClient(), function(err, list){
-        if(err){
-          return done(err);
-        }
-        list.forEach(function(i){ delete i.client;});
-        list.should.eql(items);
-        done();
-      });
-    });
-    it("should return a domain (with default client)", function(done){
-      helper.nock().get("/v1/users/FakeUserId/domains").reply(200, items);
-      Domain.list(function(err, list){
         if(err){
           return done(err);
         }
@@ -70,18 +58,6 @@ describe("Domain", function(){
       helper.nock().post("/v1/users/FakeUserId/domains", data).reply(201, "", {"Location": "/v1/users/FakeUserId/domains/1"});
       helper.nock().get("/v1/users/FakeUserId/domains/1").reply(200, item);
       Domain.create(helper.createClient(), data,  function(err, i){
-        if(err){
-          return done(err);
-        }
-        delete i.client;
-        i.should.eql(item);
-        done();
-      });
-    });
-    it("should create a domain (with default client)", function(done){
-      helper.nock().post("/v1/users/FakeUserId/domains", data).reply(201, "", {"Location": "/v1/users/FakeUserId/domains/1"});
-      helper.nock().get("/v1/users/FakeUserId/domains/1").reply(200, item);
-      Domain.create(data,  function(err, i){
         if(err){
           return done(err);
         }

@@ -6,7 +6,6 @@ var PhoneNumber = lib.PhoneNumber;
 describe("PhoneNumber", function(){
   before(function(){
     nock.disableNetConnect();
-    helper.setupGlobalOptions();
   });
   after(function(){
     nock.cleanAll();
@@ -34,31 +33,9 @@ describe("PhoneNumber", function(){
         done();
       });
     });
-    it("should return list of phoneNumbers (with default client)", function(done){
-      helper.nock().get("/v1/users/FakeUserId/phoneNumbers?page=1").reply(200, items);
-      PhoneNumber.list({page: 1}, function(err, list){
-        if(err){
-          return done(err);
-        }
-        list.forEach(function(i){delete i.client;});
-        list.should.eql(items);
-        done();
-      });
-    });
     it("should return list of phoneNumbers (without query)", function(done){
       helper.nock().get("/v1/users/FakeUserId/phoneNumbers").reply(200, items);
       PhoneNumber.list(helper.createClient(),  function(err, list){
-        if(err){
-          return done(err);
-        }
-        list.forEach(function(i){delete i.client;});
-        list.should.eql(items);
-        done();
-      });
-    });
-    it("should return list of phoneNumbers (with default client, without query)", function(done){
-      helper.nock().get("/v1/users/FakeUserId/phoneNumbers").reply(200, items);
-      PhoneNumber.list(function(err, list){
         if(err){
           return done(err);
         }
@@ -94,17 +71,6 @@ describe("PhoneNumber", function(){
         done();
       });
     });
-    it("should return a phoneNumber (with default client)", function(done){
-      helper.nock().get("/v1/users/FakeUserId/phoneNumbers/1").reply(200, item);
-      PhoneNumber.get("1", function(err, i){
-        if(err){
-          return done(err);
-        }
-        delete i.client;
-        i.should.eql(item);
-        done();
-      });
-    });
     it("should fail on remote request failing", function(done){
       helper.nock().get("/v1/users/FakeUserId/phoneNumbers/1").reply(500);
       PhoneNumber.get(helper.createClient(), "1", function(err){
@@ -128,18 +94,6 @@ describe("PhoneNumber", function(){
       helper.nock().post("/v1/users/FakeUserId/phoneNumbers", data).reply(201, "", {"Location": "/v1/users/FakeUserId/phoneNumbers/1"});
       helper.nock().get("/v1/users/FakeUserId/phoneNumbers/1").reply(200, item);
       PhoneNumber.create(helper.createClient(), data,  function(err, i){
-        if(err){
-          return done(err);
-        }
-        delete i.client;
-        i.should.eql(item);
-        done();
-      });
-    });
-    it("should create a phoneNumber (with default client)", function(done){
-      helper.nock().post("/v1/users/FakeUserId/phoneNumbers", data).reply(201, "", {"Location": "/v1/users/FakeUserId/phoneNumbers/1"});
-      helper.nock().get("/v1/users/FakeUserId/phoneNumbers/1").reply(200, item);
-      PhoneNumber.create(data,  function(err, i){
         if(err){
           return done(err);
         }

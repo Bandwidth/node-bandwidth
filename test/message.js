@@ -6,7 +6,6 @@ var Message = lib.Message;
 describe("Message", function(){
   before(function(){
     nock.disableNetConnect();
-    helper.setupGlobalOptions();
   });
   after(function(){
     nock.cleanAll();
@@ -37,31 +36,9 @@ describe("Message", function(){
         done();
       });
     });
-    it("should return list of messages (with default client)", function(done){
-      helper.nock().get("/v1/users/FakeUserId/messages?page=1").reply(200, items);
-      Message.list({page: 1}, function(err, list){
-        if(err){
-          return done(err);
-        }
-        list.forEach(function(i){delete i.client;});
-        list.should.eql(items);
-        done();
-      });
-    });
     it("should return list of messages (without query)", function(done){
       helper.nock().get("/v1/users/FakeUserId/messages").reply(200, items);
       Message.list(helper.createClient(),  function(err, list){
-        if(err){
-          return done(err);
-        }
-        list.forEach(function(i){delete i.client;});
-        list.should.eql(items);
-        done();
-      });
-    });
-    it("should return list of messages (with default client, without query)", function(done){
-      helper.nock().get("/v1/users/FakeUserId/messages").reply(200, items);
-      Message.list(function(err, list){
         if(err){
           return done(err);
         }
@@ -90,17 +67,6 @@ describe("Message", function(){
     it("should return a message", function(done){
       helper.nock().get("/v1/users/FakeUserId/messages/1").reply(200, item);
       Message.get(helper.createClient(), "1", function(err, i){
-        if(err){
-          return done(err);
-        }
-        delete i.client;
-        i.should.eql(item);
-        done();
-      });
-    });
-    it("should return a message (with default client)", function(done){
-      helper.nock().get("/v1/users/FakeUserId/messages/1").reply(200, item);
-      Message.get("1", function(err, i){
         if(err){
           return done(err);
         }
@@ -151,30 +117,6 @@ describe("Message", function(){
           return done(err);
         }
         statuses[0].error.message.should.equal("Error");
-        statuses[1].id.should.equal("1")
-        done();
-      });
-    });
-    it("should create a message (with default client)", function(done){
-      helper.nock().post("/v1/users/FakeUserId/messages", data).reply(201, "", {"Location": "/v1/users/FakeUserId/messages/1"});
-      helper.nock().get("/v1/users/FakeUserId/messages/1").reply(200, item);
-      Message.create(data,  function(err, i){
-        if(err){
-          return done(err);
-        }
-        delete i.client;
-        i.should.eql(item);
-        done();
-      });
-    });
-    it("should create list of messages (with default client)", function(done){
-      var data = [{from: "from1", to: "to1", text: "text1"}, {from: "from2", to: "to2", text: "text2"}];
-      helper.nock().post("/v1/users/FakeUserId/messages", data).reply(200, [{result: "accepted"}, {result: "accepted", location: "/v1/users/FakeUserId/messages/1"}]);
-      Message.create( data,  function(err, statuses){
-        if(err){
-          return done(err);
-        }
-        statuses[0].error.should.be.ok;
         statuses[1].id.should.equal("1")
         done();
       });
