@@ -1,6 +1,6 @@
 {
   "name": "node-bandwidth",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "NodeJs Client library for Catapult API",
   "main": "index.js",
   "scripts": {
