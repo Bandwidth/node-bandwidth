@@ -1,4 +1,5 @@
 var Client = require("../").Client;
+var errors = require("../").errors;
 var nock = require("nock");
 var helper = require("./helper");
 describe("client tests", function(){
@@ -11,9 +12,23 @@ describe("client tests", function(){
   });
   describe("#constructor", function(){
     it("should create client instance", function(){
-      var client = new Client();
+      var client = new Client("1", "2", "3");
       client.should.be.instanceof(Client);
-      Client().should.be.instanceof(Client);
+      Client("1", "2", "3").should.be.instanceof(Client);
+    });
+    it("should fail if auth data are missing", function(){
+      var options = Client.globalOptions;
+      try{
+        Client.globalOptions = {};
+        new Client();
+        throw new Error("An error is estimated");
+      }
+      catch(err){
+        err.should.be.instanceof(errors.MissingCredentialsError);
+      }
+      finally{
+        Client.globalOptions = options;
+      }
     });
   });
   describe("#makeRequest", function(){
