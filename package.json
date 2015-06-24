@@ -1,10 +1,10 @@
 {
   "name": "node-bandwidth",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "NodeJs Client library for Catapult API",
   "main": "index.js",
   "scripts": {
-    "test": "NODE_ENV=test ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha"
+    "test": "NODE_ENV=test gulp"
   },
   "repository": {
     "type": "git",
@@ -26,7 +26,13 @@
   },
   "devDependencies": {
     "async": "^0.9.0",
-    "istanbul": "^0.3.2",
+    "gulp": "^3.9.0",
+    "gulp-clean": "^0.3.1",
+    "gulp-istanbul": "^0.10.0",
+    "gulp-jscs": "^1.6.0",
+    "gulp-jshint": "^1.11.0",
+    "gulp-mocha": "^2.1.1",
+    "jshint-stylish": "^2.0.0",
     "mocha": "^2.0.1",
     "nock": "^0.50.0",
     "should": "4.3.0"
