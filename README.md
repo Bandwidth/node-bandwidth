@@ -1,6 +1,6 @@
 # node-bandwidth
 
-[![Build](https://travis-ci.org/bandwidthcom/node-bandwidth.png)](https://travis-ci.org/bandwidthcom/node-bandwidth)
+[![Build](https://travis-ci.org/bandwidthcom/node-bandwidth.png?branch=master)](https://travis-ci.org/bandwidthcom/node-bandwidth)
 
 Node Client library for Catapult API
 
@@ -21,7 +21,7 @@ With node-bandwidth  you have access to the entire set of API methods including:
 * **PhoneNumber** - get access to user's phone numbers,
 * **Recording** - mamange user's recordings.
 
-Also you can work with Bandwidth XML using special types (in object `xml`). 
+Also you can work with Bandwidth XML using special types (in object `xml`).
 ## Install
 
 Run
@@ -98,7 +98,7 @@ Send some SMSes
   catapult.Message.create([{from: "+19195551212", to: "+191955512142", text: "Test"}, {from: "+19195551212", to: "+191955512143", text: "Test2"}], function(err, statuses){...});
 ```
 
-Upload file 
+Upload file
 
 ```js
   catapult.Media.upload("avatar.png", "/local/path/to/file.png", "image/png", function(err){...});
@@ -191,5 +191,3 @@ Generate Bandwidth XML
 
 See directory `samples` for more examples.
 See [node-bandwidth-example](https://github.com/bandwidthcom/node-bandwidth-example) for more complex examples of using this module.
-
-
