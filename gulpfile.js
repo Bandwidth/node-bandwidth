@@ -21,9 +21,9 @@ gulp.task("jscs", function () {
 
 gulp.task("test", function (callback) {
 	return gulp.src("coverage", { read : false })
-        .pipe(clean())
+	.pipe(clean())
 		.on("end", function () {
-			gulp.src([ "test/*.js" ])
+			gulp.src([ "lib/*.js" ])
 				.pipe(istanbul())
 				.pipe(istanbul.hookRequire())
 				.on("finish", function () {
