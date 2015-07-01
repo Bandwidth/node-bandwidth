@@ -23,10 +23,10 @@ describe("client tests", function () {
 				new Client();
 				throw new Error("An error is estimated");
 			}
-			catch (err){
+			catch (err) {
 				err.should.be.instanceof(errors.MissingCredentialsError);
 			}
-			finally{
+			finally {
 				Client.globalOptions = options;
 			}
 		});
@@ -37,7 +37,7 @@ describe("client tests", function () {
 			var span = helper.nock().get("/v1/test")
 			.reply(200, { test : "test" });
 			client.makeRequest("get", "/test", function (err, r) {
-				if (err){
+				if (err) {
 					return done(err);
 				}
 				r.test.should.equal("test");
@@ -54,7 +54,7 @@ describe("client tests", function () {
 			helper.nock().get("/v1/test?data=true")
 			.reply(200, { test : "test" });
 			c.makeRequest("get", "/test", { data : true }, function (err, r) {
-				if (err){
+				if (err) {
 					return done(err);
 				}
 				r.test.should.equal("test");
@@ -69,7 +69,7 @@ describe("client tests", function () {
 		it("should make request and handle error status", function (done) {
 			helper.nock().get("/v1/test").reply(400, { message : "Error" });
 			client.makeRequest("get", "/test", function (err, r) {
-				if (err){
+				if (err) {
 					err.message.should.equal("Error");
 					return done();
 				}
@@ -80,7 +80,7 @@ describe("client tests", function () {
 		it("should make request and handle error status (without response message)", function (done) {
 			helper.nock().get("/v1/test").reply(400);
 			client.makeRequest("get", "/test", function (err, r) {
-				if (err){
+				if (err) {
 					return done();
 				}
 				done(new Error("Error is expected"));
@@ -99,7 +99,7 @@ describe("client tests", function () {
 				test2 : [ "2014-11-19T13:44:38.123Z", { test : "2014-11-19T13:44:38.123Z" } ]
 			});
 			client.makeRequest("post", "/test", data, function (err, r) {
-				if (err){
+				if (err) {
 					return done(err);
 				}
 				r.test.should.be.instanceof(Date);
@@ -114,7 +114,7 @@ describe("client tests", function () {
 			helper.nock().put("/v1/test", data)
 			.reply(200, { test : "test" });
 			client.makeRequest("put", "/test", data, function (err, r) {
-				if (err){
+				if (err) {
 					return done(err);
 				}
 				r.test.should.equal("test");
@@ -125,7 +125,7 @@ describe("client tests", function () {
 			helper.nock().delete("/v1/test")
 			.reply(200, { test : "test" });
 			client.makeRequest("del", "/test", function (err, r) {
-				if (err){
+				if (err) {
 					return done(err);
 				}
 				r.test.should.equal("test");
@@ -143,12 +143,12 @@ describe("client tests", function () {
 	describe("#getIdFromLocationHeader", function () {
 		it("should return formatted url", function (done) {
 			Client.getIdFromLocationHeader("/path1/path2/10", function (err, id) {
-				if (err){
+				if (err) {
 					return done(err);
 				}
 				id.should.equal("10");
 				Client.getIdFromLocationHeader("/path1/100/path2/11", function (err, id) {
-					if (err){
+					if (err) {
 						return done(err);
 					}
 					id.should.equal("11");
@@ -158,7 +158,7 @@ describe("client tests", function () {
 		});
 		it("should fail if id is missing", function (done) {
 			Client.getIdFromLocationHeader("nothing", function (err, id) {
-				if (err){
+				if (err) {
 					return done();
 				}
 				done(new Error("Error is estimated"));
