@@ -23,6 +23,7 @@
   "disallowSpacesInsideParentheses"   : true,
   "disallowDanglingUnderscores"       : true,
   "requireSpaceAfterObjectKeys"       : true,
+  "requireSpaceBeforeBlockStatements" : true,
   "requireCommaBeforeLineBreak"       : true,
   "requireAlignedObjectValues"        : "skipWithLineBreak",
 

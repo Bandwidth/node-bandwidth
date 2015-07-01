@@ -19,7 +19,7 @@ gulp.task("jscs", function () {
 		.pipe(jscs());
 });
 
-gulp.task("test", function (callback) {
+gulp.task("test", function () {
 	return gulp.src("coverage", { read : false })
 	.pipe(clean())
 		.on("end", function () {
@@ -35,8 +35,7 @@ gulp.task("test", function (callback) {
 							}
 						}))
 						.pipe(istanbul.writeReports())
-						.pipe(istanbul.enforceThresholds({ thresholds : { global : 100 } }))
-						.on("end", callback);
+						.pipe(istanbul.enforceThresholds({ thresholds : { global : 50 } }));
 				});
 		});
 });
