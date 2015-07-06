@@ -50,10 +50,6 @@ describe("Recording", function () {
 					return done(err);
 				}
 
-				list.forEach(function (i) {
-					delete i.client;
-				});
-
 				list.should.eql([]);
 				done();
 			});

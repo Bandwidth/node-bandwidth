@@ -99,10 +99,6 @@ describe("Call", function () {
 					return done(err);
 				}
 
-				list.forEach(function (i) {
-					delete i.client;
-				});
-
 				list.should.eql([]);
 				done();
 			});
@@ -263,7 +259,7 @@ describe("Call", function () {
 			Call.update(client, "1", data, done);
 		});
 
-		it("should update a call statically (with default client)", function (done) {
+		it("should update a call using its ID without performing a GET", function (done) {
 			var data = { state : "rejected" };
 			helper.nock().post("/v1/users/FakeUserId/calls/1", data).reply(200);
 			Call.update("1", data, done);

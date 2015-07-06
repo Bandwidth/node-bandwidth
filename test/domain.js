@@ -48,10 +48,6 @@ describe("Domain", function () {
 					return done(err);
 				}
 
-				list.forEach(function (i) {
-					delete i.client;
-				});
-
 				list.should.eql([]);
 				done();
 			});
@@ -193,10 +189,6 @@ describe("Domain", function () {
 				if (err) {
 					return done(err);
 				}
-
-				list.forEach(function (i) {
-					delete i.client; delete i.domainId;
-				});
 
 				list.should.eql([]);
 				done();

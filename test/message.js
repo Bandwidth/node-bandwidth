@@ -53,10 +53,6 @@ describe("Message", function () {
 					return done(err);
 				}
 
-				list.forEach(function (i) {
-					delete i.client;
-				});
-
 				list.should.eql([]);
 				new Message();
 				done();

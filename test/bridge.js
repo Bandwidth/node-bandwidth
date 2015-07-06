@@ -62,10 +62,6 @@ describe("Bridge", function () {
 					return done(err);
 				}
 
-				list.forEach(function (i) {
-					delete i.client;
-				});
-
 				list.should.eql([]);
 				done();
 			});
@@ -214,7 +210,7 @@ describe("Bridge", function () {
 	});
 
 	describe("#getCalls", function () {
-		it("should return bridges of a bridge", function (done) {
+		it("should return calls of a bridge", function (done) {
 			var items = [ { id : 1 }, { id : 2 } ];
 			helper.nock().get("/v1/users/FakeUserId/bridges/1/calls").reply(200, items);
 			var bridge = new Bridge();
@@ -234,7 +230,7 @@ describe("Bridge", function () {
 			});
 		});
 
-		it("should return bridges of a bridge (items is empty)", function (done) {
+		it("should return calls of a bridge (items is empty)", function (done) {
 			helper.nock().get("/v1/users/FakeUserId/bridges/1/calls").reply(200);
 			var bridge = new Bridge();
 			bridge.id = 1;
@@ -243,10 +239,6 @@ describe("Bridge", function () {
 				if (err) {
 					return done(err);
 				}
-
-				list.forEach(function (i) {
-					delete i.client;
-				});
 
 				list.should.eql([]);
 				done();
