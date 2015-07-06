@@ -16,12 +16,17 @@ describe("client tests", function () {
 			client.should.be.instanceof(Client);
 			Client("1", "2", "3").should.be.instanceof(Client);
 		});
+		it("should create client instance when userId is null", function () {
+			var client = new Client(null, "2", "3", { "apiVersion" : "1" });
+			client.should.be.instanceof(Client);
+			Client(null, "2", "3").should.be.instanceof(Client);
+		});
 		it("should fail if auth data are missing", function () {
 			var options = Client.globalOptions;
 			try {
 				Client.globalOptions = {};
 				new Client();
-				throw new Error("An error is estimated");
+				throw new Error("An error is expected");
 			}
 			catch (err) {
 				err.should.be.instanceof(errors.MissingCredentialsError);
@@ -31,6 +36,7 @@ describe("client tests", function () {
 			}
 		});
 	});
+
 	describe("#makeRequest", function () {
 		var client = new Client("accountId", "user", "password");
 		it("should make GET request", function (done) {
@@ -161,7 +167,7 @@ describe("client tests", function () {
 				if (err) {
 					return done();
 				}
-				done(new Error("Error is estimated"));
+				done(new Error("Error is expected"));
 			});
 		});
 	});

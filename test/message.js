@@ -46,6 +46,23 @@ describe("Message", function () {
 			});
 		});
 
+		it("should return empty list of messages", function (done) {
+			helper.nock().get("/v1/users/FakeUserId/messages?page=1").reply(200);
+			Message.list(helper.createClient(), { page : 1 }, function (err, list) {
+				if (err) {
+					return done(err);
+				}
+
+				list.forEach(function (i) {
+					delete i.client;
+				});
+
+				list.should.eql([]);
+				new Message();
+				done();
+			});
+		});
+
 		it("should return list of messages (with default client)", function (done) {
 			helper.nock().get("/v1/users/FakeUserId/messages?page=1").reply(200, items);
 			Message.list({ page : 1 }, function (err, list) {
@@ -101,7 +118,7 @@ describe("Message", function () {
 					return done();
 				}
 
-				done(new Error("An error is estimated"));
+				done(new Error("An error is expected"));
 			});
 		});
 	});
@@ -147,7 +164,36 @@ describe("Message", function () {
 					return done();
 				}
 
-				done(new Error("An error is estimated"));
+				done(new Error("An error is expected"));
+			});
+		});
+	});
+
+	describe("#create", function () {
+		var item = {
+			id   : "1",
+			from : "from",
+			to   : "to",
+			text : "text"
+		};
+
+		var data = {
+			from : "from",
+			to   : "to",
+			text : "text"
+		};
+
+		it("should create empty list of messages", function (done) {
+			var data = [ { from : "from1", to : "to1", text : "text1" }, { from : "from2", to : "to2", text : "text2" } ];
+			helper.nock().post("/v1/users/FakeUserId/messages", data)
+				.reply(200, null);
+			Message.create(helper.createClient(), data,  function (err, statuses) {
+				if (err) {
+					return done(err);
+				}
+
+				statuses.should.eql([]);
+				done();
 			});
 		});
 	});
@@ -178,6 +224,21 @@ describe("Message", function () {
 				delete i.client;
 				i.should.eql(item);
 				done();
+			});
+		});
+
+		it("should fail to create a message when location is null", function (done) {
+			helper.nock().post("/v1/users/FakeUserId/messages", data).reply(201, "",
+				{ "Location" : null });
+			helper.nock().get("/v1/users/FakeUserId/messages/1").reply(200, item);
+			Message.create(helper.createClient(), data,  function (err, i) {
+				if (err) {
+					err.message.should.equal("Missing id in response");
+					return done();
+				}
+
+				delete i.client;
+				done(new Error("An error is expected"));
 			});
 		});
 
@@ -238,7 +299,7 @@ describe("Message", function () {
 					return done();
 				}
 
-				done(new Error("An error is estimated"));
+				done(new Error("An error is expected"));
 			});
 		});
 	});

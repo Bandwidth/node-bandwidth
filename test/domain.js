@@ -41,6 +41,22 @@ describe("Domain", function () {
 			});
 		});
 
+		it("should return empty list of domains", function (done) {
+			helper.nock().get("/v1/users/FakeUserId/domains").reply(200);
+			Domain.list(helper.createClient(), function (err, list) {
+				if (err) {
+					return done(err);
+				}
+
+				list.forEach(function (i) {
+					delete i.client;
+				});
+
+				list.should.eql([]);
+				done();
+			});
+		});
+
 		it("should return a domain (with default client)", function (done) {
 			helper.nock().get("/v1/users/FakeUserId/domains").reply(200, items);
 			Domain.list(function (err, list) {
@@ -64,7 +80,7 @@ describe("Domain", function () {
 					return done();
 				}
 
-				done(new Error("An error is estimated"));
+				done(new Error("An error is expected"));
 			});
 		});
 	});
@@ -96,6 +112,20 @@ describe("Domain", function () {
 			});
 		});
 
+		it("should fail to create a domain when location is invalid", function (done) {
+			helper.nock().post("/v1/users/FakeUserId/domains", data).reply(201, "",
+				{ "Location" : "fakeLocation" });
+			helper.nock().get("/v1/users/FakeUserId/domains/1").reply(200, item);
+			Domain.create(helper.createClient(), data,  function (err, i) {
+				if (err) {
+					err.message.should.equal("Missing id in response");
+					return done();
+				}
+
+				done(new Error("An error is expected"));
+			});
+		});
+
 		it("should create a domain (with default client)", function (done) {
 			helper.nock().post("/v1/users/FakeUserId/domains", data).reply(201, "",
 				{ "Location" : "/v1/users/FakeUserId/domains/1" });
@@ -118,7 +148,7 @@ describe("Domain", function () {
 					return done();
 				}
 
-				done(new Error("An error is estimated"));
+				done(new Error("An error is expected"));
 			});
 		});
 	});
@@ -154,6 +184,25 @@ describe("Domain", function () {
 			});
 		});
 
+		it("should return empty list of endPoints", function (done) {
+			helper.nock().get("/v1/users/FakeUserId/domains/1/endpoints").reply(200);
+			var domain = new Domain();
+			domain.id = 1;
+			domain.client = helper.createClient();
+			domain.getEndPoints(function (err, list) {
+				if (err) {
+					return done(err);
+				}
+
+				list.forEach(function (i) {
+					delete i.client; delete i.domainId;
+				});
+
+				list.should.eql([]);
+				done();
+			});
+		});
+
 		it("should fila on request error", function (done) {
 			helper.nock().get("/v1/users/FakeUserId/domains/1/endpoints").reply(400);
 			var domain = new Domain();
@@ -164,7 +213,7 @@ describe("Domain", function () {
 					return done();
 				}
 
-				done(new Error("An error is estimated"));
+				done(new Error("An error is expected"));
 			});
 		});
 	});
@@ -200,7 +249,7 @@ describe("Domain", function () {
 					return done();
 				}
 
-				done(new Error("An error is estimated"));
+				done(new Error("An error is expected"));
 			});
 		});
 	});
@@ -235,6 +284,25 @@ describe("Domain", function () {
 			});
 		});
 
+		it("should fail to create an endpoint if location is invalid", function (done) {
+			helper.nock().post("/v1/users/FakeUserId/domains/1/endpoints", data)
+				.reply(201, "", {
+					"Location" : "fakeLocation"
+				});
+			helper.nock().get("/v1/users/FakeUserId/domains/1/endpoints/10").reply(200, item);
+			var domain = new Domain();
+			domain.id = 1;
+			domain.client = helper.createClient();
+			domain.createEndPoint(data,  function (err, i) {
+				if (err) {
+					err.message.should.equal("Missing id in response");
+					return done();
+				}
+
+				done(new Error("An error is expected"));
+			});
+		});
+
 		it("should fail on remote request error", function (done) {
 			helper.nock().post("/v1/users/FakeUserId/domains/1/endpoints").reply(500);
 			var domain = new Domain();
@@ -245,7 +313,7 @@ describe("Domain", function () {
 					return done();
 				}
 
-				done(new Error("An error is estimated"));
+				done(new Error("An error is expected"));
 			});
 		});
 	});

@@ -91,6 +91,22 @@ describe("Application", function () {
 			});
 		});
 
+		it("should return empty list of applications (with default client, without query)", function (done) {
+			helper.nock().get("/v1/users/FakeUserId/applications").reply(200);
+			Application.list(function (err, list) {
+				if (err) {
+					return done(err);
+				}
+
+				list.forEach(function (i) {
+					delete i.client;
+				});
+
+				list.should.eql([]);
+				done();
+			});
+		});
+
 		it("should fail on remote request failing", function (done) {
 			helper.nock().get("/v1/users/FakeUserId/applications").reply(500);
 			Application.list(helper.createClient(), {}, function (err) {
@@ -98,7 +114,7 @@ describe("Application", function () {
 					return done();
 				}
 
-				done(new Error("An error is estimated"));
+				done(new Error("An error is expected"));
 			});
 		});
 	});
@@ -142,7 +158,7 @@ describe("Application", function () {
 					return done();
 				}
 
-				done(new Error("An error is estimated"));
+				done(new Error("An error is expected"));
 			});
 		});
 	});
@@ -172,6 +188,20 @@ describe("Application", function () {
 			});
 		});
 
+		it("should fail to create an application when location is invalid (with default client)", function (done) {
+			helper.nock().post("/v1/users/FakeUserId/applications", data).reply(201, "",
+				{ "Location" : "fakelocation" });
+			helper.nock().get("/v1/users/FakeUserId/applications/1").reply(200, item);
+			Application.create(data,  function (err) {
+				if (err) {
+					err.message.should.equal("Missing id in response");
+					return done();
+				}
+
+				done(new Error("An error is expected"));
+			});
+		});
+
 		it("should create an application (with default client)", function (done) {
 			helper.nock().post("/v1/users/FakeUserId/applications", data).reply(201, "",
 				{ "Location" : "/v1/users/FakeUserId/applications/1" });
@@ -194,7 +224,7 @@ describe("Application", function () {
 					return done();
 				}
 
-				done(new Error("An error is estimated"));
+				done(new Error("An error is expected"));
 			});
 		});
 	});

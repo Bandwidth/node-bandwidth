@@ -29,6 +29,11 @@ describe("Bandwidth XML", function () {
 			toXml(gather).should.equal("<?xml version=\"1.0\"?>\n<Response>\n  " +
 				"<Gather requestUrl=\"http://localhost\" maxDigits=\"3\"/>\n</Response>");
 		});
+
+		it("should return an empty object", function () {
+			var gather = new xml.Gather(null);
+			gather.should.eql({});
+		});
 	});
 
 	describe("Hangup", function () {
