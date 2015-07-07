@@ -23,6 +23,13 @@ describe("client tests", function () {
 			Client.globalOptions = { "apiVersion" : "1", "apiEndPoint" : "2" };
 			var client = new Client("1", "2", "3");
 			client.should.be.instanceof(Client);
+			Client("1", "2", "3").should.be.instanceof(Client);
+			Client("1", "2", "3", { "apiVersion" : "1", "apiEndPoint" : "2" }).should.be.instanceof(Client);
+		});
+		it("should create client instance (userId is null and options is not an Object)", function () {
+			Client.globalOptions = { "apiVersion" : "1", "apiEndPoint" : "2" };
+			var client = new Client(null, "2", "3", "1");
+			client.should.be.instanceof(Client);
 		});
 		it("should throw missing credentials error when userId is null", function () {
 			try {
