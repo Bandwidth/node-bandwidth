@@ -11,18 +11,30 @@ describe("client tests", function () {
 		nock.enableNetConnect();
 	});
 	describe("#constructor", function () {
+		var options;
+		beforeEach(function () {
+			options = Client.globalOptions;
+		});
+		afterEach(function () {
+			Client.globalOptions = options;
+		});
+
 		it("should create client instance", function () {
+			Client.globalOptions = { "apiVersion" : "1", "apiEndPoint" : "2" };
 			var client = new Client("1", "2", "3");
 			client.should.be.instanceof(Client);
-			Client("1", "2", "3").should.be.instanceof(Client);
 		});
-		it("should create client instance when userId is null", function () {
-			var client = new Client(null, "2", "3", { "apiVersion" : "1" });
-			client.should.be.instanceof(Client);
-			Client(null, "2", "3").should.be.instanceof(Client);
+		it("should throw missing credentials error when userId is null", function () {
+			try {
+				Client.globalOptions = {};
+				var client = new Client(null, "2", "3", { "apiVersion" : "1" });
+				throw new Error("An error is expected");
+			}
+			catch (err) {
+				err.should.be.instanceof(errors.MissingCredentialsError);
+			}
 		});
 		it("should fail if auth data are missing", function () {
-			var options = Client.globalOptions;
 			try {
 				Client.globalOptions = {};
 				new Client();
@@ -30,9 +42,6 @@ describe("client tests", function () {
 			}
 			catch (err) {
 				err.should.be.instanceof(errors.MissingCredentialsError);
-			}
-			finally {
-				Client.globalOptions = options;
 			}
 		});
 	});
@@ -141,7 +150,7 @@ describe("client tests", function () {
 	});
 	describe("#concatUserPath", function () {
 		it("should return formatted url", function () {
-			var client = new Client({ userId : "userId" });
+			var client = new Client({ userId : "userId", apiToken : "apiToken", apiSecret : "apiSecret" });
 			client.concatUserPath("test").should.equal("/users/userId/test");
 			client.concatUserPath("/test1").should.equal("/users/userId/test1");
 		});
