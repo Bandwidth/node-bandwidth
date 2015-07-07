@@ -100,7 +100,7 @@ describe("Conference", function () {
 			});
 		});
 
-		it("should fail to create a conference (with default client)", function (done) {
+		it("should fail to create a conference when location is invalid", function (done) {
 			helper.nock().post("/v1/users/FakeUserId/conferences", data).reply(201, "",
 				{ "Location" : "fakelocation" });
 			helper.nock().get("/v1/users/FakeUserId/conferences/1").reply(200, item);
@@ -191,7 +191,7 @@ describe("Conference", function () {
 			});
 		});
 
-		it("should return list of members", function (done) {
+		it("should return an empty list of members", function (done) {
 			helper.nock().get("/v1/users/FakeUserId/conferences/1/members").reply(200);
 			var conference = new Conference();
 			conference.id = 1;
