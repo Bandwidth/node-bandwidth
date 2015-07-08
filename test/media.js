@@ -126,6 +126,20 @@ describe("Media", function () {
 			helper.nock().get("/v1/users/FakeUserId/media/fileName").reply(200, "12345", { "Content-Type" : "text/plain" });
 		});
 
+		after(function (done) {
+			nock.cleanAll();
+			done();
+		});
+		it("should fail to download the file", function (done) {
+			var stream = Media.download(helper.createClient(), "fileName", {});
+			done();
+		});
+	});
+	describe("#download", function () {
+		beforeEach(function () {
+			helper.nock().get("/v1/users/FakeUserId/media/fileName").reply(200, "12345", { "Content-Type" : "text/plain" });
+		});
+
 		afterEach(function (done) {
 			nock.cleanAll();
 			fs.unlink(tmpFile, done);
@@ -263,7 +277,7 @@ describe("Media", function () {
 					return done();
 				}
 
-				done(new Error("An error is estimated"));
+				done(new Error("An error is expected"));
 			});
 		});
 	});

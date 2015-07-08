@@ -43,6 +43,18 @@ describe("PhoneNumber", function () {
 			});
 		});
 
+		it("should return empty list of phoneNumbers", function (done) {
+			helper.nock().get("/v1/users/FakeUserId/phoneNumbers?page=1").reply(200);
+			PhoneNumber.list(helper.createClient(), { page : 1 }, function (err, list) {
+				if (err) {
+					return done(err);
+				}
+
+				list.should.eql([]);
+				done();
+			});
+		});
+
 		it("should return list of phoneNumbers (with default client)", function (done) {
 			helper.nock().get("/v1/users/FakeUserId/phoneNumbers?page=1").reply(200, items);
 			PhoneNumber.list({ page : 1 }, function (err, list) {
@@ -98,7 +110,7 @@ describe("PhoneNumber", function () {
 					return done();
 				}
 
-				done(new Error("An error is estimated"));
+				done(new Error("An error is expected"));
 			});
 		});
 	});
@@ -142,7 +154,7 @@ describe("PhoneNumber", function () {
 					return done();
 				}
 
-				done(new Error("An error is estimated"));
+				done(new Error("An error is expected"));
 			});
 		});
 	});
@@ -173,6 +185,20 @@ describe("PhoneNumber", function () {
 			});
 		});
 
+		it("should fail to create a phoneNumber when location is invalid", function (done) {
+			helper.nock().post("/v1/users/FakeUserId/phoneNumbers", data).reply(201, "",
+				{ "Location" : "fakeLocation" });
+			helper.nock().get("/v1/users/FakeUserId/phoneNumbers/1").reply(200, item);
+			PhoneNumber.create(helper.createClient(), data,  function (err, i) {
+				if (err) {
+					err.message.should.equal("Missing id in response");
+					return done();
+				}
+
+				done(new Error("An error is expected"));
+			});
+		});
+
 		it("should create a phoneNumber (with default client)", function (done) {
 			helper.nock().post("/v1/users/FakeUserId/phoneNumbers", data).reply(201, "",
 				{ "Location" : "/v1/users/FakeUserId/phoneNumbers/1" });
@@ -195,7 +221,7 @@ describe("PhoneNumber", function () {
 					return done();
 				}
 
-				done(new Error("An error is estimated"));
+				done(new Error("An error is expected"));
 			});
 		});
 	});

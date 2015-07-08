@@ -92,6 +92,18 @@ describe("Call", function () {
 			});
 		});
 
+		it("should return empty list of calls (with default client, without query)", function (done) {
+			helper.nock().get("/v1/users/FakeUserId/calls").reply(200);
+			Call.list(function (err, list) {
+				if (err) {
+					return done(err);
+				}
+
+				list.should.eql([]);
+				done();
+			});
+		});
+
 		it("should fail on remote request failing", function (done) {
 			helper.nock().get("/v1/users/FakeUserId/calls").reply(500);
 			Call.list(helper.createClient(), {}, function (err) {
@@ -99,7 +111,7 @@ describe("Call", function () {
 					return done();
 				}
 
-				done(new Error("An error is estimated"));
+				done(new Error("An error is expected"));
 			});
 		});
 	});
@@ -144,7 +156,7 @@ describe("Call", function () {
 					return done();
 				}
 
-				done(new Error("An error is estimated"));
+				done(new Error("An error is expected"));
 			});
 		});
 
@@ -162,6 +174,29 @@ describe("Call", function () {
 			from : "111",
 			to   : "222"
 		};
+
+		describe("should fail with invalid locaiton", function () {
+			before(function () {
+				helper.nock().post("/v1/users/FakeUserId/calls", data).reply(201, "",
+					{ "Location" : "fakeLocation" });
+				helper.nock().get("/v1/users/FakeUserId/calls/1").reply(200, item);
+			});
+
+			it("should fail", function (done) {
+				Call.create(data,  function (err, i) {
+					if (err) {
+						err.message.should.equal("Missing id in response");
+						return done();
+					}
+					delete i.client;
+					done(new Error("An error is expected"));
+				});
+			});
+
+			after(function () {
+				nock.cleanAll();
+			});
+		});
 
 		it("should create a call", function (done) {
 			helper.nock().post("/v1/users/FakeUserId/calls", data).reply(201, "",
@@ -200,7 +235,7 @@ describe("Call", function () {
 					return done();
 				}
 
-				done(new Error("An error is estimated"));
+				done(new Error("An error is expected"));
 			});
 		});
 	});
@@ -222,6 +257,12 @@ describe("Call", function () {
 			helper.nock().post("/v1/users/FakeUserId/calls/1", data).reply(200);
 			var client = helper.createClient();
 			Call.update(client, "1", data, done);
+		});
+
+		it("should update a call using its ID without performing a GET", function (done) {
+			var data = { state : "rejected" };
+			helper.nock().post("/v1/users/FakeUserId/calls/1", data).reply(200);
+			Call.update("1", data, done);
 		});
 	});
 
@@ -350,6 +391,25 @@ describe("Call", function () {
 			});
 		});
 
+		it("should fail to create a gather if location is invalid", function (done) {
+			helper.nock().post("/v1/users/FakeUserId/calls/1/gather", data)
+				.reply(201, "", {
+					"Location" : "fakeLocation"
+				});
+			helper.nock().get("/v1/users/FakeUserId/calls/1/gather/101").reply(200, item);
+			var call = new Call();
+			call.id = 1;
+			call.client = helper.createClient();
+			call.createGather(data,  function (err, i) {
+				if (err) {
+					err.message.should.equal("Missing id in response");
+					return done();
+				}
+
+				done(new Error("An error is expected"));
+			});
+		});
+
 		it("should create a gather by sentence", function (done) {
 			var d = {
 				tag       : "1",
@@ -388,7 +448,7 @@ describe("Call", function () {
 					return done();
 				}
 
-				done(new Error("An error is estimated"));
+				done(new Error("An error is expected"));
 			});
 		});
 	});
@@ -517,7 +577,7 @@ describe("Call", function () {
 					return done();
 				}
 
-				done(new Error("An error is estimated"));
+				done(new Error("An error is expected"));
 			});
 		});
 
@@ -533,7 +593,7 @@ describe("Call", function () {
 					return done();
 				}
 
-				done(new Error("An error is estimated"));
+				done(new Error("An error is expected"));
 			});
 		});
 	});
@@ -560,7 +620,7 @@ describe("Call", function () {
 					return done();
 				}
 
-				done(new Error("An error is estimated"));
+				done(new Error("An error is expected"));
 			});
 		});
 
@@ -576,7 +636,7 @@ describe("Call", function () {
 					return done();
 				}
 
-				done(new Error("An error is estimated"));
+				done(new Error("An error is expected"));
 			});
 		});
 	});
@@ -603,7 +663,7 @@ describe("Call", function () {
 					return done();
 				}
 
-				done(new Error("An error is estimated"));
+				done(new Error("An error is expected"));
 			});
 		});
 
@@ -619,7 +679,7 @@ describe("Call", function () {
 					return done();
 				}
 
-				done(new Error("An error is estimated"));
+				done(new Error("An error is expected"));
 			});
 		});
 	});
@@ -646,7 +706,7 @@ describe("Call", function () {
 					return done();
 				}
 
-				done(new Error("An error is estimated"));
+				done(new Error("An error is expected"));
 			});
 		});
 
@@ -662,7 +722,7 @@ describe("Call", function () {
 					return done();
 				}
 
-				done(new Error("An error is estimated"));
+				done(new Error("An error is expected"));
 			});
 		});
 	});
@@ -689,7 +749,7 @@ describe("Call", function () {
 					return done();
 				}
 
-				done(new Error("An error is estimated"));
+				done(new Error("An error is expected"));
 			});
 		});
 
@@ -705,7 +765,7 @@ describe("Call", function () {
 					return done();
 				}
 
-				done(new Error("An error is estimated"));
+				done(new Error("An error is expected"));
 			});
 		});
 	});

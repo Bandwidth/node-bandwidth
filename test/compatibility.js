@@ -408,7 +408,7 @@ describe("Client compatibility functions", function () {
 					return done();
 				}
 
-				done("An error is estimated");
+				done("An error is expected");
 			});
 		});
 	});
@@ -420,7 +420,7 @@ describe("Client compatibility functions", function () {
 					return done();
 				}
 
-				done("An error is estimated");
+				done("An error is expected");
 			});
 		});
 	});
@@ -432,7 +432,7 @@ describe("Client compatibility functions", function () {
 					return done();
 				}
 
-				done("An error is estimated");
+				done("An error is expected");
 			});
 		});
 	});
@@ -444,7 +444,7 @@ describe("Client compatibility functions", function () {
 					return done();
 				}
 
-				done("An error is estimated");
+				done("An error is expected");
 			});
 		});
 	});
@@ -456,7 +456,7 @@ describe("Client compatibility functions", function () {
 					return done();
 				}
 
-				done("An error is estimated");
+				done("An error is expected");
 			});
 		});
 	});

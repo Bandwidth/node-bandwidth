@@ -54,7 +54,7 @@ describe("Conference", function () {
 					return done();
 				}
 
-				done(new Error("An error is estimated"));
+				done(new Error("An error is expected"));
 			});
 		});
 	});
@@ -100,6 +100,20 @@ describe("Conference", function () {
 			});
 		});
 
+		it("should fail to create a conference when location is invalid", function (done) {
+			helper.nock().post("/v1/users/FakeUserId/conferences", data).reply(201, "",
+				{ "Location" : "fakelocation" });
+			helper.nock().get("/v1/users/FakeUserId/conferences/1").reply(200, item);
+			Conference.create(data,  function (err) {
+				if (err) {
+					err.message.should.equal("Missing id in response");
+					return done();
+				}
+
+				done(new Error("An error is expected"));
+			});
+		});
+
 		it("should fail on remote request failing", function (done) {
 			helper.nock().post("/v1/users/FakeUserId/conferences").reply(500);
 			Conference.create(helper.createClient(), data, function (err) {
@@ -107,7 +121,7 @@ describe("Conference", function () {
 					return done();
 				}
 
-				done(new Error("An error is estimated"));
+				done(new Error("An error is expected"));
 			});
 		});
 	});
@@ -177,6 +191,25 @@ describe("Conference", function () {
 			});
 		});
 
+		it("should return an empty list of members", function (done) {
+			helper.nock().get("/v1/users/FakeUserId/conferences/1/members").reply(200);
+			var conference = new Conference();
+			conference.id = 1;
+			conference.client = helper.createClient();
+			conference.getMembers(function (err, list) {
+				if (err) {
+					return done(err);
+				}
+
+				list.forEach(function (i) {
+					delete i.client; delete i.conferenceId;
+				});
+
+				list.should.eql([]);
+				done();
+			});
+		});
+
 		it("should fila on request error", function (done) {
 			helper.nock().get("/v1/users/FakeUserId/conferences/1/members").reply(400);
 			var conference = new Conference();
@@ -187,7 +220,7 @@ describe("Conference", function () {
 					return done();
 				}
 
-				done(new Error("An error is estimated"));
+				done(new Error("An error is expected"));
 			});
 		});
 	});
@@ -221,7 +254,7 @@ describe("Conference", function () {
 					return done();
 				}
 
-				done(new Error("An error is estimated"));
+				done(new Error("An error is expected"));
 			});
 		});
 	});
@@ -254,6 +287,25 @@ describe("Conference", function () {
 			});
 		});
 
+		it("should fail if location is invalid", function (done) {
+			helper.nock().post("/v1/users/FakeUserId/conferences/1/members", data)
+				.reply(201, "", {
+					"Location" : "fakeLocation"
+				});
+			helper.nock().get("/v1/users/FakeUserId/conferences/1/members/10").reply(200, item);
+			var conference = new Conference();
+			conference.id = 1;
+			conference.client = helper.createClient();
+			conference.createMember(data, function (err, i) {
+				if (err) {
+					err.message.should.equal("Missing id in response");
+					return done();
+				}
+
+				done();
+			});
+		});
+
 		it("should fail on remote request error", function (done) {
 			helper.nock().post("/v1/users/FakeUserId/conferences/1/members").reply(500);
 			var conference = new Conference();
@@ -264,7 +316,7 @@ describe("Conference", function () {
 					return done();
 				}
 
-				done(new Error("An error is estimated"));
+				done(new Error("An error is expected"));
 			});
 		});
 	});

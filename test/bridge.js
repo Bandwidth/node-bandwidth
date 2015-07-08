@@ -55,6 +55,18 @@ describe("Bridge", function () {
 			});
 		});
 
+		it("should return empty list of bridges (with default client)", function (done) {
+			helper.nock().get("/v1/users/FakeUserId/bridges").reply(200);
+			Bridge.list(function (err, list) {
+				if (err) {
+					return done(err);
+				}
+
+				list.should.eql([]);
+				done();
+			});
+		});
+
 		it("should fail if request failed", function (done) {
 			helper.nock().get("/v1/users/FakeUserId/bridges").reply(500);
 			Bridge.list(helper.createClient(),  function (err, list) {
@@ -62,7 +74,7 @@ describe("Bridge", function () {
 					return done();
 				}
 
-				done(new Error("An error is estimated"));
+				done(new Error("An error is expected"));
 			});
 		});
 	});
@@ -105,7 +117,7 @@ describe("Bridge", function () {
 					return done();
 				}
 
-				done(new Error("An error is estimated"));
+				done(new Error("An error is expected"));
 			});
 		});
 	});
@@ -149,6 +161,20 @@ describe("Bridge", function () {
 			});
 		});
 
+		it("should fail to create a bridge when location is invalid (with default client)", function (done) {
+			helper.nock().post("/v1/users/FakeUserId/bridges", data).reply(201, "",
+				{ "Location" : "fakeLocation" });
+			helper.nock().get("/v1/users/FakeUserId/bridges/1").reply(200, item);
+			Bridge.create(data,  function (err, i) {
+				if (err) {
+					err.message.should.equal("Missing id in response");
+					return done();
+				}
+
+				done(new Error("An error is expected"));
+			});
+		});
+
 		it("should fail on remote request failing", function (done) {
 			helper.nock().post("/v1/users/FakeUserId/bridges").reply(500);
 			Bridge.create(helper.createClient(), data, function (err) {
@@ -156,7 +182,7 @@ describe("Bridge", function () {
 					return done();
 				}
 
-				done(new Error("An error is estimated"));
+				done(new Error("An error is expected"));
 			});
 		});
 	});
@@ -184,7 +210,7 @@ describe("Bridge", function () {
 	});
 
 	describe("#getCalls", function () {
-		it("should return bridges of a bridge", function (done) {
+		it("should return calls of a bridge", function (done) {
 			var items = [ { id : 1 }, { id : 2 } ];
 			helper.nock().get("/v1/users/FakeUserId/bridges/1/calls").reply(200, items);
 			var bridge = new Bridge();
@@ -204,6 +230,21 @@ describe("Bridge", function () {
 			});
 		});
 
+		it("should return calls of a bridge (items is empty)", function (done) {
+			helper.nock().get("/v1/users/FakeUserId/bridges/1/calls").reply(200);
+			var bridge = new Bridge();
+			bridge.id = 1;
+			bridge.client = helper.createClient();
+			bridge.getCalls(function (err, list) {
+				if (err) {
+					return done(err);
+				}
+
+				list.should.eql([]);
+				done();
+			});
+		});
+
 		it("should fail if request failed", function (done) {
 			helper.nock().get("/v1/users/FakeUserId/bridges/1/calls").reply(500);
 			var bridge = new Bridge();
@@ -214,7 +255,7 @@ describe("Bridge", function () {
 					return done();
 				}
 
-				done(new Error("An error is estimated"));
+				done(new Error("An error is expected"));
 			});
 		});
 	});

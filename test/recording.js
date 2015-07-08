@@ -43,6 +43,18 @@ describe("Recording", function () {
 			});
 		});
 
+		it("should return empty list of recordings", function (done) {
+			helper.nock().get("/v1/users/FakeUserId/recordings?page=1").reply(200);
+			Recording.list(helper.createClient(), { page : 1 }, function (err, list) {
+				if (err) {
+					return done(err);
+				}
+
+				list.should.eql([]);
+				done();
+			});
+		});
+
 		it("should return list of recordings (with default client)", function (done) {
 			helper.nock().get("/v1/users/FakeUserId/recordings?page=1").reply(200, items);
 			Recording.list({ page : 1 }, function (err, list) {
@@ -98,7 +110,7 @@ describe("Recording", function () {
 					return done();
 				}
 
-				done(new Error("An error is estimated"));
+				done(new Error("An error is expected"));
 			});
 		});
 	});
@@ -143,7 +155,7 @@ describe("Recording", function () {
 					return done();
 				}
 
-				done(new Error("An error is estimated"));
+				done(new Error("An error is expected"));
 			});
 		});
 	});
@@ -169,6 +181,26 @@ describe("Recording", function () {
 			});
 		});
 
+		it("should fail to create a transcription if location is invalid", function (done) {
+			var item = { id : "101" };
+			helper.nock().post("/v1/users/FakeUserId/recordings/1/transcriptions")
+				.reply(201, "", {
+					"Location" : "fakeLocation"
+				});
+			helper.nock().get("/v1/users/FakeUserId/recordings/1/transcriptions/101").reply(200, item);
+			var recording = new Recording();
+			recording.id = 1;
+			recording.client = helper.createClient();
+			recording.createTranscription(function (err, i) {
+				if (err) {
+					err.message.should.equal("Missing id in response");
+					return done();
+				}
+
+				done(new Error("An error is expected"));
+			});
+		});
+
 		it("should fail on remote request failing", function (done) {
 			helper.nock().post("/v1/users/FakeUserId/recordings/1/transcriptions").reply(500);
 			var recording = new Recording();
@@ -179,7 +211,7 @@ describe("Recording", function () {
 					return done();
 				}
 
-				done(new Error("An error is estimated"));
+				done(new Error("An error is expected"));
 			});
 		});
 	});
