@@ -23,7 +23,15 @@ describe("client tests", function () {
 			Client.globalOptions = { "apiVersion" : "1", "apiEndPoint" : "2" };
 			var client = new Client("1", "2", "3");
 			client.should.be.instanceof(Client);
+		});
+		it("should create client instance", function () {
+			Client.globalOptions = { "apiVersion" : "1", "apiEndPoint" : "2" };
+			var client = new Client("1", "2", "3");
 			Client("1", "2", "3").should.be.instanceof(Client);
+		});
+		it("should create client instance", function () {
+			Client.globalOptions = { "apiVersion" : "1", "apiEndPoint" : "2" };
+			var client = new Client("1", "2", "3");
 			Client("1", "2", "3", { "apiVersion" : "1", "apiEndPoint" : "2" }).should.be.instanceof(Client);
 		});
 		it("should create client instance (userId is null and options is not an Object)", function () {
