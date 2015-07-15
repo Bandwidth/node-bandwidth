@@ -71,7 +71,7 @@ describe("Domain", function () {
 
 		it("should fail on remote request failing", function (done) {
 			helper.nock().get("/v1/users/FakeUserId/domains").reply(500);
-			Domain.list(helper.createClient(),  function (err) {
+			Domain.list(helper.createClient(), function (err) {
 				if (err) {
 					return done();
 				}
@@ -157,6 +157,51 @@ describe("Domain", function () {
 			domain.client = helper.createClient();
 			domain.delete(done);
 		});
+	});
+
+	describe("#get", function () {
+		var item = {
+			id          : "1",
+			name        : "domain1",
+			description : "description1"
+		};
+		it("should return a domain", function (done) {
+			helper.nock().get("/v1/users/FakeUserId/domains/1").reply(200, item);
+			Domain.get(helper.createClient(), "1", function (err, i) {
+				if (err) {
+					return done(err);
+				}
+
+				delete i.client;
+				i.should.eql(item);
+				done();
+			});
+		});
+
+		it("should return a domain (with default client)", function (done) {
+			helper.nock().get("/v1/users/FakeUserId/domains/1").reply(200, item);
+			Domain.get("1", function (err, i) {
+				if (err) {
+					return done(err);
+				}
+
+				delete i.client;
+				i.should.eql(item);
+				done();
+			});
+		});
+
+		it("should fail on remote request failing", function (done) {
+			helper.nock().get("/v1/users/FakeUserId/domains/2").reply(500);
+			Domain.get(helper.createClient(), "2", function (err) {
+				if (err) {
+					return done();
+				}
+
+				done(new Error("An error is expected"));
+			});
+		});
+
 	});
 
 	describe("#getEndPoints", function () {
