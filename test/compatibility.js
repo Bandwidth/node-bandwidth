@@ -413,18 +413,6 @@ describe("Client compatibility functions", function () {
 		});
 	});
 
-	describe("#cancelPortIn", function () {
-		it("should throw an error", function (done) {
-			client.cancelPortIn("id", function (err) {
-				if (err) {
-					return done();
-				}
-
-				done("An error is expected");
-			});
-		});
-	});
-
 	describe("#uploadLOA", function () {
 		it("should throw an error", function (done) {
 			client.uploadLOA("id", "file", function (err) {
