@@ -6,6 +6,7 @@ var nock = require("nock");
 var EndPoint = lib.EndPoint;
 
 describe("EndPoint", function () {
+	var DOMAIN_PATH = "/v1/users/FakeUserId/domains/";
 
 	before(function () {
 		nock.disableNetConnect();
@@ -56,6 +57,66 @@ describe("EndPoint", function () {
 			endPoint.createAuthToken(function (err, data) {
 				err.should.not.eql(null);
 				done();
+			});
+		});
+	});
+
+	describe("#update", function () {
+		var endPoint;
+		var domainId = "rd-lrz25ny";
+		var endpointId = "re-kx2kk";
+		var ENDPOINT_PATH = DOMAIN_PATH + domainId + "/endpoints/" + endpointId;
+		var updateBody = { enabled : "false" };
+		var errorResponse = { message : "There are lots of potential errors" };
+		before(function () {
+			endPoint = new EndPoint();
+			endPoint.domainId = domainId;
+			endPoint.id = endpointId;
+			endPoint.client = helper.createClient();
+		});
+
+		describe("When endpoint is updated successfully", function () {
+			var result;
+			var error;
+
+			before(function () {
+				helper.nock()
+					.post(ENDPOINT_PATH, updateBody)
+					.reply(200, "OK");
+				endPoint.update(updateBody, function (err, res) {
+					error = err;
+					result = res;
+				});
+			});
+
+			it("should callback with an empty object", function () {
+				result.should.eql({});
+			});
+			it("should not callback with an error", function () {
+				var isNull = error === null;
+				isNull.should.be.true;
+			});
+
+		});
+		describe("When enpoint is not update successfully", function () {
+			var result;
+			var error;
+
+			before(function () {
+				helper.nock()
+					.post(ENDPOINT_PATH, updateBody)
+					.reply(400, errorResponse);
+				endPoint.update(updateBody, function (err, res) {
+					error = err;
+					result = res;
+				});
+			});
+			it("should callback with an error", function () {
+				error.message.should.eql(errorResponse.message);
+			});
+			it("should not callback with a result", function () {
+				var isUndefined = typeof result === "undefined";
+				isUndefined.should.be.true;
 			});
 		});
 	});

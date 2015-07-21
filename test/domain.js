@@ -364,4 +364,60 @@ describe("Domain", function () {
 			domain.deleteEndPoint("10", done);
 		});
 	});
+
+	describe("#updateEndPoint", function () {
+		var DOMAIN_PATH = "/v1/users/FakeUserId/domains/";
+		var domain;
+		var domainId = "rd-lrz25ny";
+		var endpointId = "re-kx2kk";
+		var ENDPOINT_PATH = DOMAIN_PATH + domainId + "/endpoints/" + endpointId;
+		var updateBody = { enabled : "false" };
+		var errorResponse = { message : "There are lots of potential errors" };
+		before(function () {
+			domain = new Domain();
+			domain.id = domainId;
+			domain.client = helper.createClient();
+		});
+		describe("When endpoint is updated successfully", function () {
+			var error;
+			var result;
+			before(function () {
+				helper.nock()
+					.post(ENDPOINT_PATH, updateBody)
+					.reply(200, "OK");
+				domain.updateEndPoint(endpointId, updateBody, function (err, res) {
+					error = err;
+					result = res;
+				});
+			});
+			it("should callback with an empty object", function () {
+				result.should.eql({});
+			});
+			it("should not callback with an error", function () {
+				var isNull = error === null;
+				isNull.should.be.true;
+			});
+		});
+		describe("When enpoint is not updated successfully", function () {
+			var error;
+			var result;
+			before(function () {
+				helper.nock()
+					.post(ENDPOINT_PATH, updateBody)
+					.reply(400, errorResponse);
+				domain.updateEndPoint(endpointId, updateBody, function (err, res) {
+					error = err;
+					result = res;
+				});
+			});
+			it("should callback with an error", function () {
+				error.message.should.eql(errorResponse.message);
+			});
+			it("should not callback with a result", function () {
+				var isUndefined = typeof result === "undefined";
+				isUndefined.should.be.true;
+			});
+		});
+
+	});
 });
