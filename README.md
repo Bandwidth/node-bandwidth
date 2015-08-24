@@ -68,7 +68,7 @@ catapult.Call.list({page: 1}, function(err, calls){
 });
 
 ```
-Read [Catapult Api documentation](https://catapult.inetwork.com/docs/api-docs/) for more details
+Read [Catapult Api documentation](http://ap.bandwidth.com/) for more details
 
 ## Examples
 *All examples assume you have already setup your auth data!*
