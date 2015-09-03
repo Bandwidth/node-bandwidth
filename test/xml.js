@@ -1,5 +1,3 @@
-"use strict";
-
 var xml = require("../").xml;
 
 function toXml(verb) {

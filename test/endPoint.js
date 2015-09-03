@@ -1,5 +1,3 @@
-"use strict";
-
 var lib = require("../");
 var helper = require("./helper");
 var nock = require("nock");
