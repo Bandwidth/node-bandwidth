@@ -130,6 +130,7 @@ describe("Media", function () {
 				if (err) {
 					return done(err);
 				}
+
 				result.contentLength.should.eql(length);
 				result.contentBody.should.eql(new Buffer(contents));
 				done();
@@ -139,10 +140,7 @@ describe("Media", function () {
 		it("should get contents for a file from server (with default client)", function (done) {
 			var contents = "somecontents";
 			var length = contents.length;
-			helper.nock().get("/v1/users/FakeUserId/media/file1").reply(200, contents, {
-				"Content-Length" : length,
-				"Content-Type"   : "image/jpeg"
-			});
+			helper.nock().get("/v1/users/FakeUserId/media/file1").reply(200, contents, { "Content-Length" : length });
 			Media.getContents("file1", function (err, result) {
 				if (err) {
 					return done(err);
@@ -158,13 +156,6 @@ describe("Media", function () {
 			helper.nock().get("/v1/users/FakeUserId/media/nonexistingfile").reply(404);
 			Media.getContents("nonexistingfile", function (err, result) {
 				err.httpStatus.should.eql(404);
-				done();
-			});
-		});
-		it("should error on request error", function (done) {
-			//helper.nock().get("/v1/users/FakeUserId/media/nonexistingfile").reply(500);
-			Media.getContents(null, function (err, result) {
-				err.should.not.equal(null);
 				done();
 			});
 		});
