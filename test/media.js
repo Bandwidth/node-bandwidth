@@ -123,38 +123,45 @@ describe("Media", function () {
 		it("should get contents for a file from server", function (done) {
 			var contents = "somecontents";
 			var length = contents.length;
-			helper.nock().get("/v1/users/FakeUserId/media/file1").reply(200, contents, { "Content-Length" : length });
+			helper.nock().get("/v1/users/FakeUserId/media/file1").reply(200, contents, {
+				"Content-Type" : "text/plain"
+			});
 			Media.getContents(helper.createClient(), "file1", function (err, result) {
 				if (err) {
 					return done(err);
 				}
 
 				result.contentLength.should.eql(length);
+				result.contentType.should.eql("text/plain");
 				result.contentBody.should.eql(new Buffer(contents));
 				done();
 			});
 		});
-
 		it("should get contents for a file from server (with default client)", function (done) {
 			var contents = "somecontents";
 			var length = contents.length;
-			helper.nock().get("/v1/users/FakeUserId/media/file1").reply(200, contents, { "Content-Length" : length });
+			helper.nock().get("/v1/users/FakeUserId/media/file1").reply(200, contents, { "Content-Type" : "text/plain" });
 			Media.getContents("file1", function (err, result) {
 				if (err) {
 					return done(err);
 				}
 
 				result.contentLength.should.eql(length);
+				result.contentType.should.eql("text/plain");
 				result.contentBody.should.eql(new Buffer(contents));
 				done();
 			});
 		});
-
-		it("should error on getting contents on non existing file", function (done) {
-			helper.nock().get("/v1/users/FakeUserId/media/nonexistingfile").reply(404);
-			Media.getContents("nonexistingfile", function (err, result) {
-				err.httpStatus.should.eql(404);
-				done();
+		it("should get return error if there is an error", function (done) {
+			var contents = "somecontents";
+			var length = contents.length;
+			Media.getContents("file1", function (err, result) {
+				if (err) {
+					return done();
+				}
+				else {
+					return done(new Error("should have returned an error"));
+				}
 			});
 		});
 	});
