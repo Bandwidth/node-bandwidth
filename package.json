@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/bandwidthcom/node-bandwidth",
   "dependencies": {
+    "request": "^2.61.0",
     "superagent": "^0.21.0",
     "xmlbuilder": "2.4.3"
   },
