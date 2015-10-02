@@ -116,4 +116,28 @@ describe("Bandwidth XML", function () {
 				"<SpeakSentence>Hello</SpeakSentence>\n  </Transfer>\n</Response>");
 		});
 	});
+
+	describe("Call", function () {
+		it("should generate valid xml", function () {
+			var verb = new xml.Call({ from : "number_from", to : "number_to" });
+			toXml(verb).should.equal("<?xml version=\"1.0\"?>\n<Response>\n  " +
+			"<Call from=\"number_from\" to=\"number_to\"/>\n</Response>");
+			verb.speakSentence = new xml.SpeakSentence({ sentence : "Hello" });
+			toXml(verb).should.equal("<?xml version=\"1.0\"?>\n<Response>\n  " +
+			"<Call from=\"number_from\" to=\"number_to\">\n    " +
+				"<SpeakSentence>Hello</SpeakSentence>\n  </Call>\n</Response>");
+			verb = new xml.Call({
+				from          : "number_from",
+				to            : "number_to",
+				speakSentence : {
+					sentence : "Hello"
+				}
+			});
+
+			toXml(verb).should.equal("<?xml version=\"1.0\"?>\n<Response>\n  " +
+			"<Call from=\"number_from\" to=\"number_to\">\n    " +
+				"<SpeakSentence>Hello</SpeakSentence>\n  </Call>\n</Response>");
+
+		});
+	});
 });
