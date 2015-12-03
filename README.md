@@ -2,7 +2,8 @@
 
 [![Build](https://travis-ci.org/bandwidthcom/node-bandwidth.png?branch=master)](https://travis-ci.org/bandwidthcom/node-bandwidth)
 
-Node Client library for Catapult API
+Node Client library for [Bandwidth's App Platform](ap.bandwidth.com/?utm_medium=social&utm_source=github&utm_campaign=dtolb&utm_content=)
+
 
 With node-bandwidth  you have access to the entire set of API methods including:
 * **Account** - get user's account data and transactions,
@@ -191,3 +192,6 @@ Generate Bandwidth XML
 
 See directory `samples` for more examples.
 See [node-bandwidth-example](https://github.com/bandwidthcom/node-bandwidth-example) for more complex examples of using this module.
+
+# Bugs/Issues
+Please open an issue in this repository and we'll handle it directly. If you have any questions please contact us at openapi@bandwidth.com.
