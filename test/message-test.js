@@ -1,6 +1,5 @@
 var nock = require("nock");
 var CatapultClient = require("../index");
-var Message = require("../lib/message");
 
 var baseUrl = "https://api.catapult.inetwork.com";
 
@@ -65,11 +64,11 @@ describe("Message API", function () {
 				apiToken  : apiToken,
 				apiSecret : apiSecret
 			});
-			//nock.disableNetConnect();
+			nock.disableNetConnect();
 
 			nock("https://api.catapult.inetwork.com")
 				.persist()
-				.post("/v1/users/" + userId + "/messages", newTestMessage)
+				.post("/v1/users/" + userId + "/messages", newTestMessage.id)
 				.reply(201,
 					{},
 					{
@@ -87,9 +86,8 @@ describe("Message API", function () {
 		});
 
 		it("should send a message, promise style", function (done) {
-			client.Message.sendMessage(newTestMessage)
+			client.Message.send(newTestMessage)
 			.then(function (message) {
-				message.should.be.an.instanceof(Message);
 				message.to.should.equal(newTestMessage.to);
 				message.from.should.equal(newTestMessage.from);
 				message.text.should.equal(newTestMessage.text);
@@ -99,11 +97,10 @@ describe("Message API", function () {
 		});
 
 		it("should send a message, callback style", function (done) {
-			client.Message.sendMessage(newTestMessage, function (err, message) {
+			client.Message.send(newTestMessage, function (err, message) {
 				if (err) {
 					throw err;
 				}
-				message.should.be.an.instanceof(Message);
 				message.to.should.equal(newTestMessage.to);
 				message.from.should.equal(newTestMessage.from);
 				message.text.should.equal(newTestMessage.text);
@@ -113,9 +110,8 @@ describe("Message API", function () {
 		});
 
 		it("should get a message, promise style", function (done) {
-			client.Message.getMessage(testMessage.id)
+			client.Message.get(testMessage.id)
 			.then(function (message) {
-				message.should.be.an.instanceof(Message);
 				message.to.should.equal(testMessage.to);
 				message.from.should.equal(testMessage.from);
 				message.text.should.equal(testMessage.text);
@@ -126,18 +122,16 @@ describe("Message API", function () {
 		});
 
 		it("should get a list of messages, promise style", function (done) {
-			client.Message.getMessages({
+			client.Message.list({
 				fromDateTime : fromDateTime,
 				toDateTime   : toDateTime
 			})
 			.then(function (messages) {
-				messages[0].should.be.an.instanceof(Message);
 				messages[0].to.should.equal(messagesList[0].to);
 				messages[0].from.should.equal(messagesList[0].from);
 				messages[0].text.should.equal(messagesList[0].text);
 				messages[0].id.should.equal(messagesList[0].id);
 
-				messages[1].should.be.an.instanceof(Message);
 				messages[1].to.should.equal(messagesList[1].to);
 				messages[1].from.should.equal(messagesList[1].from);
 				messages[1].text.should.equal(messagesList[1].text);
@@ -147,20 +141,18 @@ describe("Message API", function () {
 		});
 
 		it("should get a list of messages, callback style", function (done) {
-			client.Message.getMessages({
+			client.Message.list({
 				fromDateTime : fromDateTime,
 				toDateTime   : toDateTime
 			}, function (err, messages) {
 				if (err) {
 					throw err;
 				}
-				messages[0].should.be.an.instanceof(Message);
 				messages[0].to.should.equal(messagesList[0].to);
 				messages[0].from.should.equal(messagesList[0].from);
 				messages[0].text.should.equal(messagesList[0].text);
 				messages[0].id.should.equal(messagesList[0].id);
 
-				messages[1].should.be.an.instanceof(Message);
 				messages[1].to.should.equal(messagesList[1].to);
 				messages[1].from.should.equal(messagesList[1].from);
 				messages[1].text.should.equal(messagesList[1].text);

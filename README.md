@@ -25,12 +25,12 @@ All interaction with the API is done through a `client` Object. The client const
 To initialize the client object, provide your API credentials which can be found on your account page in [the portal](https://catapult.inetwork.com/pages/catapult.jsf).
 
 ```javascript
-var Catapult = require('node-bandwidth');
+var CatapultClient = require("node-bandwidth");
 
-var client = new Catapult({
-	userId    : 'YOUR_USER_ID', // <-- note, this is not the same as the username you used to login to the portal
-	apiToken  : 'YOUR_API_TOKEN',
-	apiSecret : 'YOUR_API_SECRET'
+var client = new CatapultClient({
+	userId    : "YOUR_USER_ID", // <-- note, this is not the same as the username you used to login to the portal
+	apiToken  : "YOUR_API_TOKEN",
+	apiSecret : "YOUR_API_SECRET"
 });
 ```
 
@@ -43,13 +43,13 @@ Your `client` object is now ready to use the API. All client functions take an o
 Send a message and print the resulting message ID with a Promise:
 
 ```javascript
-client.Message.sendMessage({
-	from : '+12345678901', // This must be a Catapult number on your account
-	to   : '+12345678902',
-	text : 'Hello world.'
+client.Message.send({
+	from : "+12345678901", // This must be a Catapult number on your account
+	to   : "+12345678902",
+	text : "Hello world."
 })
 .then(function(message) {
-	console.log('Message sent with ID ' + message.id);
+	console.log("Message sent with ID " + message.id);
 })
 .catch(function(err) {
 	console.log(err.message);
@@ -59,16 +59,16 @@ client.Message.sendMessage({
 Send a message and print the resulting message ID using a callback:
 
 ```javascript
-client.Message.sendMessage({
-	from : '+12345678901', // This must be a Catapult number on your account
-	to   : '+12345678902',
-	text : 'Hello world.'
+client.Message.send({
+	from : "+12345678901", // This must be a Catapult number on your account
+	to   : "+12345678902",
+	text : "Hello world."
 }, function(err, message) {
 	if (err) {
 		console.log(err);
 		return;
 	}
-	console.log('Message sent with ID ' + message.id);
+	console.log("Message sent with ID " + message.id);
 });
 ```
 
@@ -78,10 +78,8 @@ client.Message.sendMessage({
 
 Get a single message by ID:
 
-You can also send a message, and get the result in a Promise:
-
 ```javascript
-client.Message.getMessage('m-etppxbktp4bxkyg7mzs7c5z')
+client.Message.get("m-etppxbktp4bxkyg7mzs7c5z")
 .then(function(message) {
 	console.log(message.text);
 })
@@ -93,8 +91,8 @@ client.Message.getMessage('m-etppxbktp4bxkyg7mzs7c5z')
 Get a list of messages from a certain number:
 
 ```javascript
-client.Message.getMessages({
-	from : '+12345678901'
+client.Message.list({
+	from : "+12345678901"
 })
 .then(function(messages) {
 	messages.forEach(function(message){
