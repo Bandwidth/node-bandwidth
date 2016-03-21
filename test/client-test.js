@@ -42,7 +42,7 @@ describe("Client", function () {
 			client.makeRequest({
 				path : "account"
 			}).then(function (res) {
-				res[0].body.should.eql(accountResponse);
+				res.body.should.eql(accountResponse);
 				done();
 			}).catch(function (err) {
 				done(err);
@@ -80,7 +80,7 @@ describe("Client", function () {
 			client.makeRequest({
 				path : "account"
 			}).then(function (res) {
-				res[0].body.should.eql(accountResponse);
+				res.body.should.eql(accountResponse);
 			}).done(done);
 		});
 
