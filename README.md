@@ -70,8 +70,8 @@ client.Message.send({
 });
 ```
 
-## Full API Reference
-* client.[Messages](docs/api.md)
+## [Full API Reference](docs/api.md)
+For the full API Reference, pelase see [docs/api.md](docs/api.md).
 
 ## Providing feedback on the developer preview
 
