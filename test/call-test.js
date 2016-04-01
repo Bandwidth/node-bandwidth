@@ -65,6 +65,29 @@ describe("Call API", function () {
 			}
 		];
 
+		var answerCallPayload = {
+			state : "active"
+		};
+
+		var sampleSentence = "Hello world";
+		var speakSentencePayload = {
+			sentence : sampleSentence
+		};
+
+		var audioUrl = "http://somewhere/something.mp3";
+		var playAudioPayload = {
+			fileUrl : audioUrl
+		};
+
+		var enableRecordingPayload = {
+			recordingEnabled : true
+		};
+
+		var maxRecordingDuration = 90;
+		var setRecordingMaxDurationPayload = {
+			recordingMaxDuration : maxRecordingDuration
+		};
+
 		var fromDateTime = "2012-10-04";
 		var toDateTime = "2012-10-06";
 
@@ -87,7 +110,17 @@ describe("Call API", function () {
 				.get("/v1/users/" + userId + "/calls/" + testCall.id)
 				.reply(200, testCall)
 				.get("/v1/users/" + userId + "/calls?fromDateTime=" + fromDateTime + "&" + "toDateTime=" + toDateTime)
-				.reply(200, callsList);
+				.reply(200, callsList)
+				.post("/v1/users/" + userId + "/calls/" + testCall.id, answerCallPayload)
+				.reply(200)
+				.post("/v1/users/" + userId + "/calls/" + testCall.id + "/audio", speakSentencePayload)
+				.reply(200)
+				.post("/v1/users/" + userId + "/calls/" + testCall.id + "/audio", playAudioPayload)
+				.reply(200)
+				.post("/v1/users/" + userId + "/calls/" + testCall.id, enableRecordingPayload)
+				.reply(200)
+				.post("/v1/users/" + userId + "/calls/" + testCall.id, setRecordingMaxDurationPayload)
+				.reply(200);
 		});
 
 		after(function () {
@@ -103,6 +136,26 @@ describe("Call API", function () {
 				call.id.should.equal("fakeCallId");
 			})
 			.done(done);
+		});
+
+		it("should answer a call", function (done) {
+			client.Call.answer(testCall.id).done(done);
+		});
+
+		it("should speak a sentence on a call", function (done) {
+			client.Call.speakSentence(testCall.id, sampleSentence).done(done);
+		});
+
+		it("should play an audio file on sentence on a call", function (done) {
+			client.Call.playAudio(testCall.id, audioUrl).done(done);
+		});
+
+		it("should enable recording on a call", function (done) {
+			client.Call.enableRecording(testCall.id).done(done);
+		});
+
+		it("should set the maximum recording duration on a call", function (done) {
+			client.Call.setMaxRecordingDuration(testCall.id, maxRecordingDuration).done(done);
 		});
 
 		it("should create a call, callback style", function (done) {

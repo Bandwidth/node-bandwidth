@@ -34,14 +34,12 @@ var client = new CatapultClient({
 });
 ```
 
-Your `client` object is now ready to use the API. All client functions take an optional Node.js style `(err, result)` callback, and also return a Promise.
+Your `client` object is now ready to use the API.
 
-## Messages API
+## Callbacks or Promises
+All functions of the client object take an optional Node.js style `(err, result)` callback, and also return a Promise. That way if you want to use Promises in your application, you don't have to wrap the SDK with a Promise library. You can simply do things like this:
 
-### Sending messages
-
-Send a message and print the resulting message ID with a Promise:
-
+### Promise style
 ```javascript
 client.Message.send({
 	from : "+12345678901", // This must be a Catapult number on your account
@@ -55,9 +53,9 @@ client.Message.send({
 	console.log(err.message);
 });
 ```
+If you're not into that kind of thing you can also do things the "old fashioned" callback way:
 
-Send a message and print the resulting message ID using a callback:
-
+### Callback style
 ```javascript
 client.Message.send({
 	from : "+12345678901", // This must be a Catapult number on your account
@@ -72,37 +70,8 @@ client.Message.send({
 });
 ```
 
-> Please note: sending multiple messages at the same time is not supported yet
-
-### Getting messages
-
-Get a single message by ID:
-
-```javascript
-client.Message.get("m-etppxbktp4bxkyg7mzs7c5z")
-.then(function(message) {
-	console.log(message.text);
-})
-.catch(function(err) {
-	console.log(err.message);
-});
-```
-
-Get a list of messages from a certain number:
-
-```javascript
-client.Message.list({
-	from : "+12345678901"
-})
-.then(function(messages) {
-	messages.forEach(function(message){
-		console.log(message.text);
-	});
-})
-.catch(function(err) {
-	console.log(err.message);
-});
-```
+## Full API Reference
+* client.[Messages](docs/api.md)
 
 ## Providing feedback on the developer preview
 
