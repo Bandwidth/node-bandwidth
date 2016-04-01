@@ -21,20 +21,20 @@
   },
   "homepage": "https://github.com/bandwidthcom/node-bandwidth",
   "dependencies": {
-    "bluebird": "^2.10.2",
-    "request": "^2.61.0"
+    "bluebird": "^3.3.4",
+    "request": "^2.69.0"
   },
   "devDependencies": {
-    "gulp": "^3.9.0",
-    "gulp-clean": "^0.3.1",
-    "gulp-istanbul": "^0.10.0",
-    "gulp-jscs": "^1.6.0",
+    "gulp": "^3.9.1",
+    "gulp-clean": "^0.3.2",
+    "gulp-istanbul": "^0.10.3",
+    "gulp-jscs": "^3.0.2",
     "gulp-jsdoc": "^0.1.5",
     "gulp-jshint": "1.11.2",
-    "gulp-mocha": "^2.1.1",
-    "jshint-stylish": "^2.0.0",
-    "mocha": "^2.0.1",
-    "nock": "^0.50.0",
+    "gulp-mocha": "^2.2.0",
+    "jshint-stylish": "^2.1.0",
+    "mocha": "^2.4.5",
+    "nock": "^7.5.0",
     "should": "4.3.0"
   }
 }
