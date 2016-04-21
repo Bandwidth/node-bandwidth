@@ -177,11 +177,11 @@ Send a new SMS or MMS message
 | --- | --- | --- | --- |
 | params | <code>Object</code> |  | Parameters for sending a new message |
 | The | <code>params.text</code> |  | message text to send |
-| The | <code>params.from</code> |  | message sender's telephone number (or short code) This must be a Catapult number that you own |
+| The | <code>params.from</code> |  | message sender"s telephone number (or short code) This must be a Catapult number that you own |
 | [params.to] | <code>String</code> |  | Message recipient telephone number (or short code) |
 | [params.media] | <code>Array</code> |  | Json array containing list of media urls to be sent as content for an mms. Valid URLs are: https://api.catapult.inetwork.com/v1/users/<user-id>/media/ We also support media URLs that are external to Bandwidth API, http:// or https:// format: Example: http://customer-web-site.com/file.jpg |
 | [params.callbackUrl] | <code>String</code> |  | The complete URL where the events related to the outgoing message will be sent |
-| [params.callbackTimeout] | <code>Number</code> |  | Determine how long should the platform wait for callbackUrl's response before timing out (milliseconds) |
+| [params.callbackTimeout] | <code>Number</code> |  | Determine how long should the platform wait for callbackUrl"s response before timing out (milliseconds) |
 | [params.fallbackUrl] | <code>String</code> |  | The server URL used to send message events if the request to callbackUrl fails |
 | [params.tag] | <code>String</code> |  | A string that will be included in the callback events of the message |
 | [params.receiptRequested] | <code>String</code> | <code>none</code> | Requested receipt option for outbound messages: `none` `all` `error` |

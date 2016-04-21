@@ -126,7 +126,10 @@ describe("Message API", function () {
 				fromDateTime : fromDateTime,
 				toDateTime   : toDateTime
 			})
-			.then(function (messages) {
+			.then(function (messageResponse) {
+
+				var messages = messageResponse.messages;
+
 				messages[0].to.should.equal(messagesList[0].to);
 				messages[0].from.should.equal(messagesList[0].from);
 				messages[0].text.should.equal(messagesList[0].text);
@@ -144,10 +147,13 @@ describe("Message API", function () {
 			client.Message.list({
 				fromDateTime : fromDateTime,
 				toDateTime   : toDateTime
-			}, function (err, messages) {
+			}, function (err, messageResponse) {
 				if (err) {
 					throw err;
 				}
+
+				var messages = messageResponse.messages;
+
 				messages[0].to.should.equal(messagesList[0].to);
 				messages[0].from.should.equal(messagesList[0].from);
 				messages[0].text.should.equal(messagesList[0].text);
