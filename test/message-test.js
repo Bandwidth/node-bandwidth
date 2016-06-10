@@ -12,6 +12,8 @@ describe("Message API", function () {
 		var apiToken = "fakeApiToken";
 		var apiSecret = "fakeapiSecret";
 
+    var linkUrl = "/v1/users/fakeUserId/messages?sortKeyLT=1458576004287000989&size=1";
+
 		var newTestMessage = {
 			from : "+12345678901",
 			to   : "+12345678902",
@@ -77,7 +79,12 @@ describe("Message API", function () {
 				.get("/v1/users/" + userId + "/messages/" + testMessage.id)
 				.reply(200, testMessage)
 				.get("/v1/users/" + userId + "/messages?fromDateTime=" + fromDateTime + "&" + "toDateTime=" + toDateTime)
-				.reply(200, messagesList);
+				.reply(200, messagesList, {
+          link: "<" + baseUrl + linkUrl + ">"
+        })
+        .get(linkUrl)
+        .reply(200, messagesList);
+
 		});
 
 		after(function () {
@@ -165,6 +172,30 @@ describe("Message API", function () {
 				messages[1].id.should.equal(messagesList[1].id);
 				done();
 			});
+		});
+
+    it("should get try to get the next page of results, promise style", function (done) {
+			client.Message.list({
+				fromDateTime : fromDateTime,
+				toDateTime   : toDateTime
+			})
+			.then(function (messageResponse) {
+				return messageResponse.getNextPage();
+			})
+      .then(function (messageResponse) {
+        var messages = messageResponse.messages;
+
+				messages[0].to.should.equal(messagesList[0].to);
+				messages[0].from.should.equal(messagesList[0].from);
+				messages[0].text.should.equal(messagesList[0].text);
+				messages[0].id.should.equal(messagesList[0].id);
+
+				messages[1].to.should.equal(messagesList[1].to);
+				messages[1].from.should.equal(messagesList[1].from);
+				messages[1].text.should.equal(messagesList[1].text);
+				messages[1].id.should.equal(messagesList[1].id);
+      })
+			.done(done);
 		});
 
 	});
