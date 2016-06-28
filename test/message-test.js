@@ -1,6 +1,5 @@
 var nock = require("nock");
 var CatapultClient = require("../index");
-var expect = require("chai").expect;
 var baseUrl = "https://api.catapult.inetwork.com";
 
 describe("Message API", function () {
@@ -78,7 +77,7 @@ describe("Message API", function () {
 		it("should send a message, promise style", function () {
 			return client.Message.send(newTestMessage)
 			.then(function (message) {
-				expect(message).to.deep.equal(newTestMessage);
+				message.should.eql(newTestMessage);
 			});
 		});
 
@@ -87,7 +86,7 @@ describe("Message API", function () {
 				if (err) {
 					throw err;
 				}
-				expect(message).to.deep.equal(newTestMessage);
+				message.should.eql(newTestMessage);
 				done();
 			});
 		});
@@ -95,7 +94,7 @@ describe("Message API", function () {
 		it("should get a message, promise style", function () {
 			return client.Message.get(testMessage.id)
 			.then(function (message) {
-				expect(message).to.deep.equal(testMessage);
+				message.should.eql(testMessage);
 			});
 		});
 
@@ -107,8 +106,8 @@ describe("Message API", function () {
 			.then(function (messageResponse) {
 
 				var messages = messageResponse.messages;
-				expect(messages[0]).to.deep.equal(messagesList[0]);
-				expect(messages[1]).to.deep.equal(messagesList[1]);
+				messages[0].should.eql(messagesList[0]);
+				messages[1].should.eql(messagesList[1]);
 			});
 		});
 
@@ -122,8 +121,8 @@ describe("Message API", function () {
 				}
 
 				var messages = messageResponse.messages;
-				expect(messages[0]).to.deep.equal(messagesList[0]);
-				expect(messages[1]).to.deep.equal(messagesList[1]);
+				messages[0].should.eql(messagesList[0]);
+				messages[1].should.eql(messagesList[1]);
 				done();
 			});
 		});
@@ -173,16 +172,16 @@ describe("Message API", function () {
 
 				var messages = messageResponse.messages;
 
-				expect(messages[0]).to.deep.equal(messagesList[0]);
-				expect(messages[1]).to.deep.equal(messagesList[1]);
+				messages[0].should.eql(messagesList[0]);
+				messages[1].should.eql(messagesList[1]);
 
 				messageResponse.getNextPage()
 				.then(function (otherMessageResponse) {
 
 					messages = otherMessageResponse.messages;
 
-					expect(messages[0]).to.deep.equal(messagesList[0]);
-					expect(messages[1]).to.deep.equal(messagesList[1]);
+					messages[0].should.eql(messagesList[0]);
+					messages[1].should.eql(messagesList[1]);
 				});
 			});
 		});
