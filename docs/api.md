@@ -1,6 +1,8 @@
 ## Classes
 
 <dl>
+<dt><a href="#Application">Application</a></dt>
+<dd></dd>
 <dt><a href="#Call">Call</a></dt>
 <dd></dd>
 <dt><a href="#CallResponse">CallResponse</a> : <code>Object</code></dt>
@@ -12,6 +14,40 @@
 <dt><a href="#Recording">Recording</a></dt>
 <dd></dd>
 </dl>
+
+<a name="Application"></a>
+
+## Application
+**Kind**: global class  
+
+* [Application](#Application)
+    * [new Application(client)](#new_Application_new)
+    * [.get(params, [callback])](#Application+get) ⇒ <code>MessageResponse</code>
+
+<a name="new_Application_new"></a>
+
+### new Application(client)
+Application
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| client | <code>Object</code> | Catapult client |
+
+<a name="Application+get"></a>
+
+### application.get(params, [callback]) ⇒ <code>MessageResponse</code>
+Get information about the specified applications
+
+**Kind**: instance method of <code>[Application](#Application)</code>  
+**Returns**: <code>MessageResponse</code> - A promise for the list of applications  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| params | <code>Object</code> | Parameters for filtering applications |
+| [params.page] | <code>Number</code> | The specified page requested when querying a list of applications |
+| [params.size] | <code>Number</code> | The size of each page requested |
+| [callback] | <code>function</code> | A callback for the list of applications |
 
 <a name="Call"></a>
 
