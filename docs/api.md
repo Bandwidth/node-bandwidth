@@ -3,6 +3,8 @@
 <dl>
 <dt><a href="#Application">Application</a></dt>
 <dd></dd>
+<dt><a href="#Application">Application</a> : <code>Object</code></dt>
+<dd></dd>
 <dt><a href="#Call">Call</a></dt>
 <dd></dd>
 <dt><a href="#CallResponse">CallResponse</a> : <code>Object</code></dt>
@@ -22,7 +24,7 @@
 
 * [Application](#Application)
     * [new Application(client)](#new_Application_new)
-    * [.get(params, [callback])](#Application+get) ⇒ <code>MessageResponse</code>
+    * [.list(params, [callback])](#Application+list) ⇒ <code>MessageResponse</code>
 
 <a name="new_Application_new"></a>
 
@@ -34,10 +36,59 @@ Application
 | --- | --- | --- |
 | client | <code>Object</code> | Catapult client |
 
-<a name="Application+get"></a>
+<a name="Application+list"></a>
 
-### application.get(params, [callback]) ⇒ <code>MessageResponse</code>
-Get information about the specified applications
+### application.list(params, [callback]) ⇒ <code>MessageResponse</code>
+List the user's applications
+
+**Kind**: instance method of <code>[Application](#Application)</code>  
+**Returns**: <code>MessageResponse</code> - A promise for the list of applications  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| params | <code>Object</code> | Parameters for filtering applications |
+| [params.page] | <code>Number</code> | The specified page requested when querying a list of applications |
+| [params.size] | <code>Number</code> | The size of each page requested |
+| [callback] | <code>function</code> | A callback for the list of applications |
+
+<a name="Application"></a>
+
+## Application : <code>Object</code>
+**Kind**: global class  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| id | <code>String</code> | The unique identifier for the application. |
+| name | <code>String</code> | A name you choose for this application. |
+| incomingCallUrl | <code>String</code> | A URL where call events will be sent for an inbound call. This is the endpoint where the Application Platform will send all call events. Either incomingCallUrl or incomingMessageUrl is required. |
+| incomingCallUrlCallbackTimeout | <code>String</code> | Determine how long should the platform wait for incomingCallUrl's response before timing out in milliseconds. |
+| incomingCallFallbackUrl | <code>String</code> | The URL used to send the callback event if the request to incomingCallUrl fails. |
+| callbackHttpMethod | <code>String</code> | Determine if the callback event should be sent via HTTP GET or HTTP POST. Values are "get" or "post", default: "post". |
+| autoAnswer | <code>Boolean</code> | Determines whether or not an incoming call should be automatically answered. Default value is 'true'. |
+| incomingMessageUrl | <code>String</code> | A URL where message events will be sent for an inbound message. This is the endpoint where the Application Platform will send all message events. Either incomingMessageUrl or incomingCallUrl is required. |
+| incomingMessageUrlCallbackTimeout | <code>Number</code> | Determine how long should the platform wait for incomingMessageUrl's response before timing out in milliseconds. |
+| incomingMessageFallbackUrl | <code>String</code> | The URL used to send the callback event if the request to incomingMessageUrl fails. |
+
+
+* [Application](#Application) : <code>Object</code>
+    * [new Application(client)](#new_Application_new)
+    * [.list(params, [callback])](#Application+list) ⇒ <code>MessageResponse</code>
+
+<a name="new_Application_new"></a>
+
+### new Application(client)
+Application
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| client | <code>Object</code> | Catapult client |
+
+<a name="Application+list"></a>
+
+### application.list(params, [callback]) ⇒ <code>MessageResponse</code>
+List the user's applications
 
 **Kind**: instance method of <code>[Application](#Application)</code>  
 **Returns**: <code>MessageResponse</code> - A promise for the list of applications  

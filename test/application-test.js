@@ -12,6 +12,9 @@ describe("Application API", function () {
 		var apiToken = "fakeApiToken";
 		var apiSecret = "fakeapiSecret";
 
+		var page = 1;
+		var size = 1;
+
 		var applicationsList = [
 			{
 				"id"                 : "fakeApplicationId",
@@ -40,6 +43,8 @@ describe("Application API", function () {
 			nock("https://api.catapult.inetwork.com")
 				.persist()
 				.get("/v1/users/" + userId + "/applications")
+				.reply(200, applicationsList)
+				.get("/v1/users/" + userId + "/applications?page=" + page + "&size=" + size)
 				.reply(200, applicationsList);
 		});
 
@@ -49,7 +54,7 @@ describe("Application API", function () {
 		});
 
 		it("should get a list of applications, promise style", function () {
-			return client.Application.get("")
+			return client.Application.list({})
 			.then(function (applications) {
 				applications[0].id.should.equal(applicationsList[0].id);
 				applications[0].name.should.equal(applicationsList[0].name);
@@ -64,10 +69,25 @@ describe("Application API", function () {
 		});
 
 		it("should get a list of applications, callback style", function () {
-			client.Application.get("", function (err, applications) {
+			client.Application.list({}, function (err, applications) {
 				if (err) {
 					throw err;
 				}
+				applications[0].id.should.equal(applicationsList[0].id);
+				applications[0].name.should.equal(applicationsList[0].name);
+				applications[0].incomingCallUrl.should.equal(applicationsList[0].incomingCallUrl);
+				applications[0].incomingMessageUrl.should.equal(applicationsList[0].incomingMessageUrl);
+
+				applications[1].id.should.equal(applicationsList[1].id);
+				applications[1].name.should.equal(applicationsList[1].name);
+				applications[1].incomingCallUrl.should.equal(applicationsList[1].incomingCallUrl);
+				applications[1].incomingMessageUrl.should.equal(applicationsList[1].incomingMessageUrl);
+			});
+		});
+
+		it("should get a specified page of applications", function () {
+			return client.Application.list({ page : page, size : size })
+			.then(function (applications) {
 				applications[0].id.should.equal(applicationsList[0].id);
 				applications[0].name.should.equal(applicationsList[0].name);
 				applications[0].incomingCallUrl.should.equal(applicationsList[0].incomingCallUrl);
