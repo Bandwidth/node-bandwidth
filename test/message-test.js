@@ -29,30 +29,19 @@ describe("Message API", function () {
 		"media"     : []
 	};
 
-	var messagesList = [
-		{
-			"id"        : "fakeMessageId1",
-			"messageId" : "fakeMessageId1",
-			"from"      : "+12345678901",
-			"to"        : "+12345678902",
-			"text"      : "Good morning, this is a test message",
-			"time"      : "2012-10-05T20:37:38.048Z",
-			"direction" : "out",
-			"state"     : "sent",
-			"media"     : []
-		},
-		{
-			"id"        : "fakeMessageId2",
-			"messageId" : "fakeMessageId2",
-			"from"      : "+12345678902",
-			"to"        : "+12345678901",
-			"text"      : "I received your test message",
-			"time"      : "2012-10-05T20:38:11.023Z",
-			"direction" : "in",
-			"state"     : "received",
-			"media"     : []
-		},
-	];
+	var someOtherTestMessage = {
+		"id"        : "fakeMessageId2",
+		"messageId" : "fakeMessageId2",
+		"from"      : "+12345678902",
+		"to"        : "+12345678901",
+		"text"      : "I received your test message",
+		"time"      : "2012-10-05T20:38:11.023Z",
+		"direction" : "in",
+		"state"     : "received",
+		"media"     : []
+	};
+
+	var messagesList = [ testMessage, someOtherTestMessage ];
 
 	var fromDateTime = "2012-10-04";
 	var toDateTime = "2012-10-06";
@@ -86,12 +75,11 @@ describe("Message API", function () {
 			nock.enableNetConnect();
 		});
 
-		it("should send a message, promise style", function (done) {
-			client.Message.send(newTestMessage)
+		it("should send a message, promise style", function () {
+			return client.Message.send(newTestMessage)
 			.then(function (message) {
 				expect(message).to.deep.equal(newTestMessage);
-			})
-			.done(done);
+			});
 		});
 
 		it("should send a message, callback style", function (done) {
@@ -104,16 +92,15 @@ describe("Message API", function () {
 			});
 		});
 
-		it("should get a message, promise style", function (done) {
-			client.Message.get(testMessage.id)
+		it("should get a message, promise style", function () {
+			return client.Message.get(testMessage.id)
 			.then(function (message) {
 				expect(message).to.deep.equal(testMessage);
-			})
-			.done(done);
+			});
 		});
 
-		it("should get a list of messages, promise style", function (done) {
-			client.Message.list({
+		it("should get a list of messages, promise style", function () {
+			return client.Message.list({
 				fromDateTime : fromDateTime,
 				toDateTime   : toDateTime
 			})
@@ -122,8 +109,7 @@ describe("Message API", function () {
 				var messages = messageResponse.messages;
 				expect(messages[0]).to.deep.equal(messagesList[0]);
 				expect(messages[1]).to.deep.equal(messagesList[1]);
-			})
-			.done(done);
+			});
 		});
 
 		it("should get a list of messages, callback style", function (done) {
@@ -178,8 +164,8 @@ describe("Message API", function () {
 			nock.enableNetConnect();
 		});
 
-		it("should get the next page of messages (if it exists)", function (done) {
-			client.Message.list({
+		it("should get the next page of messages (if it exists)", function () {
+			return client.Message.list({
 				fromDateTime : fromDateTime,
 				toDateTime   : toDateTime
 			})
@@ -198,8 +184,7 @@ describe("Message API", function () {
 					expect(messages[0]).to.deep.equal(messagesList[0]);
 					expect(messages[1]).to.deep.equal(messagesList[1]);
 				});
-			})
-			.done(done);
+			});
 		});
 	});
 });
