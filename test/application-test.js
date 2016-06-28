@@ -3,9 +3,9 @@ var CatapultClient = require("../index");
 
 var baseUrl = "https://api.catapult.inetwork.com";
 
-describe("Application API", function() {
+describe("Application API", function () {
 
-	describe('global methods', function() {
+	describe("global methods", function () {
 		var client;
 
 		var userId = "fakeUserId";
@@ -14,18 +14,18 @@ describe("Application API", function() {
 
 		var applicationsList = [
 			{
-				"id"                : "fakeApplicationId",
-				"name"              : "fakeApp",
-				"incomingCallUrl"   : "http://example.com/calls.php",
-  			    "incomingMessageUrl": "http://example.com/messages.php",
-   			    "autoAnswer"        : true
+				"id"                 : "fakeApplicationId",
+				"name"               : "fakeApp",
+				"incomingCallUrl"    : "http://example.com/calls.php",
+				"incomingMessageUrl" : "http://example.com/messages.php",
+				"autoAnswer"         : true
 			},
 			{
-				"id"                : "fakeApplicationId2",
-				"name"              : "fakeApp2",
-				"incomingCallUrl"   : "http://example.com/calls2.php",
-  			    "incomingMessageUrl": "http://example.com/messages.php",
-   			    "autoAnswer"        : true
+				"id"                 : "fakeApplicationId2",
+				"name"               : "fakeApp2",
+				"incomingCallUrl"    : "http://example.com/calls2.php",
+				"incomingMessageUrl" : "http://example.com/messages.php",
+				"autoAnswer"         : true
 			},
 		];
 
@@ -48,9 +48,9 @@ describe("Application API", function() {
 			nock.enableNetConnect();
 		});
 
-		it('should get a list of applications, promise style', function() {
-			return client.Application.get('')
-			.then(function(applications) {
+		it("should get a list of applications, promise style", function () {
+			return client.Application.get("")
+			.then(function (applications) {
 				applications[0].id.should.equal(applicationsList[0].id);
 				applications[0].name.should.equal(applicationsList[0].name);
 				applications[0].incomingCallUrl.should.equal(applicationsList[0].incomingCallUrl);
@@ -63,12 +63,11 @@ describe("Application API", function() {
 			});
 		});
 
-		it('should get a list of applications, callback style', function() {
-			client.Application.get('', function(err, applications) {
+		it("should get a list of applications, callback style", function () {
+			client.Application.get("", function (err, applications) {
 				if (err) {
 					throw err;
 				}
-
 				applications[0].id.should.equal(applicationsList[0].id);
 				applications[0].name.should.equal(applicationsList[0].name);
 				applications[0].incomingCallUrl.should.equal(applicationsList[0].incomingCallUrl);
