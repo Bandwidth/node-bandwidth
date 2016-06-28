@@ -1,6 +1,6 @@
 var nock = require("nock");
 var CatapultClient = require("../index");
-
+var expect = require("chai").expect;
 var baseUrl = "https://api.catapult.inetwork.com";
 
 describe("Message API", function () {
@@ -89,10 +89,7 @@ describe("Message API", function () {
 		it("should send a message, promise style", function (done) {
 			client.Message.send(newTestMessage)
 			.then(function (message) {
-				message.to.should.equal(newTestMessage.to);
-				message.from.should.equal(newTestMessage.from);
-				message.text.should.equal(newTestMessage.text);
-				message.id.should.equal("fakeMessageId");
+				expect(message).to.deep.equal(newTestMessage);
 			})
 			.done(done);
 		});
@@ -102,10 +99,7 @@ describe("Message API", function () {
 				if (err) {
 					throw err;
 				}
-				message.to.should.equal(newTestMessage.to);
-				message.from.should.equal(newTestMessage.from);
-				message.text.should.equal(newTestMessage.text);
-				message.id.should.equal("fakeMessageId");
+				expect(message).to.deep.equal(newTestMessage);
 				done();
 			});
 		});
@@ -113,11 +107,7 @@ describe("Message API", function () {
 		it("should get a message, promise style", function (done) {
 			client.Message.get(testMessage.id)
 			.then(function (message) {
-				message.to.should.equal(testMessage.to);
-				message.from.should.equal(testMessage.from);
-				message.text.should.equal(testMessage.text);
-				message.time.should.equal(testMessage.time);
-				message.id.should.equal(testMessage.id);
+				expect(message).to.deep.equal(testMessage);
 			})
 			.done(done);
 		});
@@ -130,16 +120,8 @@ describe("Message API", function () {
 			.then(function (messageResponse) {
 
 				var messages = messageResponse.messages;
-
-				messages[0].to.should.equal(messagesList[0].to);
-				messages[0].from.should.equal(messagesList[0].from);
-				messages[0].text.should.equal(messagesList[0].text);
-				messages[0].id.should.equal(messagesList[0].id);
-
-				messages[1].to.should.equal(messagesList[1].to);
-				messages[1].from.should.equal(messagesList[1].from);
-				messages[1].text.should.equal(messagesList[1].text);
-				messages[1].id.should.equal(messagesList[1].id);
+				expect(messages[0]).to.deep.equal(messagesList[0]);
+				expect(messages[1]).to.deep.equal(messagesList[1]);
 			})
 			.done(done);
 		});
@@ -154,16 +136,8 @@ describe("Message API", function () {
 				}
 
 				var messages = messageResponse.messages;
-
-				messages[0].to.should.equal(messagesList[0].to);
-				messages[0].from.should.equal(messagesList[0].from);
-				messages[0].text.should.equal(messagesList[0].text);
-				messages[0].id.should.equal(messagesList[0].id);
-
-				messages[1].to.should.equal(messagesList[1].to);
-				messages[1].from.should.equal(messagesList[1].from);
-				messages[1].text.should.equal(messagesList[1].text);
-				messages[1].id.should.equal(messagesList[1].id);
+				expect(messages[0]).to.deep.equal(messagesList[0]);
+				expect(messages[1]).to.deep.equal(messagesList[1]);
 				done();
 			});
 		});
@@ -213,31 +187,16 @@ describe("Message API", function () {
 
 				var messages = messageResponse.messages;
 
-				messages[0].to.should.equal(messagesList[0].to);
-				messages[0].from.should.equal(messagesList[0].from);
-				messages[0].text.should.equal(messagesList[0].text);
-				messages[0].id.should.equal(messagesList[0].id);
-
-				messages[1].to.should.equal(messagesList[1].to);
-				messages[1].from.should.equal(messagesList[1].from);
-				messages[1].text.should.equal(messagesList[1].text);
-				messages[1].id.should.equal(messagesList[1].id);
+				expect(messages[0]).to.deep.equal(messagesList[0]);
+				expect(messages[1]).to.deep.equal(messagesList[1]);
 
 				messageResponse.getNextPage()
 				.then(function (otherMessageResponse) {
 
 					messages = otherMessageResponse.messages;
 
-					messages[0].to.should.equal(messagesList[0].to);
-					messages[0].from.should.equal(messagesList[0].from);
-					messages[0].text.should.equal(messagesList[0].text);
-					messages[0].id.should.equal(messagesList[0].id);
-
-					messages[1].to.should.equal(messagesList[1].to);
-					messages[1].from.should.equal(messagesList[1].from);
-					messages[1].text.should.equal(messagesList[1].text);
-					messages[1].id.should.equal(messagesList[1].id);
-
+					expect(messages[0]).to.deep.equal(messagesList[0]);
+					expect(messages[1]).to.deep.equal(messagesList[1]);
 				});
 			})
 			.done(done);
