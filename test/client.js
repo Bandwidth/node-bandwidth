@@ -91,8 +91,14 @@ describe("client tests", function () {
 				done();
 			});
 		});
-		it("should  handle requests without output", function (done) {
+
+		it("should handle requests without output", function (done) {
 			helper.nock().get("/v1/test").reply(200);
+			client.makeRequest("get", "/test", done);
+		});
+
+		it("should provide a user agent header", function (done) {
+			helper.nockRequiringUserAgent().get("/v1/test").reply(200);
 			client.makeRequest("get", "/test", done);
 		});
 

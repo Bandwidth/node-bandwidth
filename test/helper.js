@@ -14,5 +14,18 @@ module.exports = {
 
 	nock : function () {
 		return nock("https://api.catapult.inetwork.com");
+	},
+
+	nockRequiringUserAgent : function () {
+		return nock("https://api.catapult.inetwork.com", {
+			reqheaders : {
+				"user-agent" : function (headerValue) {
+					if (headerValue) {
+						return true;
+					}
+					return false;
+				}
+			}
+		});
 	}
 };
