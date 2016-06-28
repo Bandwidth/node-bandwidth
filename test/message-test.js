@@ -5,22 +5,34 @@ var baseUrl = "https://api.catapult.inetwork.com";
 
 describe("Message API", function () {
 
-	describe("global methods using single page response", function () {
-		var client;
+	var client;
 
-		var userId = "fakeUserId";
-		var apiToken = "fakeApiToken";
-		var apiSecret = "fakeapiSecret";
+	var userId = "fakeUserId";
+	var apiToken = "fakeApiToken";
+	var apiSecret = "fakeapiSecret";
 
-		var newTestMessage = {
-			from : "+12345678901",
-			to   : "+12345678902",
-			text : "Hello world."
-		};
+	var newTestMessage = {
+		from : "+12345678901",
+		to   : "+12345678902",
+		text : "Hello world."
+	};
 
-		var testMessage = {
-			"id"        : "fakeMessageId",
-			"messageId" : "fakeMessageId",
+	var testMessage = {
+		"id"        : "fakeMessageId",
+		"messageId" : "fakeMessageId",
+		"from"      : "+12345678901",
+		"to"        : "+12345678902",
+		"text"      : "Good morning, this is a test message",
+		"time"      : "2012-10-05T20:37:38.048Z",
+		"direction" : "out",
+		"state"     : "sent",
+		"media"     : []
+	};
+
+	var messagesList = [
+		{
+			"id"        : "fakeMessageId1",
+			"messageId" : "fakeMessageId1",
 			"from"      : "+12345678901",
 			"to"        : "+12345678902",
 			"text"      : "Good morning, this is a test message",
@@ -28,35 +40,24 @@ describe("Message API", function () {
 			"direction" : "out",
 			"state"     : "sent",
 			"media"     : []
-		};
+		},
+		{
+			"id"        : "fakeMessageId2",
+			"messageId" : "fakeMessageId2",
+			"from"      : "+12345678902",
+			"to"        : "+12345678901",
+			"text"      : "I received your test message",
+			"time"      : "2012-10-05T20:38:11.023Z",
+			"direction" : "in",
+			"state"     : "received",
+			"media"     : []
+		},
+	];
 
-		var messagesList = [
-			{
-				"id"        : "fakeMessageId1",
-				"messageId" : "fakeMessageId1",
-				"from"      : "+12345678901",
-				"to"        : "+12345678902",
-				"text"      : "Good morning, this is a test message",
-				"time"      : "2012-10-05T20:37:38.048Z",
-				"direction" : "out",
-				"state"     : "sent",
-				"media"     : []
-			},
-			{
-				"id"        : "fakeMessageId2",
-				"messageId" : "fakeMessageId2",
-				"from"      : "+12345678902",
-				"to"        : "+12345678901",
-				"text"      : "I received your test message",
-				"time"      : "2012-10-05T20:38:11.023Z",
-				"direction" : "in",
-				"state"     : "received",
-				"media"     : []
-			},
-		];
+	var fromDateTime = "2012-10-04";
+	var toDateTime = "2012-10-06";
 
-		var fromDateTime = "2012-10-04";
-		var toDateTime = "2012-10-06";
+	describe("global methods using single page response", function () {
 
 		before(function () {
 			client = new CatapultClient({
@@ -169,57 +170,6 @@ describe("Message API", function () {
 	});
 
 	describe("global methods using multiple page response", function () {
-		var client;
-
-		var userId = "fakeUserId";
-		var apiToken = "fakeApiToken";
-		var apiSecret = "fakeapiSecret";
-
-		var newTestMessage = {
-			from : "+12345678901",
-			to   : "+12345678902",
-			text : "Hello world."
-		};
-
-		var testMessage = {
-			"id"        : "fakeMessageId",
-			"messageId" : "fakeMessageId",
-			"from"      : "+12345678901",
-			"to"        : "+12345678902",
-			"text"      : "Good morning, this is a test message",
-			"time"      : "2012-10-05T20:37:38.048Z",
-			"direction" : "out",
-			"state"     : "sent",
-			"media"     : []
-		};
-
-		var messagesList = [
-			{
-				"id"        : "fakeMessageId1",
-				"messageId" : "fakeMessageId1",
-				"from"      : "+12345678901",
-				"to"        : "+12345678902",
-				"text"      : "Good morning, this is a test message",
-				"time"      : "2012-10-05T20:37:38.048Z",
-				"direction" : "out",
-				"state"     : "sent",
-				"media"     : []
-			},
-			{
-				"id"        : "fakeMessageId2",
-				"messageId" : "fakeMessageId2",
-				"from"      : "+12345678902",
-				"to"        : "+12345678901",
-				"text"      : "I received your test message",
-				"time"      : "2012-10-05T20:38:11.023Z",
-				"direction" : "in",
-				"state"     : "received",
-				"media"     : []
-			},
-		];
-
-		var fromDateTime = "2012-10-04";
-		var toDateTime = "2012-10-06";
 
 		before(function () {
 			client = new CatapultClient({
