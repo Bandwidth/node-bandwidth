@@ -26,11 +26,12 @@
     "request": "^2.69.0"
   },
   "devDependencies": {
+    "chai": "^3.5.0",
     "gulp": "^3.9.1",
     "gulp-clean": "^0.3.1",
+    "gulp-concat": "^2.6.0",
     "gulp-istanbul": "^0.10.0",
     "gulp-jscs": "^1.6.0",
-    "gulp-concat": "^2.6.0",
     "gulp-jsdoc": "^0.1.5",
     "gulp-jsdoc-to-markdown": "^1.2.1",
     "gulp-jshint": "1.11.2",
