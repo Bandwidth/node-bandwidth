@@ -56,7 +56,6 @@ describe("Application API", function () {
 				apiToken  : apiToken,
 				apiSecret : apiSecret
 			});
-			requestSpy = sinon.spy(client.makeRequest);
 			nock.disableNetConnect();
 
 			nock("https://api.catapult.inetwork.com")
