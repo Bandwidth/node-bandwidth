@@ -1,5 +1,4 @@
 var nock = require("nock");
-var sinon = require("sinon");
 var CatapultClient = require("../index");
 
 var baseUrl = "https://api.catapult.inetwork.com";
