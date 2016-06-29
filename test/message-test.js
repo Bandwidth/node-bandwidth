@@ -104,10 +104,8 @@ describe("Message API", function () {
 				toDateTime   : toDateTime
 			})
 			.then(function (messageResponse) {
-
 				var messages = messageResponse.messages;
-				messages[0].should.eql(messagesList[0]);
-				messages[1].should.eql(messagesList[1]);
+				messages.should.eql(messagesList);
 			});
 		});
 
@@ -119,10 +117,8 @@ describe("Message API", function () {
 				if (err) {
 					throw err;
 				}
-
 				var messages = messageResponse.messages;
-				messages[0].should.eql(messagesList[0]);
-				messages[1].should.eql(messagesList[1]);
+				messages.should.eql(messagesList);
 				done();
 			});
 		});
