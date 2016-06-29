@@ -1,4 +1,5 @@
 var nock = require("nock");
+var sinon = require("sinon");
 var CatapultClient = require("../index");
 
 var baseUrl = "https://api.catapult.inetwork.com";
@@ -7,6 +8,9 @@ describe("Application API", function () {
 
 	describe("global methods", function () {
 		var client;
+		var requestSpy;
+		var updateNock;
+		var deleteNock;
 
 		var userId = "fakeUserId";
 		var apiToken = "fakeApiToken";
@@ -27,10 +31,25 @@ describe("Application API", function () {
 				"id"                 : "fakeApplicationId2",
 				"name"               : "fakeApp2",
 				"incomingCallUrl"    : "http://example.com/calls2.php",
-				"incomingMessageUrl" : "http://example.com/messages.php",
+				"incomingMessageUrl" : "http://example.com/messages2.php",
 				"autoAnswer"         : true
 			},
 		];
+
+		var newApplication = {
+			"name"               : "NewApplication",
+			"incomingCallUrl"    : "http://example.com/calls3.php",
+			"incomingMessageUrl" : "http://example.com/messages3.php",
+			"autoAnswer"         : true
+		};
+
+		var testApplication = {
+			"id"                 : "fakeTestApplicationId",
+			"name"               : "NewApplication",
+			"incomingCallUrl"    : "http://example.com/calls3.php",
+			"incomingMessageUrl" : "http://example.com/messages3.php",
+			"autoAnswer"         : true			
+		};
 
 		before(function () {
 			client = new CatapultClient({
@@ -38,12 +57,24 @@ describe("Application API", function () {
 				apiToken  : apiToken,
 				apiSecret : apiSecret
 			});
+			requestSpy = sinon.spy(client.makeRequest);
 			nock.disableNetConnect();
 
 			nock("https://api.catapult.inetwork.com")
 				.persist()
 				.get("/v1/users/" + userId + "/applications")
-				.reply(200, applicationsList)
+				.reply(200, applicationsList,
+					{
+						"link" : "<https://api.catapult.inetwork.com/v1/users/" + userId + "/applications?page=0&size=25>; rel='first'"
+					})
+				.post("/v1/users/" + userId + "/applications")
+				.reply(201,
+					{},
+					{
+						"location" : "/v1/users/" + userId + "/messages/fakeApplicationId3"
+					})
+				.get("/v1/users/" + userId + "/applications/" + testApplication.id)
+				.reply(200, testApplication)
 				.get("/v1/users/" + userId + "/applications?page=" + page + "&size=" + size)
 				.reply(200, applicationsList);
 		});
@@ -55,48 +86,150 @@ describe("Application API", function () {
 
 		it("should get a list of applications, promise style", function () {
 			return client.Application.list({})
-			.then(function (applications) {
-				applications[0].id.should.equal(applicationsList[0].id);
-				applications[0].name.should.equal(applicationsList[0].name);
-				applications[0].incomingCallUrl.should.equal(applicationsList[0].incomingCallUrl);
-				applications[0].incomingMessageUrl.should.equal(applicationsList[0].incomingMessageUrl);
-
-				applications[1].id.should.equal(applicationsList[1].id);
-				applications[1].name.should.equal(applicationsList[1].name);
-				applications[1].incomingCallUrl.should.equal(applicationsList[1].incomingCallUrl);
-				applications[1].incomingMessageUrl.should.equal(applicationsList[1].incomingMessageUrl);
+			.then(function (applicationsResponse) {
+				applicationsResponse.applications.should.eql(applicationsList);
 			});
 		});
 
 		it("should get a list of applications, callback style", function () {
-			client.Application.list({}, function (err, applications) {
+			client.Application.list({}, function (err, applicationsResponse) {
 				if (err) {
 					throw err;
 				}
-				applications[0].id.should.equal(applicationsList[0].id);
-				applications[0].name.should.equal(applicationsList[0].name);
-				applications[0].incomingCallUrl.should.equal(applicationsList[0].incomingCallUrl);
-				applications[0].incomingMessageUrl.should.equal(applicationsList[0].incomingMessageUrl);
-
-				applications[1].id.should.equal(applicationsList[1].id);
-				applications[1].name.should.equal(applicationsList[1].name);
-				applications[1].incomingCallUrl.should.equal(applicationsList[1].incomingCallUrl);
-				applications[1].incomingMessageUrl.should.equal(applicationsList[1].incomingMessageUrl);
+				applicationsResponse.applications.should.eql(applicationsList);
 			});
 		});
 
-		it("should get a specified page of applications", function () {
-			return client.Application.list({ page : page, size : size })
-			.then(function (applications) {
-				applications[0].id.should.equal(applicationsList[0].id);
-				applications[0].name.should.equal(applicationsList[0].name);
-				applications[0].incomingCallUrl.should.equal(applicationsList[0].incomingCallUrl);
-				applications[0].incomingMessageUrl.should.equal(applicationsList[0].incomingMessageUrl);
+		it("should create an application, promise style", function () {
+			return client.Application.create(newApplication)
+			.then(function (applicationResponse) {
+				applicationResponse.id.should.equal("fakeApplicationId3");
+				applicationResponse.name.should.equal(newApplication.name);
+				applicationResponse.incomingCallUrl.should.equal(newApplication.incomingCallUrl);
+				applicationResponse.incomingMessageUrl.should.equal(newApplication.incomingMessageUrl);
+				applicationResponse.autoAnswer.should.equal(newApplication.autoAnswer);
+			});
+		});
 
-				applications[1].id.should.equal(applicationsList[1].id);
-				applications[1].name.should.equal(applicationsList[1].name);
-				applications[1].incomingCallUrl.should.equal(applicationsList[1].incomingCallUrl);
-				applications[1].incomingMessageUrl.should.equal(applicationsList[1].incomingMessageUrl);
+		it("should create an application, callback style", function () {
+			client.Application.create(newApplication, function (err, applicationResponse) {
+				if (err) {
+					throw err;
+				}
+				applicationResponse.id.should.equal("fakeApplicationId3");
+				applicationResponse.name.should.equal(newApplication.name);
+				applicationResponse.incomingCallUrl.should.equal(newApplication.incomingCallUrl);
+				applicationResponse.incomingMessageUrl.should.equal(newApplication.incomingMessageUrl);
+				applicationResponse.autoAnswer.should.equal(newApplication.autoAnswer);
+			});
+		});
+
+		it("should get an application, promise style", function () {
+			return client.Application.get(testApplication.id)
+			.then(function (applicationResponse) {
+				applicationResponse.should.eql(testApplication);
+			});
+		});
+
+		it("should get an application, callback style", function () {
+			client.Application.get(testApplication.id, function (err, applicationResponse) {
+				if (err) {
+					throw err;
+				}
+				applicationResponse.should.eql(testApplication);
+			});
+		});
+
+		describe('testing global void methods', function () {
+
+			describe('updating applications', function () {
+
+				beforeEach(function () {
+					updateNock = nock("https://api.catapult.inetwork.com")
+					.persist()
+					.post("/v1/users/" + userId + "/applications/" + testApplication.id)
+					.reply(200, {});
+				});
+
+				afterEach(function () {
+					nock.cleanAll();
+				});
+
+				it("should update an application, promise style", function () {
+					return client.Application.update(testApplication.id, { name : "newTestApplication" })
+					.then(function () {
+						updateNock.isDone().should.equal(true);
+					});
+				});
+
+				it("should update an application, callback style", function () {
+					client.Application.update(testApplication.id, { name : "anotherNewTestApplication" }, function (err, response) {
+						if (err) {
+							throw err;
+						}
+						updateNock.isDone().should.equal(true);
+					});
+				});
+			});
+
+			describe('deleting applications', function () {
+
+				beforeEach(function () {
+					deleteNock = nock("https://api.catapult.inetwork.com")
+					.persist()
+					.delete("/v1/users/" + userId + "/applications/" + testApplication.id)
+					.reply(200, {});
+				});
+
+				afterEach(function () {
+					nock.cleanAll();
+				});
+
+				it("should delete an application, promise style", function () {
+					return client.Application.delete(testApplication.id)
+					.then(function () {
+						deleteNock.isDone().should.equal(true);
+					});
+				});
+
+				it("should delete an application, callback style", function () {
+					client.Application.delete(testApplication.id, function(err, response) {
+						if (err) {
+							throw err;
+						}
+						deleteNock.isDone().should.equal(true);
+					});
+				});
+			});
+		});
+
+		describe('pagination tests', function () {
+
+			before(function () {
+				nock("https://api.catapult.inetwork.com")
+				.persist()
+				.get("/v1/users/" + userId + "/applications")
+				.reply(200, applicationsList,
+					{
+						"link" : "<https://api.catapult.inetwork.com/v1/users/" + userId + "/applications?page=0&size=25>; rel='first'," +
+						"<https://api.catapult.inetwork.com/v1/users/" + userId + "/applications>; rel='next'"
+					});
+			});
+
+			after(function () {
+				nock.cleanAll();
+				nock.enableNetConnect();
+			});
+
+			it("should return a list of applications with a page to the next link", function () {
+				return client.Application.list({})
+				.then(function (applicationsResponse) {
+					applicationsResponse.applications.should.eql(applicationsList);
+					return applicationsResponse.getNextPage();
+				})
+				.then(function (moreApplications) {
+					moreApplications.applications.should.eql(applicationsList);
+				});
 			});
 		});
 	});

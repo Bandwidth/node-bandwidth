@@ -25,6 +25,10 @@
 * [Application](#Application)
     * [new Application(client)](#new_Application_new)
     * [.list(params, [callback])](#Application+list) ⇒ <code>MessageResponse</code>
+    * [.create(params, callbackHttpMethod, [callback])](#Application+create) ⇒ <code>[Application](#Application)</code>
+    * [.get(applicationId, [callback])](#Application+get) ⇒ <code>MessageResponse</code>
+    * [.update(applicationId, params, callbackHttpMethod, [callback])](#Application+update) ⇒ <code>[Application](#Application)</code>
+    * [.delete(applicationId, [callback])](#Application+delete) ⇒ <code>MessageResponse</code>
 
 <a name="new_Application_new"></a>
 
@@ -47,9 +51,89 @@ List the user's applications
 | Param | Type | Description |
 | --- | --- | --- |
 | params | <code>Object</code> | Parameters for filtering applications |
-| [params.page] | <code>Number</code> | The specified page requested when querying a list of applications |
-| [params.size] | <code>Number</code> | The size of each page requested |
+| [params.size] | <code>Number</code> | The size of each page requested (Max size: 1000) |
 | [callback] | <code>function</code> | A callback for the list of applications |
+
+<a name="Application+create"></a>
+
+### application.create(params, callbackHttpMethod, [callback]) ⇒ <code>[Application](#Application)</code>
+Create a new application
+
+**Kind**: instance method of <code>[Application](#Application)</code>  
+**Returns**: <code>[Application](#Application)</code> - A promise for the newly created application.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| params | <code>Object</code> | Parameters for creating a new call |
+| [params.name] | <code>String</code> | A name you choose for this application. |
+| [params.incomingCallUrl] | <code>String</code> | A URL where call events will be sent for an inbound call. This is the endpoint where the Application Platform will send all call events. Either incomingCallUrl or incomingMessageUrl is required. |
+| [params.incomingCallUrlCallbackTimeout] | <code>String</code> | Determine how long should the platform wait for incomingCallUrl's response before timing out in milliseconds. |
+| [params.incomingCallFallbackUrl] | <code>String</code> | The URL used to send the callback event if the request to incomingCallUrl fails. |
+| [params.incomingMessageUrl] | <code>String</code> | A URL where message events will be sent for an inbound message. This is the endpoint where the Application Platform will send all message events. Either incomingMessageUrl or incomingCallUrl is required. |
+| [params.incomingMessageUrlCallbackTimeout] | <code>Number</code> | Determine how long should the platform wait for incomingMessageUrl's response before timing out in milliseconds. |
+| [params.incomingMessageFallbackUrl] | <code>String</code> | The URL used to send the callback event if the request to incomingMessageUrl fails. |
+| callbackHttpMethod | <code>String</code> | Determine if the callback event should be sent via HTTP GET or HTTP POST. Values are "get" or "post", default: "post". |
+| [callback] | <code>function</code> | A callback for the list of applications |
+
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| autoAnswer | <code>Boolean</code> | Determines whether or not an incoming call should be automatically answered. Default value is 'true'. |
+
+<a name="Application+get"></a>
+
+### application.get(applicationId, [callback]) ⇒ <code>MessageResponse</code>
+Get an application.
+
+**Kind**: instance method of <code>[Application](#Application)</code>  
+**Returns**: <code>MessageResponse</code> - A promise for the application.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| applicationId | <code>String</code> | The ID of the application to get. |
+| [callback] | <code>function</code> | A callback for the application. |
+
+<a name="Application+update"></a>
+
+### application.update(applicationId, params, callbackHttpMethod, [callback]) ⇒ <code>[Application](#Application)</code>
+Make changes to an application.
+
+**Kind**: instance method of <code>[Application](#Application)</code>  
+**Returns**: <code>[Application](#Application)</code> - A promise for the modified application.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| applicationId | <code>String</code> | The ID of the application to modify. |
+| params | <code>Object</code> | Parameters for creating a new call |
+| [params.name] | <code>String</code> | A name you choose for this application. |
+| [params.incomingCallUrl] | <code>String</code> | A URL where call events will be sent for an inbound call. This is the endpoint where the Application Platform will send all call events. Either incomingCallUrl or incomingMessageUrl is required. |
+| [params.incomingCallUrlCallbackTimeout] | <code>String</code> | Determine how long should the platform wait for incomingCallUrl's response before timing out in milliseconds. |
+| [params.incomingCallFallbackUrl] | <code>String</code> | The URL used to send the callback event if the request to incomingCallUrl fails. |
+| [params.incomingMessageUrl] | <code>String</code> | A URL where message events will be sent for an inbound message. This is the endpoint where the Application Platform will send all message events. Either incomingMessageUrl or incomingCallUrl is required. |
+| [params.incomingMessageUrlCallbackTimeout] | <code>Number</code> | Determine how long should the platform wait for incomingMessageUrl's response before timing out in milliseconds. |
+| [params.incomingMessageFallbackUrl] | <code>String</code> | The URL used to send the callback event if the request to incomingMessageUrl fails. |
+| callbackHttpMethod | <code>String</code> | Determine if the callback event should be sent via HTTP GET or HTTP POST. Values are "get" or "post", default: "post". |
+| [callback] | <code>function</code> | A callback for the list of applications |
+
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| autoAnswer | <code>Boolean</code> | Determines whether or not an incoming call should be automatically answered. Default value is 'true'. |
+
+<a name="Application+delete"></a>
+
+### application.delete(applicationId, [callback]) ⇒ <code>MessageResponse</code>
+Delete an application.
+
+**Kind**: instance method of <code>[Application](#Application)</code>  
+**Returns**: <code>MessageResponse</code> - A promise for the application.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| applicationId | <code>String</code> | The ID of the application to delete. |
+| [callback] | <code>function</code> | A callback for the application. |
 
 <a name="Application"></a>
 
@@ -74,6 +158,10 @@ List the user's applications
 * [Application](#Application) : <code>Object</code>
     * [new Application(client)](#new_Application_new)
     * [.list(params, [callback])](#Application+list) ⇒ <code>MessageResponse</code>
+    * [.create(params, callbackHttpMethod, [callback])](#Application+create) ⇒ <code>[Application](#Application)</code>
+    * [.get(applicationId, [callback])](#Application+get) ⇒ <code>MessageResponse</code>
+    * [.update(applicationId, params, callbackHttpMethod, [callback])](#Application+update) ⇒ <code>[Application](#Application)</code>
+    * [.delete(applicationId, [callback])](#Application+delete) ⇒ <code>MessageResponse</code>
 
 <a name="new_Application_new"></a>
 
@@ -96,9 +184,89 @@ List the user's applications
 | Param | Type | Description |
 | --- | --- | --- |
 | params | <code>Object</code> | Parameters for filtering applications |
-| [params.page] | <code>Number</code> | The specified page requested when querying a list of applications |
-| [params.size] | <code>Number</code> | The size of each page requested |
+| [params.size] | <code>Number</code> | The size of each page requested (Max size: 1000) |
 | [callback] | <code>function</code> | A callback for the list of applications |
+
+<a name="Application+create"></a>
+
+### application.create(params, callbackHttpMethod, [callback]) ⇒ <code>[Application](#Application)</code>
+Create a new application
+
+**Kind**: instance method of <code>[Application](#Application)</code>  
+**Returns**: <code>[Application](#Application)</code> - A promise for the newly created application.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| params | <code>Object</code> | Parameters for creating a new call |
+| [params.name] | <code>String</code> | A name you choose for this application. |
+| [params.incomingCallUrl] | <code>String</code> | A URL where call events will be sent for an inbound call. This is the endpoint where the Application Platform will send all call events. Either incomingCallUrl or incomingMessageUrl is required. |
+| [params.incomingCallUrlCallbackTimeout] | <code>String</code> | Determine how long should the platform wait for incomingCallUrl's response before timing out in milliseconds. |
+| [params.incomingCallFallbackUrl] | <code>String</code> | The URL used to send the callback event if the request to incomingCallUrl fails. |
+| [params.incomingMessageUrl] | <code>String</code> | A URL where message events will be sent for an inbound message. This is the endpoint where the Application Platform will send all message events. Either incomingMessageUrl or incomingCallUrl is required. |
+| [params.incomingMessageUrlCallbackTimeout] | <code>Number</code> | Determine how long should the platform wait for incomingMessageUrl's response before timing out in milliseconds. |
+| [params.incomingMessageFallbackUrl] | <code>String</code> | The URL used to send the callback event if the request to incomingMessageUrl fails. |
+| callbackHttpMethod | <code>String</code> | Determine if the callback event should be sent via HTTP GET or HTTP POST. Values are "get" or "post", default: "post". |
+| [callback] | <code>function</code> | A callback for the list of applications |
+
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| autoAnswer | <code>Boolean</code> | Determines whether or not an incoming call should be automatically answered. Default value is 'true'. |
+
+<a name="Application+get"></a>
+
+### application.get(applicationId, [callback]) ⇒ <code>MessageResponse</code>
+Get an application.
+
+**Kind**: instance method of <code>[Application](#Application)</code>  
+**Returns**: <code>MessageResponse</code> - A promise for the application.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| applicationId | <code>String</code> | The ID of the application to get. |
+| [callback] | <code>function</code> | A callback for the application. |
+
+<a name="Application+update"></a>
+
+### application.update(applicationId, params, callbackHttpMethod, [callback]) ⇒ <code>[Application](#Application)</code>
+Make changes to an application.
+
+**Kind**: instance method of <code>[Application](#Application)</code>  
+**Returns**: <code>[Application](#Application)</code> - A promise for the modified application.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| applicationId | <code>String</code> | The ID of the application to modify. |
+| params | <code>Object</code> | Parameters for creating a new call |
+| [params.name] | <code>String</code> | A name you choose for this application. |
+| [params.incomingCallUrl] | <code>String</code> | A URL where call events will be sent for an inbound call. This is the endpoint where the Application Platform will send all call events. Either incomingCallUrl or incomingMessageUrl is required. |
+| [params.incomingCallUrlCallbackTimeout] | <code>String</code> | Determine how long should the platform wait for incomingCallUrl's response before timing out in milliseconds. |
+| [params.incomingCallFallbackUrl] | <code>String</code> | The URL used to send the callback event if the request to incomingCallUrl fails. |
+| [params.incomingMessageUrl] | <code>String</code> | A URL where message events will be sent for an inbound message. This is the endpoint where the Application Platform will send all message events. Either incomingMessageUrl or incomingCallUrl is required. |
+| [params.incomingMessageUrlCallbackTimeout] | <code>Number</code> | Determine how long should the platform wait for incomingMessageUrl's response before timing out in milliseconds. |
+| [params.incomingMessageFallbackUrl] | <code>String</code> | The URL used to send the callback event if the request to incomingMessageUrl fails. |
+| callbackHttpMethod | <code>String</code> | Determine if the callback event should be sent via HTTP GET or HTTP POST. Values are "get" or "post", default: "post". |
+| [callback] | <code>function</code> | A callback for the list of applications |
+
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| autoAnswer | <code>Boolean</code> | Determines whether or not an incoming call should be automatically answered. Default value is 'true'. |
+
+<a name="Application+delete"></a>
+
+### application.delete(applicationId, [callback]) ⇒ <code>MessageResponse</code>
+Delete an application.
+
+**Kind**: instance method of <code>[Application](#Application)</code>  
+**Returns**: <code>MessageResponse</code> - A promise for the application.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| applicationId | <code>String</code> | The ID of the application to delete. |
+| [callback] | <code>function</code> | A callback for the application. |
 
 <a name="Call"></a>
 
