@@ -111,7 +111,7 @@ describe("Client", function () {
 			return client.makeRequest({
 				path : "account"
 			}).then(function (res) {
-				done("It should have thrown an exception!");
+				throw new Error("It should have thrown an exception!");
 			}).catch(function (err) {
 				err.statusCode.should.equal(401);
 				err.message.should.equal("Something bad happened...");
@@ -122,7 +122,7 @@ describe("Client", function () {
 			return client.makeRequest({
 				path : "unknown"
 			}).then(function (res) {
-				done("It should have thrown an exception!");
+				throw new Error("It should have thrown an exception!");
 			}).catch(function (err) {
 				err.statusCode.should.equal(404);
 				err.message.should.equal("");
@@ -133,7 +133,7 @@ describe("Client", function () {
 			return client.makeRequest({
 				path : "unknown2"
 			}).then(function (res) {
-				done("It should have thrown an exception!");
+				throw new Error("It should have thrown an exception!");
 			}).catch(function (err) {
 				err.statusCode.should.equal(404);
 				err.message.should.equal("");
