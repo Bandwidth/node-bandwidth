@@ -128,34 +128,31 @@ describe("Call API", function () {
 			nock.enableNetConnect();
 		});
 
-		it("should create a call, promise style", function (done) {
-			client.Call.create(newTestCall)
+		it("should create a call, promise style", function () {
+			return client.Call.create(newTestCall)
 			.then(function (call) {
-				call.to.should.equal(newTestCall.to);
-				call.from.should.equal(newTestCall.from);
-				call.id.should.equal("fakeCallId");
-			})
-			.done(done);
+				call.should.eql(newTestCall);
+			});
 		});
 
-		it("should answer a call", function (done) {
-			client.Call.answer(testCall.id).done(done);
+		it("should answer a call", function () {
+			return client.Call.answer(testCall.id);
 		});
 
-		it("should speak a sentence on a call", function (done) {
-			client.Call.speakSentence(testCall.id, sampleSentence).done(done);
+		it("should speak a sentence on a call", function () {
+			return client.Call.speakSentence(testCall.id, sampleSentence);
 		});
 
-		it("should play an audio file on sentence on a call", function (done) {
-			client.Call.playAudio(testCall.id, audioUrl).done(done);
+		it("should play an audio file on sentence on a call", function () {
+			return client.Call.playAudio(testCall.id, audioUrl);
 		});
 
-		it("should enable recording on a call", function (done) {
-			client.Call.enableRecording(testCall.id).done(done);
+		it("should enable recording on a call", function () {
+			return client.Call.enableRecording(testCall.id);
 		});
 
-		it("should set the maximum recording duration on a call", function (done) {
-			client.Call.setMaxRecordingDuration(testCall.id, maxRecordingDuration).done(done);
+		it("should set the maximum recording duration on a call", function () {
+			return client.Call.setMaxRecordingDuration(testCall.id, maxRecordingDuration);
 		});
 
 		it("should create a call, callback style", function (done) {
@@ -163,38 +160,27 @@ describe("Call API", function () {
 				if (err) {
 					throw err;
 				}
-				call.to.should.equal(newTestCall.to);
-				call.from.should.equal(newTestCall.from);
-				call.id.should.equal("fakeCallId");
+				call.should.eql(newTestCall);
 				done();
 			});
 		});
 
-		it("should get a call, promise style", function (done) {
-			client.Call.get(testCall.id)
+		it("should get a call, promise style", function () {
+			return client.Call.get(testCall.id)
 			.then(function (call) {
-				call.to.should.equal(testCall.to);
-				call.from.should.equal(testCall.from);
-				call.id.should.equal(testCall.id);
-			})
-			.done(done);
+				call.should.eql(testCall);
+			});
 		});
 
-		it("should get a list of calls, promise style", function (done) {
-			client.Call.list({
+		it("should get a list of calls, promise style", function () {
+			return client.Call.list({
 				fromDateTime : fromDateTime,
 				toDateTime   : toDateTime
 			})
 			.then(function (calls) {
-				calls[0].to.should.equal(callsList[0].to);
-				calls[0].from.should.equal(callsList[0].from);
-				calls[0].id.should.equal(callsList[0].id);
-
-				calls[1].to.should.equal(callsList[1].to);
-				calls[1].from.should.equal(callsList[1].from);
-				calls[1].id.should.equal(callsList[1].id);
-			})
-			.done(done);
+				calls[0].should.eql(callsList[0]);
+				calls[1].should.eql(callsList[1]);
+			});
 		});
 
 		it("should get a list of calls, callback style", function (done) {
@@ -205,13 +191,8 @@ describe("Call API", function () {
 				if (err) {
 					throw err;
 				}
-				calls[0].to.should.equal(callsList[0].to);
-				calls[0].from.should.equal(callsList[0].from);
-				calls[0].id.should.equal(callsList[0].id);
-
-				calls[1].to.should.equal(callsList[1].to);
-				calls[1].from.should.equal(callsList[1].from);
-				calls[1].id.should.equal(callsList[1].id);
+				calls[0].should.eql(callsList[0]);
+				calls[1].should.eql(callsList[1]);
 				done();
 			});
 		});
