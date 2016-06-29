@@ -32,7 +32,7 @@
 
 * [Application](#Application)
     * [new Application(client)](#new_Application_new)
-    * [.list(params, [callback])](#Application+list) ⇒ <code>[Application](#Application)</code>
+    * [.list(params, [callback])](#Application+list) ⇒ <code>[Array.&lt;ApplicationResponse&gt;](#ApplicationResponse)</code>
     * [.create(params, [callback])](#Application+create) ⇒ <code>[ApplicationResponse](#ApplicationResponse)</code>
     * [.get(applicationId, [callback])](#Application+get) ⇒ <code>[ApplicationResponse](#ApplicationResponse)</code>
     * [.update(applicationId, params, [callback])](#Application+update)
@@ -50,16 +50,16 @@ Application
 
 <a name="Application+list"></a>
 
-### application.list(params, [callback]) ⇒ <code>[Application](#Application)</code>
+### application.list(params, [callback]) ⇒ <code>[Array.&lt;ApplicationResponse&gt;](#ApplicationResponse)</code>
 List the user's applications
 
 **Kind**: instance method of <code>[Application](#Application)</code>  
-**Returns**: <code>[Application](#Application)</code> - A promise for the list of applications, has a getNextPagefunction if the number of applications returned by the query exceeds the page size.  
+**Returns**: <code>[Array.&lt;ApplicationResponse&gt;](#ApplicationResponse)</code> - A promise for the list of applications, has a getNextPagefunction if the number of applications returned by the query exceeds the page size.  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | params | <code>Object</code> | Parameters for filtering applications. |
-| [params.size] | <code>Number</code> | The maximum number of applications returned by  the query per page (Max size: 1000). |
+| [params.size] | <code>Number</code> | The maximum number of applications returned by the query per page (Max size: 1000). |
 | [callback] | <code>function</code> | A callback for the list of applications. |
 
 <a name="Application+create"></a>
