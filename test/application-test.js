@@ -209,8 +209,9 @@ describe("Application API", function () {
 				.get("/v1/users/" + userId + "/applications")
 				.reply(200, applicationsList,
 					{
-						"link" : "<https://api.catapult.inetwork.com/v1/users/" + userId + "/applications?page=0&size=25>; rel='first'," +
-						"<https://api.catapult.inetwork.com/v1/users/" + userId + "/applications>; rel='next'"
+						"link" : "<https://api.catapult.inetwork.com/v1/users/" + userId +
+						"/applications?page=0&size=25>; rel=\"first\"," +
+						"<https://api.catapult.inetwork.com/v1/users/" + userId + "/applications>; rel=\"next\""
 					});
 			});
 

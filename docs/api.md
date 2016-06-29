@@ -17,6 +17,14 @@
 <dd></dd>
 </dl>
 
+## Functions
+
+<dl>
+<dt><a href="#getNextLink">getNextLink(response)</a> ⇒</dt>
+<dd><p>getNextLink</p>
+</dd>
+</dl>
+
 <a name="Application"></a>
 
 ## Application
@@ -24,11 +32,11 @@
 
 * [Application](#Application)
     * [new Application(client)](#new_Application_new)
-    * [.list(params, [callback])](#Application+list) ⇒ <code>MessageResponse</code>
-    * [.create(params, callbackHttpMethod, [callback])](#Application+create) ⇒ <code>[Application](#Application)</code>
-    * [.get(applicationId, [callback])](#Application+get) ⇒ <code>MessageResponse</code>
-    * [.update(applicationId, params, callbackHttpMethod, [callback])](#Application+update) ⇒ <code>[Application](#Application)</code>
-    * [.delete(applicationId, [callback])](#Application+delete) ⇒ <code>MessageResponse</code>
+    * [.list(params, [callback])](#Application+list) ⇒ <code>[Application](#Application)</code>
+    * [.create(params, [callback])](#Application+create) ⇒ <code>[Application](#Application)</code>
+    * [.get(applicationId, [callback])](#Application+get) ⇒ <code>[Application](#Application)</code>
+    * [.update(applicationId, params, [callback])](#Application+update) ⇒ <code>[Application](#Application)</code>
+    * [.delete(applicationId, [callback])](#Application+delete) ⇒ <code>[Application](#Application)</code>
 
 <a name="new_Application_new"></a>
 
@@ -42,11 +50,11 @@ Application
 
 <a name="Application+list"></a>
 
-### application.list(params, [callback]) ⇒ <code>MessageResponse</code>
+### application.list(params, [callback]) ⇒ <code>[Application](#Application)</code>
 List the user's applications
 
 **Kind**: instance method of <code>[Application](#Application)</code>  
-**Returns**: <code>MessageResponse</code> - A promise for the list of applications  
+**Returns**: <code>[Application](#Application)</code> - A promise for the list of applications  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -56,7 +64,7 @@ List the user's applications
 
 <a name="Application+create"></a>
 
-### application.create(params, callbackHttpMethod, [callback]) ⇒ <code>[Application](#Application)</code>
+### application.create(params, [callback]) ⇒ <code>[Application](#Application)</code>
 Create a new application
 
 **Kind**: instance method of <code>[Application](#Application)</code>  
@@ -72,22 +80,17 @@ Create a new application
 | [params.incomingMessageUrl] | <code>String</code> | A URL where message events will be sent for an inbound message. This is the endpoint where the Application Platform will send all message events. Either incomingMessageUrl or incomingCallUrl is required. |
 | [params.incomingMessageUrlCallbackTimeout] | <code>Number</code> | Determine how long should the platform wait for incomingMessageUrl's response before timing out in milliseconds. |
 | [params.incomingMessageFallbackUrl] | <code>String</code> | The URL used to send the callback event if the request to incomingMessageUrl fails. |
-| callbackHttpMethod | <code>String</code> | Determine if the callback event should be sent via HTTP GET or HTTP POST. Values are "get" or "post", default: "post". |
+| [params.callbackHttpMethod] | <code>String</code> | Determine if the callback event should be sent via HTTP GET or HTTP POST. Values are "get" or "post", default: "post". |
+| [params.autoAnswer] | <code>Boolean</code> | Determines whether or not an incoming call should be automatically answered. Default value is 'true'. |
 | [callback] | <code>function</code> | A callback for the list of applications |
-
-**Properties**
-
-| Name | Type | Description |
-| --- | --- | --- |
-| autoAnswer | <code>Boolean</code> | Determines whether or not an incoming call should be automatically answered. Default value is 'true'. |
 
 <a name="Application+get"></a>
 
-### application.get(applicationId, [callback]) ⇒ <code>MessageResponse</code>
+### application.get(applicationId, [callback]) ⇒ <code>[Application](#Application)</code>
 Get an application.
 
 **Kind**: instance method of <code>[Application](#Application)</code>  
-**Returns**: <code>MessageResponse</code> - A promise for the application.  
+**Returns**: <code>[Application](#Application)</code> - A promise for the application.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -96,11 +99,11 @@ Get an application.
 
 <a name="Application+update"></a>
 
-### application.update(applicationId, params, callbackHttpMethod, [callback]) ⇒ <code>[Application](#Application)</code>
+### application.update(applicationId, params, [callback]) ⇒ <code>[Application](#Application)</code>
 Make changes to an application.
 
 **Kind**: instance method of <code>[Application](#Application)</code>  
-**Returns**: <code>[Application](#Application)</code> - A promise for the modified application.  
+**Returns**: <code>[Application](#Application)</code> - Nothing.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -113,22 +116,17 @@ Make changes to an application.
 | [params.incomingMessageUrl] | <code>String</code> | A URL where message events will be sent for an inbound message. This is the endpoint where the Application Platform will send all message events. Either incomingMessageUrl or incomingCallUrl is required. |
 | [params.incomingMessageUrlCallbackTimeout] | <code>Number</code> | Determine how long should the platform wait for incomingMessageUrl's response before timing out in milliseconds. |
 | [params.incomingMessageFallbackUrl] | <code>String</code> | The URL used to send the callback event if the request to incomingMessageUrl fails. |
-| callbackHttpMethod | <code>String</code> | Determine if the callback event should be sent via HTTP GET or HTTP POST. Values are "get" or "post", default: "post". |
+| [params.callbackHttpMethod] | <code>String</code> | Determine if the callback event should be sent via HTTP GET or HTTP POST. Values are "get" or "post", default: "post". |
+| [params.autoAnswer] | <code>Boolean</code> | Determines whether or not an incoming call should be automatically answered. Default value is 'true'. |
 | [callback] | <code>function</code> | A callback for the list of applications |
-
-**Properties**
-
-| Name | Type | Description |
-| --- | --- | --- |
-| autoAnswer | <code>Boolean</code> | Determines whether or not an incoming call should be automatically answered. Default value is 'true'. |
 
 <a name="Application+delete"></a>
 
-### application.delete(applicationId, [callback]) ⇒ <code>MessageResponse</code>
+### application.delete(applicationId, [callback]) ⇒ <code>[Application](#Application)</code>
 Delete an application.
 
 **Kind**: instance method of <code>[Application](#Application)</code>  
-**Returns**: <code>MessageResponse</code> - A promise for the application.  
+**Returns**: <code>[Application](#Application)</code> - Nothing.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -157,11 +155,11 @@ Delete an application.
 
 * [Application](#Application) : <code>Object</code>
     * [new Application(client)](#new_Application_new)
-    * [.list(params, [callback])](#Application+list) ⇒ <code>MessageResponse</code>
-    * [.create(params, callbackHttpMethod, [callback])](#Application+create) ⇒ <code>[Application](#Application)</code>
-    * [.get(applicationId, [callback])](#Application+get) ⇒ <code>MessageResponse</code>
-    * [.update(applicationId, params, callbackHttpMethod, [callback])](#Application+update) ⇒ <code>[Application](#Application)</code>
-    * [.delete(applicationId, [callback])](#Application+delete) ⇒ <code>MessageResponse</code>
+    * [.list(params, [callback])](#Application+list) ⇒ <code>[Application](#Application)</code>
+    * [.create(params, [callback])](#Application+create) ⇒ <code>[Application](#Application)</code>
+    * [.get(applicationId, [callback])](#Application+get) ⇒ <code>[Application](#Application)</code>
+    * [.update(applicationId, params, [callback])](#Application+update) ⇒ <code>[Application](#Application)</code>
+    * [.delete(applicationId, [callback])](#Application+delete) ⇒ <code>[Application](#Application)</code>
 
 <a name="new_Application_new"></a>
 
@@ -175,11 +173,11 @@ Application
 
 <a name="Application+list"></a>
 
-### application.list(params, [callback]) ⇒ <code>MessageResponse</code>
+### application.list(params, [callback]) ⇒ <code>[Application](#Application)</code>
 List the user's applications
 
 **Kind**: instance method of <code>[Application](#Application)</code>  
-**Returns**: <code>MessageResponse</code> - A promise for the list of applications  
+**Returns**: <code>[Application](#Application)</code> - A promise for the list of applications  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -189,7 +187,7 @@ List the user's applications
 
 <a name="Application+create"></a>
 
-### application.create(params, callbackHttpMethod, [callback]) ⇒ <code>[Application](#Application)</code>
+### application.create(params, [callback]) ⇒ <code>[Application](#Application)</code>
 Create a new application
 
 **Kind**: instance method of <code>[Application](#Application)</code>  
@@ -205,22 +203,17 @@ Create a new application
 | [params.incomingMessageUrl] | <code>String</code> | A URL where message events will be sent for an inbound message. This is the endpoint where the Application Platform will send all message events. Either incomingMessageUrl or incomingCallUrl is required. |
 | [params.incomingMessageUrlCallbackTimeout] | <code>Number</code> | Determine how long should the platform wait for incomingMessageUrl's response before timing out in milliseconds. |
 | [params.incomingMessageFallbackUrl] | <code>String</code> | The URL used to send the callback event if the request to incomingMessageUrl fails. |
-| callbackHttpMethod | <code>String</code> | Determine if the callback event should be sent via HTTP GET or HTTP POST. Values are "get" or "post", default: "post". |
+| [params.callbackHttpMethod] | <code>String</code> | Determine if the callback event should be sent via HTTP GET or HTTP POST. Values are "get" or "post", default: "post". |
+| [params.autoAnswer] | <code>Boolean</code> | Determines whether or not an incoming call should be automatically answered. Default value is 'true'. |
 | [callback] | <code>function</code> | A callback for the list of applications |
-
-**Properties**
-
-| Name | Type | Description |
-| --- | --- | --- |
-| autoAnswer | <code>Boolean</code> | Determines whether or not an incoming call should be automatically answered. Default value is 'true'. |
 
 <a name="Application+get"></a>
 
-### application.get(applicationId, [callback]) ⇒ <code>MessageResponse</code>
+### application.get(applicationId, [callback]) ⇒ <code>[Application](#Application)</code>
 Get an application.
 
 **Kind**: instance method of <code>[Application](#Application)</code>  
-**Returns**: <code>MessageResponse</code> - A promise for the application.  
+**Returns**: <code>[Application](#Application)</code> - A promise for the application.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -229,11 +222,11 @@ Get an application.
 
 <a name="Application+update"></a>
 
-### application.update(applicationId, params, callbackHttpMethod, [callback]) ⇒ <code>[Application](#Application)</code>
+### application.update(applicationId, params, [callback]) ⇒ <code>[Application](#Application)</code>
 Make changes to an application.
 
 **Kind**: instance method of <code>[Application](#Application)</code>  
-**Returns**: <code>[Application](#Application)</code> - A promise for the modified application.  
+**Returns**: <code>[Application](#Application)</code> - Nothing.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -246,22 +239,17 @@ Make changes to an application.
 | [params.incomingMessageUrl] | <code>String</code> | A URL where message events will be sent for an inbound message. This is the endpoint where the Application Platform will send all message events. Either incomingMessageUrl or incomingCallUrl is required. |
 | [params.incomingMessageUrlCallbackTimeout] | <code>Number</code> | Determine how long should the platform wait for incomingMessageUrl's response before timing out in milliseconds. |
 | [params.incomingMessageFallbackUrl] | <code>String</code> | The URL used to send the callback event if the request to incomingMessageUrl fails. |
-| callbackHttpMethod | <code>String</code> | Determine if the callback event should be sent via HTTP GET or HTTP POST. Values are "get" or "post", default: "post". |
+| [params.callbackHttpMethod] | <code>String</code> | Determine if the callback event should be sent via HTTP GET or HTTP POST. Values are "get" or "post", default: "post". |
+| [params.autoAnswer] | <code>Boolean</code> | Determines whether or not an incoming call should be automatically answered. Default value is 'true'. |
 | [callback] | <code>function</code> | A callback for the list of applications |
-
-**Properties**
-
-| Name | Type | Description |
-| --- | --- | --- |
-| autoAnswer | <code>Boolean</code> | Determines whether or not an incoming call should be automatically answered. Default value is 'true'. |
 
 <a name="Application+delete"></a>
 
-### application.delete(applicationId, [callback]) ⇒ <code>MessageResponse</code>
+### application.delete(applicationId, [callback]) ⇒ <code>[Application](#Application)</code>
 Delete an application.
 
 **Kind**: instance method of <code>[Application](#Application)</code>  
-**Returns**: <code>MessageResponse</code> - A promise for the application.  
+**Returns**: <code>[Application](#Application)</code> - Nothing.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -508,4 +496,16 @@ Get a list of recordings
 | --- | --- | --- |
 | params | <code>Object</code> | [description] |
 | [callback] | <code>function</code> | Callback with the recording objects |
+
+<a name="getNextLink"></a>
+
+## getNextLink(response) ⇒
+getNextLink
+
+**Kind**: global function  
+**Returns**: A parsed version of the link to the subsequent page, or null if no such page exists.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| response | <code>Object</code> | A response object returned from calling 'client.makeRequest' |
 
