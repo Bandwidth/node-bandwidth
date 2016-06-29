@@ -148,7 +148,7 @@ describe("Message API", function () {
 				.reply(200, messagesList, {
 					"link" : "<https://api.catapult.inetwork.com" +
 						"/v1/users/" + userId + "/messages?fromDateTime=" +
-						fromDateTime + "&" + "toDateTime=" + toDateTime + ">"
+						fromDateTime + "&" + "toDateTime=" + toDateTime + ">; rel=\"next\""
 				})
 				.get("/v1/users/" + userId + "/messages?fromDateTime=" + fromDateTime + "&" + "toDateTime=" + toDateTime)
 				.reply(200, messagesList);
