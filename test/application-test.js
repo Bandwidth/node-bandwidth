@@ -48,7 +48,7 @@ describe("Application API", function () {
 			"name"               : "NewApplication",
 			"incomingCallUrl"    : "http://example.com/calls3.php",
 			"incomingMessageUrl" : "http://example.com/messages3.php",
-			"autoAnswer"         : true			
+			"autoAnswer"         : true
 		};
 
 		before(function () {
@@ -140,9 +140,9 @@ describe("Application API", function () {
 			});
 		});
 
-		describe('testing global void methods', function () {
+		describe("testing global void methods", function () {
 
-			describe('updating applications', function () {
+			describe("updating applications", function () {
 
 				beforeEach(function () {
 					updateNock = nock("https://api.catapult.inetwork.com")
@@ -172,7 +172,7 @@ describe("Application API", function () {
 				});
 			});
 
-			describe('deleting applications', function () {
+			describe("deleting applications", function () {
 
 				beforeEach(function () {
 					deleteNock = nock("https://api.catapult.inetwork.com")
@@ -193,7 +193,7 @@ describe("Application API", function () {
 				});
 
 				it("should delete an application, callback style", function () {
-					client.Application.delete(testApplication.id, function(err, response) {
+					client.Application.delete(testApplication.id, function (err, response) {
 						if (err) {
 							throw err;
 						}
@@ -203,7 +203,7 @@ describe("Application API", function () {
 			});
 		});
 
-		describe('pagination tests', function () {
+		describe("pagination tests", function () {
 
 			before(function () {
 				nock("https://api.catapult.inetwork.com")
