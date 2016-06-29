@@ -168,7 +168,7 @@ describe("Call API", function () {
 		it("should get a call, promise style", function () {
 			return client.Call.get(testCall.id)
 			.then(function (call) {
-				call.should.eql(testCall)
+				call.should.eql(testCall);
 			});
 		});
 

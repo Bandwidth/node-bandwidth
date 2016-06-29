@@ -67,31 +67,18 @@ describe("Recording API", function () {
 			nock.enableNetConnect();
 		});
 
-		it("should get a recording", function (done) {
-			client.Recording.get(testRecording.id)
+		it("should get a recording", function () {
+			return client.Recording.get(testRecording.id)
 			.then(function (recording) {
-				recording.id.should.equal(testRecording.id);
-				recording.media.should.equal(testRecording.media);
-				recording.startTime.should.equal(testRecording.startTime);
-				recording.endTime.should.equal(testRecording.endTime);
-			})
-			.done(done);
+				recording.should.eql(testRecording);
+			});
 		});
 
-		it("should get a list of messages, promise style", function (done) {
-			client.Recording.list()
+		it("should get a list of messages, promise style", function () {
+			return client.Recording.list()
 			.then(function (recordings) {
-				recordings[0].id.should.equal(recordingList[0].id);
-				recordings[0].media.should.equal(recordingList[0].media);
-				recordings[0].startTime.should.equal(recordingList[0].startTime);
-				recordings[0].endTime.should.equal(recordingList[0].endTime);
-
-				recordings[1].id.should.equal(recordingList[1].id);
-				recordings[1].media.should.equal(recordingList[1].media);
-				recordings[1].startTime.should.equal(recordingList[1].startTime);
-				recordings[1].endTime.should.equal(recordingList[1].endTime);
-			})
-			.done(done);
+				recordings.should.eql(recordingList);
+			});
 		});
 
 	});
