@@ -3,7 +3,7 @@
 <dl>
 <dt><a href="#Application">Application</a></dt>
 <dd></dd>
-<dt><a href="#Application">Application</a> : <code>Object</code></dt>
+<dt><a href="#ApplicationResponse">ApplicationResponse</a> : <code>Object</code></dt>
 <dd></dd>
 <dt><a href="#Call">Call</a></dt>
 <dd></dd>
@@ -33,10 +33,10 @@
 * [Application](#Application)
     * [new Application(client)](#new_Application_new)
     * [.list(params, [callback])](#Application+list) ⇒ <code>[Application](#Application)</code>
-    * [.create(params, [callback])](#Application+create) ⇒ <code>[Application](#Application)</code>
-    * [.get(applicationId, [callback])](#Application+get) ⇒ <code>[Application](#Application)</code>
-    * [.update(applicationId, params, [callback])](#Application+update) ⇒ <code>[Application](#Application)</code>
-    * [.delete(applicationId, [callback])](#Application+delete) ⇒ <code>[Application](#Application)</code>
+    * [.create(params, [callback])](#Application+create) ⇒ <code>[ApplicationResponse](#ApplicationResponse)</code>
+    * [.get(applicationId, [callback])](#Application+get) ⇒ <code>[ApplicationResponse](#ApplicationResponse)</code>
+    * [.update(applicationId, params, [callback])](#Application+update)
+    * [.delete(applicationId, [callback])](#Application+delete)
 
 <a name="new_Application_new"></a>
 
@@ -54,21 +54,21 @@ Application
 List the user's applications
 
 **Kind**: instance method of <code>[Application](#Application)</code>  
-**Returns**: <code>[Application](#Application)</code> - A promise for the list of applications  
+**Returns**: <code>[Application](#Application)</code> - A promise for the list of applications, has a getNextPagefunction if the number of applications returned by the query exceeds the page size.  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| params | <code>Object</code> | Parameters for filtering applications |
-| [params.size] | <code>Number</code> | The size of each page requested (Max size: 1000) |
-| [callback] | <code>function</code> | A callback for the list of applications |
+| params | <code>Object</code> | Parameters for filtering applications. |
+| [params.size] | <code>Number</code> | The maximum number of applications returned by  the query per page (Max size: 1000). |
+| [callback] | <code>function</code> | A callback for the list of applications. |
 
 <a name="Application+create"></a>
 
-### application.create(params, [callback]) ⇒ <code>[Application](#Application)</code>
+### application.create(params, [callback]) ⇒ <code>[ApplicationResponse](#ApplicationResponse)</code>
 Create a new application
 
 **Kind**: instance method of <code>[Application](#Application)</code>  
-**Returns**: <code>[Application](#Application)</code> - A promise for the newly created application.  
+**Returns**: <code>[ApplicationResponse](#ApplicationResponse)</code> - A promise for the newly created application.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -86,11 +86,11 @@ Create a new application
 
 <a name="Application+get"></a>
 
-### application.get(applicationId, [callback]) ⇒ <code>[Application](#Application)</code>
+### application.get(applicationId, [callback]) ⇒ <code>[ApplicationResponse](#ApplicationResponse)</code>
 Get an application.
 
 **Kind**: instance method of <code>[Application](#Application)</code>  
-**Returns**: <code>[Application](#Application)</code> - A promise for the application.  
+**Returns**: <code>[ApplicationResponse](#ApplicationResponse)</code> - A promise for the application.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -99,11 +99,10 @@ Get an application.
 
 <a name="Application+update"></a>
 
-### application.update(applicationId, params, [callback]) ⇒ <code>[Application](#Application)</code>
+### application.update(applicationId, params, [callback])
 Make changes to an application.
 
 **Kind**: instance method of <code>[Application](#Application)</code>  
-**Returns**: <code>[Application](#Application)</code> - Nothing.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -122,20 +121,19 @@ Make changes to an application.
 
 <a name="Application+delete"></a>
 
-### application.delete(applicationId, [callback]) ⇒ <code>[Application](#Application)</code>
+### application.delete(applicationId, [callback])
 Delete an application.
 
 **Kind**: instance method of <code>[Application](#Application)</code>  
-**Returns**: <code>[Application](#Application)</code> - Nothing.  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | applicationId | <code>String</code> | The ID of the application to delete. |
 | [callback] | <code>function</code> | A callback for the application. |
 
-<a name="Application"></a>
+<a name="ApplicationResponse"></a>
 
-## Application : <code>Object</code>
+## ApplicationResponse : <code>Object</code>
 **Kind**: global class  
 **Properties**
 
@@ -151,110 +149,6 @@ Delete an application.
 | incomingMessageUrl | <code>String</code> | A URL where message events will be sent for an inbound message. This is the endpoint where the Application Platform will send all message events. Either incomingMessageUrl or incomingCallUrl is required. |
 | incomingMessageUrlCallbackTimeout | <code>Number</code> | Determine how long should the platform wait for incomingMessageUrl's response before timing out in milliseconds. |
 | incomingMessageFallbackUrl | <code>String</code> | The URL used to send the callback event if the request to incomingMessageUrl fails. |
-
-
-* [Application](#Application) : <code>Object</code>
-    * [new Application(client)](#new_Application_new)
-    * [.list(params, [callback])](#Application+list) ⇒ <code>[Application](#Application)</code>
-    * [.create(params, [callback])](#Application+create) ⇒ <code>[Application](#Application)</code>
-    * [.get(applicationId, [callback])](#Application+get) ⇒ <code>[Application](#Application)</code>
-    * [.update(applicationId, params, [callback])](#Application+update) ⇒ <code>[Application](#Application)</code>
-    * [.delete(applicationId, [callback])](#Application+delete) ⇒ <code>[Application](#Application)</code>
-
-<a name="new_Application_new"></a>
-
-### new Application(client)
-Application
-
-
-| Param | Type | Description |
-| --- | --- | --- |
-| client | <code>Object</code> | Catapult client |
-
-<a name="Application+list"></a>
-
-### application.list(params, [callback]) ⇒ <code>[Application](#Application)</code>
-List the user's applications
-
-**Kind**: instance method of <code>[Application](#Application)</code>  
-**Returns**: <code>[Application](#Application)</code> - A promise for the list of applications  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| params | <code>Object</code> | Parameters for filtering applications |
-| [params.size] | <code>Number</code> | The size of each page requested (Max size: 1000) |
-| [callback] | <code>function</code> | A callback for the list of applications |
-
-<a name="Application+create"></a>
-
-### application.create(params, [callback]) ⇒ <code>[Application](#Application)</code>
-Create a new application
-
-**Kind**: instance method of <code>[Application](#Application)</code>  
-**Returns**: <code>[Application](#Application)</code> - A promise for the newly created application.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| params | <code>Object</code> | Parameters for creating a new call |
-| [params.name] | <code>String</code> | A name you choose for this application. |
-| [params.incomingCallUrl] | <code>String</code> | A URL where call events will be sent for an inbound call. This is the endpoint where the Application Platform will send all call events. Either incomingCallUrl or incomingMessageUrl is required. |
-| [params.incomingCallUrlCallbackTimeout] | <code>String</code> | Determine how long should the platform wait for incomingCallUrl's response before timing out in milliseconds. |
-| [params.incomingCallFallbackUrl] | <code>String</code> | The URL used to send the callback event if the request to incomingCallUrl fails. |
-| [params.incomingMessageUrl] | <code>String</code> | A URL where message events will be sent for an inbound message. This is the endpoint where the Application Platform will send all message events. Either incomingMessageUrl or incomingCallUrl is required. |
-| [params.incomingMessageUrlCallbackTimeout] | <code>Number</code> | Determine how long should the platform wait for incomingMessageUrl's response before timing out in milliseconds. |
-| [params.incomingMessageFallbackUrl] | <code>String</code> | The URL used to send the callback event if the request to incomingMessageUrl fails. |
-| [params.callbackHttpMethod] | <code>String</code> | Determine if the callback event should be sent via HTTP GET or HTTP POST. Values are "get" or "post", default: "post". |
-| [params.autoAnswer] | <code>Boolean</code> | Determines whether or not an incoming call should be automatically answered. Default value is 'true'. |
-| [callback] | <code>function</code> | A callback for the list of applications |
-
-<a name="Application+get"></a>
-
-### application.get(applicationId, [callback]) ⇒ <code>[Application](#Application)</code>
-Get an application.
-
-**Kind**: instance method of <code>[Application](#Application)</code>  
-**Returns**: <code>[Application](#Application)</code> - A promise for the application.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| applicationId | <code>String</code> | The ID of the application to get. |
-| [callback] | <code>function</code> | A callback for the application. |
-
-<a name="Application+update"></a>
-
-### application.update(applicationId, params, [callback]) ⇒ <code>[Application](#Application)</code>
-Make changes to an application.
-
-**Kind**: instance method of <code>[Application](#Application)</code>  
-**Returns**: <code>[Application](#Application)</code> - Nothing.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| applicationId | <code>String</code> | The ID of the application to modify. |
-| params | <code>Object</code> | Parameters for creating a new call |
-| [params.name] | <code>String</code> | A name you choose for this application. |
-| [params.incomingCallUrl] | <code>String</code> | A URL where call events will be sent for an inbound call. This is the endpoint where the Application Platform will send all call events. Either incomingCallUrl or incomingMessageUrl is required. |
-| [params.incomingCallUrlCallbackTimeout] | <code>String</code> | Determine how long should the platform wait for incomingCallUrl's response before timing out in milliseconds. |
-| [params.incomingCallFallbackUrl] | <code>String</code> | The URL used to send the callback event if the request to incomingCallUrl fails. |
-| [params.incomingMessageUrl] | <code>String</code> | A URL where message events will be sent for an inbound message. This is the endpoint where the Application Platform will send all message events. Either incomingMessageUrl or incomingCallUrl is required. |
-| [params.incomingMessageUrlCallbackTimeout] | <code>Number</code> | Determine how long should the platform wait for incomingMessageUrl's response before timing out in milliseconds. |
-| [params.incomingMessageFallbackUrl] | <code>String</code> | The URL used to send the callback event if the request to incomingMessageUrl fails. |
-| [params.callbackHttpMethod] | <code>String</code> | Determine if the callback event should be sent via HTTP GET or HTTP POST. Values are "get" or "post", default: "post". |
-| [params.autoAnswer] | <code>Boolean</code> | Determines whether or not an incoming call should be automatically answered. Default value is 'true'. |
-| [callback] | <code>function</code> | A callback for the list of applications |
-
-<a name="Application+delete"></a>
-
-### application.delete(applicationId, [callback]) ⇒ <code>[Application](#Application)</code>
-Delete an application.
-
-**Kind**: instance method of <code>[Application](#Application)</code>  
-**Returns**: <code>[Application](#Application)</code> - Nothing.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| applicationId | <code>String</code> | The ID of the application to delete. |
-| [callback] | <code>function</code> | A callback for the application. |
 
 <a name="Call"></a>
 
