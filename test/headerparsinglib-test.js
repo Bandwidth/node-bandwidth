@@ -16,7 +16,7 @@ describe("Utility Library", function () {
 		});
 
 		it("returns a link", function () {
-			getNextLink(response).should.be.ok;
+			getNextLink(response.headers).should.be.ok;
 		});
 	});
 
@@ -33,7 +33,7 @@ describe("Utility Library", function () {
 		});
 
 		it("returns null", function () {
-			(getNextLink(response) === null).should.be.true;
+			(getNextLink(response.headers) === null).should.be.true;
 		});
 	});
 
@@ -48,7 +48,7 @@ describe("Utility Library", function () {
 		});
 
 		it("returns null", function () {
-			(getNextLink(response) === null).should.be.true;
+			(getNextLink(response.headers) === null).should.be.true;
 		});
 	});
 });
