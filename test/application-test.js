@@ -98,6 +98,17 @@ describe("Application API", function () {
 			});
 		});
 
+		it("those applications should not have more pages", function () {
+			return client.Application.list({})
+			.then(function (applicationsResponse) {
+				applicationsResponse.hasNextPage.should.be.false;
+				return applicationsResponse.getNextPage()
+				.catch(function (err) {
+					err.should.equal("Next page does not exist.");
+				});
+			});
+		});
+
 		it("should create an application, promise style", function () {
 			return client.Application.create(newApplication)
 			.then(function (applicationResponse) {

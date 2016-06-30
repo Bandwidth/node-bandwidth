@@ -1,4 +1,4 @@
-var getNextLink = require("../lib/util").getNextLink;
+var getNextLink = require("../lib/headerParsingLib").getNextLink;
 
 describe("Utility Library", function () {
 
