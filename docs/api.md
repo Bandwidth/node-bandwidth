@@ -1,6 +1,10 @@
 ## Classes
 
 <dl>
+<dt><a href="#Application">Application</a></dt>
+<dd></dd>
+<dt><a href="#ApplicationResponse">ApplicationResponse</a> : <code>Object</code></dt>
+<dd></dd>
 <dt><a href="#Call">Call</a></dt>
 <dd></dd>
 <dt><a href="#CallResponse">CallResponse</a> : <code>Object</code></dt>
@@ -12,6 +16,139 @@
 <dt><a href="#Recording">Recording</a></dt>
 <dd></dd>
 </dl>
+
+## Functions
+
+<dl>
+<dt><a href="#getNextLink">getNextLink(response)</a> ⇒</dt>
+<dd><p>getNextLink</p>
+</dd>
+</dl>
+
+<a name="Application"></a>
+
+## Application
+**Kind**: global class  
+
+* [Application](#Application)
+    * [new Application(client)](#new_Application_new)
+    * [.list(params, [callback])](#Application+list) ⇒ <code>[Array.&lt;ApplicationResponse&gt;](#ApplicationResponse)</code>
+    * [.create(params, [callback])](#Application+create) ⇒ <code>[ApplicationResponse](#ApplicationResponse)</code>
+    * [.get(applicationId, [callback])](#Application+get) ⇒ <code>[ApplicationResponse](#ApplicationResponse)</code>
+    * [.update(applicationId, params, [callback])](#Application+update)
+    * [.delete(applicationId, [callback])](#Application+delete)
+
+<a name="new_Application_new"></a>
+
+### new Application(client)
+Application
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| client | <code>Object</code> | Catapult client |
+
+<a name="Application+list"></a>
+
+### application.list(params, [callback]) ⇒ <code>[Array.&lt;ApplicationResponse&gt;](#ApplicationResponse)</code>
+List the user's applications
+
+**Kind**: instance method of <code>[Application](#Application)</code>  
+**Returns**: <code>[Array.&lt;ApplicationResponse&gt;](#ApplicationResponse)</code> - A promise for the list of applications, has a getNextPagefunction if the number of applications returned by the query exceeds the page size.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| params | <code>Object</code> | Parameters for filtering applications. |
+| [params.size] | <code>Number</code> | The maximum number of applications returned by the query per page (Max size: 1000). |
+| [callback] | <code>function</code> | A callback for the list of applications. |
+
+<a name="Application+create"></a>
+
+### application.create(params, [callback]) ⇒ <code>[ApplicationResponse](#ApplicationResponse)</code>
+Create a new application
+
+**Kind**: instance method of <code>[Application](#Application)</code>  
+**Returns**: <code>[ApplicationResponse](#ApplicationResponse)</code> - A promise for the newly created application.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| params | <code>Object</code> | Parameters for creating a new call |
+| [params.name] | <code>String</code> | A name you choose for this application. |
+| [params.incomingCallUrl] | <code>String</code> | A URL where call events will be sent for an inbound call. This is the endpoint where the Application Platform will send all call events. Either incomingCallUrl or incomingMessageUrl is required. |
+| [params.incomingCallUrlCallbackTimeout] | <code>String</code> | Determine how long should the platform wait for incomingCallUrl's response before timing out in milliseconds. |
+| [params.incomingCallFallbackUrl] | <code>String</code> | The URL used to send the callback event if the request to incomingCallUrl fails. |
+| [params.incomingMessageUrl] | <code>String</code> | A URL where message events will be sent for an inbound message. This is the endpoint where the Application Platform will send all message events. Either incomingMessageUrl or incomingCallUrl is required. |
+| [params.incomingMessageUrlCallbackTimeout] | <code>Number</code> | Determine how long should the platform wait for incomingMessageUrl's response before timing out in milliseconds. |
+| [params.incomingMessageFallbackUrl] | <code>String</code> | The URL used to send the callback event if the request to incomingMessageUrl fails. |
+| [params.callbackHttpMethod] | <code>String</code> | Determine if the callback event should be sent via HTTP GET or HTTP POST. Values are "get" or "post", default: "post". |
+| [params.autoAnswer] | <code>Boolean</code> | Determines whether or not an incoming call should be automatically answered. Default value is 'true'. |
+| [callback] | <code>function</code> | A callback for the list of applications |
+
+<a name="Application+get"></a>
+
+### application.get(applicationId, [callback]) ⇒ <code>[ApplicationResponse](#ApplicationResponse)</code>
+Get an application.
+
+**Kind**: instance method of <code>[Application](#Application)</code>  
+**Returns**: <code>[ApplicationResponse](#ApplicationResponse)</code> - A promise for the application.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| applicationId | <code>String</code> | The ID of the application to get. |
+| [callback] | <code>function</code> | A callback for the application. |
+
+<a name="Application+update"></a>
+
+### application.update(applicationId, params, [callback])
+Make changes to an application.
+
+**Kind**: instance method of <code>[Application](#Application)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| applicationId | <code>String</code> | The ID of the application to modify. |
+| params | <code>Object</code> | Parameters for creating a new call |
+| [params.name] | <code>String</code> | A name you choose for this application. |
+| [params.incomingCallUrl] | <code>String</code> | A URL where call events will be sent for an inbound call. This is the endpoint where the Application Platform will send all call events. Either incomingCallUrl or incomingMessageUrl is required. |
+| [params.incomingCallUrlCallbackTimeout] | <code>String</code> | Determine how long should the platform wait for incomingCallUrl's response before timing out in milliseconds. |
+| [params.incomingCallFallbackUrl] | <code>String</code> | The URL used to send the callback event if the request to incomingCallUrl fails. |
+| [params.incomingMessageUrl] | <code>String</code> | A URL where message events will be sent for an inbound message. This is the endpoint where the Application Platform will send all message events. Either incomingMessageUrl or incomingCallUrl is required. |
+| [params.incomingMessageUrlCallbackTimeout] | <code>Number</code> | Determine how long should the platform wait for incomingMessageUrl's response before timing out in milliseconds. |
+| [params.incomingMessageFallbackUrl] | <code>String</code> | The URL used to send the callback event if the request to incomingMessageUrl fails. |
+| [params.callbackHttpMethod] | <code>String</code> | Determine if the callback event should be sent via HTTP GET or HTTP POST. Values are "get" or "post", default: "post". |
+| [params.autoAnswer] | <code>Boolean</code> | Determines whether or not an incoming call should be automatically answered. Default value is 'true'. |
+| [callback] | <code>function</code> | A callback for the list of applications |
+
+<a name="Application+delete"></a>
+
+### application.delete(applicationId, [callback])
+Delete an application.
+
+**Kind**: instance method of <code>[Application](#Application)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| applicationId | <code>String</code> | The ID of the application to delete. |
+| [callback] | <code>function</code> | A callback for the application. |
+
+<a name="ApplicationResponse"></a>
+
+## ApplicationResponse : <code>Object</code>
+**Kind**: global class  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| id | <code>String</code> | The unique identifier for the application. |
+| name | <code>String</code> | A name you choose for this application. |
+| incomingCallUrl | <code>String</code> | A URL where call events will be sent for an inbound call. This is the endpoint where the Application Platform will send all call events. Either incomingCallUrl or incomingMessageUrl is required. |
+| incomingCallUrlCallbackTimeout | <code>String</code> | Determine how long should the platform wait for incomingCallUrl's response before timing out in milliseconds. |
+| incomingCallFallbackUrl | <code>String</code> | The URL used to send the callback event if the request to incomingCallUrl fails. |
+| callbackHttpMethod | <code>String</code> | Determine if the callback event should be sent via HTTP GET or HTTP POST. Values are "get" or "post", default: "post". |
+| autoAnswer | <code>Boolean</code> | Determines whether or not an incoming call should be automatically answered. Default value is 'true'. |
+| incomingMessageUrl | <code>String</code> | A URL where message events will be sent for an inbound message. This is the endpoint where the Application Platform will send all message events. Either incomingMessageUrl or incomingCallUrl is required. |
+| incomingMessageUrlCallbackTimeout | <code>Number</code> | Determine how long should the platform wait for incomingMessageUrl's response before timing out in milliseconds. |
+| incomingMessageFallbackUrl | <code>String</code> | The URL used to send the callback event if the request to incomingMessageUrl fails. |
 
 <a name="Call"></a>
 
@@ -253,4 +390,16 @@ Get a list of recordings
 | --- | --- | --- |
 | params | <code>Object</code> | [description] |
 | [callback] | <code>function</code> | Callback with the recording objects |
+
+<a name="getNextLink"></a>
+
+## getNextLink(response) ⇒
+getNextLink
+
+**Kind**: global function  
+**Returns**: A parsed version of the link to the subsequent page, or null if no such page exists.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| response | <code>Object</code> | A response object returned from calling 'client.makeRequest' |
 
