@@ -39,6 +39,7 @@
     "jshint-stylish": "^2.1.0",
     "mocha": "^2.4.5",
     "nock": "^7.5.0",
+    "parse-link-header": "^0.4.1",
     "should": "4.3.0"
   }
 }
