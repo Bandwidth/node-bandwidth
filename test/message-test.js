@@ -148,9 +148,10 @@ describe("Message API", function () {
 				.reply(200, messagesList, {
 					"link" : "<https://api.catapult.inetwork.com" +
 						"/v1/users/" + userId + "/messages?fromDateTime=" +
-						fromDateTime + "&" + "toDateTime=" + toDateTime + "&size=25>; rel=\"next\""
+						fromDateTime + "&" + "toDateTime=" + toDateTime + "&sortKeyLT=1>; rel=\"next\""
 				})
-				.get("/v1/users/" + userId + "/messages?fromDateTime=" + fromDateTime + "&" + "toDateTime=" + toDateTime + "&size=25")
+				.get("/v1/users/" + userId + "/messages?fromDateTime=" + fromDateTime +
+						"&" + "toDateTime=" + toDateTime + "&sortKeyLT=1")
 				.reply(200, messagesList);
 		});
 
