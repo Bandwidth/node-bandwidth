@@ -148,9 +148,9 @@ describe("Message API", function () {
 				.reply(200, messagesList, {
 					"link" : "<https://api.catapult.inetwork.com" +
 						"/v1/users/" + userId + "/messages?fromDateTime=" +
-						fromDateTime + "&" + "toDateTime=" + toDateTime + ">"
+						fromDateTime + "&" + "toDateTime=" + toDateTime + "&size=25>; rel=\"next\""
 				})
-				.get("/v1/users/" + userId + "/messages?fromDateTime=" + fromDateTime + "&" + "toDateTime=" + toDateTime)
+				.get("/v1/users/" + userId + "/messages?fromDateTime=" + fromDateTime + "&" + "toDateTime=" + toDateTime + "&size=25")
 				.reply(200, messagesList);
 		});
 
@@ -171,14 +171,19 @@ describe("Message API", function () {
 				messages[0].should.eql(messagesList[0]);
 				messages[1].should.eql(messagesList[1]);
 
-				messageResponse.getNextPage()
-				.then(function (otherMessageResponse) {
+				return messageResponse.getNextPage();
+			})
+			.then(function (otherMessageResponse) {
 
-					messages = otherMessageResponse.messages;
+				messages = otherMessageResponse.messages;
 
-					messages[0].should.eql(messagesList[0]);
-					messages[1].should.eql(messagesList[1]);
-				});
+				messages[0].should.eql(messagesList[0]);
+				messages[1].should.eql(messagesList[1]);
+
+				return otherMessageResponse.getNextPage();
+			})
+			.catch(function (err) {
+				err.should.eql("Next page does not exist.");
 			});
 		});
 	});
