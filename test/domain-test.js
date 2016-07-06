@@ -13,32 +13,31 @@ describe("Domain API", function () {
 		var apiSecret = "fakeapiSecret";
 
 		var newTestDomain = {
-			name : "domain1",
-			description   : "New domain",
+			name        : "domain1",
+			description : "New domain",
 		};
 
 		var testDomain = {
-			"id"                 : "fakeDomainId",
-			"name"               : "domain11",
-			"description"        : "New domain",
-			"endpoints"          : "https://.../domains/fakeDomainId/endpoints"
+			"id"          : "fakeDomainId",
+			"name"        : "domain11",
+			"description" : "New domain",
+			"endpoints"   : "https://.../domains/fakeDomainId/endpoints"
 		};
 
 		var domainsList = [
 			{
-			"id"                 : "fakeDomainId1",
-			"name"               : "domain11",
-			"description"        : "New domain1",
-			"endpoints"          : "https://.../domains/fakeDomainId1/endpoints"
+				"id"          : "fakeDomainId1",
+				"name"        : "domain11",
+				"description" : "New domain1",
+				"endpoints"   : "https://.../domains/fakeDomainId1/endpoints"
 			},
 			{
-			"id"                 : "fakeDomainId2",
-			"name"               : "domain12",
-			"description"        : "New domain2",
-			"endpoints"          : "https://.../domains/fakeDomainId2/endpoints"
-		    }
+				"id"          : "fakeDomainId2",
+				"name"        : "domain12",
+				"description" : "New domain2",
+				"endpoints"   : "https://.../domains/fakeDomainId2/endpoints"
+			}
 		];
-
 
 		before(function () {
 			client = new CatapultClient({
@@ -76,7 +75,7 @@ describe("Domain API", function () {
 
 		it("should return domain list", function () {
 			return client.Domain.list()
-			.then(function(domains){
+			.then(function (domains) {
 				domains.should.eql(domainsList);
 			});
 		});
