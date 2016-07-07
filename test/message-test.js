@@ -196,7 +196,7 @@ describe("Message API", function () {
 				(messages[0] === undefined).should.be.true;
 
 				return messageResponse.getNextPage()
-			})
+			});
 			.catch(function (err) {
 				err.should.eql("Next page does not exist.");
 			});
