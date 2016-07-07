@@ -124,35 +124,20 @@ describe("Message API", function () {
 		});
 	});
 
-	describe("global methods using multiple page response", function () {
+	describe("list function with a multiple page response", function () {
 
 		before(function () {
-			client = new CatapultClient({
-				userId    : userId,
-				apiToken  : apiToken,
-				apiSecret : apiSecret
-			});
 			nock.disableNetConnect();
 
 			nock("https://api.catapult.inetwork.com")
 				.persist()
-				.post("/v1/users/" + userId + "/messages", newTestMessage.id)
-				.reply(201,
-					{},
-					{
-						"Location" : "/v1/users/" + userId + "/messages/fakeMessageId"
-					})
-				.get("/v1/users/" + userId + "/messages/" + testMessage.id)
-				.reply(200, testMessage)
-				.get("/v1/users/" + userId + "/messages?fromDateTime=" + fromDateTime + "&" + "toDateTime=" + toDateTime)
+				.get("/v1/users/" + userId + "/messages")
 				.reply(200, messagesList, {
 					"link" : "<https://api.catapult.inetwork.com" +
-						"/v1/users/" + userId + "/messages?fromDateTime=" +
-						fromDateTime + "&" + "toDateTime=" + toDateTime + "&sortKeyLT=1>; rel=\"next\""
+						"/v1/users/" + userId + "/messages?" + "sortKeyLT=1>; rel=\"next\""
 				})
-				.get("/v1/users/" + userId + "/messages?fromDateTime=" + fromDateTime +
-						"&" + "toDateTime=" + toDateTime + "&sortKeyLT=1")
-				.reply(200, messagesList);
+				.get("/v1/users/" + userId + "/messages?sortKeyLT=1")
+				.reply(200, []);
 		});
 
 		after(function () {
@@ -161,10 +146,8 @@ describe("Message API", function () {
 		});
 
 		it("should get the next page of messages (if it exists)", function () {
-			return client.Message.list({
-				fromDateTime : fromDateTime,
-				toDateTime   : toDateTime
-			})
+			//Simulating a response which has 1 page of messages
+			return client.Message.list()
 			.then(function (messageResponse) {
 
 				var messages = messageResponse.messages;
@@ -178,10 +161,41 @@ describe("Message API", function () {
 
 				messages = otherMessageResponse.messages;
 
-				messages[0].should.eql(messagesList[0]);
-				messages[1].should.eql(messagesList[1]);
+				(messages[0] === undefined).should.be.true;
 
 				return otherMessageResponse.getNextPage();
+			})
+			.catch(function (err) {
+				err.should.eql("Next page does not exist.");
+			});
+		});
+	});
+
+	describe("list function with no messages available", function () {
+
+		before(function () {
+			nock.disableNetConnect();
+
+			nock("https://api.catapult.inetwork.com")
+				.persist()
+				.get("/v1/users/" + userId + "/messages")
+				.reply(200, []);
+		});
+
+		after(function () {
+			nock.cleanAll();
+			nock.enableNetConnect();
+		});
+
+		it("should not get the next page of messages", function () {
+			//Simulating a response which has 0 pages of messages
+			return client.Message.list()
+			.then(function (messageResponse) {
+
+				var messages = messageResponse.messages;
+				(messages[0] === undefined).should.be.true;
+
+				return messageResponse.getNextPage()
 			})
 			.catch(function (err) {
 				err.should.eql("Next page does not exist.");
