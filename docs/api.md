@@ -348,7 +348,7 @@ Delete a domain.
 * [Endpoint](#Endpoint)
     * [new Endpoint()](#new_Endpoint_new)
     * [.create(domainId, params, [callback])](#Endpoint+create) ⇒ <code>[EndpointResponse](#EndpointResponse)</code>
-    * [.list(domainId, callback)](#Endpoint+list) ⇒ <code>[Array.&lt;EndpointResponse&gt;](#EndpointResponse)</code>
+    * [.list(domainId, params, callback)](#Endpoint+list) ⇒ <code>[Array.&lt;EndpointResponse&gt;](#EndpointResponse)</code>
     * [.delete(domainId, endpointId, [callback])](#Endpoint+delete) ⇒ <code>Promise</code>
     * [.update(domainId, endpointId, params, [callback])](#Endpoint+update) ⇒ <code>Promise</code>
     * [.createAuthToken(domainId, endpointId, [callback])](#Endpoint+createAuthToken) ⇒ <code>Promise</code>
@@ -378,7 +378,7 @@ Create a new endpoint for the domain
 
 <a name="Endpoint+list"></a>
 
-### endpoint.list(domainId, callback) ⇒ <code>[Array.&lt;EndpointResponse&gt;](#EndpointResponse)</code>
+### endpoint.list(domainId, params, callback) ⇒ <code>[Array.&lt;EndpointResponse&gt;](#EndpointResponse)</code>
 Gets a list of all endpoints for the domain.
 
 **Kind**: instance method of <code>[Endpoint](#Endpoint)</code>  
@@ -386,9 +386,33 @@ Gets a list of all endpoints for the domain.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| domainId | <code>String</code> | Id of domain |
+| domainId | <code>String</code> | Id of the domain to list the endpoints |
+| params | <code>Object</code> | Parameters for listing endpoints on domain |
+| [params.size] | <code>Number</code> | OPTIONAL The maximum number of endpoints returned by the query per page (Max size: 1000). |
 | callback | <code>function</code> | A callback with the list of domains |
 
+**Example**  
+```js
+// Default size (25) using promises
+ client.Endpoint.list("domainId")
+ 	.then(function (res) {});
+```
+**Example**  
+```js
+// Default size (25) using callbacks
+client.Endpoint.list("domainId", function (err, res) {});
+```
+**Example**  
+```js
+// Specify number of endpoints using promises
+client.Endpoint.list("domainId", {size: 1000})
+		.then(function (res) {});
+```
+**Example**  
+```js
+// Specify number of endpoints using callbacks
+client.Endpoint.list("domainId" {size: 1000}, function (err, res) {});
+```
 <a name="Endpoint+delete"></a>
 
 ### endpoint.delete(domainId, endpointId, [callback]) ⇒ <code>Promise</code>

@@ -86,13 +86,6 @@ describe("Endpoint API", function () {
 			});
 		});
 
-		it("should return endpoint list", function () {
-			return client.Endpoint.list(domainId)
-			.then(function (endpoints) {
-				endpoints.should.eql(endpointList);
-			});
-		});
-
 		it("should remove the endpoint", function () {
 			return client.Endpoint.delete(domainId, "fakeEndpointId");
 		});
@@ -106,6 +99,14 @@ describe("Endpoint API", function () {
 			.then(function (token) {
 				token.should.eql(tokenValue);
 			});
+		});
+
+		describe("Endpoint list", function () {
+
+			it("should list endpoints on domain when no parameters are sent", function () {});
+			it("should list endpoints on domain when parameters are sent", function () {});
+			it("hould return a list of endpoints with a page to the next link ", function () {});
+
 		});
 
 	});
