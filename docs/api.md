@@ -273,7 +273,7 @@ Gets a list of active and historic calls you made or received.
 
 * [Domain](#Domain)
     * [new Domain()](#new_Domain_new)
-    * [.create(params, [callback])](#Domain+create) ⇒ <code>[CallResponse](#CallResponse)</code>
+    * [.create(params, [callback])](#Domain+create) ⇒ <code>Promise</code>
     * [.list(callback)](#Domain+list) ⇒ <code>Promise</code>
     * [.delete(domainId, [callback])](#Domain+delete) ⇒ <code>Promise</code>
 
@@ -284,11 +284,11 @@ Domain
 
 <a name="Domain+create"></a>
 
-### domain.create(params, [callback]) ⇒ <code>[CallResponse](#CallResponse)</code>
-Create a new voice call
+### domain.create(params, [callback]) ⇒ <code>Promise</code>
+Create a domain
 
 **Kind**: instance method of <code>[Domain](#Domain)</code>  
-**Returns**: <code>[CallResponse](#CallResponse)</code> - A promise for the newly created domain  
+**Returns**: <code>Promise</code> - A promise for the newly created domain  
 
 | Param | Type | Description |
 | --- | --- | --- |
