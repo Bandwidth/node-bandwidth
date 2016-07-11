@@ -55,7 +55,7 @@ describe("Domain API", function () {
 					{
 						"Location" : "/v1/users/" + userId + "/domains/fakeDomainId"
 					})
-				.get("/v1/users/" + userId + "/domains?size=100")
+				.get("/v1/users/" + userId + "/domains")
 				.reply(200, domainsList)
 				.delete("/v1/users/" + userId + "/domains/" + testDomain.id)
 				.reply(200);
@@ -74,9 +74,20 @@ describe("Domain API", function () {
 		});
 
 		it("should return domain list", function () {
-			return client.Domain.list()
-			.then(function (domains) {
-				domains.should.eql(domainsList);
+			return client.Domain.list({})
+			.then(function (domainsResponse) {
+				domainsResponse.domains.should.eql(domainsList);
+			});
+		});
+
+		it("those domains should not have more pages", function () {
+			return client.Domain.list({})
+			.then(function (domainsResponse) {
+				domainsResponse.hasNextPage.should.be.false;
+				return domainsResponse.getNextPage()
+				.catch(function (err) {
+					err.should.equal("Next page does not exist.");
+				});
 			});
 		});
 
@@ -84,5 +95,35 @@ describe("Domain API", function () {
 			return client.Domain.delete(testDomain.id);
 		});
 
+		describe("pagination tests", function () {
+
+			before(function () {
+				nock("https://api.catapult.inetwork.com")
+				.persist()
+				.get("/v1/users/" + userId + "/domains?size=25")
+				.reply(200, domainsList,
+					{
+						"link" : "<https://api.catapult.inetwork.com/v1/users/" + userId +
+						"/domains?page=0&size=25>; rel=\"first\"," +
+						"<https://api.catapult.inetwork.com/v1/users/" + userId + "/domains>; rel=\"next\""
+					});
+			});
+
+			after(function () {
+				nock.cleanAll();
+				nock.enableNetConnect();
+			});
+
+			it("should return a list of applications with a page to the next link", function () {
+				return client.Domain.list({ size : 25 })
+				.then(function (domainsResponse) {
+					domainsResponse.domains.should.eql(domainsList);
+					return domainsResponse.getNextPage();
+				})
+				.then(function (moreDomains) {
+					moreDomains.domains.should.eql(domainsList);
+				});
+			});
+		});
 	});
 });
