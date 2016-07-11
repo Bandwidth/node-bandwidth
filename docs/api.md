@@ -11,6 +11,8 @@
 <dd></dd>
 <dt><a href="#Domain">Domain</a></dt>
 <dd></dd>
+<dt><a href="#DomainResponse">DomainResponse</a> : <code>Object</code></dt>
+<dd></dd>
 <dt><a href="#CatapultClient">CatapultClient</a></dt>
 <dd></dd>
 <dt><a href="#Message">Message</a></dt>
@@ -273,8 +275,8 @@ Gets a list of active and historic calls you made or received.
 
 * [Domain](#Domain)
     * [new Domain()](#new_Domain_new)
-    * [.create(params, [callback])](#Domain+create) ⇒ <code>Promise</code>
-    * [.list(callback)](#Domain+list) ⇒ <code>Promise</code>
+    * [.create(params, [callback])](#Domain+create) ⇒ <code>[DomainResponse](#DomainResponse)</code>
+    * [.list(callback)](#Domain+list) ⇒ <code>[Array.&lt;DomainResponse&gt;](#DomainResponse)</code>
     * [.delete(domainId, [callback])](#Domain+delete) ⇒ <code>Promise</code>
 
 <a name="new_Domain_new"></a>
@@ -284,11 +286,11 @@ Domain
 
 <a name="Domain+create"></a>
 
-### domain.create(params, [callback]) ⇒ <code>Promise</code>
+### domain.create(params, [callback]) ⇒ <code>[DomainResponse](#DomainResponse)</code>
 Create a domain
 
 **Kind**: instance method of <code>[Domain](#Domain)</code>  
-**Returns**: <code>Promise</code> - A promise for the newly created domain  
+**Returns**: <code>[DomainResponse](#DomainResponse)</code> - A promise for the newly created domain  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -299,11 +301,11 @@ Create a domain
 
 <a name="Domain+list"></a>
 
-### domain.list(callback) ⇒ <code>Promise</code>
+### domain.list(callback) ⇒ <code>[Array.&lt;DomainResponse&gt;](#DomainResponse)</code>
 Gets a list of all domains.
 
 **Kind**: instance method of <code>[Domain](#Domain)</code>  
-**Returns**: <code>Promise</code> - A promise for the list of domains.  
+**Returns**: <code>[Array.&lt;DomainResponse&gt;](#DomainResponse)</code> - A promise for the list of domains.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -321,6 +323,18 @@ Delete a domain.
 | --- | --- | --- |
 | domainId | <code>String</code> | ID of the domain to delete. |
 | [callback] | <code>function</code> | A callback for the domain. |
+
+<a name="DomainResponse"></a>
+
+## DomainResponse : <code>Object</code>
+**Kind**: global class  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| id | <code>String</code> | The unique identifier for the domain. |
+| name | <code>String</code> | A name you choose for this domain. |
+| description | <code>String</code> | A description of this domain. |
 
 <a name="CatapultClient"></a>
 
