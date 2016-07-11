@@ -310,6 +310,7 @@ Gets a list of all domains.
 | Param | Type | Description |
 | --- | --- | --- |
 | callback | <code>function</code> | A callback with the list of calls |
+| [params.size] | <code>Number</code> | the maximum number of domains returned by the query per page (Max size: 100). |
 
 <a name="Domain+delete"></a>
 
