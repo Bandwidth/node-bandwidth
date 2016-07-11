@@ -11,7 +11,11 @@
 <dd></dd>
 <dt><a href="#Domain">Domain</a></dt>
 <dd></dd>
+<dt><a href="#DomainResponse">DomainResponse</a> : <code>Object</code></dt>
+<dd></dd>
 <dt><a href="#Endpoint">Endpoint</a></dt>
+<dd></dd>
+<dt><a href="#EndpointResponse">EndpointResponse</a> : <code>Object</code></dt>
 <dd></dd>
 <dt><a href="#CatapultClient">CatapultClient</a></dt>
 <dd></dd>
@@ -275,8 +279,8 @@ Gets a list of active and historic calls you made or received.
 
 * [Domain](#Domain)
     * [new Domain()](#new_Domain_new)
-    * [.create(params, [callback])](#Domain+create) ⇒ <code>[CallResponse](#CallResponse)</code>
-    * [.list(callback)](#Domain+list) ⇒ <code>Promise</code>
+    * [.create(params, [callback])](#Domain+create) ⇒ <code>[DomainResponse](#DomainResponse)</code>
+    * [.list(callback)](#Domain+list) ⇒ <code>[Array.&lt;DomainResponse&gt;](#DomainResponse)</code>
     * [.delete(domainId, [callback])](#Domain+delete) ⇒ <code>Promise</code>
 
 <a name="new_Domain_new"></a>
@@ -286,11 +290,11 @@ Domain
 
 <a name="Domain+create"></a>
 
-### domain.create(params, [callback]) ⇒ <code>[CallResponse](#CallResponse)</code>
-Create a new voice call
+### domain.create(params, [callback]) ⇒ <code>[DomainResponse](#DomainResponse)</code>
+Create a domain
 
 **Kind**: instance method of <code>[Domain](#Domain)</code>  
-**Returns**: <code>[CallResponse](#CallResponse)</code> - A promise for the newly created domain  
+**Returns**: <code>[DomainResponse](#DomainResponse)</code> - A promise for the newly created domain  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -301,11 +305,11 @@ Create a new voice call
 
 <a name="Domain+list"></a>
 
-### domain.list(callback) ⇒ <code>Promise</code>
+### domain.list(callback) ⇒ <code>[Array.&lt;DomainResponse&gt;](#DomainResponse)</code>
 Gets a list of all domains.
 
 **Kind**: instance method of <code>[Domain](#Domain)</code>  
-**Returns**: <code>Promise</code> - A promise for the list of domains.  
+**Returns**: <code>[Array.&lt;DomainResponse&gt;](#DomainResponse)</code> - A promise for the list of domains.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -324,6 +328,18 @@ Delete a domain.
 | domainId | <code>String</code> | ID of the domain to delete. |
 | [callback] | <code>function</code> | A callback for the domain. |
 
+<a name="DomainResponse"></a>
+
+## DomainResponse : <code>Object</code>
+**Kind**: global class  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| id | <code>String</code> | The unique identifier for the domain. |
+| name | <code>String</code> | A name you choose for this domain. |
+| description | <code>String</code> | A description of this domain. |
+
 <a name="Endpoint"></a>
 
 ## Endpoint
@@ -331,8 +347,8 @@ Delete a domain.
 
 * [Endpoint](#Endpoint)
     * [new Endpoint()](#new_Endpoint_new)
-    * [.create(domainId, params, [callback])](#Endpoint+create) ⇒ <code>Promise</code>
-    * [.list(domainId, callback)](#Endpoint+list) ⇒ <code>Promise</code>
+    * [.create(domainId, params, [callback])](#Endpoint+create) ⇒ <code>[EndpointResponse](#EndpointResponse)</code>
+    * [.list(domainId, callback)](#Endpoint+list) ⇒ <code>[Array.&lt;EndpointResponse&gt;](#EndpointResponse)</code>
     * [.delete(domainId, endpointId, [callback])](#Endpoint+delete) ⇒ <code>Promise</code>
     * [.update(domainId, endpointId, params, [callback])](#Endpoint+update) ⇒ <code>Promise</code>
     * [.createAuthToken(domainId, endpointId, [callback])](#Endpoint+createAuthToken) ⇒ <code>Promise</code>
@@ -344,11 +360,11 @@ Endpoint
 
 <a name="Endpoint+create"></a>
 
-### endpoint.create(domainId, params, [callback]) ⇒ <code>Promise</code>
+### endpoint.create(domainId, params, [callback]) ⇒ <code>[EndpointResponse](#EndpointResponse)</code>
 Create a new endpoint for the domain
 
 **Kind**: instance method of <code>[Endpoint](#Endpoint)</code>  
-**Returns**: <code>Promise</code> - A promise for the newly created endpoint  
+**Returns**: <code>[EndpointResponse](#EndpointResponse)</code> - A promise for the newly created endpoint  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -362,11 +378,11 @@ Create a new endpoint for the domain
 
 <a name="Endpoint+list"></a>
 
-### endpoint.list(domainId, callback) ⇒ <code>Promise</code>
+### endpoint.list(domainId, callback) ⇒ <code>[Array.&lt;EndpointResponse&gt;](#EndpointResponse)</code>
 Gets a list of all endpoints for the domain.
 
 **Kind**: instance method of <code>[Endpoint](#Endpoint)</code>  
-**Returns**: <code>Promise</code> - A promise for the list of endpoints.  
+**Returns**: <code>[Array.&lt;EndpointResponse&gt;](#EndpointResponse)</code> - A promise for the list of endpoints.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -418,6 +434,27 @@ Generate auth token for the endpoint.
 | domainId | <code>String</code> | Id of domain |
 | endpointId | <code>String</code> | ID of the endpoint to update. |
 | [callback] | <code>function</code> | A callback with token value. |
+
+<a name="EndpointResponse"></a>
+
+## EndpointResponse : <code>Object</code>
+**Kind**: global class  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| id | <code>String</code> | The unique identifier for the application. |
+
+<a name="new_EndpointResponse_new"></a>
+
+### new EndpointResponse(name, description, enabled, credentials)
+
+| Param | Type | Description |
+| --- | --- | --- |
+| name | <code>String</code> | The endpoint's name, which SIP clients use as the "address of record" . |
+| description | <code>String</code> | String to describe the endpoint. 0param {String} applicationId The id of the application associated with this endpoint. |
+| enabled | <code>Boolean</code> | Allow or not to receive and make calls. |
+| credentials | <code>Object</code> | Auth parameters |
 
 <a name="CatapultClient"></a>
 
