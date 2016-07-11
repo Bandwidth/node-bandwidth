@@ -13,6 +13,10 @@
 <dd></dd>
 <dt><a href="#DomainResponse">DomainResponse</a> : <code>Object</code></dt>
 <dd></dd>
+<dt><a href="#Endpoint">Endpoint</a></dt>
+<dd></dd>
+<dt><a href="#EndpointResponse">EndpointResponse</a> : <code>Object</code></dt>
+<dd></dd>
 <dt><a href="#CatapultClient">CatapultClient</a></dt>
 <dd></dd>
 <dt><a href="#Message">Message</a></dt>
@@ -336,6 +340,122 @@ Delete a domain.
 | id | <code>String</code> | The unique identifier for the domain. |
 | name | <code>String</code> | A name you choose for this domain. |
 | description | <code>String</code> | A description of this domain. |
+
+<a name="Endpoint"></a>
+
+## Endpoint
+**Kind**: global class  
+
+* [Endpoint](#Endpoint)
+    * [new Endpoint()](#new_Endpoint_new)
+    * [.create(domainId, params, [callback])](#Endpoint+create) ⇒ <code>[EndpointResponse](#EndpointResponse)</code>
+    * [.list(domainId, callback)](#Endpoint+list) ⇒ <code>[Array.&lt;EndpointResponse&gt;](#EndpointResponse)</code>
+    * [.delete(domainId, endpointId, [callback])](#Endpoint+delete) ⇒ <code>Promise</code>
+    * [.update(domainId, endpointId, params, [callback])](#Endpoint+update) ⇒ <code>Promise</code>
+    * [.createAuthToken(domainId, endpointId, [callback])](#Endpoint+createAuthToken) ⇒ <code>Promise</code>
+
+<a name="new_Endpoint_new"></a>
+
+### new Endpoint()
+Endpoint
+
+<a name="Endpoint+create"></a>
+
+### endpoint.create(domainId, params, [callback]) ⇒ <code>[EndpointResponse](#EndpointResponse)</code>
+Create a new endpoint for the domain
+
+**Kind**: instance method of <code>[Endpoint](#Endpoint)</code>  
+**Returns**: <code>[EndpointResponse](#EndpointResponse)</code> - A promise for the newly created endpoint  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| domainId | <code>String</code> | Id of domain |
+| params | <code>Object</code> | Parameters for creating a new endpoint |
+| params.name | <code>String</code> | The endpoint's name, which SIP clients use as the "address of record" . |
+| params.description | <code>String</code> | String to describe the endpoint. 0param {String} params.applicationId The id of the application associated with this endpoint. |
+| params.enabled | <code>Boolean</code> | Allow or not to receive and make calls. |
+| params.credentials | <code>Object</code> | Auth parameters |
+| [callback] | <code>function</code> | Callback with the newly created endpoint |
+
+<a name="Endpoint+list"></a>
+
+### endpoint.list(domainId, callback) ⇒ <code>[Array.&lt;EndpointResponse&gt;](#EndpointResponse)</code>
+Gets a list of all endpoints for the domain.
+
+**Kind**: instance method of <code>[Endpoint](#Endpoint)</code>  
+**Returns**: <code>[Array.&lt;EndpointResponse&gt;](#EndpointResponse)</code> - A promise for the list of endpoints.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| domainId | <code>String</code> | Id of domain |
+| callback | <code>function</code> | A callback with the list of domains |
+
+<a name="Endpoint+delete"></a>
+
+### endpoint.delete(domainId, endpointId, [callback]) ⇒ <code>Promise</code>
+Delete an endpoint.
+
+**Kind**: instance method of <code>[Endpoint](#Endpoint)</code>  
+**Returns**: <code>Promise</code> - A promise for current operation.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| domainId | <code>String</code> | Id of domain |
+| endpointId | <code>String</code> | ID of the endpoint to delete. |
+| [callback] | <code>function</code> | A callback for the operation. |
+
+<a name="Endpoint+update"></a>
+
+### endpoint.update(domainId, endpointId, params, [callback]) ⇒ <code>Promise</code>
+Update an endpoint.
+
+**Kind**: instance method of <code>[Endpoint](#Endpoint)</code>  
+**Returns**: <code>Promise</code> - A promise for current operation.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| domainId | <code>String</code> | Id of domain |
+| endpointId | <code>String</code> | ID of the endpoint to update. |
+| params | <code>Object</code> | Changed parameters for the endpoint |
+| params.description | <code>String</code> | String to describe the endpoint. 0param {String} params.applicationId The id of the application associated with this endpoint. |
+| params.enabled | <code>Boolean</code> | Allow or not to receive and make calls. |
+| params.credentials | <code>Object</code> | Auth parameters |
+| [callback] | <code>function</code> | A callback for the operation. |
+
+<a name="Endpoint+createAuthToken"></a>
+
+### endpoint.createAuthToken(domainId, endpointId, [callback]) ⇒ <code>Promise</code>
+Generate auth token for the endpoint.
+
+**Kind**: instance method of <code>[Endpoint](#Endpoint)</code>  
+**Returns**: <code>Promise</code> - A promise with token value.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| domainId | <code>String</code> | Id of domain |
+| endpointId | <code>String</code> | ID of the endpoint to update. |
+| [callback] | <code>function</code> | A callback with token value. |
+
+<a name="EndpointResponse"></a>
+
+## EndpointResponse : <code>Object</code>
+**Kind**: global class  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| id | <code>String</code> | The unique identifier for the application. |
+
+<a name="new_EndpointResponse_new"></a>
+
+### new EndpointResponse(name, description, enabled, credentials)
+
+| Param | Type | Description |
+| --- | --- | --- |
+| name | <code>String</code> | The endpoint's name, which SIP clients use as the "address of record" . |
+| description | <code>String</code> | String to describe the endpoint. 0param {String} applicationId The id of the application associated with this endpoint. |
+| enabled | <code>Boolean</code> | Allow or not to receive and make calls. |
+| credentials | <code>Object</code> | Auth parameters |
 
 <a name="CatapultClient"></a>
 
