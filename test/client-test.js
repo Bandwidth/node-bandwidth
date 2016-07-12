@@ -10,6 +10,25 @@ describe("Client", function () {
 		accountType : "pre-pay"
 	};
 
+	var availableNumbersResponse = [
+		{
+			number         : "+15555555555",
+			nationalNumber : "(555) 555-5555",
+			city           : "ALHAMBRA",
+			rateCenter     : "ALHAMBRA",
+			state          : "CA",
+			price          : "0.00"
+		},
+		{
+			number         : "+15555555556",
+			nationalNumber : "(555) 555-5556",
+			city           : "ALHAMBRA",
+			rateCenter     : "ALHAMBRA",
+			state          : "CA",
+			price          : "0.00"
+		}
+	];
+
 	before(function () {
 		nock.disableNetConnect();
 	});
@@ -137,6 +156,36 @@ describe("Client", function () {
 			}).catch(function (err) {
 				err.statusCode.should.equal(404);
 				err.message.should.equal("");
+			});
+		});
+	});
+
+	describe("when no user path is needed", function () {
+		var client;
+
+		before(function () {
+			client = new Client({
+				userId   : "fakeUserId",
+				apiToken : "fakeApiToken",
+				apiKey   : "fakeApiKey"
+			});
+
+			nock(baseUrl)
+				.persist()
+				.get("/v1/availableNumbers/local?state=CA")
+				.reply(200, availableNumbersResponse);
+		});
+
+		after(function () {
+			nock.cleanAll();
+		});
+
+		it("should make requests to the default baseUrl with no user path", function () {
+			return client.makeRequestNoUser({
+				path : "availableNumbers/local",
+				qs   : { state : "CA" }
+			}).then(function (res) {
+				res.body.should.eql(availableNumbersResponse);
 			});
 		});
 	});
