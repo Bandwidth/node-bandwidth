@@ -170,8 +170,9 @@ Delete an application.
     * [.get(bridgeId, callback)](#Bridge+get) ⇒ <code>Promise</code>
     * [.list(params, callback)](#Bridge+list) ⇒ <code>Promise</code>
     * [.update(bridgeId, params, [callback])](#Bridge+update) ⇒ <code>[BridgeResponse](#BridgeResponse)</code>
-    * [.speakSentence(bridgeId, sentence, params, [callback])](#Bridge+speakSentence) ⇒ <code>[BridgeResponse](#BridgeResponse)</code>
-    * [.playAudio(bridgeId, fileUrl, params, [callback])](#Bridge+playAudio) ⇒ <code>[BridgeResponse](#BridgeResponse)</code>
+    * [.speakSentence(bridgeId, sentence, params, [callback])](#Bridge+speakSentence) ⇒ <code>Promise</code>
+    * [.playAudio(bridgeId, fileUrl, params, [callback])](#Bridge+playAudio) ⇒ <code>Promise</code>
+    * [.playAudioAdvanced(bridgeId, params, [callback])](#Bridge+playAudioAdvanced) ⇒ <code>Promise</code>
     * [.getCalls(bridgeId, callback)](#Bridge+getCalls) ⇒ <code>Promise</code>
 
 <a name="new_Bridge_new"></a>
@@ -239,11 +240,11 @@ Update the bridge
 
 <a name="Bridge+speakSentence"></a>
 
-### bridge.speakSentence(bridgeId, sentence, params, [callback]) ⇒ <code>[BridgeResponse](#BridgeResponse)</code>
+### bridge.speakSentence(bridgeId, sentence, params, [callback]) ⇒ <code>Promise</code>
 Speak sentence to the bridge
 
 **Kind**: instance method of <code>[Bridge](#Bridge)</code>  
-**Returns**: <code>[BridgeResponse](#BridgeResponse)</code> - A promise for the operation  
+**Returns**: <code>Promise</code> - A promise for the operation  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -254,17 +255,31 @@ Speak sentence to the bridge
 
 <a name="Bridge+playAudio"></a>
 
-### bridge.playAudio(bridgeId, fileUrl, params, [callback]) ⇒ <code>[BridgeResponse](#BridgeResponse)</code>
+### bridge.playAudio(bridgeId, fileUrl, params, [callback]) ⇒ <code>Promise</code>
 Play audio url to the bridge
 
 **Kind**: instance method of <code>[Bridge](#Bridge)</code>  
-**Returns**: <code>[BridgeResponse](#BridgeResponse)</code> - A promise for the operation  
+**Returns**: <code>Promise</code> - A promise for the operation  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | bridgeId | <code>String</code> | The ID of the bridge |
 | fileUrl | <code>String</code> | Url to audio file to play. |
 | params | <code>Object</code> | Optional parameters for the operation. |
+| [callback] | <code>function</code> | Callback for the operation |
+
+<a name="Bridge+playAudioAdvanced"></a>
+
+### bridge.playAudioAdvanced(bridgeId, params, [callback]) ⇒ <code>Promise</code>
+Play audio to the bridge
+
+**Kind**: instance method of <code>[Bridge](#Bridge)</code>  
+**Returns**: <code>Promise</code> - A promise for the operation  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| bridgeId | <code>String</code> | The ID of the bridge |
+| params | <code>Object</code> | Parameters for the operation. |
 | [callback] | <code>function</code> | Callback for the operation |
 
 <a name="Bridge+getCalls"></a>
