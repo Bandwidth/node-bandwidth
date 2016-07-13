@@ -218,7 +218,6 @@ Gets a list of bridges.
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | params | <code>Object</code> |  | Query parameters for listing bridges |
-| [params.page] | <code>Number</code> | <code>0</code> | Used for pagination to indicate the page requested for querying a list of bridges. If no value is specified the default is 0. |
 | [params.size] | <code>Number</code> | <code>25</code> | Used for pagination to indicate the size of each page requested for querying a list of bridges. If no value is specified the default value is 25 (maximum value 1000). |
 | callback | <code>function</code> |  | A callback with the list of bridges |
 

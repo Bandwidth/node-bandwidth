@@ -102,7 +102,7 @@ describe("Bridge API", function () {
 					})
 				.get("/v1/users/" + userId + "/bridges/" + testBridge.id)
 				.reply(200, testBridge)
-				.get("/v1/users/" + userId + "/bridges?size=100")
+				.get("/v1/users/" + userId + "/bridges")
 				.reply(200, bridgesList)
 				.post("/v1/users/" + userId + "/bridges/" + testBridge.id + "/audio", speakSentencePayload)
 				.reply(200)
@@ -148,19 +148,30 @@ describe("Bridge API", function () {
 		});
 
 		it("should get a list of bridges, promise style", function () {
-			return client.Bridge.list({ size : 100 })
-			.then(function (bridges) {
-				bridges[0].should.eql(bridgesList[0]);
+			return client.Bridge.list({ })
+			.then(function (bridgesResponse) {
+				bridgesResponse.bridges[0].should.eql(bridgesList[0]);
 			});
 		});
 
 		it("should get a list of bridges, callback style", function (done) {
-			client.Bridge.list({ size : 100 }, function (err, bridges) {
+			client.Bridge.list({ }, function (err, bridgesResponse) {
 				if (err) {
 					throw err;
 				}
-				bridges[0].should.eql(bridgesList[0]);
+				bridgesResponse.bridges[0].should.eql(bridgesList[0]);
 				done();
+			});
+		});
+
+		it("those bridges should not have more pages", function () {
+			return client.Bridge.list({})
+			.then(function (bridgesResponse) {
+				bridgesResponse.hasNextPage.should.be.false;
+				return bridgesResponse.getNextPage()
+				.catch(function (err) {
+					err.should.equal("Next page does not exist.");
+				});
 			});
 		});
 
@@ -189,6 +200,37 @@ describe("Bridge API", function () {
 			.then(function (calls) {
 				calls[0].should.eql(callsList[0]);
 				calls[1].should.eql(callsList[1]);
+			});
+		});
+
+		describe("pagination tests", function () {
+
+			before(function () {
+				nock("https://api.catapult.inetwork.com")
+				.persist()
+				.get("/v1/users/" + userId + "/bridges?size=25")
+				.reply(200, bridgesList,
+					{
+						"link" : "<https://api.catapult.inetwork.com/v1/users/" + userId +
+						"/bridges?page=0&size=25>; rel=\"first\"," +
+						"<https://api.catapult.inetwork.com/v1/users/" + userId + "/bridges>; rel=\"next\""
+					});
+			});
+
+			after(function () {
+				nock.cleanAll();
+				nock.enableNetConnect();
+			});
+
+			it("should return a list of bridges with a page to the next link", function () {
+				return client.Bridge.list({ size : 25 })
+				.then(function (bridgesResponse) {
+					bridgesResponse.bridges.should.eql(bridgesList);
+					return bridgesResponse.getNextPage();
+				})
+				.then(function (moreBridges) {
+					moreBridges.bridges.should.eql(bridgesList);
+				});
 			});
 		});
 	});
