@@ -15,6 +15,8 @@
 <dd></dd>
 <dt><a href="#CatapultClient">CatapultClient</a></dt>
 <dd></dd>
+<dt><a href="#Media">Media</a></dt>
+<dd></dd>
 <dt><a href="#Message">Message</a></dt>
 <dd></dd>
 <dt><a href="#Recording">Recording</a></dt>
@@ -354,6 +356,35 @@ Catapult API Client
 | config.apiToken | <code>String</code> |  | Your Catapult API token |
 | config.apiSecret | <code>String</code> |  | Your Catapult API secret |
 | [config.baseUrl] | <code>String</code> | <code>https://api.catapult.inetwork.com</code> | The catapult base URL. Configurable for using alternative Catapult environments. |
+
+<a name="Media"></a>
+
+## Media
+**Kind**: global class  
+
+* [Media](#Media)
+    * [new Media()](#new_Media_new)
+    * [.upload(name, data, contentType, [callback])](#Media+upload) ⇒ <code>Promise</code>
+
+<a name="new_Media_new"></a>
+
+### new Media()
+Media
+
+<a name="Media+upload"></a>
+
+### media.upload(name, data, contentType, [callback]) ⇒ <code>Promise</code>
+Upload a media file
+
+**Kind**: instance method of <code>[Media](#Media)</code>  
+**Returns**: <code>Promise</code> - A promise for the operation  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| name | <code>String</code> | The name of uploaded file. |
+| data | <code>String</code> &#124; <code>Buffer</code> &#124; <code>Readable</code> | Data to upload. If data is string it should be path to file to upload. |
+| contentType | <code>String</code> | Optional MIME type of uploaded data (default: application/octet-stream). |
+| [callback] | <code>function</code> | Callback for the operation |
 
 <a name="Message"></a>
 
