@@ -24,6 +24,7 @@
     "bluebird": "^3.3.4",
     "parse-link-header": "^0.4.1",
     "qs": "^6.1.0",
+    "parse-link-header": "^0.4.1",
     "request": "^2.69.0"
   },
   "devDependencies": {

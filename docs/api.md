@@ -9,6 +9,10 @@
 <dd></dd>
 <dt><a href="#CallResponse">CallResponse</a> : <code>Object</code></dt>
 <dd></dd>
+<dt><a href="#Domain">Domain</a></dt>
+<dd></dd>
+<dt><a href="#DomainResponse">DomainResponse</a> : <code>Object</code></dt>
+<dd></dd>
 <dt><a href="#CatapultClient">CatapultClient</a></dt>
 <dd></dd>
 <dt><a href="#Message">Message</a></dt>
@@ -56,7 +60,8 @@ Application
 List the user's applications
 
 **Kind**: instance method of <code>[Application](#Application)</code>  
-**Returns**: <code>[Array.&lt;ApplicationResponse&gt;](#ApplicationResponse)</code> - A promise for the list of applications, has a getNextPagefunction if the number of applications returned by the query exceeds the page size.  
+**Returns**: <code>[Array.&lt;ApplicationResponse&gt;](#ApplicationResponse)</code> - A promise for the list of applications, has a getNextPage
+function if the number of applications returned by the query exceeds the page size.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -264,6 +269,75 @@ Gets a list of active and historic calls you made or received.
 | page | <code>Number</code> | <code>0</code> | Used for pagination to indicate the page requested for querying a list of calls. If no value is specified the default is 0. |
 | size | <code>Number</code> | <code>25</code> | Used for pagination to indicate the size of each page requested for querying a list of calls. If no value is specified the default value is 25 (maximum value 1000). |
 | sipHeaders | <code>Object</code> |  | Map of Sip headers prefixed by "X-". Up to 5 headers can be sent per call. Max length for header and value is 256 characters. |
+
+<a name="Domain"></a>
+
+## Domain
+**Kind**: global class  
+
+* [Domain](#Domain)
+    * [new Domain()](#new_Domain_new)
+    * [.create(params, [callback])](#Domain+create) ⇒ <code>[DomainResponse](#DomainResponse)</code>
+    * [.list(callback)](#Domain+list) ⇒ <code>[Array.&lt;DomainResponse&gt;](#DomainResponse)</code>
+    * [.delete(domainId, [callback])](#Domain+delete) ⇒ <code>Promise</code>
+
+<a name="new_Domain_new"></a>
+
+### new Domain()
+Domain
+
+<a name="Domain+create"></a>
+
+### domain.create(params, [callback]) ⇒ <code>[DomainResponse](#DomainResponse)</code>
+Create a domain
+
+**Kind**: instance method of <code>[Domain](#Domain)</code>  
+**Returns**: <code>[DomainResponse](#DomainResponse)</code> - A promise for the newly created domain  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| params | <code>Object</code> | Parameters for creating a new domain |
+| params.name | <code>String</code> | The name is a unique URI to be used in DNS lookups. |
+| params.description | <code>String</code> | String to describe the domain. |
+| [callback] | <code>function</code> | Callback with the newly created domain |
+
+<a name="Domain+list"></a>
+
+### domain.list(callback) ⇒ <code>[Array.&lt;DomainResponse&gt;](#DomainResponse)</code>
+Gets a list of all domains.
+
+**Kind**: instance method of <code>[Domain](#Domain)</code>  
+**Returns**: <code>[Array.&lt;DomainResponse&gt;](#DomainResponse)</code> - A promise for the list of domains.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| callback | <code>function</code> | A callback with the list of calls |
+| [params.size] | <code>Number</code> | the maximum number of domains returned by the query per page (Max size: 100). |
+
+<a name="Domain+delete"></a>
+
+### domain.delete(domainId, [callback]) ⇒ <code>Promise</code>
+Delete a domain.
+
+**Kind**: instance method of <code>[Domain](#Domain)</code>  
+**Returns**: <code>Promise</code> - A promise for current operation.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| domainId | <code>String</code> | ID of the domain to delete. |
+| [callback] | <code>function</code> | A callback for the domain. |
+
+<a name="DomainResponse"></a>
+
+## DomainResponse : <code>Object</code>
+**Kind**: global class  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| id | <code>String</code> | The unique identifier for the domain. |
+| name | <code>String</code> | A name you choose for this domain. |
+| description | <code>String</code> | A description of this domain. |
 
 <a name="CatapultClient"></a>
 
