@@ -21,6 +21,8 @@
 <dd></dd>
 <dt><a href="#Message">Message</a></dt>
 <dd></dd>
+<dt><a href="#MessageResponse">MessageResponse</a> : <code>Object</code></dt>
+<dd></dd>
 <dt><a href="#Recording">Recording</a></dt>
 <dd></dd>
 </dl>
@@ -570,8 +572,8 @@ Catapult API Client
 
 * [Message](#Message)
     * [new Message(client)](#new_Message_new)
-    * [.send(params, The, The, [callback])](#Message+send) ⇒ <code>MessageResponse</code>
-    * [.get(messageId, [callback])](#Message+get) ⇒ <code>MessageResponse</code>
+    * [.send(params, The, The, [callback])](#Message+send) ⇒ <code>[MessageResponse](#MessageResponse)</code>
+    * [.get(messageId, [callback])](#Message+get) ⇒ <code>[MessageResponse](#MessageResponse)</code>
     * [.list(params, [callback])](#Message+list) ⇒ <code>Array</code>
 
 <a name="new_Message_new"></a>
@@ -586,11 +588,11 @@ SMS or MMS Message
 
 <a name="Message+send"></a>
 
-### message.send(params, The, The, [callback]) ⇒ <code>MessageResponse</code>
+### message.send(params, The, The, [callback]) ⇒ <code>[MessageResponse](#MessageResponse)</code>
 Send a new SMS or MMS message
 
 **Kind**: instance method of <code>[Message](#Message)</code>  
-**Returns**: <code>MessageResponse</code> - A promise for the new message object  
+**Returns**: <code>[MessageResponse](#MessageResponse)</code> - A promise for the new message object  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -608,11 +610,11 @@ Send a new SMS or MMS message
 
 <a name="Message+get"></a>
 
-### message.get(messageId, [callback]) ⇒ <code>MessageResponse</code>
+### message.get(messageId, [callback]) ⇒ <code>[MessageResponse](#MessageResponse)</code>
 Get a message
 
 **Kind**: instance method of <code>[Message](#Message)</code>  
-**Returns**: <code>MessageResponse</code> - A promise for the message  
+**Returns**: <code>[MessageResponse](#MessageResponse)</code> - A promise for the message  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -630,7 +632,42 @@ Gets a list of messages
 | Param | Type | Description |
 | --- | --- | --- |
 | params | <code>Object</code> | Search parameters |
+| [params.from] | <code>String</code> | The phone number to filter the messages that came from (must be in E.164 format, like +19195551212). |
+| [params.to] | <code>String</code> | The phone number to filter the messages that was sent to (must be in E.164 format, like +19195551212). |
+| [params.fromDateTime] | <code>String</code> | The starting date time to filter the messages (must be in yyyy-MM-dd hh:mm:ss format, like 2014-05-25 12:00:00. You can suppress parts of the date or time, like 2014-05-25, but the missing parameters will be filled with zeros). |
+| [params.toDateTime] | <code>String</code> | The ending date time to filter the messages (must be in yyyy-MM-dd hh:mm:ss format, like 2014-05-25 12:00:00. You can suppress parts of the date or time, like 2014-05-25, but the missing parameters will be filled with zeros) |
+| [params.size] | <code>Number</code> | Used for pagination to indicate the size of each page requested \ for querying a list of messages. If no value is specified the default value is 25. (Maximum value 1000) |
+| [params.direction] | <code>String</code> | Filter by direction of message, in - a message that came from the telephone network to one of your numbers (an "inbound" message) or out - a message that was sent from one of your numbers to the telephone network (an "outbound" message) |
+| [params.state] | <code>String</code> | The message state to filter. Values are: received, queued, sending, sent, error |
+| [params.deliveryState] | <code>String</code> | The message delivery state to filter. Values are waiting, delivered, not-delivered |
+| [params.sortOrder] | <code>String</code> | How to sort the messages. Values are asc or desc If no value is specified the default value is asc |
 | [callback] | <code>function</code> | A callback for the list of messages |
+
+<a name="MessageResponse"></a>
+
+## MessageResponse : <code>Object</code>
+**Kind**: global class  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| id | <code>String</code> | The unique ID of the message. |
+| from | <code>String</code> | The message sender's telephone number (or short code). |
+| to | <code>String</code> | Message recipient telephone number (or short code). |
+| direction | <code>String</code> | Direction of message, in - a message that came from the telephone network to one of your numbers (an "inbound" message) or out - a message that was sent from one of your numbers to the telephone network (an "outbound" message) |
+| text | <code>String</code> | The message contents. |
+| media | <code>Array</code> | Json array containing list of media urls to be sent as content for an mms. |
+| state | <code>String</code> | Message state, values are received, queued, sending, sent, error |
+| time | <code>String</code> | The time the message resource was created (UTC, follows the ISO 8601 format). |
+| callbackUrl | <code>String</code> | The complete URL where the events related to the outgoing message will be sent. |
+| callbackTimeout | <code>Number</code> | Determine how long should the platform wait for callbackUrl's response before timing out. (milliseconds) |
+| fallbackUrl | <code>String</code> | The server URL used to send message events if the request to callbackUrl fails. |
+| size | <code>Number</code> | Used for pagination to indicate the size of each page requested for querying a list of messages. If no value is specified the default value is 25. (Maximum value 1000) |
+| tag | <code>String</code> | A string that will be included in the callback events of the message. |
+| receiptRequested | <code>String</code> | Requested receipt option for outbound messages: none, all, error Default is none. |
+| deliveryState | <code>String</code> | One of the message delivery states: waiting, delivered, not-delivered. |
+| deliveryCode | <code>Number</code> | Numeric value of deliver code. |
+| deliveryDescription | <code>String</code> | Message delivery description for the respective delivery code. |
 
 <a name="Recording"></a>
 
@@ -683,5 +720,5 @@ getNextLink
 
 | Param | Type | Description |
 | --- | --- | --- |
-| response | <code>Object</code> | A response object returned from calling 'client.makeRequest' |
+| response | <code>Object</code> | A headers object returned from calling 'client.makeRequest' (response.headers) |
 
