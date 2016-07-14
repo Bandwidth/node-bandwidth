@@ -167,8 +167,8 @@ Delete an application.
 * [Bridge](#Bridge)
     * [new Bridge()](#new_Bridge_new)
     * [.create(params, [callback])](#Bridge+create) ⇒ <code>[BridgeResponse](#BridgeResponse)</code>
-    * [.get(bridgeId, callback)](#Bridge+get) ⇒ <code>Promise</code>
-    * [.list(params, callback)](#Bridge+list) ⇒ <code>Promise</code>
+    * [.get(bridgeId, callback)](#Bridge+get) ⇒ <code>[BridgeResponse](#BridgeResponse)</code>
+    * [.list(params, callback)](#Bridge+list) ⇒ <code>[Array.&lt;BridgeResponse&gt;](#BridgeResponse)</code>
     * [.update(bridgeId, params, [callback])](#Bridge+update) ⇒ <code>[BridgeResponse](#BridgeResponse)</code>
     * [.speakSentence(bridgeId, sentence, [callback])](#Bridge+speakSentence) ⇒ <code>Promise</code>
     * [.playAudioFile(bridgeId, fileUrl, [callback])](#Bridge+playAudioFile) ⇒ <code>Promise</code>
@@ -188,20 +188,20 @@ Create a new bridge
 **Kind**: instance method of <code>[Bridge](#Bridge)</code>  
 **Returns**: <code>[BridgeResponse](#BridgeResponse)</code> - A promise for the newly created bridge  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| params | <code>Object</code> | Parameters for creating a bridge |
-| params.bridgeAudio | <code>Boolean</code> | Enable/Disable two way audio path (default = true). |
-| params.callIds | <code>Array.&lt;String&gt;</code> | The list of call ids in the bridge. If the list of call ids is not provided the bridge is logically created and it can be used to place calls later. |
-| [callback] | <code>function</code> | Callback with the newly created bridge |
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| params | <code>Object</code> |  | Parameters for creating a bridge |
+| [params.bridgeAudio] | <code>Boolean</code> | <code>true</code> | Enable/Disable two way audio path. |
+| [params.callIds] | <code>Array.&lt;String&gt;</code> |  | The list of call ids in the bridge. If the list of call ids is not provided the bridge is logically created and it can be used to place calls later. |
+| [callback] | <code>function</code> |  | Callback with the newly created bridge |
 
 <a name="Bridge+get"></a>
 
-### bridge.get(bridgeId, callback) ⇒ <code>Promise</code>
+### bridge.get(bridgeId, callback) ⇒ <code>[BridgeResponse](#BridgeResponse)</code>
 Gets information about a bridge.
 
 **Kind**: instance method of <code>[Bridge](#Bridge)</code>  
-**Returns**: <code>Promise</code> - A promise for the call information  
+**Returns**: <code>[BridgeResponse](#BridgeResponse)</code> - A promise for the call information  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -210,11 +210,11 @@ Gets information about a bridge.
 
 <a name="Bridge+list"></a>
 
-### bridge.list(params, callback) ⇒ <code>Promise</code>
+### bridge.list(params, callback) ⇒ <code>[Array.&lt;BridgeResponse&gt;](#BridgeResponse)</code>
 Gets a list of bridges.
 
 **Kind**: instance method of <code>[Bridge](#Bridge)</code>  
-**Returns**: <code>Promise</code> - A promise for the list of bridges  
+**Returns**: <code>[Array.&lt;BridgeResponse&gt;](#BridgeResponse)</code> - A promise for the list of bridges  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |

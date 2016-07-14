@@ -5,6 +5,10 @@ A Node.js client library for the Bandwidth Application Platform
 2.0 Developer Preview
 > Please note: this developer preview is still under heavy development, and is only intended to be used to gather feedback from developers using the SDK. Many things will change, and this code should not be used in any production applications.
 
+
+## [Full API Reference](docs/api.md)
+For the full API Reference, pelase see [docs/api.md](docs/api.md).
+
 ## Installing the developer preview
 
 Because this version is not published via npm, you must install it by specifying the specific GitHub branch. Running the following command will install and save the latest version:
@@ -70,8 +74,6 @@ client.Message.send({
 });
 ```
 
-## [Full API Reference](docs/api.md)
-For the full API Reference, pelase see [docs/api.md](docs/api.md).
 
 ## Providing feedback on the developer preview
 
