@@ -294,17 +294,17 @@ Play audio file or speak sentence in bridge
 **Kind**: instance method of <code>[Bridge](#Bridge)</code>  
 **Returns**: <code>Promise</code> - A promise for the operation  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| bridgeId | <code>String</code> | The ID of the bridge |
-| params | <code>Object</code> | Parameters to play audio in bridge. |
-| [params.fileUrl] | <code>String</code> | The http location of an audio file to play (WAV and MP3 supported). |
-| [params.sentence] | <code>String</code> | The sentence to speak. |
-| [params.gender] | <code>String</code> | The gender of the voice used to synthesize the sentence. It will be considered only if sentence is not null. The female gender will be used by default. |
-| [params.locale] | <code>String</code> | The locale used to get the accent of the voice used to synthesize the sentence. Currently audio supports: 		- en_US or en_UK (English) 		- es or es_MX (Spanish) 		- fr or fr_FR (French) 		- de or de_DE (German) 		- t or it_IT (Italian) It will be considered only if sentence is not null/empty. The en_US will be used by default. |
-| [params.voice] | <code>String</code> | The voice to speak the sentence. Audio currently supports the following voices: 		- English US: Kate, Susan, Julie, Dave, Paul 		- English UK: Bridget 		- Spanish: Esperanza, Violeta, Jorge 		- French: Jolie, Bernard 		- German: Katrin, Stefan 		- Italian: Paola, Luca It will be considered only if sentence is not null/empty. Susan's voice will be used by default. |
-| [params.loopEnabled] | <code>Boolean</code> | When value is true, the audio will keep playing in a loop. Default: false. |
-| [callback] | <code>function</code> | Callback for the operation |
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| bridgeId | <code>String</code> |  | The ID of the bridge |
+| params | <code>Object</code> |  | Parameters to play audio in bridge. |
+| [params.fileUrl] | <code>String</code> |  | The http location of an audio file to play (WAV and MP3 supported). |
+| [params.sentence] | <code>String</code> |  | The sentence to speak. |
+| [params.gender] | <code>String</code> | <code>female</code> | The gender of the voice used to synthesize the sentence. It will be considered only if sentence is not null. The female gender will be used by default. |
+| [params.locale] | <code>String</code> | <code>en_US</code> | The locale used to get the accent of the voice used to synthesize the sentence. Check out [docs](http://ap.bandwidth.com/docs/rest-api/bridges/#resourcePOSTv1usersuserIdbridgesbridgeIdaudio) for list of supported locales. It will be considered only if sentence is not null/empty. The en_US will be used by default. |
+| [params.voice] | <code>String</code> | <code>Susan</code> | The voice to speak the sentence. Check out [docs](http://ap.bandwidth.com/docs/rest-api/bridges/#resourcePOSTv1usersuserIdbridgesbridgeIdaudio) for list of supported voices It will be considered only if sentence is not null/empty. Susan's voice will be used by default. |
+| [params.loopEnabled] | <code>Boolean</code> | <code>flase</code> | When value is true, the audio will keep playing in a loop. Default: false. |
+| [callback] | <code>function</code> |  | Callback for the operation |
 
 **Example**  
 ```js
