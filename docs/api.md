@@ -5,6 +5,10 @@
 <dd></dd>
 <dt><a href="#ApplicationResponse">ApplicationResponse</a> : <code>Object</code></dt>
 <dd></dd>
+<dt><a href="#Bridge">Bridge</a></dt>
+<dd></dd>
+<dt><a href="#BridgeResponse">BridgeResponse</a> : <code>Object</code></dt>
+<dd></dd>
 <dt><a href="#Call">Call</a></dt>
 <dd></dd>
 <dt><a href="#CallResponse">CallResponse</a> : <code>Object</code></dt>
@@ -18,6 +22,8 @@
 <dt><a href="#Media">Media</a></dt>
 <dd></dd>
 <dt><a href="#Message">Message</a></dt>
+<dd></dd>
+<dt><a href="#MessageResponse">MessageResponse</a> : <code>Object</code></dt>
 <dd></dd>
 <dt><a href="#Recording">Recording</a></dt>
 <dd></dd>
@@ -156,6 +162,210 @@ Delete an application.
 | incomingMessageUrl | <code>String</code> | A URL where message events will be sent for an inbound message. This is the endpoint where the Application Platform will send all message events. Either incomingMessageUrl or incomingCallUrl is required. |
 | incomingMessageUrlCallbackTimeout | <code>Number</code> | Determine how long should the platform wait for incomingMessageUrl's response before timing out in milliseconds. |
 | incomingMessageFallbackUrl | <code>String</code> | The URL used to send the callback event if the request to incomingMessageUrl fails. |
+
+<a name="Bridge"></a>
+
+## Bridge
+**Kind**: global class  
+
+* [Bridge](#Bridge)
+    * [new Bridge()](#new_Bridge_new)
+    * [.create(params, [callback])](#Bridge+create) ⇒ <code>[BridgeResponse](#BridgeResponse)</code>
+    * [.get(bridgeId, callback)](#Bridge+get) ⇒ <code>[BridgeResponse](#BridgeResponse)</code>
+    * [.list(params, callback)](#Bridge+list) ⇒ <code>[Array.&lt;BridgeResponse&gt;](#BridgeResponse)</code>
+    * [.update(bridgeId, params, [callback])](#Bridge+update) ⇒ <code>[BridgeResponse](#BridgeResponse)</code>
+    * [.speakSentence(bridgeId, sentence, [callback])](#Bridge+speakSentence) ⇒ <code>Promise</code>
+    * [.playAudioFile(bridgeId, fileUrl, [callback])](#Bridge+playAudioFile) ⇒ <code>Promise</code>
+    * [.playAudioAdvanced(bridgeId, params, [callback])](#Bridge+playAudioAdvanced) ⇒ <code>Promise</code>
+    * [.getCalls(bridgeId, callback)](#Bridge+getCalls) ⇒ <code>Promise</code>
+
+<a name="new_Bridge_new"></a>
+
+### new Bridge()
+Bridge
+
+<a name="Bridge+create"></a>
+
+### bridge.create(params, [callback]) ⇒ <code>[BridgeResponse](#BridgeResponse)</code>
+Create a new bridge
+
+**Kind**: instance method of <code>[Bridge](#Bridge)</code>  
+**Returns**: <code>[BridgeResponse](#BridgeResponse)</code> - A promise for the newly created bridge  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| params | <code>Object</code> |  | Parameters for creating a bridge |
+| [params.bridgeAudio] | <code>Boolean</code> | <code>true</code> | Enable/Disable two way audio path. |
+| [params.callIds] | <code>Array.&lt;String&gt;</code> |  | The list of call ids in the bridge. If the list of call ids is not provided the bridge is logically created and it can be used to place calls later. |
+| [callback] | <code>function</code> |  | Callback with the newly created bridge |
+
+<a name="Bridge+get"></a>
+
+### bridge.get(bridgeId, callback) ⇒ <code>[BridgeResponse](#BridgeResponse)</code>
+Gets information about a bridge.
+
+**Kind**: instance method of <code>[Bridge](#Bridge)</code>  
+**Returns**: <code>[BridgeResponse](#BridgeResponse)</code> - A promise for the call information  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| bridgeId | <code>String</code> | The ID of the bridge to get |
+| callback | <code>function</code> | A callback with the call information |
+
+<a name="Bridge+list"></a>
+
+### bridge.list(params, callback) ⇒ <code>[Array.&lt;BridgeResponse&gt;](#BridgeResponse)</code>
+Gets a list of bridges.
+
+**Kind**: instance method of <code>[Bridge](#Bridge)</code>  
+**Returns**: <code>[Array.&lt;BridgeResponse&gt;](#BridgeResponse)</code> - A promise for the list of bridges  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| params | <code>Object</code> |  | Query parameters for listing bridges |
+| [params.size] | <code>Number</code> | <code>25</code> | Used for pagination to indicate the size of each page requested for querying a list of bridges. If no value is specified the default value is 25 (maximum value 1000). |
+| callback | <code>function</code> |  | A callback with the list of bridges |
+
+<a name="Bridge+update"></a>
+
+### bridge.update(bridgeId, params, [callback]) ⇒ <code>[BridgeResponse](#BridgeResponse)</code>
+Update the bridge
+
+**Kind**: instance method of <code>[Bridge](#Bridge)</code>  
+**Returns**: <code>[BridgeResponse](#BridgeResponse)</code> - A promise for the operation  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| bridgeId | <code>String</code> | The ID of the bridge |
+| params | <code>Object</code> | Changed parameters of the bridge |
+| params.bridgeAudio | <code>Boolean</code> | Enable/Disable two way audio path (default = true). |
+| params.callIds | <code>Array.&lt;String&gt;</code> | The list of call ids in the bridge. |
+| [callback] | <code>function</code> | Callback with the newly created bridge |
+
+<a name="Bridge+speakSentence"></a>
+
+### bridge.speakSentence(bridgeId, sentence, [callback]) ⇒ <code>Promise</code>
+Speak sentence to the bridge using default values
+
+**Kind**: instance method of <code>[Bridge](#Bridge)</code>  
+**Returns**: <code>Promise</code> - A promise for the operation  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| bridgeId | <code>String</code> | The ID of the bridge |
+| sentence | <code>String</code> | A sentence to speak to the bridge. |
+| [callback] | <code>function</code> | Callback for the operation |
+
+**Example**  
+```js
+//Speak sentence in a bridge
+
+//Promise
+client.Bridge.speakSentence("bridgeID", "Hello From Bandwidth").then(function (res) {});
+
+//Callback
+client.Bridge.speakSentence("bridgeID", "Hello From Bandwidth", function (err, res) {});
+```
+<a name="Bridge+playAudioFile"></a>
+
+### bridge.playAudioFile(bridgeId, fileUrl, [callback]) ⇒ <code>Promise</code>
+Play audio url to the bridge
+
+**Kind**: instance method of <code>[Bridge](#Bridge)</code>  
+**Returns**: <code>Promise</code> - A promise for the operation  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| bridgeId | <code>String</code> | The ID of the bridge |
+| fileUrl | <code>String</code> | The http location of an audio file to play (WAV and MP3 supported). |
+| [callback] | <code>function</code> | Callback for the operation |
+
+**Example**  
+```js
+//Play Audio file on bridge
+
+//Promise
+client.Bridge.playAudioFile("bridgeID", "http://myurl.com/file.mp3").then(function (res) {});
+
+//Callback
+client.Bridge.playAudioFile("bridgeID", "http://myurl.com/file.wav", function (err, res) {});
+```
+<a name="Bridge+playAudioAdvanced"></a>
+
+### bridge.playAudioAdvanced(bridgeId, params, [callback]) ⇒ <code>Promise</code>
+Play audio file or speak sentence in bridge
+
+**Kind**: instance method of <code>[Bridge](#Bridge)</code>  
+**Returns**: <code>Promise</code> - A promise for the operation  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| bridgeId | <code>String</code> |  | The ID of the bridge |
+| params | <code>Object</code> |  | Parameters to play audio in bridge. |
+| [params.fileUrl] | <code>String</code> |  | The http location of an audio file to play (WAV and MP3 supported). |
+| [params.sentence] | <code>String</code> |  | The sentence to speak. |
+| [params.gender] | <code>String</code> | <code>female</code> | The gender of the voice used to synthesize the sentence. It will be considered only if sentence is not null. The female gender will be used by default. |
+| [params.locale] | <code>String</code> | <code>en_US</code> | The locale used to get the accent of the voice used to synthesize the sentence. Check out [docs](http://ap.bandwidth.com/docs/rest-api/bridges/#resourcePOSTv1usersuserIdbridgesbridgeIdaudio) for list of supported locales. It will be considered only if sentence is not null/empty. The en_US will be used by default. |
+| [params.voice] | <code>String</code> | <code>Susan</code> | The voice to speak the sentence. Check out [docs](http://ap.bandwidth.com/docs/rest-api/bridges/#resourcePOSTv1usersuserIdbridgesbridgeIdaudio) for list of supported voices It will be considered only if sentence is not null/empty. Susan's voice will be used by default. |
+| [params.loopEnabled] | <code>Boolean</code> | <code>false</code> | When value is true, the audio will keep playing in a loop. Default: false. |
+| [callback] | <code>function</code> |  | Callback for the operation |
+
+**Example**  
+```js
+//Play Audio File on loop
+var options = {
+	fileUrl     : "http://myurl.com/file.mp3",
+	loopEnabled : true
+}
+//Promise
+client.Bridge.playAudioAdvanced("bridgeId", options).then(function (res) {});
+
+//Callback
+client.Bridge.playAudioAdvanced("bridgeId", options, function (err,res) {});
+```
+**Example**  
+```js
+//Speak sentence with options
+var options = {
+	sentence : "hola de Bandwidth",
+	gender   : "male",
+	locale   : "es",
+	voice    : "Jorge"
+}
+//Promise
+client.Bridge.playAudioAdvanced("bridgeId", options).then(function (res) {});
+
+//Callback
+client.Bridge.playAudioAdvanced("bridgeId", options, function (err,res) {});
+```
+<a name="Bridge+getCalls"></a>
+
+### bridge.getCalls(bridgeId, callback) ⇒ <code>Promise</code>
+Gets information about a bridge.
+
+**Kind**: instance method of <code>[Bridge](#Bridge)</code>  
+**Returns**: <code>Promise</code> - A promise for the call information  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| bridgeId | <code>String</code> | The ID of the bridge to get |
+| callback | <code>function</code> | A callback with the call information |
+
+<a name="BridgeResponse"></a>
+
+## BridgeResponse : <code>Object</code>
+**Kind**: global class  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| id | <code>String</code> | The unique ID of the bridge. |
+| state | <code>String</code> | Bridge state. Possible state values are described here. |
+| callIds | <code>Array.&lt;String&gt;</code> | List of call Ids that will be in the bridge. |
+| bridgeAudio | <code>Boolean</code> | Enable/Disable two way audio path. |
+| completedTime | <code>String</code> | The time when the bridge was completed. |
+| createdTime | <code>String</code> | The time that bridge was created. |
+| activatedTime | <code>String</code> | The time that the bridge got into active state. |
 
 <a name="Call"></a>
 
@@ -393,8 +603,8 @@ Upload a media file
 
 * [Message](#Message)
     * [new Message(client)](#new_Message_new)
-    * [.send(params, The, The, [callback])](#Message+send) ⇒ <code>MessageResponse</code>
-    * [.get(messageId, [callback])](#Message+get) ⇒ <code>MessageResponse</code>
+    * [.send(params, The, The, [callback])](#Message+send) ⇒ <code>[MessageResponse](#MessageResponse)</code>
+    * [.get(messageId, [callback])](#Message+get) ⇒ <code>[MessageResponse](#MessageResponse)</code>
     * [.list(params, [callback])](#Message+list) ⇒ <code>Array</code>
 
 <a name="new_Message_new"></a>
@@ -409,11 +619,11 @@ SMS or MMS Message
 
 <a name="Message+send"></a>
 
-### message.send(params, The, The, [callback]) ⇒ <code>MessageResponse</code>
+### message.send(params, The, The, [callback]) ⇒ <code>[MessageResponse](#MessageResponse)</code>
 Send a new SMS or MMS message
 
 **Kind**: instance method of <code>[Message](#Message)</code>  
-**Returns**: <code>MessageResponse</code> - A promise for the new message object  
+**Returns**: <code>[MessageResponse](#MessageResponse)</code> - A promise for the new message object  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -431,11 +641,11 @@ Send a new SMS or MMS message
 
 <a name="Message+get"></a>
 
-### message.get(messageId, [callback]) ⇒ <code>MessageResponse</code>
+### message.get(messageId, [callback]) ⇒ <code>[MessageResponse](#MessageResponse)</code>
 Get a message
 
 **Kind**: instance method of <code>[Message](#Message)</code>  
-**Returns**: <code>MessageResponse</code> - A promise for the message  
+**Returns**: <code>[MessageResponse](#MessageResponse)</code> - A promise for the message  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -453,7 +663,42 @@ Gets a list of messages
 | Param | Type | Description |
 | --- | --- | --- |
 | params | <code>Object</code> | Search parameters |
+| [params.from] | <code>String</code> | The phone number to filter the messages that came from (must be in E.164 format, like +19195551212). |
+| [params.to] | <code>String</code> | The phone number to filter the messages that was sent to (must be in E.164 format, like +19195551212). |
+| [params.fromDateTime] | <code>String</code> | The starting date time to filter the messages (must be in yyyy-MM-dd hh:mm:ss format, like 2014-05-25 12:00:00. You can suppress parts of the date or time, like 2014-05-25, but the missing parameters will be filled with zeros). |
+| [params.toDateTime] | <code>String</code> | The ending date time to filter the messages (must be in yyyy-MM-dd hh:mm:ss format, like 2014-05-25 12:00:00. You can suppress parts of the date or time, like 2014-05-25, but the missing parameters will be filled with zeros) |
+| [params.size] | <code>Number</code> | Used for pagination to indicate the size of each page requested \ for querying a list of messages. If no value is specified the default value is 25. (Maximum value 1000) |
+| [params.direction] | <code>String</code> | Filter by direction of message, in - a message that came from the telephone network to one of your numbers (an "inbound" message) or out - a message that was sent from one of your numbers to the telephone network (an "outbound" message) |
+| [params.state] | <code>String</code> | The message state to filter. Values are: received, queued, sending, sent, error |
+| [params.deliveryState] | <code>String</code> | The message delivery state to filter. Values are waiting, delivered, not-delivered |
+| [params.sortOrder] | <code>String</code> | How to sort the messages. Values are asc or desc If no value is specified the default value is asc |
 | [callback] | <code>function</code> | A callback for the list of messages |
+
+<a name="MessageResponse"></a>
+
+## MessageResponse : <code>Object</code>
+**Kind**: global class  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| id | <code>String</code> | The unique ID of the message. |
+| from | <code>String</code> | The message sender's telephone number (or short code). |
+| to | <code>String</code> | Message recipient telephone number (or short code). |
+| direction | <code>String</code> | Direction of message, in - a message that came from the telephone network to one of your numbers (an "inbound" message) or out - a message that was sent from one of your numbers to the telephone network (an "outbound" message) |
+| text | <code>String</code> | The message contents. |
+| media | <code>Array</code> | Json array containing list of media urls to be sent as content for an mms. |
+| state | <code>String</code> | Message state, values are received, queued, sending, sent, error |
+| time | <code>String</code> | The time the message resource was created (UTC, follows the ISO 8601 format). |
+| callbackUrl | <code>String</code> | The complete URL where the events related to the outgoing message will be sent. |
+| callbackTimeout | <code>Number</code> | Determine how long should the platform wait for callbackUrl's response before timing out. (milliseconds) |
+| fallbackUrl | <code>String</code> | The server URL used to send message events if the request to callbackUrl fails. |
+| size | <code>Number</code> | Used for pagination to indicate the size of each page requested for querying a list of messages. If no value is specified the default value is 25. (Maximum value 1000) |
+| tag | <code>String</code> | A string that will be included in the callback events of the message. |
+| receiptRequested | <code>String</code> | Requested receipt option for outbound messages: none, all, error Default is none. |
+| deliveryState | <code>String</code> | One of the message delivery states: waiting, delivered, not-delivered. |
+| deliveryCode | <code>Number</code> | Numeric value of deliver code. |
+| deliveryDescription | <code>String</code> | Message delivery description for the respective delivery code. |
 
 <a name="Recording"></a>
 
@@ -506,5 +751,5 @@ getNextLink
 
 | Param | Type | Description |
 | --- | --- | --- |
-| response | <code>Object</code> | A response object returned from calling 'client.makeRequest' |
+| response | <code>Object</code> | A headers object returned from calling 'client.makeRequest' (response.headers) |
 
