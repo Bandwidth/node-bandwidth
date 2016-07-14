@@ -301,8 +301,8 @@ Play audio file or speak sentence in bridge
 | [params.fileUrl] | <code>String</code> | The http location of an audio file to play (WAV and MP3 supported). |
 | [params.sentence] | <code>String</code> | The sentence to speak. |
 | [params.gender] | <code>String</code> | The gender of the voice used to synthesize the sentence. It will be considered only if sentence is not null. The female gender will be used by default. |
-| [params.locale] | <code>String</code> | The locale used to get the accent of the voice used to synthesize the sentence. Currently audio supports: 	* en_US or en_UK (English) 	* es or es_MX (Spanish) 	* fr or fr_FR (French) 	* de or de_DE (German) 	* t or it_IT (Italian) It will be considered only if sentence is not null/empty. The en_US will be used by default. |
-| [params.voice] | <code>String</code> | The voice to speak the sentence. Audio currently supports the following voices:  * English US: Kate, Susan, Julie, Dave, Paul  * English UK: Bridget  * Spanish: Esperanza, Violeta, Jorge  * French: Jolie, Bernard  * German: Katrin, Stefan  * Italian: Paola, Luca It will be considered only if sentence is not null/empty. Susan's voice will be used by default. |
+| [params.locale] | <code>String</code> | The locale used to get the accent of the voice used to synthesize the sentence. Currently audio supports: 		- en_US or en_UK (English) 		- es or es_MX (Spanish) 		- fr or fr_FR (French) 		- de or de_DE (German) 		- t or it_IT (Italian) It will be considered only if sentence is not null/empty. The en_US will be used by default. |
+| [params.voice] | <code>String</code> | The voice to speak the sentence. Audio currently supports the following voices: 		- English US: Kate, Susan, Julie, Dave, Paul 		- English UK: Bridget 		- Spanish: Esperanza, Violeta, Jorge 		- French: Jolie, Bernard 		- German: Katrin, Stefan 		- Italian: Paola, Luca It will be considered only if sentence is not null/empty. Susan's voice will be used by default. |
 | [params.loopEnabled] | <code>Boolean</code> | When value is true, the audio will keep playing in a loop. Default: false. |
 | [callback] | <code>function</code> | Callback for the operation |
 
