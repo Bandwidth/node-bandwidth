@@ -179,32 +179,16 @@ describe("Bridge API", function () {
 			return client.Bridge.speakSentence(testBridge.id, sampleSentence);
 		});
 
-		it("should speak a sentence to the bridge (with params), promise style", function () {
-			return client.Bridge.speakSentence(testBridge.id, sampleSentence, { tag : tag });
-		});
-
 		it("should speak a sentence to the bridge, callback style", function (done) {
 			return client.Bridge.speakSentence(testBridge.id, sampleSentence, done);
-		});
-
-		it("should speak a sentence to the bridge (with params), callback style", function (done) {
-			return client.Bridge.speakSentence(testBridge.id, sampleSentence, { tag : tag }, done);
 		});
 
 		it("should play an audio file on sentence to the bridge, promise style", function () {
 			return client.Bridge.playAudio(testBridge.id, audioUrl);
 		});
 
-		it("should play an audio file on sentence to the bridge (with params), promise style", function () {
-			return client.Bridge.playAudio(testBridge.id, audioUrl, { tag : tag });
-		});
-
 		it("should play an audio file on sentence to the bridge, callback style", function (done) {
 			return client.Bridge.playAudio(testBridge.id, audioUrl, done);
-		});
-
-		it("should play an audio file on sentence to the bridge (with params), callback style", function (done) {
-			return client.Bridge.playAudio(testBridge.id, audioUrl, { tag : tag }, done);
 		});
 
 		it("should play an audio with custom params to the bridge, promise style", function () {
