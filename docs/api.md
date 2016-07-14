@@ -241,7 +241,7 @@ Update the bridge
 <a name="Bridge+speakSentence"></a>
 
 ### bridge.speakSentence(bridgeId, sentence, params, [callback]) ⇒ <code>Promise</code>
-Speak sentence to the bridge
+Simple Speak sentence to the bridge using default values
 
 **Kind**: instance method of <code>[Bridge](#Bridge)</code>  
 **Returns**: <code>Promise</code> - A promise for the operation  
@@ -253,6 +253,16 @@ Speak sentence to the bridge
 | params | <code>Object</code> | Optional parameters for the operation. |
 | [callback] | <code>function</code> | Callback for the operation |
 
+**Example**  
+```js
+//Speak sentence in a bridge
+
+//Promise
+client.Bridge.speakSentence("bridgeID", "Hello From Bandwidth").then(function (res) {});
+
+//Callback
+client.Bridge.speakSentence("bridgeID", "Hello From Bandwidth", function (err, res) {});
+```
 <a name="Bridge+playAudioFile"></a>
 
 ### bridge.playAudioFile(bridgeId, fileUrl, params, [callback]) ⇒ <code>Promise</code>
@@ -264,10 +274,20 @@ Play audio url to the bridge
 | Param | Type | Description |
 | --- | --- | --- |
 | bridgeId | <code>String</code> | The ID of the bridge |
-| fileUrl | <code>String</code> | Url to audio file to play. |
+| fileUrl | <code>String</code> | Url to audio file to play. Supports .wav and .mp3 |
 | params | <code>Object</code> | Optional parameters for the operation. |
 | [callback] | <code>function</code> | Callback for the operation |
 
+**Example**  
+```js
+//Play Audio file on bridge
+
+//Promise
+client.Bridge.playAudioFile("bridgeID", "http://myurl.com/file.mp3").then(function (res) {});
+
+//Callback
+client.Bridge.playAudioFile("bridgeID", "http://myurl.com/file.wav", function (err, res) {});
+```
 <a name="Bridge+playAudioAdvanced"></a>
 
 ### bridge.playAudioAdvanced(bridgeId, params, [callback]) ⇒ <code>Promise</code>
@@ -284,7 +304,6 @@ Either speak sentence or play audio file in bridge.
 
 **Example**  
 ```js
-Play Audio File with parameters
 //Play Audio File on loop
 var options = {
 	fileUrl     : "http://myurl.com/file.mp3",
@@ -292,12 +311,12 @@ var options = {
 }
 //Promise
 client.Bridge.playAudioAdvanced("bridgeId", options).then(function (res) {});
+
 //Callback
 client.Bridge.playAudioAdvanced("bridgeId", options, function (err,res) {});
 ```
 **Example**  
 ```js
-Speak Sentence with more options
 //Speak sentence with options
 var options = {
 	sentence : "hola de Bandwidth",
@@ -307,6 +326,7 @@ var options = {
 }
 //Promise
 client.Bridge.playAudioAdvanced("bridgeId", options).then(function (res) {});
+
 //Callback
 client.Bridge.playAudioAdvanced("bridgeId", options, function (err,res) {});
 ```
