@@ -171,7 +171,7 @@ Delete an application.
     * [.list(params, callback)](#Bridge+list) ⇒ <code>Promise</code>
     * [.update(bridgeId, params, [callback])](#Bridge+update) ⇒ <code>[BridgeResponse](#BridgeResponse)</code>
     * [.speakSentence(bridgeId, sentence, params, [callback])](#Bridge+speakSentence) ⇒ <code>Promise</code>
-    * [.playAudio(bridgeId, fileUrl, params, [callback])](#Bridge+playAudio) ⇒ <code>Promise</code>
+    * [.playAudioFile(bridgeId, fileUrl, params, [callback])](#Bridge+playAudioFile) ⇒ <code>Promise</code>
     * [.playAudioAdvanced(bridgeId, params, [callback])](#Bridge+playAudioAdvanced) ⇒ <code>Promise</code>
     * [.getCalls(bridgeId, callback)](#Bridge+getCalls) ⇒ <code>Promise</code>
 
@@ -241,7 +241,7 @@ Update the bridge
 <a name="Bridge+speakSentence"></a>
 
 ### bridge.speakSentence(bridgeId, sentence, params, [callback]) ⇒ <code>Promise</code>
-Speak sentence to the bridge
+Simple Speak sentence to the bridge using default values
 
 **Kind**: instance method of <code>[Bridge](#Bridge)</code>  
 **Returns**: <code>Promise</code> - A promise for the operation  
@@ -253,9 +253,19 @@ Speak sentence to the bridge
 | params | <code>Object</code> | Optional parameters for the operation. |
 | [callback] | <code>function</code> | Callback for the operation |
 
-<a name="Bridge+playAudio"></a>
+**Example**  
+```js
+//Speak sentence in a bridge
 
-### bridge.playAudio(bridgeId, fileUrl, params, [callback]) ⇒ <code>Promise</code>
+//Promise
+client.Bridge.speakSentence("bridgeID", "Hello From Bandwidth").then(function (res) {});
+
+//Callback
+client.Bridge.speakSentence("bridgeID", "Hello From Bandwidth", function (err, res) {});
+```
+<a name="Bridge+playAudioFile"></a>
+
+### bridge.playAudioFile(bridgeId, fileUrl, params, [callback]) ⇒ <code>Promise</code>
 Play audio url to the bridge
 
 **Kind**: instance method of <code>[Bridge](#Bridge)</code>  
@@ -264,14 +274,24 @@ Play audio url to the bridge
 | Param | Type | Description |
 | --- | --- | --- |
 | bridgeId | <code>String</code> | The ID of the bridge |
-| fileUrl | <code>String</code> | Url to audio file to play. |
+| fileUrl | <code>String</code> | Url to audio file to play. Supports .wav and .mp3 |
 | params | <code>Object</code> | Optional parameters for the operation. |
 | [callback] | <code>function</code> | Callback for the operation |
 
+**Example**  
+```js
+//Play Audio file on bridge
+
+//Promise
+client.Bridge.playAudioFile("bridgeID", "http://myurl.com/file.mp3").then(function (res) {});
+
+//Callback
+client.Bridge.playAudioFile("bridgeID", "http://myurl.com/file.wav", function (err, res) {});
+```
 <a name="Bridge+playAudioAdvanced"></a>
 
 ### bridge.playAudioAdvanced(bridgeId, params, [callback]) ⇒ <code>Promise</code>
-Play audio to the bridge
+Either speak sentence or play audio file in bridge.
 
 **Kind**: instance method of <code>[Bridge](#Bridge)</code>  
 **Returns**: <code>Promise</code> - A promise for the operation  
@@ -282,6 +302,34 @@ Play audio to the bridge
 | params | <code>Object</code> | Parameters for the operation. |
 | [callback] | <code>function</code> | Callback for the operation |
 
+**Example**  
+```js
+//Play Audio File on loop
+var options = {
+	fileUrl     : "http://myurl.com/file.mp3",
+	loopEnabled : true
+}
+//Promise
+client.Bridge.playAudioAdvanced("bridgeId", options).then(function (res) {});
+
+//Callback
+client.Bridge.playAudioAdvanced("bridgeId", options, function (err,res) {});
+```
+**Example**  
+```js
+//Speak sentence with options
+var options = {
+	sentence : "hola de Bandwidth",
+	gender   : "male",
+	locale   : "es",
+	voice    : "Jorge"
+}
+//Promise
+client.Bridge.playAudioAdvanced("bridgeId", options).then(function (res) {});
+
+//Callback
+client.Bridge.playAudioAdvanced("bridgeId", options, function (err,res) {});
+```
 <a name="Bridge+getCalls"></a>
 
 ### bridge.getCalls(bridgeId, callback) ⇒ <code>Promise</code>
