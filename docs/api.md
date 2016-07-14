@@ -303,7 +303,7 @@ Play audio file or speak sentence in bridge
 | [params.gender] | <code>String</code> | <code>female</code> | The gender of the voice used to synthesize the sentence. It will be considered only if sentence is not null. The female gender will be used by default. |
 | [params.locale] | <code>String</code> | <code>en_US</code> | The locale used to get the accent of the voice used to synthesize the sentence. Check out [docs](http://ap.bandwidth.com/docs/rest-api/bridges/#resourcePOSTv1usersuserIdbridgesbridgeIdaudio) for list of supported locales. It will be considered only if sentence is not null/empty. The en_US will be used by default. |
 | [params.voice] | <code>String</code> | <code>Susan</code> | The voice to speak the sentence. Check out [docs](http://ap.bandwidth.com/docs/rest-api/bridges/#resourcePOSTv1usersuserIdbridgesbridgeIdaudio) for list of supported voices It will be considered only if sentence is not null/empty. Susan's voice will be used by default. |
-| [params.loopEnabled] | <code>Boolean</code> | <code>flase</code> | When value is true, the audio will keep playing in a loop. Default: false. |
+| [params.loopEnabled] | <code>Boolean</code> | <code>false</code> | When value is true, the audio will keep playing in a loop. Default: false. |
 | [callback] | <code>function</code> |  | Callback for the operation |
 
 **Example**  
