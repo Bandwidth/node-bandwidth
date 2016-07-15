@@ -28,6 +28,14 @@ describe("Media API", function () {
 			return s;
 		};
 
+		var mediaFileList = [
+			{
+				"contentLength" : 561276,
+				"mediaName"     : "{mediaName1}",
+				"content"       : "api.catapult.inetwork.com/.../media/{mediaName1}"
+			}
+		];
+
 		var mediaContentFile = path.join(os.tmpdir(), "node-bandwidth-media-file.txt");
 
 		before(function () {
@@ -52,7 +60,11 @@ describe("Media API", function () {
 			nock("https://api.catapult.inetwork.com")
 				.persist()
 				.get("/v1/users/" + userId + "/media/" + mediaName1)
-				.reply(200, mediaContent, { "Content-Type" : "text/plain" });
+				.reply(200, mediaContent, { "Content-Type" : "text/plain" })
+				.get("/v1/users/" + userId + "/media")
+				.reply(200, mediaFileList)
+				.delete("/v1/users/" + userId + "/media/" + mediaName1)
+				.reply(200);
 		});
 
 		after(function () {
@@ -109,12 +121,23 @@ describe("Media API", function () {
 			});
 		});
 
-		it("should download a media file, Promise", function () {
+		it("should download a media file", function () {
 			return client.Media.download(mediaName1)
 			.then(function (result) {
 				result.contentType.should.eql("text/plain");
 				result.content.toString().should.eql(mediaContent);
 			});
+		});
+
+		it("should list media files", function () {
+			return client.Media.list()
+			.then(function (files) {
+				files[0].should.eql(mediaFileList[0]);
+			});
+		});
+
+		it("should remove a media file", function () {
+			return client.Media.remove(mediaName1);
 		});
 	});
 });

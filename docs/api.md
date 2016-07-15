@@ -23,6 +23,8 @@
 <dd></dd>
 <dt><a href="#DownloadMediaFileResponse">DownloadMediaFileResponse</a> : <code>Object</code></dt>
 <dd></dd>
+<dt><a href="#MediaFileResponse">MediaFileResponse</a> : <code>Object</code></dt>
+<dd></dd>
 <dt><a href="#Message">Message</a></dt>
 <dd></dd>
 <dt><a href="#MessageResponse">MessageResponse</a> : <code>Object</code></dt>
@@ -578,6 +580,8 @@ Catapult API Client
     * [new Media()](#new_Media_new)
     * [.upload(name, data, contentType, [callback])](#Media+upload) ⇒ <code>Promise</code>
     * [.download(name, [callback])](#Media+download) ⇒ <code>[DownloadMediaFileResponse](#DownloadMediaFileResponse)</code>
+    * [.list([callback])](#Media+list) ⇒ <code>[Array.&lt;MediaFileResponse&gt;](#MediaFileResponse)</code>
+    * [.remove(name, [callback])](#Media+remove) ⇒ <code>Promise</code>
 
 <a name="new_Media_new"></a>
 
@@ -612,6 +616,31 @@ Download a media file
 | name | <code>String</code> | The name of downloaded file. |
 | [callback] | <code>function</code> | Callback for the operation |
 
+<a name="Media+list"></a>
+
+### media.list([callback]) ⇒ <code>[Array.&lt;MediaFileResponse&gt;](#MediaFileResponse)</code>
+Gets a list of your media files.
+
+**Kind**: instance method of <code>[Media](#Media)</code>  
+**Returns**: <code>[Array.&lt;MediaFileResponse&gt;](#MediaFileResponse)</code> - A promise for the operation  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| [callback] | <code>function</code> | Callback for the operation |
+
+<a name="Media+remove"></a>
+
+### media.remove(name, [callback]) ⇒ <code>Promise</code>
+Remove a media file
+
+**Kind**: instance method of <code>[Media](#Media)</code>  
+**Returns**: <code>Promise</code> - A promise for the operation  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| name | <code>String</code> | The name of file to remove. |
+| [callback] | <code>function</code> | Callback for the operation |
+
 <a name="DownloadMediaFileResponse"></a>
 
 ## DownloadMediaFileResponse : <code>Object</code>
@@ -622,6 +651,17 @@ Download a media file
 | --- | --- | --- |
 | contentType | <code>String</code> | MIME type of downloaded file. |
 | content | <code>String</code> &#124; <code>Buffer</code> &#124; <code>Readable</code> | Content of file. |
+
+<a name="MediaFileResponse"></a>
+
+## MediaFileResponse : <code>Object</code>
+**Kind**: global class  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| mediaName | <code>String</code> | name of media file. |
+| contentLength | <code>Number</code> | Length of media file. |
 
 <a name="Message"></a>
 
