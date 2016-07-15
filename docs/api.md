@@ -13,6 +13,8 @@
 <dd></dd>
 <dt><a href="#CallResponse">CallResponse</a> : <code>Object</code></dt>
 <dd></dd>
+<dt><a href="#GatherResponse">GatherResponse</a> : <code>Object</code></dt>
+<dd></dd>
 <dt><a href="#Domain">Domain</a></dt>
 <dd></dd>
 <dt><a href="#DomainResponse">DomainResponse</a> : <code>Object</code></dt>
@@ -375,6 +377,9 @@ Gets information about a bridge.
     * [.create(params, [callback])](#Call+create) ⇒ <code>[CallResponse](#CallResponse)</code>
     * [.get(callId, callback)](#Call+get) ⇒ <code>Promise</code>
     * [.list(params, callback)](#Call+list) ⇒ <code>Promise</code>
+    * [.createGather(callId, params, [callback])](#Call+createGather) ⇒ <code>[CallResponse](#CallResponse)</code>
+    * [.getGather(callId, gatherId, [callback])](#Call+getGather) ⇒ <code>[GatherResponse](#GatherResponse)</code>
+    * [.completeGather(callId, gatherId, [callback])](#Call+completeGather) ⇒ <code>Promise</code>
 
 <a name="new_Call_new"></a>
 
@@ -440,6 +445,58 @@ Gets a list of active and historic calls you made or received.
 | [params.size] | <code>Number</code> | <code>25</code> | Used for pagination to indicate the size of each page requested for querying a list of calls. If no value is specified the default value is 25 (maximum value 1000). |
 | callback | <code>function</code> |  | A callback with the list of calls |
 
+<a name="Call+createGather"></a>
+
+### call.createGather(callId, params, [callback]) ⇒ <code>[CallResponse](#CallResponse)</code>
+Collects a series of DTMF digits from a phone call with an optional prompt.
+
+**Kind**: instance method of <code>[Call](#Call)</code>  
+**Returns**: <code>[CallResponse](#CallResponse)</code> - A promise for the newly created call  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| callId | <code>String</code> | The ID of the call |
+| params | <code>Object</code> | Parameters for creating a gather |
+| params.maxDigits | <code>String</code> | The maximum number of digits to collect (max: 30) |
+| params.interDigitTimeout | <code>String</code> | Stop gathering if a DTMF digit is not detected in this many seconds (max: 30s) |
+| params.terminatingDigits | <code>String</code> | A string of DTMF digits that end the gather operation immediately if any one of them is detected |
+| params.tag | <code>String</code> | A string you choose that will be included with the response and events for this gather operation. |
+| params.prompt.sentence | <code>String</code> | The text to speak for the prompt |
+| params.prompt.gender | <code>String</code> | The gender to use for the voice reading the prompt sentence |
+| params.prompt.locale | <code>String</code> | The language and region to use for the voice reading the prompt sentence |
+| params.prompt.loopEnabled | <code>Boolean</code> | When value is true, the audio will keep playing in a loop |
+| params.prompt.bargeable | <code>Boolean</code> | Make the prompt (audio or sentence) bargeable (will be interrupted at first digit gathered). |
+| params.prompt.fileUrl | <code>Strings</code> | Make the prompt (audio or sentence) bargeable (will be interrupted at first digit gathered). |
+| [callback] | <code>function</code> | Callback with the newly created call |
+
+<a name="Call+getGather"></a>
+
+### call.getGather(callId, gatherId, [callback]) ⇒ <code>[GatherResponse](#GatherResponse)</code>
+Get the gather DTMF parameters and results.
+
+**Kind**: instance method of <code>[Call](#Call)</code>  
+**Returns**: <code>[GatherResponse](#GatherResponse)</code> - A promise for the gather  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| callId | <code>String</code> | The ID of the call |
+| gatherId | <code>String</code> | The ID of the gather |
+| [callback] | <code>function</code> | Callback with the gather |
+
+<a name="Call+completeGather"></a>
+
+### call.completeGather(callId, gatherId, [callback]) ⇒ <code>Promise</code>
+Complete the gather.
+
+**Kind**: instance method of <code>[Call](#Call)</code>  
+**Returns**: <code>Promise</code> - A promise for the operation  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| callId | <code>String</code> | The ID of the call |
+| gatherId | <code>String</code> | The ID of the gather |
+| [callback] | <code>function</code> | Callback of the operation |
+
 <a name="CallResponse"></a>
 
 ## CallResponse : <code>Object</code>
@@ -477,6 +534,21 @@ Gets a list of active and historic calls you made or received.
 | page | <code>Number</code> | <code>0</code> | Used for pagination to indicate the page requested for querying a list of calls. If no value is specified the default is 0. |
 | size | <code>Number</code> | <code>25</code> | Used for pagination to indicate the size of each page requested for querying a list of calls. If no value is specified the default value is 25 (maximum value 1000). |
 | sipHeaders | <code>Object</code> |  | Map of Sip headers prefixed by "X-". Up to 5 headers can be sent per call. Max length for header and value is 256 characters. |
+
+<a name="GatherResponse"></a>
+
+## GatherResponse : <code>Object</code>
+**Kind**: global class  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| id | <code>String</code> | The unique ID of the gather. |
+| state | <code>String</code> | The state of the gather. |
+| reason | <code>String</code> | The reason of completing of the gather. |
+| createdTime | <code>String</code> | Time of creation of the gather. |
+| completedTime | <code>String</code> | TIme of completion of the gather. |
+| digits | <code>String</code> | Gathered digits. |
 
 <a name="Domain"></a>
 

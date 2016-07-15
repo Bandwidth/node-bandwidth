@@ -91,6 +91,29 @@ describe("Call API", function () {
 		var fromDateTime = "2012-10-04";
 		var toDateTime = "2012-10-06";
 
+		var newTestGather = {
+			maxDigits         : "5",
+			terminatingDigits : "*",
+			interDigitTimeout : "7",
+			prompt            : {
+				sentence : "Please enter your 5 digit code"
+			}
+		};
+
+		var testGather = {
+			id            : "gatherId",
+			state         : "completed",
+			reason        : "max-digits",
+			createdTime   : "2014-02-12T19:33:56Z",
+			completedTime : "2014-02-12T19:33:59Z",
+			call          : "https://api.catapult.inetwork.com/v1/users/{userId}/calls/{callId}",
+			digits        : "123"
+		};
+
+		var completeGather = {
+			state : "completed"
+		};
+
 		before(function () {
 			client = new CatapultClient({
 				userId    : userId,
@@ -120,6 +143,16 @@ describe("Call API", function () {
 				.post("/v1/users/" + userId + "/calls/" + testCall.id, enableRecordingPayload)
 				.reply(200)
 				.post("/v1/users/" + userId + "/calls/" + testCall.id, setRecordingMaxDurationPayload)
+				.reply(200)
+				.post("/v1/users/" + userId + "/calls/" + testCall.id + "/gather", newTestGather)
+				.reply(201,
+					{},
+					{
+						"Location" : "/v1/users/" + userId + "/calls/" + testCall.id + "/gather/gatherId"
+					})
+				.get("/v1/users/" + userId + "/calls/" + testCall.id + "/gather/" + testGather.id)
+				.reply(200, testGather)
+				.post("/v1/users/" + userId + "/calls/" + testCall.id + "/gather/" + testGather.id, completeGather)
 				.reply(200);
 		});
 
@@ -195,6 +228,24 @@ describe("Call API", function () {
 				calls[1].should.eql(callsList[1]);
 				done();
 			});
+		});
+
+		it("should create a gather for the call", function () {
+			return client.Call.createGather(testCall.id, newTestGather)
+			.then(function (gather) {
+				gather.should.eql(newTestGather);
+			});
+		});
+
+		it("should get a gather", function () {
+			return client.Call.getGather(testCall.id, testGather.id)
+			.then(function (gather) {
+				gather.should.eql(testGather);
+			});
+		});
+
+		it("should complete a gather", function () {
+			return client.Call.completeGather(testCall.id, testGather.id);
 		});
 
 	});
