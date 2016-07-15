@@ -152,7 +152,7 @@ describe("Call API", function () {
 		});
 
 		it("should transfer a call", function () {
-			return client.Call.transferCall(testCall.id, { transferTo : "+1234567891", transferCallerId : "private" })
+			return client.Call.transfer(testCall.id, { transferTo : "+1234567891", transferCallerId : "private" })
 			.then(function (call) {
 				call.id.should.eql("transferedCallId");
 			});

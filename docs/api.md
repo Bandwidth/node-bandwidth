@@ -375,7 +375,7 @@ Gets information about a bridge.
     * [.create(params, [callback])](#Call+create) ⇒ <code>[CallResponse](#CallResponse)</code>
     * [.get(callId, callback)](#Call+get) ⇒ <code>Promise</code>
     * [.list(params, callback)](#Call+list) ⇒ <code>Promise</code>
-    * [.transferCall(params, [callback])](#Call+transferCall) ⇒ <code>[CallResponse](#CallResponse)</code>
+    * [.transfer(params, [callback])](#Call+transfer) ⇒ <code>[CallResponse](#CallResponse)</code>
 
 <a name="new_Call_new"></a>
 
@@ -441,9 +441,9 @@ Gets a list of active and historic calls you made or received.
 | [params.size] | <code>Number</code> | <code>25</code> | Used for pagination to indicate the size of each page requested for querying a list of calls. If no value is specified the default value is 25 (maximum value 1000). |
 | callback | <code>function</code> |  | A callback with the list of calls |
 
-<a name="Call+transferCall"></a>
+<a name="Call+transfer"></a>
 
-### call.transferCall(params, [callback]) ⇒ <code>[CallResponse](#CallResponse)</code>
+### call.transfer(params, [callback]) ⇒ <code>[CallResponse](#CallResponse)</code>
 Transfer a call
 
 **Kind**: instance method of <code>[Call](#Call)</code>  
