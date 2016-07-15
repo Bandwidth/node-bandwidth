@@ -375,6 +375,7 @@ Gets information about a bridge.
     * [.create(params, [callback])](#Call+create) ⇒ <code>[CallResponse](#CallResponse)</code>
     * [.get(callId, callback)](#Call+get) ⇒ <code>Promise</code>
     * [.list(params, callback)](#Call+list) ⇒ <code>Promise</code>
+    * [.transferCall(params, [callback])](#Call+transferCall) ⇒ <code>[CallResponse](#CallResponse)</code>
 
 <a name="new_Call_new"></a>
 
@@ -439,6 +440,22 @@ Gets a list of active and historic calls you made or received.
 | [params.page] | <code>Number</code> | <code>0</code> | Used for pagination to indicate the page requested for querying a list of calls. If no value is specified the default is 0. |
 | [params.size] | <code>Number</code> | <code>25</code> | Used for pagination to indicate the size of each page requested for querying a list of calls. If no value is specified the default value is 25 (maximum value 1000). |
 | callback | <code>function</code> |  | A callback with the list of calls |
+
+<a name="Call+transferCall"></a>
+
+### call.transferCall(params, [callback]) ⇒ <code>[CallResponse](#CallResponse)</code>
+Transfer a call
+
+**Kind**: instance method of <code>[Call](#Call)</code>  
+**Returns**: <code>[CallResponse](#CallResponse)</code> - A promise for the transfered call  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| params | <code>Object</code> | Parameters for transfering of the call |
+| params.transferTo | <code>String</code> | Phone number or SIP address that the call is going to be transferred to. |
+| params.transferCallerId | <code>String</code> | The caller id that will be used when the call is transferred |
+| params.whisperAudio | <code>Object</code> | Audio to be played to the caller that the call will be transferred to. |
+| [callback] | <code>function</code> | Callback with the transfered call |
 
 <a name="CallResponse"></a>
 
