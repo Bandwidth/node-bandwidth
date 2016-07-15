@@ -17,6 +17,8 @@
 <dd></dd>
 <dt><a href="#Media">Media</a></dt>
 <dd></dd>
+<dt><a href="#DownloadMediaFileResponse">DownloadMediaFileResponse</a> : <code>Object</code></dt>
+<dd></dd>
 <dt><a href="#Message">Message</a></dt>
 <dd></dd>
 <dt><a href="#Recording">Recording</a></dt>
@@ -365,6 +367,7 @@ Catapult API Client
 * [Media](#Media)
     * [new Media()](#new_Media_new)
     * [.upload(name, data, contentType, [callback])](#Media+upload) ⇒ <code>Promise</code>
+    * [.download(name, [callback])](#Media+download) ⇒ <code>[DownloadMediaFileResponse](#DownloadMediaFileResponse)</code>
 
 <a name="new_Media_new"></a>
 
@@ -385,6 +388,30 @@ Upload a media file
 | data | <code>String</code> &#124; <code>Buffer</code> &#124; <code>Readable</code> | Data to upload. If data is string it should be path to file to upload. |
 | contentType | <code>String</code> | Optional MIME type of uploaded data (default: application/octet-stream). |
 | [callback] | <code>function</code> | Callback for the operation |
+
+<a name="Media+download"></a>
+
+### media.download(name, [callback]) ⇒ <code>[DownloadMediaFileResponse](#DownloadMediaFileResponse)</code>
+Download a media file
+
+**Kind**: instance method of <code>[Media](#Media)</code>  
+**Returns**: <code>[DownloadMediaFileResponse](#DownloadMediaFileResponse)</code> - A promise for the operation  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| name | <code>String</code> | The name of downloaded file. |
+| [callback] | <code>function</code> | Callback for the operation |
+
+<a name="DownloadMediaFileResponse"></a>
+
+## DownloadMediaFileResponse : <code>Object</code>
+**Kind**: global class  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| contentType | <code>String</code> | MIME type of downloaded file. |
+| content | <code>String</code> &#124; <code>Buffer</code> &#124; <code>Readable</code> | Content of file. |
 
 <a name="Message"></a>
 

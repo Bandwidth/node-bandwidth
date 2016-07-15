@@ -49,6 +49,10 @@ describe("Media API", function () {
 				.matchHeader("Content-Type", "text/plain")
 				.put("/v1/users/" + userId + "/media/" + mediaName2, mediaContent)
 				.reply(200);
+			nock("https://api.catapult.inetwork.com")
+				.persist()
+				.get("/v1/users/" + userId + "/media/" + mediaName1)
+				.reply(200, mediaContent, { "Content-Type" : "text/plain" });
 		});
 
 		after(function () {
@@ -105,5 +109,12 @@ describe("Media API", function () {
 			});
 		});
 
+		it("should download a media file, Promise", function () {
+			return client.Media.download(mediaName1)
+			.then(function (result) {
+				result.contentType.should.eql("text/plain");
+				result.content.toString().should.eql(mediaContent);
+			});
+		});
 	});
 });
