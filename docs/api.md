@@ -19,6 +19,12 @@
 <dd></dd>
 <dt><a href="#CatapultClient">CatapultClient</a></dt>
 <dd></dd>
+<dt><a href="#Media">Media</a></dt>
+<dd></dd>
+<dt><a href="#DownloadMediaFileResponse">DownloadMediaFileResponse</a> : <code>Object</code></dt>
+<dd></dd>
+<dt><a href="#MediaFileResponse">MediaFileResponse</a> : <code>Object</code></dt>
+<dd></dd>
 <dt><a href="#Message">Message</a></dt>
 <dd></dd>
 <dt><a href="#MessageResponse">MessageResponse</a> : <code>Object</code></dt>
@@ -564,6 +570,98 @@ Catapult API Client
 | config.apiToken | <code>String</code> |  | Your Catapult API token |
 | config.apiSecret | <code>String</code> |  | Your Catapult API secret |
 | [config.baseUrl] | <code>String</code> | <code>https://api.catapult.inetwork.com</code> | The catapult base URL. Configurable for using alternative Catapult environments. |
+
+<a name="Media"></a>
+
+## Media
+**Kind**: global class  
+
+* [Media](#Media)
+    * [new Media()](#new_Media_new)
+    * [.upload(name, data, contentType, [callback])](#Media+upload) ⇒ <code>Promise</code>
+    * [.download(name, [callback])](#Media+download) ⇒ <code>[DownloadMediaFileResponse](#DownloadMediaFileResponse)</code>
+    * [.list([callback])](#Media+list) ⇒ <code>[Array.&lt;MediaFileResponse&gt;](#MediaFileResponse)</code>
+    * [.remove(name, [callback])](#Media+remove) ⇒ <code>Promise</code>
+
+<a name="new_Media_new"></a>
+
+### new Media()
+Media
+
+<a name="Media+upload"></a>
+
+### media.upload(name, data, contentType, [callback]) ⇒ <code>Promise</code>
+Upload a media file
+
+**Kind**: instance method of <code>[Media](#Media)</code>  
+**Returns**: <code>Promise</code> - A promise for the operation  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| name | <code>String</code> | The name of uploaded file. |
+| data | <code>String</code> &#124; <code>Buffer</code> &#124; <code>Readable</code> | Data to upload. If data is string it should be path to file to upload. |
+| contentType | <code>String</code> | Optional MIME type of uploaded data (default: application/octet-stream). |
+| [callback] | <code>function</code> | Callback for the operation |
+
+<a name="Media+download"></a>
+
+### media.download(name, [callback]) ⇒ <code>[DownloadMediaFileResponse](#DownloadMediaFileResponse)</code>
+Download a media file
+
+**Kind**: instance method of <code>[Media](#Media)</code>  
+**Returns**: <code>[DownloadMediaFileResponse](#DownloadMediaFileResponse)</code> - A promise for the operation  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| name | <code>String</code> | The name of downloaded file. |
+| [callback] | <code>function</code> | Callback for the operation |
+
+<a name="Media+list"></a>
+
+### media.list([callback]) ⇒ <code>[Array.&lt;MediaFileResponse&gt;](#MediaFileResponse)</code>
+Gets a list of your media files.
+
+**Kind**: instance method of <code>[Media](#Media)</code>  
+**Returns**: <code>[Array.&lt;MediaFileResponse&gt;](#MediaFileResponse)</code> - A promise for the operation  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| [callback] | <code>function</code> | Callback for the operation |
+
+<a name="Media+remove"></a>
+
+### media.remove(name, [callback]) ⇒ <code>Promise</code>
+Remove a media file
+
+**Kind**: instance method of <code>[Media](#Media)</code>  
+**Returns**: <code>Promise</code> - A promise for the operation  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| name | <code>String</code> | The name of file to remove. |
+| [callback] | <code>function</code> | Callback for the operation |
+
+<a name="DownloadMediaFileResponse"></a>
+
+## DownloadMediaFileResponse : <code>Object</code>
+**Kind**: global class  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| contentType | <code>String</code> | MIME type of downloaded file. |
+| content | <code>String</code> &#124; <code>Buffer</code> &#124; <code>Readable</code> | Content of file. |
+
+<a name="MediaFileResponse"></a>
+
+## MediaFileResponse : <code>Object</code>
+**Kind**: global class  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| mediaName | <code>String</code> | name of media file. |
+| contentLength | <code>Number</code> | Length of media file. |
 
 <a name="Message"></a>
 
