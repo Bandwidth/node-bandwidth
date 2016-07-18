@@ -15,6 +15,7 @@ bower_components
 *.log
 *.colt
 /tmp
+/out
 
 ## Ignore all generated files
 /coverage
