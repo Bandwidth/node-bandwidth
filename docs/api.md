@@ -381,7 +381,7 @@ Gets information about a bridge.
     * [.create(params, [callback])](#Call+create) ⇒ <code>[CallResponse](#CallResponse)</code>
     * [.get(callId, callback)](#Call+get) ⇒ <code>Promise</code>
     * [.list(params, callback)](#Call+list) ⇒ <code>Promise</code>
-    * [.transfer(params, [loopEnabled], [callback])](#Call+transfer) ⇒ <code>[CallResponse](#CallResponse)</code>
+    * [.transfer(params, [callback])](#Call+transfer) ⇒ <code>[CallResponse](#CallResponse)</code>
     * [.speakSentence(callId, sentence, [callback])](#Call+speakSentence) ⇒ <code>Promise</code>
     * [.playAudioFile(callId, fileUrl, [callback])](#Call+playAudioFile) ⇒ <code>Promise</code>
     * [.playAudioAdvanced(callId, params, [callback])](#Call+playAudioAdvanced) ⇒ <code>Promise</code>
@@ -452,7 +452,7 @@ Gets a list of active and historic calls you made or received.
 
 <a name="Call+transfer"></a>
 
-### call.transfer(params, [loopEnabled], [callback]) ⇒ <code>[CallResponse](#CallResponse)</code>
+### call.transfer(params, [callback]) ⇒ <code>[CallResponse](#CallResponse)</code>
 Transfer a call
 
 **Kind**: instance method of <code>[Call](#Call)</code>  
@@ -468,7 +468,7 @@ Transfer a call
 | [params.whisperAudio.voice] | <code>String</code> | <code>Susan</code> | The voice to speak the sentence |
 | [params.whisperAudio.locale] | <code>String</code> | <code>en_US</code> | The locale used to get the accent of the voice used to synthesize the sentence. |
 | [params.whisperAudio.fileUrl] | <code>String</code> |  | The location of an audio file to play WAV and MP3 supported |
-| [loopEnabled] | <code>Boolean</code> | <code>false</code> | Loop media |
+| [params.whisperAudio.loopEnabled] | <code>Boolean</code> | <code>false</code> | Loop media |
 | [callback] | <code>function</code> |  | Callback with the transfered call |
 
 **Example**  
