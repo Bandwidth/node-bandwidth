@@ -69,6 +69,12 @@ describe("Call API", function () {
 			state : "active"
 		};
 
+		var transferCallPayload = {
+			transferTo       : "+1234567891",
+			transferCallerId : "private",
+			state            : "transferring"
+		};
+
 		var sampleSentence = "Hello world";
 		var speakSentencePayload = {
 			sentence : sampleSentence
@@ -113,6 +119,12 @@ describe("Call API", function () {
 				.reply(200, callsList)
 				.post("/v1/users/" + userId + "/calls/" + testCall.id, answerCallPayload)
 				.reply(200)
+				.post("/v1/users/" + userId + "/calls/" + testCall.id, transferCallPayload)
+				.reply(201,
+					{},
+					{
+						"Location" : "/v1/users/" + userId + "/calls/transferedCallId"
+					})
 				.post("/v1/users/" + userId + "/calls/" + testCall.id + "/audio", speakSentencePayload)
 				.reply(200)
 				.post("/v1/users/" + userId + "/calls/" + testCall.id + "/audio", playAudioPayload)
@@ -137,6 +149,13 @@ describe("Call API", function () {
 
 		it("should answer a call", function () {
 			return client.Call.answer(testCall.id);
+		});
+
+		it("should transfer a call", function () {
+			return client.Call.transfer(testCall.id, { transferTo : "+1234567891", transferCallerId : "private" })
+			.then(function (call) {
+				call.id.should.eql("transferedCallId");
+			});
 		});
 
 		it("should speak a sentence to the call, promise style", function () {
