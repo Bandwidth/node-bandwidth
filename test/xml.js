@@ -114,6 +114,24 @@ describe("Bandwidth XML", function () {
 			toXml(verb).should.equal("<?xml version=\"1.0\"?>\n<Response>\n  " +
 			"<Transfer transferTo=\"number\" transferCallerId=\"callerId\">\n    " +
 				"<SpeakSentence>Hello</SpeakSentence>\n  </Transfer>\n</Response>");
+
+			verb = new xml.Transfer({ transferTo : "number", transferCallerId : "callerId" });
+
+			verb.record = new xml.Record({ maxDuration : 120 });
+			toXml(verb).should.equal("<?xml version=\"1.0\"?>\n<Response>\n  " +
+			"<Transfer transferTo=\"number\" transferCallerId=\"callerId\">\n    " +
+				"<Record maxDuration=\"120\"/>\n  </Transfer>\n</Response>");
+			verb = new xml.Transfer({
+				transferTo       : "number",
+				transferCallerId : "callerId",
+				record           : {
+					maxDuration : 120
+				}
+			});
+
+			toXml(verb).should.equal("<?xml version=\"1.0\"?>\n<Response>\n  " +
+			"<Transfer transferTo=\"number\" transferCallerId=\"callerId\">\n    " +
+				"<Record maxDuration=\"120\"/>\n  </Transfer>\n</Response>");
 		});
 	});
 
