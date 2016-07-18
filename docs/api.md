@@ -453,22 +453,45 @@ Collects a series of DTMF digits from a phone call with an optional prompt.
 **Kind**: instance method of <code>[Call](#Call)</code>  
 **Returns**: <code>[CallResponse](#CallResponse)</code> - A promise for the newly created call  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| callId | <code>String</code> | The ID of the call |
-| params | <code>Object</code> | Parameters for creating a gather |
-| params.maxDigits | <code>String</code> | The maximum number of digits to collect (max: 30) |
-| params.interDigitTimeout | <code>String</code> | Stop gathering if a DTMF digit is not detected in this many seconds (max: 30s) |
-| params.terminatingDigits | <code>String</code> | A string of DTMF digits that end the gather operation immediately if any one of them is detected |
-| params.tag | <code>String</code> | A string you choose that will be included with the response and events for this gather operation. |
-| params.prompt.sentence | <code>String</code> | The text to speak for the prompt |
-| params.prompt.gender | <code>String</code> | The gender to use for the voice reading the prompt sentence |
-| params.prompt.locale | <code>String</code> | The language and region to use for the voice reading the prompt sentence |
-| params.prompt.loopEnabled | <code>Boolean</code> | When value is true, the audio will keep playing in a loop |
-| params.prompt.bargeable | <code>Boolean</code> | Make the prompt (audio or sentence) bargeable (will be interrupted at first digit gathered). |
-| params.prompt.fileUrl | <code>Strings</code> | Make the prompt (audio or sentence) bargeable (will be interrupted at first digit gathered). |
-| [callback] | <code>function</code> | Callback with the newly created call |
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| callId | <code>String</code> |  | The ID of the call |
+| params | <code>Object</code> |  | Parameters for creating a gather |
+| [params.maxDigits] | <code>String</code> |  | The maximum number of digits to collect (max: 30) |
+| [params.interDigitTimeout] | <code>String</code> | <code>5</code> | Stop gathering if a DTMF digit is not detected in this many seconds (max: 30s) |
+| [params.terminatingDigits] | <code>String</code> | <code>#</code> | A string of DTMF digits that end the gather operation immediately if any one of them is detected |
+| [params.tag] | <code>String</code> |  | A string you choose that will be included with the response and events for this gather operation. |
+| [params.prompt.sentence] | <code>String</code> |  | The text to speak for the prompt. Uses the same defaults as call.playAudioAdvanced. See the [docs](http://ap.bandwidth.com/docs/rest-api/calls/#resourcePOSTv1usersuserIdcallscallIdaudio) |
+| [params.prompt.gender] | <code>String</code> |  | The gender to use for the voice reading the prompt sentence |
+| [params.prompt.locale] | <code>String</code> |  | The language and region to use for the voice reading the prompt sentence |
+| [params.prompt.loopEnabled] | <code>Boolean</code> | <code>false</code> | When value is true, the audio will keep playing in a loop |
+| [params.prompt.bargeable] | <code>Boolean</code> | <code>true</code> | Make the prompt (audio or sentence) bargeable (will be interrupted at first digit gathered). |
+| [params.prompt.fileUrl] | <code>Strings</code> |  | Make the prompt (audio or sentence) bargeable (will be interrupted at first digit gathered). |
+| [callback] | <code>function</code> |  | Callback with the newly created call |
 
+**Example**  
+```js
+//Create Gather
+//The gather ends if either 0, #, or * is detected
+var options = {
+	maxDigits         : 30,
+	interDigitTimeout : "30",
+	terminatingDigits : "0#*",
+	prompt            : {
+		sentence    : "Please enter your account number and press pound",
+		gender      : "male",
+		voice       : "Simon",
+		locale      : "en_UK",
+		loopEnabled : true,
+		bargeable   : true
+	}
+};
+//Promise
+client.Call.createGather("callId", options).then(function(res) {});
+
+//Callback
+client.Call.createGather("callId", options, function(err, res) {});
+```
 <a name="Call+getGather"></a>
 
 ### call.getGather(callId, gatherId, [callback]) ⇒ <code>[GatherResponse](#GatherResponse)</code>
