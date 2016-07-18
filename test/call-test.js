@@ -69,6 +69,12 @@ describe("Call API", function () {
 			state : "active"
 		};
 
+		var transferCallPayload = {
+			transferTo       : "+1234567891",
+			transferCallerId : "private",
+			state            : "transferring"
+		};
+
 		var sampleSentence = "Hello world";
 		var speakSentencePayload = {
 			sentence : sampleSentence
@@ -136,6 +142,12 @@ describe("Call API", function () {
 				.reply(200, callsList)
 				.post("/v1/users/" + userId + "/calls/" + testCall.id, answerCallPayload)
 				.reply(200)
+				.post("/v1/users/" + userId + "/calls/" + testCall.id, transferCallPayload)
+				.reply(201,
+					{},
+					{
+						"Location" : "/v1/users/" + userId + "/calls/transferedCallId"
+					})
 				.post("/v1/users/" + userId + "/calls/" + testCall.id + "/audio", speakSentencePayload)
 				.reply(200)
 				.post("/v1/users/" + userId + "/calls/" + testCall.id + "/audio", playAudioPayload)
@@ -172,12 +184,35 @@ describe("Call API", function () {
 			return client.Call.answer(testCall.id);
 		});
 
-		it("should speak a sentence on a call", function () {
+		it("should transfer a call", function () {
+			return client.Call.transfer(testCall.id, { transferTo : "+1234567891", transferCallerId : "private" })
+			.then(function (call) {
+				call.id.should.eql("transferedCallId");
+			});
+		});
+
+		it("should speak a sentence to the call, promise style", function () {
 			return client.Call.speakSentence(testCall.id, sampleSentence);
 		});
 
-		it("should play an audio file on sentence on a call", function () {
-			return client.Call.playAudio(testCall.id, audioUrl);
+		it("should speak a sentence to the call, callback style", function (done) {
+			return client.Call.speakSentence(testCall.id, sampleSentence, done);
+		});
+
+		it("should play an audio file on sentence to the call, promise style", function () {
+			return client.Call.playAudioFile(testCall.id, audioUrl);
+		});
+
+		it("should play an audio file on sentence to the call, callback style", function (done) {
+			return client.Call.playAudioFile(testCall.id, audioUrl, done);
+		});
+
+		it("should play an audio with custom params to the call, promise style", function () {
+			return client.Call.playAudioAdvanced(testCall.id, { fileUrl : audioUrl });
+		});
+
+		it("should play an audio with custom params to the call, callback style", function (done) {
+			return client.Call.playAudioAdvanced(testCall.id, { fileUrl : audioUrl }, done);
 		});
 
 		it("should enable recording on a call", function () {
