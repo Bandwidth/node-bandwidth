@@ -458,22 +458,29 @@ Transfer a call
 **Kind**: instance method of <code>[Call](#Call)</code>  
 **Returns**: <code>[CallResponse](#CallResponse)</code> - A promise for the transfered call  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| params | <code>Object</code> | Parameters for transfering of the call |
-| params.transferTo | <code>String</code> | Phone number or SIP address that the call is going to be transferred to. |
-| params.transferCallerId | <code>String</code> | The caller id that will be used when the call is transferred see the [docs](http://ap.bandwidth.com/docs/rest-api/calls/#resourcePOSTv1usersuserIdcallscallId) for supported options. |
-| params.whisperAudio | <code>Object</code> | Audio to be played to the caller that the call will be transferred to. |
-| [callback] | <code>function</code> | Callback with the transfered call |
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| params | <code>Object</code> |  | Parameters for transfering of the call |
+| params.transferTo | <code>String</code> |  | Phone number or SIP address that the call is going to be transferred to. |
+| [params.transferCallerId] | <code>String</code> |  | The caller id that will be used when the call is transferred see the [docs](http://ap.bandwidth.com/docs/rest-api/calls/#resourcePOSTv1usersuserIdcallscallId) for supported options. |
+| [params.whisperAudio] | <code>Object</code> |  | Audio to be played to the caller that the call will be transferred to. Uses the same parameters as call.playAudioAdvanced. See the [docs](http://ap.bandwidth.com/docs/rest-api/calls/#resourcePOSTv1usersuserIdcallscallId). |
+| [params.whisperAudio.gender] | <code>String</code> | <code>female</code> | The gender of the voice used to synthesize the sentence |
+| [params.whisperAudio.voice] | <code>String</code> | <code>Susan</code> | The voice to speak the sentence |
+| [params.whisperAudio.locale] | <code>String</code> | <code>en_US</code> | The locale used to get the accent of the voice used to synthesize the sentence. |
+| [callback] | <code>function</code> |  | Callback with the transfered call |
 
 **Example**  
 ```js
 //Transfer call
 var options = {
 	transferTo       : "+15555555555",
- transferCallerId : "private",
- whipserAudio     : "You have an incoming call from 555-555-5555"
-};
+	transferCallerId : "private",
+	whipserAudio     : {
+		sentence : "You will be transferred to 555-555-5555",
+		gender   : "female",
+		voice    : "julie",
+		locale   : "en"
+	};
 
 //Using Promises
 client.Call.transfer("callId", options).then(function (res) {});
