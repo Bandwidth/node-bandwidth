@@ -381,6 +381,9 @@ Gets information about a bridge.
     * [.create(params, [callback])](#Call+create) ⇒ <code>[CallResponse](#CallResponse)</code>
     * [.get(callId, callback)](#Call+get) ⇒ <code>Promise</code>
     * [.list(params, callback)](#Call+list) ⇒ <code>Promise</code>
+    * [.speakSentence(callId, sentence, [callback])](#Call+speakSentence) ⇒ <code>Promise</code>
+    * [.playAudioFile(callId, fileUrl, [callback])](#Call+playAudioFile) ⇒ <code>Promise</code>
+    * [.playAudioAdvanced(callId, params, [callback])](#Call+playAudioAdvanced) ⇒ <code>Promise</code>
 
 <a name="new_Call_new"></a>
 
@@ -446,6 +449,102 @@ Gets a list of active and historic calls you made or received.
 | [params.size] | <code>Number</code> | <code>25</code> | Used for pagination to indicate the size of each page requested for querying a list of calls. If no value is specified the default value is 25 (maximum value 1000). |
 | callback | <code>function</code> |  | A callback with the list of calls |
 
+<a name="Call+speakSentence"></a>
+
+### call.speakSentence(callId, sentence, [callback]) ⇒ <code>Promise</code>
+Speak sentence to the call using default values
+
+**Kind**: instance method of <code>[Call](#Call)</code>  
+**Returns**: <code>Promise</code> - A promise for the operation  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| callId | <code>String</code> | The ID of the call |
+| sentence | <code>String</code> | A sentence to speak to the call. |
+| [callback] | <code>function</code> | Callback for the operation |
+
+**Example**  
+```js
+//Speak sentence in a call
+
+//Promise
+client.Call.speakSentence("callID", "Hello From Bandwidth").then(function (res) {});
+
+//Callback
+client.Call.speakSentence("callID", "Hello From Bandwidth", function (err, res) {});
+```
+<a name="Call+playAudioFile"></a>
+
+### call.playAudioFile(callId, fileUrl, [callback]) ⇒ <code>Promise</code>
+Play audio url to the call
+
+**Kind**: instance method of <code>[Call](#Call)</code>  
+**Returns**: <code>Promise</code> - A promise for the operation  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| callId | <code>String</code> | The ID of the call |
+| fileUrl | <code>String</code> | The http location of an audio file to play (WAV and MP3 supported). |
+| [callback] | <code>function</code> | Callback for the operation |
+
+**Example**  
+```js
+//Play Audio file on call
+
+//Promise
+client.Call.playAudioFile("callId", "http://myurl.com/file.mp3").then(function (res) {});
+
+//Callback
+client.Call.playAudioFile("callId", "http://myurl.com/file.wav", function (err, res) {});
+```
+<a name="Call+playAudioAdvanced"></a>
+
+### call.playAudioAdvanced(callId, params, [callback]) ⇒ <code>Promise</code>
+Play audio file or speak sentence in call
+
+**Kind**: instance method of <code>[Call](#Call)</code>  
+**Returns**: <code>Promise</code> - A promise for the operation  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| callId | <code>String</code> |  | The ID of the call |
+| params | <code>Object</code> |  | Parameters to play audio in call. |
+| [params.fileUrl] | <code>String</code> |  | The http location of an audio file to play (WAV and MP3 supported). |
+| [params.sentence] | <code>String</code> |  | The sentence to speak. |
+| [params.gender] | <code>String</code> | <code>female</code> | The gender of the voice used to synthesize the sentence. It will be considered only if sentence is not null. The female gender will be used by default. |
+| [params.locale] | <code>String</code> | <code>en_US</code> | The locale used to get the accent of the voice used to synthesize the sentence. Check out [docs](http://ap.bandwidth.com/docs/rest-api/calls/#resourcePOSTv1usersuserIdcallscallIdaudio) for list of supported locales. It will be considered only if sentence is not null/empty. The en_US will be used by default. |
+| [params.voice] | <code>String</code> | <code>Susan</code> | The voice to speak the sentence. Check out [docs](http://ap.bandwidth.com/docs/rest-api/calls/#resourcePOSTv1usersuserIdcallscallIdaudio) for list of supported voices It will be considered only if sentence is not null/empty. Susan's voice will be used by default. |
+| [params.loopEnabled] | <code>Boolean</code> | <code>false</code> | When value is true, the audio will keep playing in a loop. Default: false. |
+| [callback] | <code>function</code> |  | Callback for the operation |
+
+**Example**  
+```js
+//Play Audio File on loop
+var options = {
+	fileUrl     : "http://myurl.com/file.mp3",
+	loopEnabled : true
+}
+//Promise
+client.Call.playAudioAdvanced("callId", options).then(function (res) {});
+
+//Callback
+client.Call.playAudioAdvanced("callId", options, function (err,res) {});
+```
+**Example**  
+```js
+//Speak sentence with options
+var options = {
+	sentence : "hola de Bandwidth",
+	gender   : "male",
+	locale   : "es",
+	voice    : "Jorge"
+}
+//Promise
+client.Call.playAudioAdvanced("callId", options).then(function (res) {});
+
+//Callback
+client.Call.playAudioAdvanced("callId", options, function (err,res) {});
+```
 <a name="CallResponse"></a>
 
 ## CallResponse : <code>Object</code>

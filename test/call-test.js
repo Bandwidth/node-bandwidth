@@ -139,12 +139,28 @@ describe("Call API", function () {
 			return client.Call.answer(testCall.id);
 		});
 
-		it("should speak a sentence on a call", function () {
+		it("should speak a sentence to the call, promise style", function () {
 			return client.Call.speakSentence(testCall.id, sampleSentence);
 		});
 
-		it("should play an audio file on sentence on a call", function () {
-			return client.Call.playAudio(testCall.id, audioUrl);
+		it("should speak a sentence to the call, callback style", function (done) {
+			return client.Call.speakSentence(testCall.id, sampleSentence, done);
+		});
+
+		it("should play an audio file on sentence to the call, promise style", function () {
+			return client.Call.playAudioFile(testCall.id, audioUrl);
+		});
+
+		it("should play an audio file on sentence to the call, callback style", function (done) {
+			return client.Call.playAudioFile(testCall.id, audioUrl, done);
+		});
+
+		it("should play an audio with custom params to the call, promise style", function () {
+			return client.Call.playAudioAdvanced(testCall.id, { fileUrl : audioUrl });
+		});
+
+		it("should play an audio with custom params to the call, callback style", function (done) {
+			return client.Call.playAudioAdvanced(testCall.id, { fileUrl : audioUrl }, done);
 		});
 
 		it("should enable recording on a call", function () {
