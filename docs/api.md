@@ -19,6 +19,12 @@
 <dd></dd>
 <dt><a href="#CatapultClient">CatapultClient</a></dt>
 <dd></dd>
+<dt><a href="#Media">Media</a></dt>
+<dd></dd>
+<dt><a href="#DownloadMediaFileResponse">DownloadMediaFileResponse</a> : <code>Object</code></dt>
+<dd></dd>
+<dt><a href="#MediaFileResponse">MediaFileResponse</a> : <code>Object</code></dt>
+<dd></dd>
 <dt><a href="#Message">Message</a></dt>
 <dd></dd>
 <dt><a href="#MessageResponse">MessageResponse</a> : <code>Object</code></dt>
@@ -376,6 +382,9 @@ Gets information about a bridge.
     * [.get(callId, callback)](#Call+get) ⇒ <code>Promise</code>
     * [.list(params, callback)](#Call+list) ⇒ <code>Promise</code>
     * [.transfer(params, [callback])](#Call+transfer) ⇒ <code>[CallResponse](#CallResponse)</code>
+    * [.speakSentence(callId, sentence, [callback])](#Call+speakSentence) ⇒ <code>Promise</code>
+    * [.playAudioFile(callId, fileUrl, [callback])](#Call+playAudioFile) ⇒ <code>Promise</code>
+    * [.playAudioAdvanced(callId, params, [callback])](#Call+playAudioAdvanced) ⇒ <code>Promise</code>
 
 <a name="new_Call_new"></a>
 
@@ -457,6 +466,102 @@ Transfer a call
 | params.whisperAudio | <code>Object</code> | Audio to be played to the caller that the call will be transferred to. |
 | [callback] | <code>function</code> | Callback with the transfered call |
 
+<a name="Call+speakSentence"></a>
+
+### call.speakSentence(callId, sentence, [callback]) ⇒ <code>Promise</code>
+Speak sentence to the call using default values
+
+**Kind**: instance method of <code>[Call](#Call)</code>  
+**Returns**: <code>Promise</code> - A promise for the operation  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| callId | <code>String</code> | The ID of the call |
+| sentence | <code>String</code> | A sentence to speak to the call. |
+| [callback] | <code>function</code> | Callback for the operation |
+
+**Example**  
+```js
+//Speak sentence in a call
+
+//Promise
+client.Call.speakSentence("callID", "Hello From Bandwidth").then(function (res) {});
+
+//Callback
+client.Call.speakSentence("callID", "Hello From Bandwidth", function (err, res) {});
+```
+<a name="Call+playAudioFile"></a>
+
+### call.playAudioFile(callId, fileUrl, [callback]) ⇒ <code>Promise</code>
+Play audio url to the call
+
+**Kind**: instance method of <code>[Call](#Call)</code>  
+**Returns**: <code>Promise</code> - A promise for the operation  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| callId | <code>String</code> | The ID of the call |
+| fileUrl | <code>String</code> | The http location of an audio file to play (WAV and MP3 supported). |
+| [callback] | <code>function</code> | Callback for the operation |
+
+**Example**  
+```js
+//Play Audio file on call
+
+//Promise
+client.Call.playAudioFile("callId", "http://myurl.com/file.mp3").then(function (res) {});
+
+//Callback
+client.Call.playAudioFile("callId", "http://myurl.com/file.wav", function (err, res) {});
+```
+<a name="Call+playAudioAdvanced"></a>
+
+### call.playAudioAdvanced(callId, params, [callback]) ⇒ <code>Promise</code>
+Play audio file or speak sentence in call
+
+**Kind**: instance method of <code>[Call](#Call)</code>  
+**Returns**: <code>Promise</code> - A promise for the operation  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| callId | <code>String</code> |  | The ID of the call |
+| params | <code>Object</code> |  | Parameters to play audio in call. |
+| [params.fileUrl] | <code>String</code> |  | The http location of an audio file to play (WAV and MP3 supported). |
+| [params.sentence] | <code>String</code> |  | The sentence to speak. |
+| [params.gender] | <code>String</code> | <code>female</code> | The gender of the voice used to synthesize the sentence. It will be considered only if sentence is not null. The female gender will be used by default. |
+| [params.locale] | <code>String</code> | <code>en_US</code> | The locale used to get the accent of the voice used to synthesize the sentence. Check out [docs](http://ap.bandwidth.com/docs/rest-api/calls/#resourcePOSTv1usersuserIdcallscallIdaudio) for list of supported locales. It will be considered only if sentence is not null/empty. The en_US will be used by default. |
+| [params.voice] | <code>String</code> | <code>Susan</code> | The voice to speak the sentence. Check out [docs](http://ap.bandwidth.com/docs/rest-api/calls/#resourcePOSTv1usersuserIdcallscallIdaudio) for list of supported voices It will be considered only if sentence is not null/empty. Susan's voice will be used by default. |
+| [params.loopEnabled] | <code>Boolean</code> | <code>false</code> | When value is true, the audio will keep playing in a loop. Default: false. |
+| [callback] | <code>function</code> |  | Callback for the operation |
+
+**Example**  
+```js
+//Play Audio File on loop
+var options = {
+	fileUrl     : "http://myurl.com/file.mp3",
+	loopEnabled : true
+}
+//Promise
+client.Call.playAudioAdvanced("callId", options).then(function (res) {});
+
+//Callback
+client.Call.playAudioAdvanced("callId", options, function (err,res) {});
+```
+**Example**  
+```js
+//Speak sentence with options
+var options = {
+	sentence : "hola de Bandwidth",
+	gender   : "male",
+	locale   : "es",
+	voice    : "Jorge"
+}
+//Promise
+client.Call.playAudioAdvanced("callId", options).then(function (res) {});
+
+//Callback
+client.Call.playAudioAdvanced("callId", options, function (err,res) {});
+```
 <a name="CallResponse"></a>
 
 ## CallResponse : <code>Object</code>
@@ -581,6 +686,98 @@ Catapult API Client
 | config.apiToken | <code>String</code> |  | Your Catapult API token |
 | config.apiSecret | <code>String</code> |  | Your Catapult API secret |
 | [config.baseUrl] | <code>String</code> | <code>https://api.catapult.inetwork.com</code> | The catapult base URL. Configurable for using alternative Catapult environments. |
+
+<a name="Media"></a>
+
+## Media
+**Kind**: global class  
+
+* [Media](#Media)
+    * [new Media()](#new_Media_new)
+    * [.upload(name, data, contentType, [callback])](#Media+upload) ⇒ <code>Promise</code>
+    * [.download(name, [callback])](#Media+download) ⇒ <code>[DownloadMediaFileResponse](#DownloadMediaFileResponse)</code>
+    * [.list([callback])](#Media+list) ⇒ <code>[Array.&lt;MediaFileResponse&gt;](#MediaFileResponse)</code>
+    * [.remove(name, [callback])](#Media+remove) ⇒ <code>Promise</code>
+
+<a name="new_Media_new"></a>
+
+### new Media()
+Media
+
+<a name="Media+upload"></a>
+
+### media.upload(name, data, contentType, [callback]) ⇒ <code>Promise</code>
+Upload a media file
+
+**Kind**: instance method of <code>[Media](#Media)</code>  
+**Returns**: <code>Promise</code> - A promise for the operation  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| name | <code>String</code> | The name of uploaded file. |
+| data | <code>String</code> &#124; <code>Buffer</code> &#124; <code>Readable</code> | Data to upload. If data is string it should be path to file to upload. |
+| contentType | <code>String</code> | Optional MIME type of uploaded data (default: application/octet-stream). |
+| [callback] | <code>function</code> | Callback for the operation |
+
+<a name="Media+download"></a>
+
+### media.download(name, [callback]) ⇒ <code>[DownloadMediaFileResponse](#DownloadMediaFileResponse)</code>
+Download a media file
+
+**Kind**: instance method of <code>[Media](#Media)</code>  
+**Returns**: <code>[DownloadMediaFileResponse](#DownloadMediaFileResponse)</code> - A promise for the operation  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| name | <code>String</code> | The name of downloaded file. |
+| [callback] | <code>function</code> | Callback for the operation |
+
+<a name="Media+list"></a>
+
+### media.list([callback]) ⇒ <code>[Array.&lt;MediaFileResponse&gt;](#MediaFileResponse)</code>
+Gets a list of your media files.
+
+**Kind**: instance method of <code>[Media](#Media)</code>  
+**Returns**: <code>[Array.&lt;MediaFileResponse&gt;](#MediaFileResponse)</code> - A promise for the operation  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| [callback] | <code>function</code> | Callback for the operation |
+
+<a name="Media+remove"></a>
+
+### media.remove(name, [callback]) ⇒ <code>Promise</code>
+Remove a media file
+
+**Kind**: instance method of <code>[Media](#Media)</code>  
+**Returns**: <code>Promise</code> - A promise for the operation  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| name | <code>String</code> | The name of file to remove. |
+| [callback] | <code>function</code> | Callback for the operation |
+
+<a name="DownloadMediaFileResponse"></a>
+
+## DownloadMediaFileResponse : <code>Object</code>
+**Kind**: global class  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| contentType | <code>String</code> | MIME type of downloaded file. |
+| content | <code>String</code> &#124; <code>Buffer</code> &#124; <code>Readable</code> | Content of file. |
+
+<a name="MediaFileResponse"></a>
+
+## MediaFileResponse : <code>Object</code>
+**Kind**: global class  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| mediaName | <code>String</code> | name of media file. |
+| contentLength | <code>Number</code> | Length of media file. |
 
 <a name="Message"></a>
 
