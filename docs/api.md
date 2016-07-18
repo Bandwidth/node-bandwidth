@@ -462,10 +462,25 @@ Transfer a call
 | --- | --- | --- |
 | params | <code>Object</code> | Parameters for transfering of the call |
 | params.transferTo | <code>String</code> | Phone number or SIP address that the call is going to be transferred to. |
-| params.transferCallerId | <code>String</code> | The caller id that will be used when the call is transferred |
+| params.transferCallerId | <code>String</code> | The caller id that will be used when the call is transferred see the [docs](http://ap.bandwidth.com/docs/rest-api/calls/#resourcePOSTv1usersuserIdcallscallId) for supported options. |
 | params.whisperAudio | <code>Object</code> | Audio to be played to the caller that the call will be transferred to. |
 | [callback] | <code>function</code> | Callback with the transfered call |
 
+**Example**  
+```js
+//Transfer call
+var options = {
+	transferTo       : "+15555555555",
+ transferCallerId : "private",
+ whipserAudio     : "You have an incoming call from 555-555-5555"
+};
+
+//Using Promises
+client.Call.transfer("callId", options).then(function (res) {});
+
+//Using callbacks
+client.Call.transfer("callId", options, function (err, res) {});
+```
 <a name="Call+speakSentence"></a>
 
 ### call.speakSentence(callId, sentence, [callback]) ⇒ <code>Promise</code>
