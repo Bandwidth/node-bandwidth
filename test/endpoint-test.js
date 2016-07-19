@@ -101,12 +101,64 @@ describe("Endpoint API", function () {
 			});
 		});
 
-		describe("Endpoint list", function () {
+		it("should get a list of endpoints, Promise", function () {
+			return client.Endpoint.list(domainId)
+			.then(function (response) {
+				response.endpoints.should.eql(endpointList);
+			});
+		});
 
-			it("should list endpoints on domain when no parameters are sent", function () {});
-			it("should list endpoints on domain when parameters are sent", function () {});
-			it("hould return a list of endpoints with a page to the next link ", function () {});
+		it("should get a list of endpoints, callback", function (done) {
+			client.Endpoint.list(domainId, function (err, response) {
+				if (err) {
+					return done(err);
+				}
+				response.endpoints.should.eql(endpointList);
+				done();
+			});
+		});
 
+		it("those endpoints should not have more pages", function () {
+			return client.Endpoint.list(domainId)
+			.then(function (response) {
+				response.hasNextPage.should.be.false;
+				return response.getNextPage()
+				.catch(function (err) {
+					err.should.equal("Next page does not exist.");
+				});
+			});
+		});
+
+		describe("pagination tests", function () {
+
+			before(function () {
+				nock("https://api.catapult.inetwork.com")
+				.persist()
+				.get("/v1/users/" + userId + "/domains/" + domainId +
+						"/endpoints?size=25")
+				.reply(200, endpointList,
+					{
+						"link" : "<https://api.catapult.inetwork.com/v1/users/" + userId + "/domains/" + domainId +
+						"/endpoints?page=0&size=25>; rel=\"first\"," +
+						"<https://api.catapult.inetwork.com/v1/users/" + userId + "/endpoints>; rel=\"next\""
+					});
+			});
+
+			after(function () {
+				nock.cleanAll();
+				nock.enableNetConnect();
+			});
+
+			it("should return a list of endpoints with a page to the next link", function () {
+				return client.Endpoint.list(domainId, { size : 25 })
+				.then(function (response) {
+					response.endpoints.should.eql(endpointList);
+					return response.getNextPage();
+				})
+				.then(function (more) {
+					more.endpoints.should.eql(endpointList);
+				});
+			});
 		});
 
 	});

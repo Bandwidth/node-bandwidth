@@ -832,6 +832,15 @@ Create a new endpoint for the domain
 | params.credentials | <code>Object</code> | Auth parameters |
 | [callback] | <code>function</code> | Callback with the newly created endpoint |
 
+**Example**  
+```js
+// Promise
+client.Endpoint.create("domainId", { name : "my-endpoint", applicationId : "appId",
+credentials : { password : "123456" }}).then(function (endpoint) {});
+// Callback
+client.Endpoint.create("domainId", { name : "my-endpoint", applicationId : "appId",
+credentials : { password : "123456" }}, function (err, endpoint) {});
+```
 <a name="Endpoint+list"></a>
 
 ### endpoint.list(domainId, params, callback) ⇒ <code>[Array.&lt;EndpointResponse&gt;](#EndpointResponse)</code>
@@ -883,6 +892,13 @@ Delete an endpoint.
 | endpointId | <code>String</code> | ID of the endpoint to delete. |
 | [callback] | <code>function</code> | A callback for the operation. |
 
+**Example**  
+```js
+// Promise
+client.Endpoint.delete("domainId", "endpointId").then(function (endpoint) {});
+// Callback
+client.Endpoint.delete("domainId", "endpointId", function (err, endpoint) {});
+```
 <a name="Endpoint+update"></a>
 
 ### endpoint.update(domainId, endpointId, params, [callback]) ⇒ <code>Promise</code>
@@ -901,6 +917,13 @@ Update an endpoint.
 | params.credentials | <code>Object</code> | Auth parameters |
 | [callback] | <code>function</code> | A callback for the operation. |
 
+**Example**  
+```js
+// Promise
+client.Endpoint.update("domainId", "endpointId", { enabled : true }).then(function (endpoint) {});
+// Callback
+client.Endpoint.update("domainId", "endpointId", { enabled : true }, function (err, endpoint) {});
+```
 <a name="Endpoint+createAuthToken"></a>
 
 ### endpoint.createAuthToken(domainId, endpointId, [callback]) ⇒ <code>Promise</code>
@@ -915,6 +938,13 @@ Generate auth token for the endpoint.
 | endpointId | <code>String</code> | ID of the endpoint to update. |
 | [callback] | <code>function</code> | A callback with token value. |
 
+**Example**  
+```js
+// Promise
+client.Endpoint.createAuthToken("domainId", "endpointId").then(function (endpoint) {});
+// Callback
+client.Endpoint.createAuthToken("domainId", "endpointId", function (err, endpoint) {});
+```
 <a name="EndpointResponse"></a>
 
 ## EndpointResponse : <code>Object</code>
