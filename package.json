@@ -4,7 +4,7 @@
   "description": "NodeJs Client library for Catapult API",
   "main": "index.js",
   "scripts": {
-    "test": "NODE_ENV=test gulp"
+    "test": "cross-env NODE_ENV=test gulp"
   },
   "repository": {
     "type": "git",
@@ -22,15 +22,18 @@
   "homepage": "https://github.com/bandwidthcom/node-bandwidth",
   "dependencies": {
     "bluebird": "^3.3.4",
+    "lodash": "^4.13.1",
+    "parse-link-header": "^0.4.1",
     "qs": "^6.1.0",
     "request": "^2.69.0"
   },
   "devDependencies": {
+    "cross-env": "2.0.0",
     "gulp": "^3.9.1",
     "gulp-clean": "^0.3.1",
+    "gulp-concat": "^2.6.0",
     "gulp-istanbul": "^0.10.0",
     "gulp-jscs": "^1.6.0",
-    "gulp-concat": "^2.6.0",
     "gulp-jsdoc": "^0.1.5",
     "gulp-jsdoc-to-markdown": "^1.2.1",
     "gulp-jshint": "1.11.2",
@@ -39,6 +42,7 @@
     "jshint-stylish": "^2.1.0",
     "mocha": "^2.4.5",
     "nock": "^7.5.0",
-    "should": "4.3.0"
+    "should": "4.3.0",
+    "sinon": "1.17.4"
   }
 }

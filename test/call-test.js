@@ -69,6 +69,12 @@ describe("Call API", function () {
 			state : "active"
 		};
 
+		var transferCallPayload = {
+			transferTo       : "+1234567891",
+			transferCallerId : "private",
+			state            : "transferring"
+		};
+
 		var sampleSentence = "Hello world";
 		var speakSentencePayload = {
 			sentence : sampleSentence
@@ -90,6 +96,29 @@ describe("Call API", function () {
 
 		var fromDateTime = "2012-10-04";
 		var toDateTime = "2012-10-06";
+
+		var newTestGather = {
+			maxDigits         : "5",
+			terminatingDigits : "*",
+			interDigitTimeout : "7",
+			prompt            : {
+				sentence : "Please enter your 5 digit code"
+			}
+		};
+
+		var testGather = {
+			id            : "gatherId",
+			state         : "completed",
+			reason        : "max-digits",
+			createdTime   : "2014-02-12T19:33:56Z",
+			completedTime : "2014-02-12T19:33:59Z",
+			call          : "https://api.catapult.inetwork.com/v1/users/{userId}/calls/{callId}",
+			digits        : "123"
+		};
+
+		var completeGather = {
+			state : "completed"
+		};
 
 		before(function () {
 			client = new CatapultClient({
@@ -113,6 +142,12 @@ describe("Call API", function () {
 				.reply(200, callsList)
 				.post("/v1/users/" + userId + "/calls/" + testCall.id, answerCallPayload)
 				.reply(200)
+				.post("/v1/users/" + userId + "/calls/" + testCall.id, transferCallPayload)
+				.reply(201,
+					{},
+					{
+						"Location" : "/v1/users/" + userId + "/calls/transferedCallId"
+					})
 				.post("/v1/users/" + userId + "/calls/" + testCall.id + "/audio", speakSentencePayload)
 				.reply(200)
 				.post("/v1/users/" + userId + "/calls/" + testCall.id + "/audio", playAudioPayload)
@@ -120,6 +155,16 @@ describe("Call API", function () {
 				.post("/v1/users/" + userId + "/calls/" + testCall.id, enableRecordingPayload)
 				.reply(200)
 				.post("/v1/users/" + userId + "/calls/" + testCall.id, setRecordingMaxDurationPayload)
+				.reply(200)
+				.post("/v1/users/" + userId + "/calls/" + testCall.id + "/gather", newTestGather)
+				.reply(201,
+					{},
+					{
+						"Location" : "/v1/users/" + userId + "/calls/" + testCall.id + "/gather/gatherId"
+					})
+				.get("/v1/users/" + userId + "/calls/" + testCall.id + "/gather/" + testGather.id)
+				.reply(200, testGather)
+				.post("/v1/users/" + userId + "/calls/" + testCall.id + "/gather/" + testGather.id, completeGather)
 				.reply(200);
 		});
 
@@ -128,34 +173,54 @@ describe("Call API", function () {
 			nock.enableNetConnect();
 		});
 
-		it("should create a call, promise style", function (done) {
-			client.Call.create(newTestCall)
+		it("should create a call, promise style", function () {
+			return client.Call.create(newTestCall)
 			.then(function (call) {
-				call.to.should.equal(newTestCall.to);
-				call.from.should.equal(newTestCall.from);
-				call.id.should.equal("fakeCallId");
-			})
-			.done(done);
+				call.should.eql(newTestCall);
+			});
 		});
 
-		it("should answer a call", function (done) {
-			client.Call.answer(testCall.id).done(done);
+		it("should answer a call", function () {
+			return client.Call.answer(testCall.id);
 		});
 
-		it("should speak a sentence on a call", function (done) {
-			client.Call.speakSentence(testCall.id, sampleSentence).done(done);
+		it("should transfer a call", function () {
+			return client.Call.transfer(testCall.id, { transferTo : "+1234567891", transferCallerId : "private" })
+			.then(function (call) {
+				call.id.should.eql("transferedCallId");
+			});
 		});
 
-		it("should play an audio file on sentence on a call", function (done) {
-			client.Call.playAudio(testCall.id, audioUrl).done(done);
+		it("should speak a sentence to the call, promise style", function () {
+			return client.Call.speakSentence(testCall.id, sampleSentence);
 		});
 
-		it("should enable recording on a call", function (done) {
-			client.Call.enableRecording(testCall.id).done(done);
+		it("should speak a sentence to the call, callback style", function (done) {
+			return client.Call.speakSentence(testCall.id, sampleSentence, done);
 		});
 
-		it("should set the maximum recording duration on a call", function (done) {
-			client.Call.setMaxRecordingDuration(testCall.id, maxRecordingDuration).done(done);
+		it("should play an audio file on sentence to the call, promise style", function () {
+			return client.Call.playAudioFile(testCall.id, audioUrl);
+		});
+
+		it("should play an audio file on sentence to the call, callback style", function (done) {
+			return client.Call.playAudioFile(testCall.id, audioUrl, done);
+		});
+
+		it("should play an audio with custom params to the call, promise style", function () {
+			return client.Call.playAudioAdvanced(testCall.id, { fileUrl : audioUrl });
+		});
+
+		it("should play an audio with custom params to the call, callback style", function (done) {
+			return client.Call.playAudioAdvanced(testCall.id, { fileUrl : audioUrl }, done);
+		});
+
+		it("should enable recording on a call", function () {
+			return client.Call.enableRecording(testCall.id);
+		});
+
+		it("should set the maximum recording duration on a call", function () {
+			return client.Call.setMaxRecordingDuration(testCall.id, maxRecordingDuration);
 		});
 
 		it("should create a call, callback style", function (done) {
@@ -163,38 +228,27 @@ describe("Call API", function () {
 				if (err) {
 					throw err;
 				}
-				call.to.should.equal(newTestCall.to);
-				call.from.should.equal(newTestCall.from);
-				call.id.should.equal("fakeCallId");
+				call.should.eql(newTestCall);
 				done();
 			});
 		});
 
-		it("should get a call, promise style", function (done) {
-			client.Call.get(testCall.id)
+		it("should get a call, promise style", function () {
+			return client.Call.get(testCall.id)
 			.then(function (call) {
-				call.to.should.equal(testCall.to);
-				call.from.should.equal(testCall.from);
-				call.id.should.equal(testCall.id);
-			})
-			.done(done);
+				call.should.eql(testCall);
+			});
 		});
 
-		it("should get a list of calls, promise style", function (done) {
-			client.Call.list({
+		it("should get a list of calls, promise style", function () {
+			return client.Call.list({
 				fromDateTime : fromDateTime,
 				toDateTime   : toDateTime
 			})
 			.then(function (calls) {
-				calls[0].to.should.equal(callsList[0].to);
-				calls[0].from.should.equal(callsList[0].from);
-				calls[0].id.should.equal(callsList[0].id);
-
-				calls[1].to.should.equal(callsList[1].to);
-				calls[1].from.should.equal(callsList[1].from);
-				calls[1].id.should.equal(callsList[1].id);
-			})
-			.done(done);
+				calls[0].should.eql(callsList[0]);
+				calls[1].should.eql(callsList[1]);
+			});
 		});
 
 		it("should get a list of calls, callback style", function (done) {
@@ -205,15 +259,28 @@ describe("Call API", function () {
 				if (err) {
 					throw err;
 				}
-				calls[0].to.should.equal(callsList[0].to);
-				calls[0].from.should.equal(callsList[0].from);
-				calls[0].id.should.equal(callsList[0].id);
-
-				calls[1].to.should.equal(callsList[1].to);
-				calls[1].from.should.equal(callsList[1].from);
-				calls[1].id.should.equal(callsList[1].id);
+				calls[0].should.eql(callsList[0]);
+				calls[1].should.eql(callsList[1]);
 				done();
 			});
+		});
+
+		it("should create a gather for the call", function () {
+			return client.Call.createGather(testCall.id, newTestGather)
+			.then(function (gather) {
+				gather.should.eql(newTestGather);
+			});
+		});
+
+		it("should get a gather", function () {
+			return client.Call.getGather(testCall.id, testGather.id)
+			.then(function (gather) {
+				gather.should.eql(testGather);
+			});
+		});
+
+		it("should complete a gather", function () {
+			return client.Call.completeGather(testCall.id, testGather.id);
 		});
 
 	});
