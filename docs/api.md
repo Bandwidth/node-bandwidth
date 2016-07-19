@@ -5,6 +5,12 @@
 <dd></dd>
 <dt><a href="#ApplicationResponse">ApplicationResponse</a> : <code>Object</code></dt>
 <dd></dd>
+<dt><a href="#AvailableNumber">AvailableNumber</a></dt>
+<dd></dd>
+<dt><a href="#AvailableNumberResponse">AvailableNumberResponse</a> : <code>Object</code></dt>
+<dd></dd>
+<dt><a href="#OrderedNumberResponse">OrderedNumberResponse</a> : <code>Object</code></dt>
+<dd></dd>
 <dt><a href="#Bridge">Bridge</a></dt>
 <dd></dd>
 <dt><a href="#BridgeResponse">BridgeResponse</a> : <code>Object</code></dt>
@@ -168,6 +174,112 @@ Delete an application.
 | incomingMessageUrl | <code>String</code> | A URL where message events will be sent for an inbound message. This is the endpoint where the Application Platform will send all message events. Either incomingMessageUrl or incomingCallUrl is required. |
 | incomingMessageUrlCallbackTimeout | <code>Number</code> | Determine how long should the platform wait for incomingMessageUrl's response before timing out in milliseconds. |
 | incomingMessageFallbackUrl | <code>String</code> | The URL used to send the callback event if the request to incomingMessageUrl fails. |
+
+<a name="AvailableNumber"></a>
+
+## AvailableNumber
+**Kind**: global class  
+
+* [AvailableNumber](#AvailableNumber)
+    * [new AvailableNumber()](#new_AvailableNumber_new)
+    * [.search(type, params, callback)](#AvailableNumber+search) ⇒ <code>[Array.&lt;AvailableNumberResponse&gt;](#AvailableNumberResponse)</code>
+    * [.searchAndOrder(type, params, callback)](#AvailableNumber+searchAndOrder) ⇒ <code>[Array.&lt;OrderedNumberResponse&gt;](#OrderedNumberResponse)</code>
+
+<a name="new_AvailableNumber_new"></a>
+
+### new AvailableNumber()
+Available numbers
+
+<a name="AvailableNumber+search"></a>
+
+### availableNumber.search(type, params, callback) ⇒ <code>[Array.&lt;AvailableNumberResponse&gt;](#AvailableNumberResponse)</code>
+Search for available local or tollFree numbers
+
+**Kind**: instance method of <code>[AvailableNumber](#AvailableNumber)</code>  
+**Returns**: <code>[Array.&lt;AvailableNumberResponse&gt;](#AvailableNumberResponse)</code> - A promise for the list of available numbers  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| type | <code>String</code> | Type of number to search (local or tollFree) |
+| params | <code>Object</code> | Search parameters |
+| [params.city] | <code>String</code> | A city name (only for local numbers) |
+| [params.state] | <code>String</code> | A state name (only for local numbers) |
+| [params.zip] | <code>String</code> | A 5-digit US ZIP code (only for local numbers) |
+| [params.areaCode] | <code>String</code> | A 3-digit telephone area code (only for local numbers) |
+| [params.localNumber] | <code>String</code> | First digits of a telephone number inside an area code for filtering the results (only for local numbers) |
+| [params.inLocalCallingArea] | <code>String</code> | Boolean value to indicate that the search for available numbers must consider overlayed areas. Only applied for localNumber searching. (only for local numbers) |
+| [params.quantity] | <code>String</code> | The maximum number of numbers to return (default 10, maximum 5000) |
+| [params.pattern] | <code>String</code> | A number pattern that may include letters, digits, and the following wildcard characters: ? - matches any single digit, * - matches zero or more digits |
+| callback | <code>function</code> | A callback with the list of available numbers |
+
+**Example**  
+```js
+// Search 3 available local phone numbers with area code 910
+
+// Promise
+client.AvailableNumber.search("local", { areaCode : "910", quantity : 3 }).then(function (numbers) {});
+
+// Callback
+client.AvailableNumber.search("local", { areaCode : "910", quantity : 3 }, function (err, numbers) {});
+```
+<a name="AvailableNumber+searchAndOrder"></a>
+
+### availableNumber.searchAndOrder(type, params, callback) ⇒ <code>[Array.&lt;OrderedNumberResponse&gt;](#OrderedNumberResponse)</code>
+Search for available local or tollFree numbers and order them
+
+**Kind**: instance method of <code>[AvailableNumber](#AvailableNumber)</code>  
+**Returns**: <code>[Array.&lt;OrderedNumberResponse&gt;](#OrderedNumberResponse)</code> - A promise for the list of ordered numbers  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| type | <code>String</code> | Type of number to search (local or tollFree) |
+| params | <code>Object</code> | Search parameters |
+| [params.city] | <code>String</code> | A city name (only for local numbers) |
+| [params.state] | <code>String</code> | A state name (only for local numbers) |
+| [params.zip] | <code>String</code> | A 5-digit US ZIP code (only for local numbers) |
+| [params.areaCode] | <code>String</code> | A 3-digit telephone area code (only for local numbers) |
+| [params.localNumber] | <code>String</code> | First digits of a telephone number inside an area code for filtering the results (only for local numbers) |
+| [params.inLocalCallingArea] | <code>String</code> | Boolean value to indicate that the search for available numbers must consider overlayed areas. Only applied for localNumber searching. (only for local numbers) |
+| [params.quantity] | <code>String</code> | The maximum number of numbers to return (default 10, maximum 5000) |
+| callback | <code>function</code> | A callback with the list of ordered numbers |
+
+**Example**  
+```js
+// Search 2 available local phone numbers with area code 910 and order them
+
+// Promise
+client.AvailableNumber.searchAndOrder("local", { areaCode : "910", quantity : 2 }).then(function (numbers) {});
+
+// Callback
+client.AvailableNumber.searchAndOrder("local", { areaCode : "910", quantity : 2 }, function (err, numbers) {});
+```
+<a name="AvailableNumberResponse"></a>
+
+## AvailableNumberResponse : <code>Object</code>
+**Kind**: global class  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| number | <code>String</code> | Phone number. |
+| nationalNumber | <code>String</code> | Phone number in national format. |
+| price | <code>String</code> | Price of this phone number. |
+| city | <code>String</code> | A city name of number (only for local numbers). |
+| rateCenter | <code>String</code> | A rate center (only for local numbers). |
+| state | <code>String</code> | A state of number (only for local numbers). |
+
+<a name="OrderedNumberResponse"></a>
+
+## OrderedNumberResponse : <code>Object</code>
+**Kind**: global class  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| id | <code>String</code> | Id of ordered number. |
+| number | <code>String</code> | Phone number. |
+| nationalNumber | <code>String</code> | Phone number in national format. |
+| price | <code>String</code> | Price of this phone number. |
 
 <a name="Bridge"></a>
 
