@@ -4,7 +4,7 @@
   "description": "NodeJs Client library for Catapult API",
   "main": "index.js",
   "scripts": {
-    "test": " cross-env NODE_ENV=test gulp"
+    "test": "cross-env NODE_ENV=test gulp"
   },
   "repository": {
     "type": "git",
