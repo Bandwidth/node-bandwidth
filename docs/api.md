@@ -212,6 +212,16 @@ Search for available local or tollFree numbers
 | [params.pattern] | <code>String</code> | A number pattern that may include letters, digits, and the following wildcard characters: ? - matches any single digit, * - matches zero or more digits |
 | callback | <code>function</code> | A callback with the list of available numbers |
 
+**Example**  
+```js
+// Search 3 available local phone numbers with area code 910
+
+// Promise
+client.AvailableNumber.search("local", { areaCode : "910", quantity : 3 }).then(function (numbers) {});
+
+// Callback
+client.AvailableNumber.search("local", { areaCode : "910", quantity : 3 }, function (err, numbers) {});
+```
 <a name="AvailableNumber+searchAndOrder"></a>
 
 ### availableNumber.searchAndOrder(type, params, callback) ⇒ <code>[Array.&lt;OrderedNumberResponse&gt;](#OrderedNumberResponse)</code>
@@ -233,6 +243,16 @@ Search for available local or tollFree numbers and order them
 | [params.quantity] | <code>String</code> | The maximum number of numbers to return (default 10, maximum 5000) |
 | callback | <code>function</code> | A callback with the list of ordered numbers |
 
+**Example**  
+```js
+// Search 2 available local phone numbers with area code 910 and order them
+
+// Promise
+client.AvailableNumber.searchAndOrder("local", { areaCode : "910", quantity : 2 }).then(function (numbers) {});
+
+// Callback
+client.AvailableNumber.searchAndOrder("local", { areaCode : "910", quantity : 2 }, function (err, numbers) {});
+```
 <a name="AvailableNumberResponse"></a>
 
 ## AvailableNumberResponse : <code>Object</code>

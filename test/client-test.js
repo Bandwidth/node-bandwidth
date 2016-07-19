@@ -83,6 +83,35 @@ describe("Client", function () {
 
 	});
 
+	describe("using path without user", function () {
+		var client;
+		var oldBaseUrl;
+
+		before(function () {
+			client = new Client({
+				userId   : "fakeUserId",
+				apiToken : "fakeApiToken",
+				apiKey   : "fakeApiKey"
+			});
+		});
+
+		after(function () {
+			nock.cleanAll();
+		});
+
+		it("should make requests without user data in the path", function () {
+			var numbersResponse = [];
+			nock(baseUrl).get("/v1/availableNumbers").reply(200, numbersResponse);
+			return client.makeRequest({
+				path            : "availableNumbers",
+				pathWithoutUser : true
+			}).then(function (res) {
+				res.body.should.eql(numbersResponse);
+			});
+		});
+
+	});
+
 	describe("in error cases", function () {
 		var client;
 
