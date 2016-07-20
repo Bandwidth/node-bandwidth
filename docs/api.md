@@ -1,6 +1,12 @@
 ## Classes
 
 <dl>
+<dt><a href="#Account">Account</a></dt>
+<dd></dd>
+<dt><a href="#AccountResponse">AccountResponse</a> : <code>Object</code></dt>
+<dd></dd>
+<dt><a href="#TransactionResponse">TransactionResponse</a> : <code>Object</code></dt>
+<dd></dd>
 <dt><a href="#Application">Application</a></dt>
 <dd></dd>
 <dt><a href="#ApplicationResponse">ApplicationResponse</a> : <code>Object</code></dt>
@@ -52,6 +58,87 @@
 <dd><p>getNextLink</p>
 </dd>
 </dl>
+
+<a name="Account"></a>
+
+## Account
+**Kind**: global class  
+
+* [Account](#Account)
+    * [new Account()](#new_Account_new)
+    * [.get(accountId, callback)](#Account+get) ⇒ <code>[AccountResponse](#AccountResponse)</code>
+    * [.getTransactions(params, [toDate], [fromDate], [type], callback)](#Account+getTransactions) ⇒ <code>[Array.&lt;TransactionResponse&gt;](#TransactionResponse)</code>
+
+<a name="new_Account_new"></a>
+
+### new Account()
+Account
+
+<a name="Account+get"></a>
+
+### account.get(accountId, callback) ⇒ <code>[AccountResponse](#AccountResponse)</code>
+Gets information about user's account.
+
+**Kind**: instance method of <code>[Account](#Account)</code>  
+**Returns**: <code>[AccountResponse](#AccountResponse)</code> - A promise for the account information  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| accountId | <code>String</code> | The ID of the account to get |
+| callback | <code>function</code> | A callback with the account information |
+
+**Example**  
+```js
+// Promise
+client.Account.get().then(function(info){});
+
+// Callback
+client.Account.get(function(err, info){});
+```
+<a name="Account+getTransactions"></a>
+
+### account.getTransactions(params, [toDate], [fromDate], [type], callback) ⇒ <code>[Array.&lt;TransactionResponse&gt;](#TransactionResponse)</code>
+Gets a list of transactions from user's account.
+
+**Kind**: instance method of <code>[Account](#Account)</code>  
+**Returns**: <code>[Array.&lt;TransactionResponse&gt;](#TransactionResponse)</code> - A promise for the list of transactions  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| params | <code>Object</code> |  | Query parameters for listing accounts |
+| [params.size] | <code>Number</code> | <code>25</code> | Used for pagination to indicate the size of each page requested for querying a list of transactions. If no value is specified the default value is 25 (maximum value 1000). |
+| [params.maxItems] | <code>Number</code> |  | Limit the number of transactions that will be returned |
+| [toDate] | <code>String</code> |  | Return only transactions that are newer than the parameter. |
+| [fromDate] | <code>String</code> |  | Return only transactions that are older than the parameter. |
+| [type] | <code>String</code> |  | Return only transactions that are this type. |
+| callback | <code>function</code> |  | A callback with the list of transactions |
+
+<a name="AccountResponse"></a>
+
+## AccountResponse : <code>Object</code>
+**Kind**: global class  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| balance | <code>String</code> | User's account balance in dollars, as a string; the currency symbol is not included. |
+| type | <code>String</code> | The type of account configured for your user. |
+
+<a name="TransactionResponse"></a>
+
+## TransactionResponse : <code>Object</code>
+**Kind**: global class  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| id | <code>String</code> | The unique identifier for the transaction. |
+| time | <code>String</code> | The time the transaction was processed. |
+| amount | <code>String</code> | The transaction amount in dollars, as a string; the currency symbol is not included. |
+| type | <code>String</code> | The type of transaction. |
+| units | <code>String</code> | The number of product units the transaction charged or credited. |
+| productType | <code>String</code> | The product the transaction was related to |
+| number | <code>String</code> | The phone number the transaction was related to |
 
 <a name="Application"></a>
 
