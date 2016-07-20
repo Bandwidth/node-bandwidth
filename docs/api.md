@@ -1331,6 +1331,16 @@ Allocates a number
 | [params.fallbackNumber] | <code>String</code> | Number to transfer an incoming call when the callback/fallback events can't be delivered. |
 | [callback] | <code>function</code> | Callback with the newly created number |
 
+**Example**  
+```js
+//Allocate number +1234567980
+
+// Promise
+client.PhoneNumber.create({ number : "+1234567890" }).then(function(number){});
+
+// Callback
+client.PhoneNumber.create({ number : "+1234567890" }, function(err, number){});
+```
 <a name="PhoneNumber+get"></a>
 
 ### phoneNumber.get(phoneNumberOrId, callback) ⇒ <code>[PhoneNumberResponse](#PhoneNumberResponse)</code>
@@ -1344,6 +1354,18 @@ Gets information about a phoneNumber.
 | phoneNumberOrId | <code>String</code> | The ID of the number or number in format E.164 (like +1234567980) to get |
 | callback | <code>function</code> | A callback with the call information |
 
+**Example**  
+```js
+// Promise
+client.PhoneNumber.get(numberId).then(function(number){});
+// or
+client.PhoneNumber.get("+1234567890").then(function(number){});
+
+// Callback
+client.PhoneNumber.get(numberId, function(err, number){});
+// or
+client.PhoneNumber.get("+1234567890", function(err, number){});
+```
 <a name="PhoneNumber+list"></a>
 
 ### phoneNumber.list(params, callback) ⇒ <code>[Array.&lt;PhoneNumberResponse&gt;](#PhoneNumberResponse)</code>
@@ -1363,6 +1385,14 @@ Gets a list of allocated numbers.
 | [params.numberState] | <code>String</code> |  | Used to filter the retrieved list of numbers by number state |
 | callback | <code>function</code> |  | A callback with the list of numbers |
 
+**Example**  
+```js
+// Promise
+client.PhoneNumber.list({size: 1000}).then(function(numbersResponse){});
+
+// Callback
+client.PhoneNumber.list({size: 1000}, function(err, numbersResponse){});
+```
 <a name="PhoneNumber+update"></a>
 
 ### phoneNumber.update(phoneNumberId, params, [callback]) ⇒ <code>Promise</code>
@@ -1380,6 +1410,14 @@ Update the number
 | params.fallbackNumber | <code>String</code> | Number to transfer an incoming call when the callback/fallback events can't be delivered. |
 | [callback] | <code>function</code> | Callback for the operation |
 
+**Example**  
+```js
+// Promise
+client.PhoneNumber.update(numberId, {name: "Another Name"}).then(function(){});
+
+// Callback
+client.PhoneNumber.update(numberId, {name: "Another Name"}, function(err){});
+```
 <a name="PhoneNumber+remove"></a>
 
 ### phoneNumber.remove(phoneNumberId, [callback]) ⇒ <code>Promise</code>
@@ -1393,6 +1431,14 @@ Remove the number
 | phoneNumberId | <code>String</code> | The ID of the number |
 | [callback] | <code>function</code> | Callback for the operation |
 
+**Example**  
+```js
+// Promise
+client.PhoneNumber.remove(numberId).then(function(){});
+
+// Callback
+client.PhoneNumber.remove(numberId, function(err){});
+```
 <a name="PhoneNumberResponse"></a>
 
 ## PhoneNumberResponse : <code>Object</code>
