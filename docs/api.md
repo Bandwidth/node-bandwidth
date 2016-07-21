@@ -1,6 +1,12 @@
 ## Classes
 
 <dl>
+<dt><a href="#Account">Account</a></dt>
+<dd></dd>
+<dt><a href="#AccountResponse">AccountResponse</a> : <code>Object</code></dt>
+<dd></dd>
+<dt><a href="#TransactionResponse">TransactionResponse</a> : <code>Object</code></dt>
+<dd></dd>
 <dt><a href="#Application">Application</a></dt>
 <dd></dd>
 <dt><a href="#ApplicationResponse">ApplicationResponse</a> : <code>Object</code></dt>
@@ -41,6 +47,10 @@
 <dd></dd>
 <dt><a href="#MessageResponse">MessageResponse</a> : <code>Object</code></dt>
 <dd></dd>
+<dt><a href="#NumberInfo">NumberInfo</a></dt>
+<dd></dd>
+<dt><a href="#NumberInfoResponse">NumberInfoResponse</a> : <code>Object</code></dt>
+<dd></dd>
 <dt><a href="#PhoneNumber">PhoneNumber</a></dt>
 <dd></dd>
 <dt><a href="#PhoneNumberResponse">PhoneNumberResponse</a> : <code>Object</code></dt>
@@ -56,6 +66,87 @@
 <dd><p>getNextLink</p>
 </dd>
 </dl>
+
+<a name="Account"></a>
+
+## Account
+**Kind**: global class  
+
+* [Account](#Account)
+    * [new Account()](#new_Account_new)
+    * [.get(accountId, callback)](#Account+get) ⇒ <code>[AccountResponse](#AccountResponse)</code>
+    * [.getTransactions(params, [toDate], [fromDate], [type], callback)](#Account+getTransactions) ⇒ <code>[Array.&lt;TransactionResponse&gt;](#TransactionResponse)</code>
+
+<a name="new_Account_new"></a>
+
+### new Account()
+Account
+
+<a name="Account+get"></a>
+
+### account.get(accountId, callback) ⇒ <code>[AccountResponse](#AccountResponse)</code>
+Gets information about user's account.
+
+**Kind**: instance method of <code>[Account](#Account)</code>  
+**Returns**: <code>[AccountResponse](#AccountResponse)</code> - A promise for the account information  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| accountId | <code>String</code> | The ID of the account to get |
+| callback | <code>function</code> | A callback with the account information |
+
+**Example**  
+```js
+// Promise
+client.Account.get().then(function(info){});
+
+// Callback
+client.Account.get(function(err, info){});
+```
+<a name="Account+getTransactions"></a>
+
+### account.getTransactions(params, [toDate], [fromDate], [type], callback) ⇒ <code>[Array.&lt;TransactionResponse&gt;](#TransactionResponse)</code>
+Gets a list of transactions from user's account.
+
+**Kind**: instance method of <code>[Account](#Account)</code>  
+**Returns**: <code>[Array.&lt;TransactionResponse&gt;](#TransactionResponse)</code> - A promise for the list of transactions  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| params | <code>Object</code> |  | Query parameters for listing accounts |
+| [params.size] | <code>Number</code> | <code>25</code> | Used for pagination to indicate the size of each page requested for querying a list of transactions. If no value is specified the default value is 25 (maximum value 1000). |
+| [params.maxItems] | <code>Number</code> |  | Limit the number of transactions that will be returned |
+| [toDate] | <code>String</code> |  | Return only transactions that are newer than the parameter. |
+| [fromDate] | <code>String</code> |  | Return only transactions that are older than the parameter. |
+| [type] | <code>String</code> |  | Return only transactions that are this type. |
+| callback | <code>function</code> |  | A callback with the list of transactions |
+
+<a name="AccountResponse"></a>
+
+## AccountResponse : <code>Object</code>
+**Kind**: global class  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| balance | <code>String</code> | User's account balance in dollars, as a string; the currency symbol is not included. |
+| type | <code>String</code> | The type of account configured for your user. |
+
+<a name="TransactionResponse"></a>
+
+## TransactionResponse : <code>Object</code>
+**Kind**: global class  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| id | <code>String</code> | The unique identifier for the transaction. |
+| time | <code>String</code> | The time the transaction was processed. |
+| amount | <code>String</code> | The transaction amount in dollars, as a string; the currency symbol is not included. |
+| type | <code>String</code> | The type of transaction. |
+| units | <code>String</code> | The number of product units the transaction charged or credited. |
+| productType | <code>String</code> | The product the transaction was related to |
+| number | <code>String</code> | The phone number the transaction was related to |
 
 <a name="Application"></a>
 
@@ -1295,6 +1386,54 @@ Gets a list of messages
 | deliveryState | <code>String</code> | One of the message delivery states: waiting, delivered, not-delivered. |
 | deliveryCode | <code>Number</code> | Numeric value of deliver code. |
 | deliveryDescription | <code>String</code> | Message delivery description for the respective delivery code. |
+
+<a name="NumberInfo"></a>
+
+## NumberInfo
+**Kind**: global class  
+
+* [NumberInfo](#NumberInfo)
+    * [new NumberInfo()](#new_NumberInfo_new)
+    * [.get(number, [callback])](#NumberInfo+get) ⇒ <code>[NumberInfoResponse](#NumberInfoResponse)</code>
+
+<a name="new_NumberInfo_new"></a>
+
+### new NumberInfo()
+NumberInfo
+
+<a name="NumberInfo+get"></a>
+
+### numberInfo.get(number, [callback]) ⇒ <code>[NumberInfoResponse](#NumberInfoResponse)</code>
+Gets information about a number.
+
+**Kind**: instance method of <code>[NumberInfo](#NumberInfo)</code>  
+**Returns**: <code>[NumberInfoResponse](#NumberInfoResponse)</code> - A promise for the number information  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| number | <code>String</code> | The ID of the numberInfo to get |
+| [callback] | <code>function</code> | A callback with the number information |
+
+**Example**  
+```js
+// Promise
+client.NumberInfo.get("+1234567890").then(function(info){});
+
+// Callback
+client.NumberInfo.get("+1234567890", function(err, info){});
+```
+<a name="NumberInfoResponse"></a>
+
+## NumberInfoResponse : <code>Object</code>
+**Kind**: global class  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| name | <code>String</code> | The Caller ID name information. |
+| number | <code>String</code> | Phone number in  E164 format. |
+| created | <code>String</code> | The time this Caller ID information was first queried (UTC). |
+| updated | <code>String</code> | The time this Caller ID information was last updated (UTC). |
 
 <a name="PhoneNumber"></a>
 
