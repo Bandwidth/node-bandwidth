@@ -47,6 +47,10 @@
 <dd></dd>
 <dt><a href="#MessageResponse">MessageResponse</a> : <code>Object</code></dt>
 <dd></dd>
+<dt><a href="#NumberInfo">NumberInfo</a></dt>
+<dd></dd>
+<dt><a href="#NumberInfoResponse">NumberInfoResponse</a> : <code>Object</code></dt>
+<dd></dd>
 <dt><a href="#Recording">Recording</a></dt>
 <dd></dd>
 </dl>
@@ -1378,6 +1382,54 @@ Gets a list of messages
 | deliveryState | <code>String</code> | One of the message delivery states: waiting, delivered, not-delivered. |
 | deliveryCode | <code>Number</code> | Numeric value of deliver code. |
 | deliveryDescription | <code>String</code> | Message delivery description for the respective delivery code. |
+
+<a name="NumberInfo"></a>
+
+## NumberInfo
+**Kind**: global class  
+
+* [NumberInfo](#NumberInfo)
+    * [new NumberInfo()](#new_NumberInfo_new)
+    * [.get(number, [callback])](#NumberInfo+get) ⇒ <code>[NumberInfoResponse](#NumberInfoResponse)</code>
+
+<a name="new_NumberInfo_new"></a>
+
+### new NumberInfo()
+NumberInfo
+
+<a name="NumberInfo+get"></a>
+
+### numberInfo.get(number, [callback]) ⇒ <code>[NumberInfoResponse](#NumberInfoResponse)</code>
+Gets information about a number.
+
+**Kind**: instance method of <code>[NumberInfo](#NumberInfo)</code>  
+**Returns**: <code>[NumberInfoResponse](#NumberInfoResponse)</code> - A promise for the number information  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| number | <code>String</code> | The ID of the numberInfo to get |
+| [callback] | <code>function</code> | A callback with the number information |
+
+**Example**  
+```js
+// Promise
+client.NumberInfo.get("+1234567890").then(function(info){});
+
+// Callback
+client.NumberInfo.get("+1234567890", function(err, info){});
+```
+<a name="NumberInfoResponse"></a>
+
+## NumberInfoResponse : <code>Object</code>
+**Kind**: global class  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| name | <code>String</code> | The Caller ID name information. |
+| number | <code>String</code> | Phone number in  E164 format. |
+| created | <code>String</code> | The time this Caller ID information was first queried (UTC). |
+| updated | <code>String</code> | The time this Caller ID information was last updated (UTC). |
 
 <a name="Recording"></a>
 
