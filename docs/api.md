@@ -1388,6 +1388,9 @@ Gets a list of messages
     * [new Recording()](#new_Recording_new)
     * [.get(recordingId, [callback])](#Recording+get) ⇒ <code>RecordingResponse</code>
     * [.list(params, [callback])](#Recording+list) ⇒ <code>RecordingResponse</code>
+    * [.createTranscription(recordingId, [callback])](#Recording+createTranscription) ⇒ <code>TranscriptionResponse</code>
+    * [.getTranscription(recordingId, transcriptionId, [callback])](#Recording+getTranscription) ⇒ <code>TranscriptionResponse</code>
+    * [.getTranscriptions(recordingId, [callback])](#Recording+getTranscriptions) ⇒ <code>TranscriptionResponse</code>
 
 <a name="new_Recording_new"></a>
 
@@ -1420,6 +1423,70 @@ Get a list of recordings
 | params | <code>Object</code> | [description] |
 | [callback] | <code>function</code> | Callback with the recording objects |
 
+<a name="Recording+createTranscription"></a>
+
+### recording.createTranscription(recordingId, [callback]) ⇒ <code>TranscriptionResponse</code>
+Create a transcription
+
+**Kind**: instance method of <code>[Recording](#Recording)</code>  
+**Returns**: <code>TranscriptionResponse</code> - A promise for the created transcription  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| recordingId | <code>String</code> | The ID of the recording |
+| [callback] | <code>function</code> | Callback with the create transcription |
+
+**Example**  
+```js
+// Promise
+client.Recording.createTranscription(recordingId).then(function(transcription){});
+
+// Callback
+client.Recording.createTranscription(recordingId, function(err, transcription){});
+```
+<a name="Recording+getTranscription"></a>
+
+### recording.getTranscription(recordingId, transcriptionId, [callback]) ⇒ <code>TranscriptionResponse</code>
+Get information about the transcription
+
+**Kind**: instance method of <code>[Recording](#Recording)</code>  
+**Returns**: <code>TranscriptionResponse</code> - A promise for the transcription  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| recordingId | <code>String</code> | The ID of the recording |
+| transcriptionId | <code>String</code> | The ID of the transcription |
+| [callback] | <code>function</code> | Callback with the  transcription |
+
+**Example**  
+```js
+// Promise
+client.Recording.getTranscription(recordingId, transcriptionId).then(function(transcription){});
+
+// Callback
+client.Recording.getTranscription(recordingId, transcriptionId, function(err, transcription){});
+```
+<a name="Recording+getTranscriptions"></a>
+
+### recording.getTranscriptions(recordingId, [callback]) ⇒ <code>TranscriptionResponse</code>
+Get list of all transcriptions for recording
+
+**Kind**: instance method of <code>[Recording](#Recording)</code>  
+**Returns**: <code>TranscriptionResponse</code> - A promise for the transcriptions  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| recordingId | <code>String</code> | The ID of the recording |
+| [callback] | <code>function</code> | Callback with the  transcriptions |
+
+**Example**  
+```js
+// Promise
+client.Recording.getTranscriptions(recordingId).then(function(transcriptions){});
+
+// Callback
+client.Recording.getTranscriptions(recordingId, function(err, transcriptions){});
+```
 <a name="getNextLink"></a>
 
 ## getNextLink(response) ⇒
