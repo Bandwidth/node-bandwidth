@@ -51,6 +51,14 @@
 <dd></dd>
 <dt><a href="#MessageResponse">MessageResponse</a> : <code>Object</code></dt>
 <dd></dd>
+<dt><a href="#NumberInfo">NumberInfo</a></dt>
+<dd></dd>
+<dt><a href="#NumberInfoResponse">NumberInfoResponse</a> : <code>Object</code></dt>
+<dd></dd>
+<dt><a href="#PhoneNumber">PhoneNumber</a></dt>
+<dd></dd>
+<dt><a href="#PhoneNumberResponse">PhoneNumberResponse</a> : <code>Object</code></dt>
+<dd></dd>
 <dt><a href="#Recording">Recording</a></dt>
 <dd></dd>
 </dl>
@@ -1439,6 +1447,218 @@ Gets a list of messages
 | deliveryState | <code>String</code> | One of the message delivery states: waiting, delivered, not-delivered. |
 | deliveryCode | <code>Number</code> | Numeric value of deliver code. |
 | deliveryDescription | <code>String</code> | Message delivery description for the respective delivery code. |
+
+<a name="NumberInfo"></a>
+
+## NumberInfo
+**Kind**: global class  
+
+* [NumberInfo](#NumberInfo)
+    * [new NumberInfo()](#new_NumberInfo_new)
+    * [.get(number, [callback])](#NumberInfo+get) ⇒ <code>[NumberInfoResponse](#NumberInfoResponse)</code>
+
+<a name="new_NumberInfo_new"></a>
+
+### new NumberInfo()
+NumberInfo
+
+<a name="NumberInfo+get"></a>
+
+### numberInfo.get(number, [callback]) ⇒ <code>[NumberInfoResponse](#NumberInfoResponse)</code>
+Gets information about a number.
+
+**Kind**: instance method of <code>[NumberInfo](#NumberInfo)</code>  
+**Returns**: <code>[NumberInfoResponse](#NumberInfoResponse)</code> - A promise for the number information  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| number | <code>String</code> | The ID of the numberInfo to get |
+| [callback] | <code>function</code> | A callback with the number information |
+
+**Example**  
+```js
+// Promise
+client.NumberInfo.get("+1234567890").then(function(info){});
+
+// Callback
+client.NumberInfo.get("+1234567890", function(err, info){});
+```
+<a name="NumberInfoResponse"></a>
+
+## NumberInfoResponse : <code>Object</code>
+**Kind**: global class  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| name | <code>String</code> | The Caller ID name information. |
+| number | <code>String</code> | Phone number in  E164 format. |
+| created | <code>String</code> | The time this Caller ID information was first queried (UTC). |
+| updated | <code>String</code> | The time this Caller ID information was last updated (UTC). |
+
+<a name="PhoneNumber"></a>
+
+## PhoneNumber
+**Kind**: global class  
+
+* [PhoneNumber](#PhoneNumber)
+    * [new PhoneNumber()](#new_PhoneNumber_new)
+    * [.create(params, [callback])](#PhoneNumber+create) ⇒ <code>[PhoneNumberResponse](#PhoneNumberResponse)</code>
+    * [.get(phoneNumberOrId, callback)](#PhoneNumber+get) ⇒ <code>[PhoneNumberResponse](#PhoneNumberResponse)</code>
+    * [.list(params, callback)](#PhoneNumber+list) ⇒ <code>[Array.&lt;PhoneNumberResponse&gt;](#PhoneNumberResponse)</code>
+    * [.update(phoneNumberId, params, [callback])](#PhoneNumber+update) ⇒ <code>Promise</code>
+    * [.remove(phoneNumberId, [callback])](#PhoneNumber+remove) ⇒ <code>Promise</code>
+
+<a name="new_PhoneNumber_new"></a>
+
+### new PhoneNumber()
+Phone numbers
+
+<a name="PhoneNumber+create"></a>
+
+### phoneNumber.create(params, [callback]) ⇒ <code>[PhoneNumberResponse](#PhoneNumberResponse)</code>
+Allocates a number
+
+**Kind**: instance method of <code>[PhoneNumber](#PhoneNumber)</code>  
+**Returns**: <code>[PhoneNumberResponse](#PhoneNumberResponse)</code> - A promise for the newly created number  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| params | <code>Object</code> | Parameters for allocating a number |
+| params.number | <code>String</code> | A number to allocate. |
+| [params.name] | <code>String</code> | A name you choose for this number. |
+| [params.applicationId] | <code>String</code> | The unique id of an Application you want to associate with this number. |
+| [params.fallbackNumber] | <code>String</code> | Number to transfer an incoming call when the callback/fallback events can't be delivered. |
+| [callback] | <code>function</code> | Callback with the newly created number |
+
+**Example**  
+```js
+//Allocate number +1234567980
+
+// Promise
+client.PhoneNumber.create({ number : "+1234567890" }).then(function(number){});
+
+// Callback
+client.PhoneNumber.create({ number : "+1234567890" }, function(err, number){});
+```
+<a name="PhoneNumber+get"></a>
+
+### phoneNumber.get(phoneNumberOrId, callback) ⇒ <code>[PhoneNumberResponse](#PhoneNumberResponse)</code>
+Gets information about a phoneNumber.
+
+**Kind**: instance method of <code>[PhoneNumber](#PhoneNumber)</code>  
+**Returns**: <code>[PhoneNumberResponse](#PhoneNumberResponse)</code> - A promise for the call information  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| phoneNumberOrId | <code>String</code> | The ID of the number or number in format E.164 (like +1234567980) to get |
+| callback | <code>function</code> | A callback with the call information |
+
+**Example**  
+```js
+// Promise
+client.PhoneNumber.get(numberId).then(function(number){});
+// or
+client.PhoneNumber.get("+1234567890").then(function(number){});
+
+// Callback
+client.PhoneNumber.get(numberId, function(err, number){});
+// or
+client.PhoneNumber.get("+1234567890", function(err, number){});
+```
+<a name="PhoneNumber+list"></a>
+
+### phoneNumber.list(params, callback) ⇒ <code>[Array.&lt;PhoneNumberResponse&gt;](#PhoneNumberResponse)</code>
+Gets a list of allocated numbers.
+
+**Kind**: instance method of <code>[PhoneNumber](#PhoneNumber)</code>  
+**Returns**: <code>[Array.&lt;PhoneNumberResponse&gt;](#PhoneNumberResponse)</code> - A promise for the list of phone numbers  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| params | <code>Object</code> |  | Query parameters for listing numbers |
+| [params.size] | <code>Number</code> | <code>25</code> | Used for pagination to indicate the size of each page requested for querying a list numbers. If no value is specified the default value is 25 (maximum value 1000). |
+| [params.applicationId] | <code>String</code> |  | Used to filter the retrieved list of numbers by an associated application ID |
+| [params.state] | <code>String</code> |  | Used to filter the retrieved list of numbers by a US state. |
+| [params.name] | <code>String</code> |  | Used to filter the retrieved list of numbers by name |
+| [params.city] | <code>String</code> |  | Used to filter the retrieved list of numbers by city name |
+| [params.numberState] | <code>String</code> |  | Used to filter the retrieved list of numbers by number state |
+| callback | <code>function</code> |  | A callback with the list of numbers |
+
+**Example**  
+```js
+// Promise
+client.PhoneNumber.list({size: 1000}).then(function(numbersResponse){});
+
+// Callback
+client.PhoneNumber.list({size: 1000}, function(err, numbersResponse){});
+```
+<a name="PhoneNumber+update"></a>
+
+### phoneNumber.update(phoneNumberId, params, [callback]) ⇒ <code>Promise</code>
+Update the number
+
+**Kind**: instance method of <code>[PhoneNumber](#PhoneNumber)</code>  
+**Returns**: <code>Promise</code> - A promise for the operation  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| phoneNumberId | <code>String</code> | The ID of the number |
+| params | <code>Object</code> | Changed parameters of the number |
+| params.applicationId | <code>String</code> | The unique id of an Application resource you want to associate with this number for incoming calls and messages. |
+| params.name | <code>String</code> | A name you choose for this number. |
+| params.fallbackNumber | <code>String</code> | Number to transfer an incoming call when the callback/fallback events can't be delivered. |
+| [callback] | <code>function</code> | Callback for the operation |
+
+**Example**  
+```js
+// Promise
+client.PhoneNumber.update(numberId, {name: "Another Name"}).then(function(){});
+
+// Callback
+client.PhoneNumber.update(numberId, {name: "Another Name"}, function(err){});
+```
+<a name="PhoneNumber+remove"></a>
+
+### phoneNumber.remove(phoneNumberId, [callback]) ⇒ <code>Promise</code>
+Remove the number
+
+**Kind**: instance method of <code>[PhoneNumber](#PhoneNumber)</code>  
+**Returns**: <code>Promise</code> - A promise for the operation  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| phoneNumberId | <code>String</code> | The ID of the number |
+| [callback] | <code>function</code> | Callback for the operation |
+
+**Example**  
+```js
+// Promise
+client.PhoneNumber.remove(numberId).then(function(){});
+
+// Callback
+client.PhoneNumber.remove(numberId, function(err){});
+```
+<a name="PhoneNumberResponse"></a>
+
+## PhoneNumberResponse : <code>Object</code>
+**Kind**: global class  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| id | <code>String</code> | The unique ID of the number. |
+| state | <code>String</code> | Number state |
+| name | <code>String</code> | Number name |
+| number | <code>String</code> | Number  in E.164 format. |
+| nationalNumber | <code>String</code> | Number in natinal friendly format (like  (555) 5555-5555). |
+| city | <code>String</code> | Number city. |
+| state | <code>String</code> | Number state. |
+| applicationId | <code>String</code> | The unique id of an linked Application. |
+| fallbackNumber | <code>String</code> | Number to transfer an incoming call when the callback/fallback events can't be delivered. |
+| price | <code>String</code> | The monthly price for this number. |
+| numberState | <code>String</code> | The phone number state, values are `enabled` or `released` |
+| createdTime | <code>String</code> | Date when the number was created. |
 
 <a name="Recording"></a>
 
