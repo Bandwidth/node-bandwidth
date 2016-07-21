@@ -116,7 +116,7 @@ client.Message.send({
         * [ ] List
         * [ ] Get individual info
     * [ ] List Recordings
-    * [ ] List Transactions
+    * [ ] List Transciptions
     * [X] Gather
         * [X] Create Gather
         * [X] Get Gather info
