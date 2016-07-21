@@ -35,6 +35,10 @@
 <dd></dd>
 <dt><a href="#EndpointResponse">EndpointResponse</a> : <code>Object</code></dt>
 <dd></dd>
+<dt><a href="#Error">Error</a></dt>
+<dd></dd>
+<dt><a href="#ErrorResponse">ErrorResponse</a> : <code>Object</code></dt>
+<dd></dd>
 <dt><a href="#CatapultClient">CatapultClient</a></dt>
 <dd></dd>
 <dt><a href="#Media">Media</a></dt>
@@ -1164,6 +1168,63 @@ client.Endpoint.createAuthToken("domainId", "endpointId", function (err, endpoin
 | description | <code>String</code> | String to describe the endpoint. 0param {String} applicationId The id of the application associated with this endpoint. |
 | enabled | <code>Boolean</code> | Allow or not to receive and make calls. |
 | credentials | <code>Object</code> | Auth parameters |
+
+<a name="Error"></a>
+
+## Error
+**Kind**: global class  
+
+* [Error](#Error)
+    * [new Error()](#new_Error_new)
+    * [.get(errorId, [callback])](#Error+get) ⇒ <code>[ErrorResponse](#ErrorResponse)</code>
+    * [.list(params, [callback])](#Error+list) ⇒ <code>[Array.&lt;ErrorResponse&gt;](#ErrorResponse)</code>
+
+<a name="new_Error_new"></a>
+
+### new Error()
+Error
+
+<a name="Error+get"></a>
+
+### error.get(errorId, [callback]) ⇒ <code>[ErrorResponse](#ErrorResponse)</code>
+Gets information about a error.
+
+**Kind**: instance method of <code>[Error](#Error)</code>  
+**Returns**: <code>[ErrorResponse](#ErrorResponse)</code> - A promise for the error information  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| errorId | <code>String</code> | The ID of the error to get |
+| [callback] | <code>function</code> | A callback with the error information |
+
+<a name="Error+list"></a>
+
+### error.list(params, [callback]) ⇒ <code>[Array.&lt;ErrorResponse&gt;](#ErrorResponse)</code>
+Gets a list of errors.
+
+**Kind**: instance method of <code>[Error](#Error)</code>  
+**Returns**: <code>[Array.&lt;ErrorResponse&gt;](#ErrorResponse)</code> - A promise for the list of errors  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| params | <code>Object</code> |  | Query parameters for listing errors |
+| [params.size] | <code>Number</code> | <code>25</code> | Used for pagination to indicate the size of each page requested for querying a list of errors. If no value is specified the default value is 25. |
+| [callback] | <code>function</code> |  | A callback with the list of errors |
+
+<a name="ErrorResponse"></a>
+
+## ErrorResponse : <code>Object</code>
+**Kind**: global class  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| id | <code>String</code> | The unique ID of the error. |
+| time | <code>String</code> | The time the error occurred (UTC). |
+| category | <code>String</code> | The error category. |
+| code | <code>String</code> | A specific error code string that identifies the type of error |
+| message | <code>String</code> | A message that describes the error condition in detail. |
+| details | <code>Object</code> | A list of name/value pairs of additional details. |
 
 <a name="CatapultClient"></a>
 
