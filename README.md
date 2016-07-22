@@ -74,6 +74,109 @@ client.Message.send({
 });
 ```
 
+## Rest API Coverage
+------------
+* [Account](http://ap.bandwidth.com/docs/rest-api/account/)
+    * [X] Information
+    * [X] Transactions
+* [Applications](http://ap.bandwidth.com/docs/rest-api/applications/)
+    * [X] List
+    * [X] Create
+    * [X] Get info
+    * [X] Update
+    * [X] Delete
+* [Available Numbers](http://ap.bandwidth.com/docs/rest-api/available-numbers/)
+    * [X] Search Local
+    * [X] Buy Local
+    * [X] Search Tollfree
+    * [X] Buy Tollfree
+* [Bridges](http://ap.bandwidth.com/docs/rest-api/bridges/)
+    * [X] List
+    * [X] Create
+    * [X] Get info
+    * [X] Update Calls
+    * [X] Play Audio
+        * [X] Speak Sentence
+        * [X] Play Audio File
+    * [X] Get Calls
+* [Calls](http://ap.bandwidth.com/docs/rest-api/calls/)
+    * [X] List all calls
+    * [X] Create
+    * [X] Get info
+    * [ ] Update Status
+        * [X] Transfer
+        * [ ] Answer
+        * [ ] Hangup
+        * [ ] Reject
+    * [X] Play Audio
+        * [X] Speak Sentence
+        * [X] Play Audio File
+    * [ ] Send DTMF
+    * [ ] Events
+        * [ ] List
+        * [ ] Get individual info
+    * [ ] List Recordings
+    * [ ] List Transciptions
+    * [X] Gather
+        * [X] Create Gather
+        * [X] Get Gather info
+        * [X] Update Gather
+* [Conferences](http://ap.bandwidth.com/docs/rest-api/conferences/)
+    * [ ] Create conference
+    * [ ] Get info for single conference
+    * [ ] Play Audio
+        * [ ] Speak Sentence
+        * [ ] Play Audio File
+    * [ ] Members
+        * [ ] Add member
+        * [ ] List members
+        * [ ] Update members
+            * [ ] Mute
+            * [ ] Remove
+            * [ ] Hold
+        * [ ] Play Audio to single member
+            * [ ] Speak Sentence
+            * [ ] Play Audio File
+* [Domains](http://ap.bandwidth.com/docs/rest-api/domains/)
+    * [X] List all domains
+    * [X] create domain
+    * [X] Delete domain
+* [Endpoints](http://ap.bandwidth.com/docs/rest-api/endpoints/)
+    * [X] List all endpoints
+    * [X] Create Endpoint
+    * [ ] Get Single Endpoint
+    * [X] Update Single Endpoint
+    * [X] Delete Single Endpoint
+    * [X] Create auth token
+* [Errors](http://ap.bandwidth.com/docs/rest-api/errors/)
+    * [X] Get all errors
+    * [X] Get info on Single Error
+* [Intelligence Services](http://ap.bandwidth.com/docs/rest-api/intelligenceservices/)
+    * [ ] Number Intelligence
+* [Media](http://ap.bandwidth.com/docs/rest-api/media/)
+    * [X] List all media
+    * [X] Upload media
+    * [X] Download single media file
+    * [X] Delete single media
+* [Messages](http://ap.bandwidth.com/docs/rest-api/messages/)
+    * [X] List all messages
+    * [X] Send Message
+    * [X] Get single message
+* [Number Info](http://ap.bandwidth.com/docs/rest-api/numberinfo/)
+    * [X] Get number info
+* [Phone Numbers](http://ap.bandwidth.com/docs/rest-api/phonenumbers/)
+    * [X] List all phonenumbers
+    * [X] Get single phonenumber
+    * [X] Order singe number
+    * [X] Update single number
+    * [X] Delete number
+* [Recordings](http://ap.bandwidth.com/docs/rest-api/recordings/)
+    * [X] List all recordings
+    * [X] Get single recording info
+* [Transciptions](http://ap.bandwidth.com/docs/rest-api/recordingsidtranscriptions/)
+    * [ ] Create
+    * [ ] Get info for single transcrption
+    * [ ] Get all transcrptions for a recording
 
 ## Providing feedback on the developer preview
 
