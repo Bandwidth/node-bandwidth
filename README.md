@@ -174,9 +174,9 @@ client.Message.send({
     * [X] List all recordings
     * [X] Get single recording info
 * [Transciptions](http://ap.bandwidth.com/docs/rest-api/recordingsidtranscriptions/)
-    * [ ] Create
-    * [ ] Get info for single transcrption
-    * [ ] Get all transcrptions for a recording
+    * [X] Create
+    * [X] Get info for single transcrption
+    * [X] Get all transcrptions for a recording
 
 ## Providing feedback on the developer preview
 
