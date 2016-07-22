@@ -61,6 +61,10 @@
 <dd></dd>
 <dt><a href="#Recording">Recording</a></dt>
 <dd></dd>
+<dt><a href="#RecordingResponse">RecordingResponse</a> : <code>Object</code></dt>
+<dd></dd>
+<dt><a href="#TranscriptionResponse">TranscriptionResponse</a> : <code>Object</code></dt>
+<dd></dd>
 </dl>
 
 ## Functions
@@ -1205,6 +1209,14 @@ Gets information about a error.
 | errorId | <code>String</code> | The ID of the error to get |
 | [callback] | <code>function</code> | A callback with the error information |
 
+**Example**  
+```js
+// Promise
+client.Error.get(errorId).then(function(errorInfo){});
+
+// Callback
+client.Error.get(errorId, function(err, errorInfo){});
+```
 <a name="Error+list"></a>
 
 ### error.list(params, [callback]) ⇒ <code>[Array.&lt;ErrorResponse&gt;](#ErrorResponse)</code>
@@ -1219,6 +1231,14 @@ Gets a list of errors.
 | [params.size] | <code>Number</code> | <code>25</code> | Used for pagination to indicate the size of each page requested for querying a list of errors. If no value is specified the default value is 25. |
 | [callback] | <code>function</code> |  | A callback with the list of errors |
 
+**Example**  
+```js
+// Promise
+client.Error.list({size: 1000}).then(function(errorResponse){});
+
+// Callback
+client.Error.list({size: 1000}, function(err, errorResponse){});
+```
 <a name="ErrorResponse"></a>
 
 ## ErrorResponse : <code>Object</code>
@@ -1667,11 +1687,11 @@ client.PhoneNumber.remove(numberId, function(err){});
 
 * [Recording](#Recording)
     * [new Recording()](#new_Recording_new)
-    * [.get(recordingId, [callback])](#Recording+get) ⇒ <code>RecordingResponse</code>
-    * [.list(params, [callback])](#Recording+list) ⇒ <code>RecordingResponse</code>
-    * [.createTranscription(recordingId, [callback])](#Recording+createTranscription) ⇒ <code>TranscriptionResponse</code>
-    * [.getTranscription(recordingId, transcriptionId, [callback])](#Recording+getTranscription) ⇒ <code>TranscriptionResponse</code>
-    * [.getTranscriptions(recordingId, [callback])](#Recording+getTranscriptions) ⇒ <code>TranscriptionResponse</code>
+    * [.get(recordingId, [callback])](#Recording+get) ⇒ <code>[RecordingResponse](#RecordingResponse)</code>
+    * [.list(params, [callback])](#Recording+list) ⇒ <code>[RecordingResponse](#RecordingResponse)</code>
+    * [.createTranscription(recordingId, [callback])](#Recording+createTranscription) ⇒ <code>[TranscriptionResponse](#TranscriptionResponse)</code>
+    * [.getTranscription(recordingId, transcriptionId, [callback])](#Recording+getTranscription) ⇒ <code>[TranscriptionResponse](#TranscriptionResponse)</code>
+    * [.getTranscriptions(recordingId, [callback])](#Recording+getTranscriptions) ⇒ <code>[TranscriptionResponse](#TranscriptionResponse)</code>
 
 <a name="new_Recording_new"></a>
 
@@ -1680,11 +1700,11 @@ Retrieve information about call recordings
 
 <a name="Recording+get"></a>
 
-### recording.get(recordingId, [callback]) ⇒ <code>RecordingResponse</code>
+### recording.get(recordingId, [callback]) ⇒ <code>[RecordingResponse](#RecordingResponse)</code>
 Get a recording
 
 **Kind**: instance method of <code>[Recording](#Recording)</code>  
-**Returns**: <code>RecordingResponse</code> - A promise for the recording object  
+**Returns**: <code>[RecordingResponse](#RecordingResponse)</code> - A promise for the recording object  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1693,11 +1713,11 @@ Get a recording
 
 <a name="Recording+list"></a>
 
-### recording.list(params, [callback]) ⇒ <code>RecordingResponse</code>
+### recording.list(params, [callback]) ⇒ <code>[RecordingResponse](#RecordingResponse)</code>
 Get a list of recordings
 
 **Kind**: instance method of <code>[Recording](#Recording)</code>  
-**Returns**: <code>RecordingResponse</code> - A promise for the recording objects  
+**Returns**: <code>[RecordingResponse](#RecordingResponse)</code> - A promise for the recording objects  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1706,11 +1726,11 @@ Get a list of recordings
 
 <a name="Recording+createTranscription"></a>
 
-### recording.createTranscription(recordingId, [callback]) ⇒ <code>TranscriptionResponse</code>
+### recording.createTranscription(recordingId, [callback]) ⇒ <code>[TranscriptionResponse](#TranscriptionResponse)</code>
 Create a transcription
 
 **Kind**: instance method of <code>[Recording](#Recording)</code>  
-**Returns**: <code>TranscriptionResponse</code> - A promise for the created transcription  
+**Returns**: <code>[TranscriptionResponse](#TranscriptionResponse)</code> - A promise for the created transcription  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1727,11 +1747,11 @@ client.Recording.createTranscription(recordingId, function(err, transcription){}
 ```
 <a name="Recording+getTranscription"></a>
 
-### recording.getTranscription(recordingId, transcriptionId, [callback]) ⇒ <code>TranscriptionResponse</code>
+### recording.getTranscription(recordingId, transcriptionId, [callback]) ⇒ <code>[TranscriptionResponse](#TranscriptionResponse)</code>
 Get information about the transcription
 
 **Kind**: instance method of <code>[Recording](#Recording)</code>  
-**Returns**: <code>TranscriptionResponse</code> - A promise for the transcription  
+**Returns**: <code>[TranscriptionResponse](#TranscriptionResponse)</code> - A promise for the transcription  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1749,11 +1769,11 @@ client.Recording.getTranscription(recordingId, transcriptionId, function(err, tr
 ```
 <a name="Recording+getTranscriptions"></a>
 
-### recording.getTranscriptions(recordingId, [callback]) ⇒ <code>TranscriptionResponse</code>
+### recording.getTranscriptions(recordingId, [callback]) ⇒ <code>[TranscriptionResponse](#TranscriptionResponse)</code>
 Get list of all transcriptions for recording
 
 **Kind**: instance method of <code>[Recording](#Recording)</code>  
-**Returns**: <code>TranscriptionResponse</code> - A promise for the transcriptions  
+**Returns**: <code>[TranscriptionResponse](#TranscriptionResponse)</code> - A promise for the transcriptions  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1768,6 +1788,36 @@ client.Recording.getTranscriptions(recordingId).then(function(transcriptions){})
 // Callback
 client.Recording.getTranscriptions(recordingId, function(err, transcriptions){});
 ```
+<a name="RecordingResponse"></a>
+
+## RecordingResponse : <code>Object</code>
+**Kind**: global class  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| id | <code>String</code> | The unique ID of the recording. |
+| startTime | <code>String</code> | Date/time when the recording started. |
+| endTime | <code>String</code> | Date/time when the recording ended. |
+| media | <code>String</code> | The complete URL to the media resource this recording is associated with. |
+| call | <code>String</code> | The complete URL to the call resource this recording is associated with. |
+| state | <code>String</code> | The state of the recording, |
+
+<a name="TranscriptionResponse"></a>
+
+## TranscriptionResponse : <code>Object</code>
+**Kind**: global class  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| id | <code>String</code> | The unique ID of the transcription. |
+| text | <code>String</code> | The transcribed text (only first 1000 characters). |
+| chargeableDuration | <code>Number</code> | The seconds between activeTime and endTime for the recording; this is the time that is going to be used to charge the resource. |
+| textSize | <code>Number</code> | The size of the transcribed text. |
+| state | <code>String</code> | The state of the transcription, |
+| textUrl | <code>String</code> | A url to the full text, |
+
 <a name="getNextLink"></a>
 
 ## getNextLink(response) ⇒
