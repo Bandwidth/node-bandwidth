@@ -46,6 +46,18 @@ describe("Recording API", function () {
 			},
 		];
 
+		var testTranscription = {
+			"chargeableDuration" : 11,
+			"id"                 : "transcriptionId",
+			"state"              : "completed",
+			"text"               : "Hey there, I was calling to talk about plans for this saturday. ",
+			"textSize"           : 63,
+			"textUrl"            : "https://api.catapult.inetwork.com/.../media/{transcriptionId}",
+			"time"               : "2014-12-23T23:08:59Z"
+		};
+
+		var transcriptionList = [ testTranscription ];
+
 		before(function () {
 			client = new CatapultClient({
 				userId    : userId,
@@ -59,7 +71,15 @@ describe("Recording API", function () {
 				.get("/v1/users/" + userId + "/recordings/" + testRecording.id)
 				.reply(200, testRecording)
 				.get("/v1/users/" + userId + "/recordings")
-				.reply(200, recordingList);
+				.reply(200, recordingList)
+				.get("/v1/users/" + userId + "/recordings/" + testRecording.id + "/transcriptions")
+				.reply(200, transcriptionList)
+				.get("/v1/users/" + userId + "/recordings/" + testRecording.id + "/transcriptions/" + testTranscription.id)
+				.reply(200, testTranscription)
+				.post("/v1/users/" + userId + "/recordings/" + testRecording.id + "/transcriptions")
+				.reply(201, {}, {
+					"Location" : "/v1/users/" + userId + "/recordings/" + testRecording.id + "/transcriptions/" + testTranscription.id
+				});
 		});
 
 		after(function () {
@@ -74,10 +94,31 @@ describe("Recording API", function () {
 			});
 		});
 
-		it("should get a list of messages, promise style", function () {
+		it("should get a list of recordings, promise style", function () {
 			return client.Recording.list()
 			.then(function (recordings) {
 				recordings.should.eql(recordingList);
+			});
+		});
+
+		it("should get a list of transcriptions, promise style", function () {
+			return client.Recording.getTranscriptions(testRecording.id)
+			.then(function (transcriptions) {
+				transcriptions.should.eql(transcriptionList);
+			});
+		});
+
+		it("should get a transcriptions, promise style", function () {
+			return client.Recording.getTranscription(testRecording.id, testTranscription.id)
+			.then(function (transcription) {
+				transcription.should.eql(testTranscription);
+			});
+		});
+
+		it("should create a transcriptions, promise style", function () {
+			return client.Recording.createTranscription(testRecording.id)
+			.then(function (transcription) {
+				transcription.id.should.eql(testTranscription.id);
 			});
 		});
 
