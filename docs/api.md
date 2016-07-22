@@ -27,6 +27,10 @@
 <dd></dd>
 <dt><a href="#GatherResponse">GatherResponse</a> : <code>Object</code></dt>
 <dd></dd>
+<dt><a href="#Conference">Conference</a></dt>
+<dd></dd>
+<dt><a href="#ConferenceResponse">ConferenceResponse</a> : <code>Object</code></dt>
+<dd></dd>
 <dt><a href="#Domain">Domain</a></dt>
 <dd></dd>
 <dt><a href="#DomainResponse">DomainResponse</a> : <code>Object</code></dt>
@@ -938,6 +942,466 @@ Complete the gather.
 | completedTime | <code>String</code> | TIme of completion of the gather. |
 | digits | <code>String</code> | Gathered digits. |
 
+<a name="Conference"></a>
+
+## Conference
+**Kind**: global class  
+
+* [Conference](#Conference)
+    * [new Conference()](#new_Conference_new)
+    * [.create(params, [callback])](#Conference+create) ⇒ <code>[ConferenceResponse](#ConferenceResponse)</code>
+    * [.get(conferenceId, [callback])](#Conference+get) ⇒ <code>[ConferenceResponse](#ConferenceResponse)</code>
+    * [.update(conferenceId, params, [callback])](#Conference+update) ⇒ <code>Promise</code>
+    * [.remove(conferenceId, [callback])](#Conference+remove) ⇒ <code>Promise</code>
+    * [.speakSentence(conferenceId, sentence, [callback])](#Conference+speakSentence) ⇒ <code>Promise</code>
+    * [.playAudioFile(conferenceId, fileUrl, [callback])](#Conference+playAudioFile) ⇒ <code>Promise</code>
+    * [.playAudioAdvanced(conferenceId, params, [callback])](#Conference+playAudioAdvanced) ⇒ <code>Promise</code>
+    * [.getMembers(conferenceId, callback)](#Conference+getMembers) ⇒ <code>Promise</code>
+    * [.getMember(conferenceId, memberId, callback)](#Conference+getMember) ⇒ <code>Promise</code>
+    * [.createMember(params, [callback])](#Conference+createMember) ⇒ <code>[ConferenceResponse](#ConferenceResponse)</code>
+    * [.updateMember(conferenceId, memberId, params, [callback])](#Conference+updateMember) ⇒ <code>Promise</code>
+    * [.removeMember(conferenceId, memberId, [callback])](#Conference+removeMember) ⇒ <code>Promise</code>
+    * [.speakSentenceToMember(conferenceId, memberId, sentence, [callback])](#Conference+speakSentenceToMember) ⇒ <code>Promise</code>
+    * [.playAudioFileToMember(conferenceId, memberId, fileUrl, [callback])](#Conference+playAudioFileToMember) ⇒ <code>Promise</code>
+    * [.playAudioAdvancedToMember(conferenceId, memberId, params, [callback])](#Conference+playAudioAdvancedToMember) ⇒ <code>Promise</code>
+
+<a name="new_Conference_new"></a>
+
+### new Conference()
+Conference
+
+<a name="Conference+create"></a>
+
+### conference.create(params, [callback]) ⇒ <code>[ConferenceResponse](#ConferenceResponse)</code>
+Create a new conference
+
+**Kind**: instance method of <code>[Conference](#Conference)</code>  
+**Returns**: <code>[ConferenceResponse](#ConferenceResponse)</code> - A promise for the newly created conference  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| params | <code>Object</code> |  | Parameters for creating a conference |
+| params.from | <code>String</code> |  | The phone number that will host the conference. |
+| [params.callbackUrl] | <code>String</code> |  | The complete URL where the events related to the Conference will be sent to. |
+| [params.callbackHttpMethod] | <code>String</code> | <code>post</code> | Determine if the callback event should be sent via HTTP GET or HTTP POST. |
+| [params.callbackTimeout] | <code>String</code> |  | Determine how long should the platform wait for callbackUrl's response before timing out in milliseconds. |
+| [params.fallbackUrl] | <code>String</code> |  | Determine how long should the platform wait for callbackUrl's response before timing out in milliseconds. |
+| [params.tag] | <code>String</code> |  | A string that will be included in the callback events of the conference. |
+| [callback] | <code>function</code> |  | Callback with the newly created conference |
+
+**Example**  
+```js
+// Promise
+client.Conference.create({from: "+1234567890"}).then(function(conference){});
+// Callback
+client.Conference.create({from: "+1234567890"}, function(err, conference){});
+```
+<a name="Conference+get"></a>
+
+### conference.get(conferenceId, [callback]) ⇒ <code>[ConferenceResponse](#ConferenceResponse)</code>
+Gets information about a conference.
+
+**Kind**: instance method of <code>[Conference](#Conference)</code>  
+**Returns**: <code>[ConferenceResponse](#ConferenceResponse)</code> - A promise for the conference information  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| conferenceId | <code>String</code> | The ID of the conference to get |
+| [callback] | <code>function</code> | A callback with the conference information |
+
+**Example**  
+```js
+// Promise
+client.Conference.get("conferenceId").then(function(conference){});
+// Callback
+client.Conference.get("conferenceId", function(err, conference){});
+```
+<a name="Conference+update"></a>
+
+### conference.update(conferenceId, params, [callback]) ⇒ <code>Promise</code>
+Update the conference
+
+**Kind**: instance method of <code>[Conference](#Conference)</code>  
+**Returns**: <code>Promise</code> - A promise for the operation  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| conferenceId | <code>String</code> |  | The ID of the conference |
+| params | <code>Object</code> |  | Changed parameters of the conference |
+| [params.state] | <code>String</code> |  | Conference state. Possible state values are: "completed" to terminate the conference. |
+| [params.hold] | <code>String</code> |  | If "true", all member can't hear or speak in the conference. If "false", all members can hear and speak in the conference (unless set at the member level). |
+| [params.mute] | <code>String</code> |  | If "true", all member can't speak in the conference. If "false", all members can speak in the conference (unless set at the member level). |
+| [params.callbackUrl] | <code>String</code> |  | The complete URL where the events related to the Conference will be sent to. |
+| [params.callbackHttpMethod] | <code>String</code> | <code>post</code> | Determine if the callback event should be sent via HTTP GET or HTTP POST. |
+| [params.callbackTimeout] | <code>String</code> |  | Determine how long should the platform wait for callbackUrl's response before timing out in milliseconds. |
+| [params.fallbackUrl] | <code>String</code> |  | Determine how long should the platform wait for callbackUrl's response before timing out in milliseconds. |
+| [params.tag] | <code>String</code> |  | A string that will be included in the callback events of the conference. |
+| [callback] | <code>function</code> |  | Callback for the operation |
+
+**Example**  
+```js
+// Promise
+client.Conference.update("conferenceID", {mute: "true"}).then(function(){});
+// Callback
+client.Conference.update("conferenceID", {mute: "true"}, function(err){});
+```
+<a name="Conference+remove"></a>
+
+### conference.remove(conferenceId, [callback]) ⇒ <code>Promise</code>
+Remove the conference
+
+**Kind**: instance method of <code>[Conference](#Conference)</code>  
+**Returns**: <code>Promise</code> - A promise for the operation  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| conferenceId | <code>String</code> | The ID of the conference |
+| [callback] | <code>function</code> | Callback for the operation |
+
+**Example**  
+```js
+// Promise
+client.Conference.remove("conferenceID").then(function(){});
+// Callback
+client.Conference.remove("conferenceID", function(err){});
+```
+<a name="Conference+speakSentence"></a>
+
+### conference.speakSentence(conferenceId, sentence, [callback]) ⇒ <code>Promise</code>
+Speak sentence to the conference using default values
+
+**Kind**: instance method of <code>[Conference](#Conference)</code>  
+**Returns**: <code>Promise</code> - A promise for the operation  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| conferenceId | <code>String</code> | The ID of the conference |
+| sentence | <code>String</code> | A sentence to speak to the conference. |
+| [callback] | <code>function</code> | Callback for the operation |
+
+**Example**  
+```js
+//Speak sentence in a conference
+
+//Promise
+client.Conference.speakSentence("conferenceID", "Hello From Bandwidth").then(function (res) {});
+
+//Callback
+client.Conference.speakSentence("conferenceID", "Hello From Bandwidth", function (err, res) {});
+```
+<a name="Conference+playAudioFile"></a>
+
+### conference.playAudioFile(conferenceId, fileUrl, [callback]) ⇒ <code>Promise</code>
+Play audio url to the conference
+
+**Kind**: instance method of <code>[Conference](#Conference)</code>  
+**Returns**: <code>Promise</code> - A promise for the operation  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| conferenceId | <code>String</code> | The ID of the conference |
+| fileUrl | <code>String</code> | The http location of an audio file to play (WAV and MP3 supported). |
+| [callback] | <code>function</code> | Callback for the operation |
+
+**Example**  
+```js
+//Play Audio file on conference
+
+//Promise
+client.Conference.playAudioFile("conferenceID", "http://myurl.com/file.mp3").then(function (res) {});
+
+//Callback
+client.Conference.playAudioFile("conferenceID", "http://myurl.com/file.wav", function (err, res) {});
+```
+<a name="Conference+playAudioAdvanced"></a>
+
+### conference.playAudioAdvanced(conferenceId, params, [callback]) ⇒ <code>Promise</code>
+Play audio file or speak sentence in conference
+
+**Kind**: instance method of <code>[Conference](#Conference)</code>  
+**Returns**: <code>Promise</code> - A promise for the operation  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| conferenceId | <code>String</code> |  | The ID of the conference |
+| params | <code>Object</code> |  | Parameters to play audio in conference. |
+| [params.fileUrl] | <code>String</code> |  | The http location of an audio file to play (WAV and MP3 supported). |
+| [params.sentence] | <code>String</code> |  | The sentence to speak. |
+| [params.gender] | <code>String</code> | <code>female</code> | The gender of the voice used to synthesize the sentence. It will be considered only if sentence is not null. The female gender will be used by default. |
+| [params.locale] | <code>String</code> | <code>en_US</code> | The locale used to get the accent of the voice used to synthesize the sentence. It will be considered only if sentence is not null/empty. The en_US will be used by default. |
+| [params.voice] | <code>String</code> | <code>Susan</code> | The voice to speak the sentence. for list of supported voices It will be considered only if sentence is not null/empty. Susan's voice will be used by default. |
+| [params.loopEnabled] | <code>Boolean</code> | <code>false</code> | When value is true, the audio will keep playing in a loop. Default: false. |
+| [callback] | <code>function</code> |  | Callback for the operation |
+
+**Example**  
+```js
+//Play Audio File on loop
+var options = {
+	fileUrl     : "http://myurl.com/file.mp3",
+	loopEnabled : true
+}
+//Promise
+client.Conference.playAudioAdvanced("conferenceId", options).then(function (res) {});
+
+//Callback
+client.Conference.playAudioAdvanced("conferenceId", options, function (err,res) {});
+```
+**Example**  
+```js
+//Speak sentence with options
+var options = {
+	sentence : "hola de Bandwidth",
+	gender   : "male",
+	locale   : "es",
+	voice    : "Jorge"
+}
+//Promise
+client.Conference.playAudioAdvanced("conferenceId", options).then(function (res) {});
+
+//Callback
+client.Conference.playAudioAdvanced("conferenceId", options, function (err,res) {});
+```
+<a name="Conference+getMembers"></a>
+
+### conference.getMembers(conferenceId, callback) ⇒ <code>Promise</code>
+Gets information about a conference members.
+
+**Kind**: instance method of <code>[Conference](#Conference)</code>  
+**Returns**: <code>Promise</code> - A promise for member list  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| conferenceId | <code>String</code> | The ID of the conference to get memebers |
+| callback | <code>function</code> | A callback with member list |
+
+**Example**  
+```js
+// Promise
+client.Conference.getMembers("conferenceId").then(function(members){});
+// Callback
+client.Conference.getMembers("conferenceId", function(err, members){});
+```
+<a name="Conference+getMember"></a>
+
+### conference.getMember(conferenceId, memberId, callback) ⇒ <code>Promise</code>
+Gets information about a single conference member.
+
+**Kind**: instance method of <code>[Conference](#Conference)</code>  
+**Returns**: <code>Promise</code> - A promise for the member  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| conferenceId | <code>String</code> | The ID of the conference |
+| memberId | <code>String</code> | The ID of the member |
+| callback | <code>function</code> | A callback with the member |
+
+**Example**  
+```js
+// Promise
+client.Conference.getMember("conferenceId", "memberId").then(function(member){});
+// Callback
+client.Conference.getMember("conferenceId", "memberId", function(err, member){});
+```
+<a name="Conference+createMember"></a>
+
+### conference.createMember(params, [callback]) ⇒ <code>[ConferenceResponse](#ConferenceResponse)</code>
+Add members to a conference.
+
+**Kind**: instance method of <code>[Conference](#Conference)</code>  
+**Returns**: <code>[ConferenceResponse](#ConferenceResponse)</code> - A promise for the added member  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| params | <code>Object</code> | Parameters for new member |
+| params.callId | <code>String</code> | The callId must refer to an active call that was created using this conferenceId. |
+| [params.joinTone] | <code>String</code> | If "true", will play a tone when the member joins the conference. If "false", no tone is played when the member joins the conference. |
+| [params.leavingTone] | <code>String</code> | If "true", will play a tone when the member leaves the conference. If "false", no tone is played when the member leaves the conference. |
+| [params.mute] | <code>String</code> | If "true", member can't speak in the conference. If "false", this members can speak in the conference (unless set at the conference level). |
+| [params.hold] | <code>String</code> | If "true", member can't hear or speak in the conference. If "false", member can hear and speak in the conference (unless set at the conference level). |
+| [callback] | <code>function</code> | Callback with the added member |
+
+**Example**  
+```js
+// Promise
+client.Conference.createMember("conferenceId", {callId: "callID"}).then(function(member){});
+// Callback
+client.Conference.createMember("conferenceId", {callId: "callID"}, function(err, member){});
+```
+<a name="Conference+updateMember"></a>
+
+### conference.updateMember(conferenceId, memberId, params, [callback]) ⇒ <code>Promise</code>
+Update the conference member
+
+**Kind**: instance method of <code>[Conference](#Conference)</code>  
+**Returns**: <code>Promise</code> - A promise for the operation  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| conferenceId | <code>String</code> | The ID of the conference |
+| memberId | <code>String</code> | The ID of the member |
+| params | <code>Object</code> | Changed parameters of the member |
+| [params.joinTone] | <code>String</code> | If "true", will play a tone when the member joins the conference. If "false", no tone is played when the member joins the conference. |
+| [params.leavingTone] | <code>String</code> | If "true", will play a tone when the member leaves the conference. If "false", no tone is played when the member leaves the conference. |
+| [params.mute] | <code>String</code> | If "true", member can't speak in the conference. If "false", this members can speak in the conference (unless set at the conference level). |
+| [params.hold] | <code>String</code> | If "true", member can't hear or speak in the conference. If "false", member can hear and speak in the conference (unless set at the conference level). |
+| [callback] | <code>function</code> | Callback for the operation |
+
+**Example**  
+```js
+// Promise
+client.Conference.updateMember("conferenceID", "memberId", {mute: "true"}).then(function(){});
+// Callback
+client.Conference.updateMember("conferenceID", "memberId", {mute: "true"}, function(err){});
+```
+<a name="Conference+removeMember"></a>
+
+### conference.removeMember(conferenceId, memberId, [callback]) ⇒ <code>Promise</code>
+Remove the conference member
+
+**Kind**: instance method of <code>[Conference](#Conference)</code>  
+**Returns**: <code>Promise</code> - A promise for the operation  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| conferenceId | <code>String</code> | The ID of the conference |
+| memberId | <code>String</code> | The ID of the member |
+| [callback] | <code>function</code> | Callback for the operation |
+
+**Example**  
+```js
+// Promise
+client.Conference.removeMember("conferenceID", "memberId").then(function(){});
+// Callback
+client.Conference.removeMember("conferenceID", "memberId", function(err){});
+```
+<a name="Conference+speakSentenceToMember"></a>
+
+### conference.speakSentenceToMember(conferenceId, memberId, sentence, [callback]) ⇒ <code>Promise</code>
+Speak sentence to the conference member using default values
+
+**Kind**: instance method of <code>[Conference](#Conference)</code>  
+**Returns**: <code>Promise</code> - A promise for the operation  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| conferenceId | <code>String</code> | The ID of the conference |
+| memberId | <code>String</code> | The ID of the member |
+| sentence | <code>String</code> | A sentence to speak to the member. |
+| [callback] | <code>function</code> | Callback for the operation |
+
+**Example**  
+```js
+//Speak sentence
+
+//Promise
+client.Conference.speakSentenceToMember("conferenceID", "memberID", Hello From Bandwidth")
+  .then(function (res) {});
+
+//Callback
+client.Conference.speakSentenceToMember("conferenceID", "memberID", "Hello From Bandwidth",
+  function (err, res) {});
+```
+<a name="Conference+playAudioFileToMember"></a>
+
+### conference.playAudioFileToMember(conferenceId, memberId, fileUrl, [callback]) ⇒ <code>Promise</code>
+Play audio url to the conference member
+
+**Kind**: instance method of <code>[Conference](#Conference)</code>  
+**Returns**: <code>Promise</code> - A promise for the operation  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| conferenceId | <code>String</code> | The ID of the conference |
+| memberId | <code>String</code> | The ID of the member |
+| fileUrl | <code>String</code> | The http location of an audio file to play (WAV and MP3 supported). |
+| [callback] | <code>function</code> | Callback for the operation |
+
+**Example**  
+```js
+//Play Audio file
+
+//Promise
+client.Conference.playAudioFileToMember("conferenceID", "memberId", http://myurl.com/file.mp3")
+  .then(function (res) {});
+
+//Callback
+client.Conference.playAudioFileToMember("conferenceID", "memberId", http://myurl.com/file.wav",
+   function (err, res) {});
+```
+<a name="Conference+playAudioAdvancedToMember"></a>
+
+### conference.playAudioAdvancedToMember(conferenceId, memberId, params, [callback]) ⇒ <code>Promise</code>
+Play audio file or speak sentence to the conference member
+
+**Kind**: instance method of <code>[Conference](#Conference)</code>  
+**Returns**: <code>Promise</code> - A promise for the operation  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| conferenceId | <code>String</code> |  | The ID of the conference |
+| memberId | <code>String</code> |  | The ID of the member |
+| params | <code>Object</code> |  | Parameters to play audio. |
+| [params.fileUrl] | <code>String</code> |  | The http location of an audio file to play (WAV and MP3 supported). |
+| [params.sentence] | <code>String</code> |  | The sentence to speak. |
+| [params.gender] | <code>String</code> | <code>female</code> | The gender of the voice used to synthesize the sentence. It will be considered only if sentence is not null. The female gender will be used by default. |
+| [params.locale] | <code>String</code> | <code>en_US</code> | The locale used to get the accent of the voice used to synthesize the sentence. It will be considered only if sentence is not null/empty. The en_US will be used by default. |
+| [params.voice] | <code>String</code> | <code>Susan</code> | The voice to speak the sentence. It will be considered only if sentence is not null/empty. Susan's voice will be used by default. |
+| [params.loopEnabled] | <code>Boolean</code> | <code>false</code> | When value is true, the audio will keep playing in a loop. Default: false. |
+| [callback] | <code>function</code> |  | Callback for the operation |
+
+**Example**  
+```js
+//Play Audio File on loop
+var options = {
+	fileUrl     : "http://myurl.com/file.mp3",
+	loopEnabled : true
+}
+//Promise
+client.Conference.playAudioAdvancedToMember("conferenceId", "memberId", options)
+ .then(function (res) {});
+
+//Callback
+client.Conference.playAudioAdvancedToMember("conferenceId", "memberId", options,
+  function (err,res) {});
+```
+**Example**  
+```js
+//Speak sentence with options
+var options = {
+	sentence : "hola de Bandwidth",
+	gender   : "male",
+	locale   : "es",
+	voice    : "Jorge"
+}
+//Promise
+client.Conference.playAudioAdvancedToMember("conferenceId", "memberId", options)
+  .then(function (res) {});
+
+//Callback
+client.Conference.playAudioAdvanced("conferenceId", options, function (err,res) {});
+```
+<a name="ConferenceResponse"></a>
+
+## ConferenceResponse : <code>Object</code>
+**Kind**: global class  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| id | <code>String</code> | The unique ID of the conference. |
+| state | <code>String</code> | Conference state. Possible state values are described here. |
+| from | <code>String</code> | The phone number that will host the conference. |
+| createdTime | <code>String</code> | The time that the Conference was created (UTC). |
+| completedTime | <code>String</code> | The time that the Conference was completed (UTC). |
+| activeMembers | <code>Number</code> | The number of active conference members. |
+| hold | <code>String</code> | If "true", all member can't hear or speak in the conference. If "false", all members can hear and speak in the conference (unless set at the member level). |
+| mute | <code>String</code> | If "true", all member can't speak in the conference. If "false", all members can speak in the conference (unless set at the member level). |
+| callbackUrl | <code>String</code> | The complete URL where the events related to the Conference will be sent to. |
+| callbackHttpMethod | <code>String</code> | Determine if the callback event should be sent via HTTP GET or HTTP POST. |
+| callbackTimeout | <code>String</code> | Determine how long should the platform wait for callbackUrl's response before timing out in milliseconds. |
+| fallbackUrl | <code>String</code> | Determine how long should the platform wait for callbackUrl's response before timing out in milliseconds. |
+| tag | <code>String</code> | A string that will be included in the callback events of the conference. |
+
 <a name="Domain"></a>
 
 ## Domain
@@ -1205,6 +1669,14 @@ Gets information about a error.
 | errorId | <code>String</code> | The ID of the error to get |
 | [callback] | <code>function</code> | A callback with the error information |
 
+**Example**  
+```js
+// Promise
+client.Error.get(errorId).then(function(errorInfo){});
+
+// Callback
+client.Error.get(errorId, function(err, errorInfo){});
+```
 <a name="Error+list"></a>
 
 ### error.list(params, [callback]) ⇒ <code>[Array.&lt;ErrorResponse&gt;](#ErrorResponse)</code>
@@ -1219,6 +1691,14 @@ Gets a list of errors.
 | [params.size] | <code>Number</code> | <code>25</code> | Used for pagination to indicate the size of each page requested for querying a list of errors. If no value is specified the default value is 25. |
 | [callback] | <code>function</code> |  | A callback with the list of errors |
 
+**Example**  
+```js
+// Promise
+client.Error.list({size: 1000}).then(function(errorResponse){});
+
+// Callback
+client.Error.list({size: 1000}, function(err, errorResponse){});
+```
 <a name="ErrorResponse"></a>
 
 ## ErrorResponse : <code>Object</code>
