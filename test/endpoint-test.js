@@ -21,6 +21,17 @@ describe("Endpoint API", function () {
 			credentials : { "password" : "123456" }
 		};
 
+		var testEndpoint = {
+			id          : "endpointId1",
+			name        : "endpoint1",
+			description : "New endpoint",
+			sipUri      : "endpoint1@doname.bwapp.bwsipp.io",
+			credentials : {
+				realm    : "doname.bwapp.bwsipp.io",
+				username : "jsmith-mobile"
+			}
+		};
+
 		var endpointList = [
 			{
 				id          : "endpointId1",
@@ -70,6 +81,8 @@ describe("Endpoint API", function () {
 				.reply(200)
 				.post("/v1/users/" + userId + "/domains/"  + domainId + "/endpoints/fakeEndpointId", changes)
 				.reply(200)
+				.get("/v1/users/" + userId + "/domains/"  + domainId + "/endpoints/fakeEndpointId")
+				.reply(200, testEndpoint)
 				.post("/v1/users/" + userId + "/domains/"  + domainId + "/endpoints/fakeEndpointId/tokens")
 				.reply(201, tokenValue);
 		});
@@ -98,6 +111,12 @@ describe("Endpoint API", function () {
 			return client.Endpoint.createAuthToken(domainId, "fakeEndpointId")
 			.then(function (token) {
 				token.should.eql(tokenValue);
+			});
+		});
+
+		it("should return a single endpoint", function () {
+			return client.Endpoint.get(domainId, "fakeEndpointId").then(function (endpoint) {
+				endpoint.should.eql(testEndpoint);
 			});
 		});
 
