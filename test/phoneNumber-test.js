@@ -113,7 +113,7 @@ describe("PhoneNumber API", function () {
 		});
 
 		it("should remove the phoneNumber, promise style", function () {
-			return client.PhoneNumber.remove(testPhoneNumber.id);
+			return client.PhoneNumber.delete(testPhoneNumber.id);
 		});
 
 		it("should update the phoneNumber, promise style", function () {
