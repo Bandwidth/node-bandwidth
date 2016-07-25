@@ -1019,7 +1019,8 @@ Delete a domain.
 * [Endpoint](#Endpoint)
     * [new Endpoint()](#new_Endpoint_new)
     * [.create(domainId, params, [callback])](#Endpoint+create) ⇒ <code>[EndpointResponse](#EndpointResponse)</code>
-    * [.list(domainId, params, callback)](#Endpoint+list) ⇒ <code>[Array.&lt;EndpointResponse&gt;](#EndpointResponse)</code>
+    * [.list(domainId, params, [callback])](#Endpoint+list) ⇒ <code>[Array.&lt;EndpointResponse&gt;](#EndpointResponse)</code>
+    * [.get(domainId, endpointId, [callback])](#Endpoint+get) ⇒ <code>[EndpointResponse](#EndpointResponse)</code>
     * [.delete(domainId, endpointId, [callback])](#Endpoint+delete) ⇒ <code>Promise</code>
     * [.update(domainId, endpointId, params, [callback])](#Endpoint+update) ⇒ <code>Promise</code>
     * [.createAuthToken(domainId, endpointId, [callback])](#Endpoint+createAuthToken) ⇒ <code>Promise</code>
@@ -1058,7 +1059,7 @@ credentials : { password : "123456" }}, function (err, endpoint) {});
 ```
 <a name="Endpoint+list"></a>
 
-### endpoint.list(domainId, params, callback) ⇒ <code>[Array.&lt;EndpointResponse&gt;](#EndpointResponse)</code>
+### endpoint.list(domainId, params, [callback]) ⇒ <code>[Array.&lt;EndpointResponse&gt;](#EndpointResponse)</code>
 Gets a list of all endpoints for the domain.
 
 **Kind**: instance method of <code>[Endpoint](#Endpoint)</code>  
@@ -1069,7 +1070,7 @@ Gets a list of all endpoints for the domain.
 | domainId | <code>String</code> | Id of the domain to list the endpoints |
 | params | <code>Object</code> | Parameters for listing endpoints on domain |
 | [params.size] | <code>Number</code> | OPTIONAL The maximum number of endpoints returned by the query per page (Max size: 1000). |
-| callback | <code>function</code> | A callback with the list of domains |
+| [callback] | <code>function</code> | A callback with the list of endpoints |
 
 **Example**  
 ```js
@@ -1092,6 +1093,28 @@ client.Endpoint.list("domainId", {size: 1000})
 ```js
 // Specify number of endpoints using callbacks
 client.Endpoint.list("domainId" {size: 1000}, function (err, res) {});
+```
+<a name="Endpoint+get"></a>
+
+### endpoint.get(domainId, endpointId, [callback]) ⇒ <code>[EndpointResponse](#EndpointResponse)</code>
+Get a single endpoint.
+
+**Kind**: instance method of <code>[Endpoint](#Endpoint)</code>  
+**Returns**: <code>[EndpointResponse](#EndpointResponse)</code> - A promise for the endpoint.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| domainId | <code>String</code> | Id of the domain |
+| endpointId | <code>String</code> | Id of the endpoint |
+| [callback] | <code>function</code> | A callback with the endpoint |
+
+**Example**  
+```js
+// Promise
+client.Endpoint.get(domainId, endpointId).then(function(endpoint){});
+
+// Callback
+client.Endpoint.get(domainId, endpointId, function(err, endpoint){});
 ```
 <a name="Endpoint+delete"></a>
 
