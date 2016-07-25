@@ -195,14 +195,14 @@ describe("Application API", function () {
 				});
 
 				it("should delete an application, promise style", function () {
-					return client.Application.delete(testApplication.id)
+					return client.Application.remove(testApplication.id)
 					.then(function () {
 						deleteNock.isDone().should.equal(true);
 					});
 				});
 
 				it("should delete an application, callback style", function () {
-					client.Application.delete(testApplication.id, function (err, response) {
+					client.Application.remove(testApplication.id, function (err, response) {
 						if (err) {
 							throw err;
 						}

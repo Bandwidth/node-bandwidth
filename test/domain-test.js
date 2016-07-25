@@ -92,7 +92,7 @@ describe("Domain API", function () {
 		});
 
 		it("should remove the domain", function () {
-			return client.Domain.delete(testDomain.id);
+			return client.Domain.remove(testDomain.id);
 		});
 
 		describe("pagination tests", function () {

@@ -163,7 +163,7 @@ Gets a list of transactions from user's account.
     * [.create(params, [callback])](#Application+create) ⇒ <code>[ApplicationResponse](#ApplicationResponse)</code>
     * [.get(applicationId, [callback])](#Application+get) ⇒ <code>[ApplicationResponse](#ApplicationResponse)</code>
     * [.update(applicationId, params, [callback])](#Application+update)
-    * [.delete(applicationId, [callback])](#Application+delete)
+    * [.remove(applicationId, [callback])](#Application+remove)
 
 <a name="new_Application_new"></a>
 
@@ -247,9 +247,9 @@ Make changes to an application.
 | [params.autoAnswer] | <code>Boolean</code> | Determines whether or not an incoming call should be automatically answered. Default value is 'true'. |
 | [callback] | <code>function</code> | A callback for the list of applications |
 
-<a name="Application+delete"></a>
+<a name="Application+remove"></a>
 
-### application.delete(applicationId, [callback])
+### application.remove(applicationId, [callback])
 Delete an application.
 
 **Kind**: instance method of <code>[Application](#Application)</code>  
@@ -947,7 +947,7 @@ Complete the gather.
     * [new Domain()](#new_Domain_new)
     * [.create(params, [callback])](#Domain+create) ⇒ <code>[DomainResponse](#DomainResponse)</code>
     * [.list(callback)](#Domain+list) ⇒ <code>[Array.&lt;DomainResponse&gt;](#DomainResponse)</code>
-    * [.delete(domainId, [callback])](#Domain+delete) ⇒ <code>Promise</code>
+    * [.remove(domainId, [callback])](#Domain+remove) ⇒ <code>Promise</code>
 
 <a name="new_Domain_new"></a>
 
@@ -982,9 +982,9 @@ Gets a list of all domains.
 | callback | <code>function</code> | A callback with the list of calls |
 | [params.size] | <code>Number</code> | the maximum number of domains returned by the query per page (Max size: 100). |
 
-<a name="Domain+delete"></a>
+<a name="Domain+remove"></a>
 
-### domain.delete(domainId, [callback]) ⇒ <code>Promise</code>
+### domain.remove(domainId, [callback]) ⇒ <code>Promise</code>
 Delete a domain.
 
 **Kind**: instance method of <code>[Domain](#Domain)</code>  
@@ -1016,7 +1016,7 @@ Delete a domain.
     * [new Endpoint()](#new_Endpoint_new)
     * [.create(domainId, params, [callback])](#Endpoint+create) ⇒ <code>[EndpointResponse](#EndpointResponse)</code>
     * [.list(domainId, params, callback)](#Endpoint+list) ⇒ <code>[Array.&lt;EndpointResponse&gt;](#EndpointResponse)</code>
-    * [.delete(domainId, endpointId, [callback])](#Endpoint+delete) ⇒ <code>Promise</code>
+    * [.remove(domainId, endpointId, [callback])](#Endpoint+remove) ⇒ <code>Promise</code>
     * [.update(domainId, endpointId, params, [callback])](#Endpoint+update) ⇒ <code>Promise</code>
     * [.createAuthToken(domainId, endpointId, [callback])](#Endpoint+createAuthToken) ⇒ <code>Promise</code>
 
@@ -1089,9 +1089,9 @@ client.Endpoint.list("domainId", {size: 1000})
 // Specify number of endpoints using callbacks
 client.Endpoint.list("domainId" {size: 1000}, function (err, res) {});
 ```
-<a name="Endpoint+delete"></a>
+<a name="Endpoint+remove"></a>
 
-### endpoint.delete(domainId, endpointId, [callback]) ⇒ <code>Promise</code>
+### endpoint.remove(domainId, endpointId, [callback]) ⇒ <code>Promise</code>
 Delete an endpoint.
 
 **Kind**: instance method of <code>[Endpoint](#Endpoint)</code>  
@@ -1205,6 +1205,14 @@ Gets information about a error.
 | errorId | <code>String</code> | The ID of the error to get |
 | [callback] | <code>function</code> | A callback with the error information |
 
+**Example**  
+```js
+// Promise
+client.Error.get(errorId).then(function(errorInfo){});
+
+// Callback
+client.Error.get(errorId, function(err, errorInfo){});
+```
 <a name="Error+list"></a>
 
 ### error.list(params, [callback]) ⇒ <code>[Array.&lt;ErrorResponse&gt;](#ErrorResponse)</code>
@@ -1219,6 +1227,14 @@ Gets a list of errors.
 | [params.size] | <code>Number</code> | <code>25</code> | Used for pagination to indicate the size of each page requested for querying a list of errors. If no value is specified the default value is 25. |
 | [callback] | <code>function</code> |  | A callback with the list of errors |
 
+**Example**  
+```js
+// Promise
+client.Error.list({size: 1000}).then(function(errorResponse){});
+
+// Callback
+client.Error.list({size: 1000}, function(err, errorResponse){});
+```
 <a name="ErrorResponse"></a>
 
 ## ErrorResponse : <code>Object</code>
