@@ -87,7 +87,7 @@ describe("Endpoint API", function () {
 		});
 
 		it("should remove the endpoint", function () {
-			return client.Endpoint.delete(domainId, "fakeEndpointId");
+			return client.Endpoint.remove(domainId, "fakeEndpointId");
 		});
 
 		it("should update the endpoint", function () {
