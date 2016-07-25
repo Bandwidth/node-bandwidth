@@ -598,6 +598,9 @@ Gets information about a bridge.
     * [.create(params, [callback])](#Call+create) ⇒ <code>[CallResponse](#CallResponse)</code>
     * [.get(callId, callback)](#Call+get) ⇒ <code>Promise</code>
     * [.list(params, callback)](#Call+list) ⇒ <code>Promise</code>
+    * [.answer(callId, [callback])](#Call+answer) ⇒ <code>Promise</code>
+    * [.reject(callId, [callback])](#Call+reject) ⇒ <code>Promise</code>
+    * [.hangup(callId, [callback])](#Call+hangup) ⇒ <code>Promise</code>
     * [.transfer(params, [callback])](#Call+transfer) ⇒ <code>[CallResponse](#CallResponse)</code>
     * [.speakSentence(callId, sentence, [callback])](#Call+speakSentence) ⇒ <code>Promise</code>
     * [.playAudioFile(callId, fileUrl, [callback])](#Call+playAudioFile) ⇒ <code>Promise</code>
@@ -675,6 +678,69 @@ Gets a list of active and historic calls you made or received.
 | [params.size] | <code>Number</code> | <code>25</code> | Used for pagination to indicate the size of each page requested for querying a list of calls. If no value is specified the default value is 25 (maximum value 1000). |
 | callback | <code>function</code> |  | A callback with the list of calls |
 
+<a name="Call+answer"></a>
+
+### call.answer(callId, [callback]) ⇒ <code>Promise</code>
+Answer an incoming call
+
+**Kind**: instance method of <code>[Call](#Call)</code>  
+**Returns**: <code>Promise</code> - A promise for the operation  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| callId | <code>String</code> | The ID of the incoming call |
+| [callback] | <code>function</code> | Callback for the operation |
+
+**Example**  
+```js
+//Promise
+client.Call.answer("callID").then(function () {});
+
+//Callback
+client.Call.answer("callID", function (err) {});
+```
+<a name="Call+reject"></a>
+
+### call.reject(callId, [callback]) ⇒ <code>Promise</code>
+Reject an incoming call
+
+**Kind**: instance method of <code>[Call](#Call)</code>  
+**Returns**: <code>Promise</code> - A promise for the operation  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| callId | <code>String</code> | The ID of the incoming call |
+| [callback] | <code>function</code> | Callback for the operation |
+
+**Example**  
+```js
+//Promise
+client.Call.reject("callID").then(function () {});
+
+//Callback
+client.Call.reject("callID", function (err) {});
+```
+<a name="Call+hangup"></a>
+
+### call.hangup(callId, [callback]) ⇒ <code>Promise</code>
+Complete active call
+
+**Kind**: instance method of <code>[Call](#Call)</code>  
+**Returns**: <code>Promise</code> - A promise for the operation  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| callId | <code>String</code> | The ID of the call |
+| [callback] | <code>function</code> | Callback for the operation |
+
+**Example**  
+```js
+//Promise
+client.Call.hangup("callID").then(function () {});
+
+//Callback
+client.Call.hangup("callID", function (err) {});
+```
 <a name="Call+transfer"></a>
 
 ### call.transfer(params, [callback]) ⇒ <code>[CallResponse](#CallResponse)</code>

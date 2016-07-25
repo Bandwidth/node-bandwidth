@@ -69,6 +69,14 @@ describe("Call API", function () {
 			state : "active"
 		};
 
+		var rejectCallPayload = {
+			state : "rejected"
+		};
+
+		var hangupCallPayload = {
+			state : "completed"
+		};
+
 		var transferCallPayload = {
 			transferTo       : "+1234567891",
 			transferCallerId : "private",
@@ -177,6 +185,10 @@ describe("Call API", function () {
 				.reply(200, callsList)
 				.post("/v1/users/" + userId + "/calls/" + testCall.id, answerCallPayload)
 				.reply(200)
+				.post("/v1/users/" + userId + "/calls/" + testCall.id, rejectCallPayload)
+				.reply(200)
+				.post("/v1/users/" + userId + "/calls/" + testCall.id, hangupCallPayload)
+				.reply(200)
 				.post("/v1/users/" + userId + "/calls/" + testCall.id, transferCallPayload)
 				.reply(201,
 					{},
@@ -227,6 +239,14 @@ describe("Call API", function () {
 
 		it("should answer a call", function () {
 			return client.Call.answer(testCall.id);
+		});
+
+		it("should reject a call", function () {
+			return client.Call.reject(testCall.id);
+		});
+
+		it("should complete a call", function () {
+			return client.Call.hangup(testCall.id);
 		});
 
 		it("should transfer a call", function () {
