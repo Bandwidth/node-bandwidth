@@ -605,6 +605,11 @@ Gets information about a bridge.
     * [.createGather(callId, params, [callback])](#Call+createGather) ⇒ <code>[CallResponse](#CallResponse)</code>
     * [.getGather(callId, gatherId, [callback])](#Call+getGather) ⇒ <code>[GatherResponse](#GatherResponse)</code>
     * [.completeGather(callId, gatherId, [callback])](#Call+completeGather) ⇒ <code>Promise</code>
+    * [.getEvents(callId, [callback])](#Call+getEvents) ⇒ <code>Array.&lt;EventResponse&gt;</code>
+    * [.getEvent(callId, eventId, [callback])](#Call+getEvent) ⇒ <code>EventResponse</code>
+    * [.getRecordings(callId, [callback])](#Call+getRecordings) ⇒ <code>Array.&lt;RecordingResponse&gt;</code>
+    * [.getTranscriptions(callId, [callback])](#Call+getTranscriptions) ⇒ <code>Array.&lt;RecordingResponse&gt;</code>
+    * [.sendDtmf(callId, dtmfOut, [callback])](#Call+sendDtmf) ⇒ <code>Promise</code>
 
 <a name="new_Call_new"></a>
 
@@ -885,6 +890,108 @@ Complete the gather.
 | gatherId | <code>String</code> | The ID of the gather |
 | [callback] | <code>function</code> | Callback of the operation |
 
+<a name="Call+getEvents"></a>
+
+### call.getEvents(callId, [callback]) ⇒ <code>Array.&lt;EventResponse&gt;</code>
+Get events for the call.
+
+**Kind**: instance method of <code>[Call](#Call)</code>  
+**Returns**: <code>Array.&lt;EventResponse&gt;</code> - A promise for the event list  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| callId | <code>String</code> | The ID of the call |
+| [callback] | <code>function</code> | Callback with the event list |
+
+**Example**  
+```js
+// Promise
+client.Call.getEvents(callId).then(function (events) {});
+// Callback
+client.Call.getEvents(callId, function (err, events) {});
+```
+<a name="Call+getEvent"></a>
+
+### call.getEvent(callId, eventId, [callback]) ⇒ <code>EventResponse</code>
+Get a single event for the call.
+
+**Kind**: instance method of <code>[Call](#Call)</code>  
+**Returns**: <code>EventResponse</code> - A promise for the event list  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| callId | <code>String</code> | The ID of the call |
+| eventId | <code>String</code> | The ID of the event to get |
+| [callback] | <code>function</code> | Callback with the event list |
+
+**Example**  
+```js
+// Promise
+client.Call.getEvent(callId, evenId).then(function (callEvent) {});
+// Callback
+client.Call.getEvent(callId, eventId, function (err, callEvent) {});
+```
+<a name="Call+getRecordings"></a>
+
+### call.getRecordings(callId, [callback]) ⇒ <code>Array.&lt;RecordingResponse&gt;</code>
+Get recordings for the call.
+
+**Kind**: instance method of <code>[Call](#Call)</code>  
+**Returns**: <code>Array.&lt;RecordingResponse&gt;</code> - A promise for the recording list  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| callId | <code>String</code> | The ID of the call |
+| [callback] | <code>function</code> | Callback with the recording list |
+
+**Example**  
+```js
+// Promise
+client.Call.getRecordings(callId).then(function (list) {});
+// Callback
+client.Call.getRecordings(callId, function (err, list) {});
+```
+<a name="Call+getTranscriptions"></a>
+
+### call.getTranscriptions(callId, [callback]) ⇒ <code>Array.&lt;RecordingResponse&gt;</code>
+Get transcriptions for the call.
+
+**Kind**: instance method of <code>[Call](#Call)</code>  
+**Returns**: <code>Array.&lt;RecordingResponse&gt;</code> - A promise for the transcription list  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| callId | <code>String</code> | The ID of the call |
+| [callback] | <code>function</code> | Callback with the transcription list |
+
+**Example**  
+```js
+// Promise
+client.Call.getTranscriptions(callId).then(function (list) {});
+// Callback
+client.Call.getTranscriptions(callId, function (err, list) {});
+```
+<a name="Call+sendDtmf"></a>
+
+### call.sendDtmf(callId, dtmfOut, [callback]) ⇒ <code>Promise</code>
+Send DTMF (phone keypad digit presses).
+
+**Kind**: instance method of <code>[Call](#Call)</code>  
+**Returns**: <code>Promise</code> - A promise for the operation  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| callId | <code>String</code> | The ID of the call |
+| dtmfOut | <code>String</code> | String containing the DTMF characters to be sent in a call. |
+| [callback] | <code>function</code> | Callback for the operation |
+
+**Example**  
+```js
+// Promise
+client.Call.sendDtmf(callId, "1").then(function () {});
+// Callback
+client.Call.sendDtmf(callId, "1", function (err) {});
+```
 <a name="CallResponse"></a>
 
 ## CallResponse : <code>Object</code>
@@ -1205,6 +1312,14 @@ Gets information about a error.
 | errorId | <code>String</code> | The ID of the error to get |
 | [callback] | <code>function</code> | A callback with the error information |
 
+**Example**  
+```js
+// Promise
+client.Error.get(errorId).then(function(errorInfo){});
+
+// Callback
+client.Error.get(errorId, function(err, errorInfo){});
+```
 <a name="Error+list"></a>
 
 ### error.list(params, [callback]) ⇒ <code>[Array.&lt;ErrorResponse&gt;](#ErrorResponse)</code>
@@ -1219,6 +1334,14 @@ Gets a list of errors.
 | [params.size] | <code>Number</code> | <code>25</code> | Used for pagination to indicate the size of each page requested for querying a list of errors. If no value is specified the default value is 25. |
 | [callback] | <code>function</code> |  | A callback with the list of errors |
 
+**Example**  
+```js
+// Promise
+client.Error.list({size: 1000}).then(function(errorResponse){});
+
+// Callback
+client.Error.list({size: 1000}, function(err, errorResponse){});
+```
 <a name="ErrorResponse"></a>
 
 ## ErrorResponse : <code>Object</code>
