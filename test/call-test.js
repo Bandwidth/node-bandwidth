@@ -69,6 +69,14 @@ describe("Call API", function () {
 			state : "active"
 		};
 
+		var rejectCallPayload = {
+			state : "rejected"
+		};
+
+		var hangupCallPayload = {
+			state : "completed"
+		};
+
 		var transferCallPayload = {
 			transferTo       : "+1234567891",
 			transferCallerId : "private",
@@ -120,6 +128,41 @@ describe("Call API", function () {
 			state : "completed"
 		};
 
+		var testEvent = {
+			"id"   : "callEventId1",
+			"time" : "2012-09-19T13:55:41.343Z",
+			"name" : "create"
+		};
+
+		var eventList = [ testEvent ];
+
+		var recordingList = [
+			{
+				"endTime"   : "2013-02-08T12:06:55.007Z",
+				"id"        : "{recordingId1}",
+				"media"     : "https://.../v1/users/.../media/{callId}-1.wav",
+				"call"      : "https://.../v1/users/.../calls/{callId}",
+				"startTime" : "2013-02-08T12:05:17.807Z",
+				"state"     : "complete"
+			}
+		];
+
+		var transcriptionList = [
+			{
+				"chargeableDuration" : 60,
+				"id"                 : "{transcription-id}",
+				"state"              : "completed",
+				"time"               : "2014-10-09T12:09:16Z",
+				"text"               : "{transcription-text}",
+				"textSize"           : 3627,
+				"textUrl"            : "{url-to-full-text}"
+			}
+		];
+
+		var dtmfOut = {
+			"dtmfOut" : "1234"
+		};
+
 		before(function () {
 			client = new CatapultClient({
 				userId    : userId,
@@ -141,6 +184,10 @@ describe("Call API", function () {
 				.get("/v1/users/" + userId + "/calls?fromDateTime=" + fromDateTime + "&" + "toDateTime=" + toDateTime)
 				.reply(200, callsList)
 				.post("/v1/users/" + userId + "/calls/" + testCall.id, answerCallPayload)
+				.reply(200)
+				.post("/v1/users/" + userId + "/calls/" + testCall.id, rejectCallPayload)
+				.reply(200)
+				.post("/v1/users/" + userId + "/calls/" + testCall.id, hangupCallPayload)
 				.reply(200)
 				.post("/v1/users/" + userId + "/calls/" + testCall.id, transferCallPayload)
 				.reply(201,
@@ -165,6 +212,16 @@ describe("Call API", function () {
 				.get("/v1/users/" + userId + "/calls/" + testCall.id + "/gather/" + testGather.id)
 				.reply(200, testGather)
 				.post("/v1/users/" + userId + "/calls/" + testCall.id + "/gather/" + testGather.id, completeGather)
+				.reply(200)
+				.get("/v1/users/" + userId + "/calls/" + testCall.id + "/events/" + testEvent.id)
+				.reply(200, testEvent)
+				.get("/v1/users/" + userId + "/calls/" + testCall.id + "/events")
+				.reply(200, eventList)
+				.get("/v1/users/" + userId + "/calls/" + testCall.id + "/recordings")
+				.reply(200, recordingList)
+				.get("/v1/users/" + userId + "/calls/" + testCall.id + "/transcriptions")
+				.reply(200, transcriptionList)
+				.post("/v1/users/" + userId + "/calls/" + testCall.id + "/dtmf", dtmfOut)
 				.reply(200);
 		});
 
@@ -182,6 +239,14 @@ describe("Call API", function () {
 
 		it("should answer a call", function () {
 			return client.Call.answer(testCall.id);
+		});
+
+		it("should reject a call", function () {
+			return client.Call.reject(testCall.id);
+		});
+
+		it("should complete a call", function () {
+			return client.Call.hangup(testCall.id);
 		});
 
 		it("should transfer a call", function () {
@@ -283,5 +348,36 @@ describe("Call API", function () {
 			return client.Call.completeGather(testCall.id, testGather.id);
 		});
 
+		it("should get events", function () {
+			return client.Call.getEvents(testCall.id)
+			.then(function (list) {
+				list.should.eql(eventList);
+			});
+		});
+
+		it("should get a single event", function () {
+			return client.Call.getEvent(testCall.id, testEvent.id)
+			.then(function (callEvent) {
+				callEvent.should.eql(testEvent);
+			});
+		});
+
+		it("should get recordings", function () {
+			return client.Call.getRecordings(testCall.id)
+			.then(function (list) {
+				list.should.eql(recordingList);
+			});
+		});
+
+		it("should get transcriptions", function () {
+			return client.Call.getTranscriptions(testCall.id)
+			.then(function (list) {
+				list.should.eql(transcriptionList);
+			});
+		});
+
+		it("should send dtmf string", function () {
+			return client.Call.sendDtmf(testCall.id, dtmfOut.dtmfOut);
+		});
 	});
 });
