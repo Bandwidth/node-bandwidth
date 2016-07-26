@@ -27,17 +27,15 @@
 <dd></dd>
 <dt><a href="#GatherResponse">GatherResponse</a> : <code>Object</code></dt>
 <dd></dd>
-<<<<<<< HEAD
-<dt><a href="#Conference">Conference</a></dt>
-<dd></dd>
-<dt><a href="#ConferenceResponse">ConferenceResponse</a> : <code>Object</code></dt>
-=======
 <dt><a href="#EventResponse">EventResponse</a> : <code>Object</code></dt>
 <dd></dd>
 <dt><a href="#RecordingResponse">RecordingResponse</a> : <code>Object</code></dt>
 <dd></dd>
 <dt><a href="#TranscriptionResponse">TranscriptionResponse</a> : <code>Object</code></dt>
->>>>>>> 2.0-preview
+<dd></dd>
+<dt><a href="#Conference">Conference</a></dt>
+<dd></dd>
+<dt><a href="#ConferenceResponse">ConferenceResponse</a> : <code>Object</code></dt>
 <dd></dd>
 <dt><a href="#Domain">Domain</a></dt>
 <dd></dd>
@@ -1127,7 +1125,50 @@ client.Call.sendDtmf(callId, "1", function (err) {});
 | completedTime | <code>String</code> | TIme of completion of the gather. |
 | digits | <code>String</code> | Gathered digits. |
 
-<<<<<<< HEAD
+<a name="EventResponse"></a>
+
+## EventResponse : <code>Object</code>
+**Kind**: global class  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| id | <code>String</code> | The call event id. |
+| time | <code>String</code> | The time the event occurred. |
+| name | <code>String</code> | The name of the event. |
+| data | <code>String</code> | Data about event. |
+
+<a name="RecordingResponse"></a>
+
+## RecordingResponse : <code>Object</code>
+**Kind**: global class  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| id | <code>String</code> | The recording id. |
+| startTime | <code>String</code> | Date/time when the recording started. |
+| endTime | <code>String</code> | Date/time when the recording ended. |
+| call | <code>String</code> | The complete URL to the call resource this recording is associated with. |
+| media | <code>String</code> | The complete URL to the media resource this recording is associated with. |
+| state | <code>String</code> | The state of the recording |
+
+<a name="TranscriptionResponse"></a>
+
+## TranscriptionResponse : <code>Object</code>
+**Kind**: global class  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| id | <code>String</code> | The transcription id. |
+| state | <code>String</code> | The state of the transcription |
+| text | <code>String</code> | The transcribed text (only first 1000 characters) |
+| time | <code>String</code> | The date/time the transcription resource was created |
+| chargeableDuration | <code>Number</code> | The seconds between activeTime and endTime for the recording;  this is the time that is going to be used to charge the resource. |
+| textSize | <code>Number</code> | The size of the transcribed text. |
+| textUrl | <code>String</code> | An url to the full text |
+
 <a name="Conference"></a>
 
 ## Conference
@@ -1569,45 +1610,11 @@ client.Conference.playAudioAdvanced("conferenceId", options, function (err,res) 
 <a name="ConferenceResponse"></a>
 
 ## ConferenceResponse : <code>Object</code>
-=======
-<a name="EventResponse"></a>
-
-## EventResponse : <code>Object</code>
 **Kind**: global class  
 **Properties**
 
 | Name | Type | Description |
 | --- | --- | --- |
-| id | <code>String</code> | The call event id. |
-| time | <code>String</code> | The time the event occurred. |
-| name | <code>String</code> | The name of the event. |
-| data | <code>String</code> | Data about event. |
-
-<a name="RecordingResponse"></a>
-
-## RecordingResponse : <code>Object</code>
-**Kind**: global class  
-**Properties**
-
-| Name | Type | Description |
-| --- | --- | --- |
-| id | <code>String</code> | The recording id. |
-| startTime | <code>String</code> | Date/time when the recording started. |
-| endTime | <code>String</code> | Date/time when the recording ended. |
-| call | <code>String</code> | The complete URL to the call resource this recording is associated with. |
-| media | <code>String</code> | The complete URL to the media resource this recording is associated with. |
-| state | <code>String</code> | The state of the recording |
-
-<a name="TranscriptionResponse"></a>
-
-## TranscriptionResponse : <code>Object</code>
->>>>>>> 2.0-preview
-**Kind**: global class  
-**Properties**
-
-| Name | Type | Description |
-| --- | --- | --- |
-<<<<<<< HEAD
 | id | <code>String</code> | The unique ID of the conference. |
 | state | <code>String</code> | Conference state. Possible state values are described here. |
 | from | <code>String</code> | The phone number that will host the conference. |
@@ -1621,15 +1628,6 @@ client.Conference.playAudioAdvanced("conferenceId", options, function (err,res) 
 | callbackTimeout | <code>String</code> | Determine how long should the platform wait for callbackUrl's response before timing out in milliseconds. |
 | fallbackUrl | <code>String</code> | Determine how long should the platform wait for callbackUrl's response before timing out in milliseconds. |
 | tag | <code>String</code> | A string that will be included in the callback events of the conference. |
-=======
-| id | <code>String</code> | The transcription id. |
-| state | <code>String</code> | The state of the transcription |
-| text | <code>String</code> | The transcribed text (only first 1000 characters) |
-| time | <code>String</code> | The date/time the transcription resource was created |
-| chargeableDuration | <code>Number</code> | The seconds between activeTime and endTime for the recording;  this is the time that is going to be used to charge the resource. |
-| textSize | <code>Number</code> | The size of the transcribed text. |
-| textUrl | <code>String</code> | An url to the full text |
->>>>>>> 2.0-preview
 
 <a name="Domain"></a>
 
@@ -1870,9 +1868,9 @@ Generate auth token for the endpoint.
 **Example**  
 ```js
 // Promise
-client.Endpoint.createAuthToken("domainId", "endpointId").then(function (endpoint) {});
+client.Endpoint.createAuthToken("domainId", "endpointId", { expires : 3600 }).then(function (endpoint) {});
 // Callback
-client.Endpoint.createAuthToken("domainId", "endpointId", function (err, endpoint) {});
+client.Endpoint.createAuthToken("domainId", "endpointId", { expires : 3600 }, function (err, endpoint) {});
 ```
 <a name="EndpointResponse"></a>
 
