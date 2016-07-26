@@ -137,7 +137,7 @@ describe("Media API", function () {
 		});
 
 		it("should remove a media file", function () {
-			return client.Media.remove(mediaName1);
+			return client.Media.delete(mediaName1);
 		});
 	});
 });

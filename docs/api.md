@@ -1530,7 +1530,7 @@ Catapult API Client
     * [.upload(name, data, contentType, [callback])](#Media+upload) ⇒ <code>Promise</code>
     * [.download(name, [callback])](#Media+download) ⇒ <code>[DownloadMediaFileResponse](#DownloadMediaFileResponse)</code>
     * [.list([callback])](#Media+list) ⇒ <code>[Array.&lt;MediaFileResponse&gt;](#MediaFileResponse)</code>
-    * [.remove(name, [callback])](#Media+remove) ⇒ <code>Promise</code>
+    * [.delete(name, [callback])](#Media+delete) ⇒ <code>Promise</code>
 
 <a name="new_Media_new"></a>
 
@@ -1577,9 +1577,9 @@ Gets a list of your media files.
 | --- | --- | --- |
 | [callback] | <code>function</code> | Callback for the operation |
 
-<a name="Media+remove"></a>
+<a name="Media+delete"></a>
 
-### media.remove(name, [callback]) ⇒ <code>Promise</code>
+### media.delete(name, [callback]) ⇒ <code>Promise</code>
 Remove a media file
 
 **Kind**: instance method of <code>[Media](#Media)</code>  
@@ -1775,7 +1775,7 @@ client.NumberInfo.get("+1234567890", function(err, info){});
     * [.get(phoneNumberOrId, callback)](#PhoneNumber+get) ⇒ <code>[PhoneNumberResponse](#PhoneNumberResponse)</code>
     * [.list(params, callback)](#PhoneNumber+list) ⇒ <code>[Array.&lt;PhoneNumberResponse&gt;](#PhoneNumberResponse)</code>
     * [.update(phoneNumberId, params, [callback])](#PhoneNumber+update) ⇒ <code>Promise</code>
-    * [.remove(phoneNumberId, [callback])](#PhoneNumber+remove) ⇒ <code>Promise</code>
+    * [.delete(phoneNumberId, [callback])](#PhoneNumber+delete) ⇒ <code>Promise</code>
 
 <a name="new_PhoneNumber_new"></a>
 
@@ -1886,9 +1886,9 @@ client.PhoneNumber.update(numberId, {name: "Another Name"}).then(function(){});
 // Callback
 client.PhoneNumber.update(numberId, {name: "Another Name"}, function(err){});
 ```
-<a name="PhoneNumber+remove"></a>
+<a name="PhoneNumber+delete"></a>
 
-### phoneNumber.remove(phoneNumberId, [callback]) ⇒ <code>Promise</code>
+### phoneNumber.delete(phoneNumberId, [callback]) ⇒ <code>Promise</code>
 Remove the number
 
 **Kind**: instance method of <code>[PhoneNumber](#PhoneNumber)</code>  
@@ -1902,10 +1902,10 @@ Remove the number
 **Example**  
 ```js
 // Promise
-client.PhoneNumber.remove(numberId).then(function(){});
+client.PhoneNumber.delete(numberId).then(function(){});
 
 // Callback
-client.PhoneNumber.remove(numberId, function(err){});
+client.PhoneNumber.delete(numberId, function(err){});
 ```
 <a name="PhoneNumberResponse"></a>
 
