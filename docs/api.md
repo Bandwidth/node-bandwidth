@@ -1023,7 +1023,7 @@ Delete a domain.
     * [.get(domainId, endpointId, [callback])](#Endpoint+get) ⇒ <code>[EndpointResponse](#EndpointResponse)</code>
     * [.delete(domainId, endpointId, [callback])](#Endpoint+delete) ⇒ <code>Promise</code>
     * [.update(domainId, endpointId, params, [callback])](#Endpoint+update) ⇒ <code>Promise</code>
-    * [.createAuthToken(domainId, endpointId, [callback])](#Endpoint+createAuthToken) ⇒ <code>Promise</code>
+    * [.createAuthToken(domainId, endpointId, params, [callback])](#Endpoint+createAuthToken) ⇒ <code>Promise</code>
 
 <a name="new_Endpoint_new"></a>
 
@@ -1164,7 +1164,7 @@ client.Endpoint.update("domainId", "endpointId", { enabled : true }, function (e
 ```
 <a name="Endpoint+createAuthToken"></a>
 
-### endpoint.createAuthToken(domainId, endpointId, [callback]) ⇒ <code>Promise</code>
+### endpoint.createAuthToken(domainId, endpointId, params, [callback]) ⇒ <code>Promise</code>
 Generate auth token for the endpoint.
 
 **Kind**: instance method of <code>[Endpoint](#Endpoint)</code>  
@@ -1174,6 +1174,8 @@ Generate auth token for the endpoint.
 | --- | --- | --- |
 | domainId | <code>String</code> | Id of domain |
 | endpointId | <code>String</code> | ID of the endpoint to update. |
+| params | <code>Object</code> | parameters of token. |
+| params.expires | <code>Number</code> | Expiration time of token in seconds |
 | [callback] | <code>function</code> | A callback with token value. |
 
 **Example**  
