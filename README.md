@@ -103,20 +103,20 @@ client.Message.send({
     * [X] List all calls
     * [X] Create
     * [X] Get info
-    * [ ] Update Status
+    * [X] Update Status
         * [X] Transfer
-        * [ ] Answer
-        * [ ] Hangup
-        * [ ] Reject
+        * [X] Answer
+        * [X] Hangup
+        * [X] Reject
     * [X] Play Audio
         * [X] Speak Sentence
         * [X] Play Audio File
-    * [ ] Send DTMF
-    * [ ] Events
-        * [ ] List
-        * [ ] Get individual info
-    * [ ] List Recordings
-    * [ ] List Transciptions
+    * [X] Send DTMF
+    * [X] Events
+        * [X] List
+        * [X] Get individual info
+    * [X] List Recordings
+    * [X] List Transciptions
     * [X] Gather
         * [X] Create Gather
         * [X] Get Gather info
@@ -144,7 +144,7 @@ client.Message.send({
 * [Endpoints](http://ap.bandwidth.com/docs/rest-api/endpoints/)
     * [X] List all endpoints
     * [X] Create Endpoint
-    * [ ] Get Single Endpoint
+    * [X] Get Single Endpoint
     * [X] Update Single Endpoint
     * [X] Delete Single Endpoint
     * [X] Create auth token
@@ -174,9 +174,9 @@ client.Message.send({
     * [X] List all recordings
     * [X] Get single recording info
 * [Transciptions](http://ap.bandwidth.com/docs/rest-api/recordingsidtranscriptions/)
-    * [ ] Create
-    * [ ] Get info for single transcrption
-    * [ ] Get all transcrptions for a recording
+    * [X] Create
+    * [X] Get info for single transcrption
+    * [X] Get all transcrptions for a recording
 
 ## Providing feedback on the developer preview
 

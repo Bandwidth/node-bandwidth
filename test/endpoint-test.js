@@ -21,6 +21,17 @@ describe("Endpoint API", function () {
 			credentials : { "password" : "123456" }
 		};
 
+		var testEndpoint = {
+			id          : "endpointId1",
+			name        : "endpoint1",
+			description : "New endpoint",
+			sipUri      : "endpoint1@doname.bwapp.bwsipp.io",
+			credentials : {
+				realm    : "doname.bwapp.bwsipp.io",
+				username : "jsmith-mobile"
+			}
+		};
+
 		var endpointList = [
 			{
 				id          : "endpointId1",
@@ -48,6 +59,8 @@ describe("Endpoint API", function () {
 
 		var tokenValue = { token : "token" };
 
+		var authTokenParams = { expires : 3600 };
+
 		before(function () {
 			client = new CatapultClient({
 				userId    : userId,
@@ -70,7 +83,9 @@ describe("Endpoint API", function () {
 				.reply(200)
 				.post("/v1/users/" + userId + "/domains/"  + domainId + "/endpoints/fakeEndpointId", changes)
 				.reply(200)
-				.post("/v1/users/" + userId + "/domains/"  + domainId + "/endpoints/fakeEndpointId/tokens")
+				.get("/v1/users/" + userId + "/domains/"  + domainId + "/endpoints/fakeEndpointId")
+				.reply(200, testEndpoint)
+				.post("/v1/users/" + userId + "/domains/"  + domainId + "/endpoints/fakeEndpointId/tokens", authTokenParams)
 				.reply(201, tokenValue);
 		});
 
@@ -95,9 +110,15 @@ describe("Endpoint API", function () {
 		});
 
 		it("should create auth token for the endpoint", function () {
-			return client.Endpoint.createAuthToken(domainId, "fakeEndpointId")
+			return client.Endpoint.createAuthToken(domainId, "fakeEndpointId", authTokenParams)
 			.then(function (token) {
 				token.should.eql(tokenValue);
+			});
+		});
+
+		it("should return a single endpoint", function () {
+			return client.Endpoint.get(domainId, "fakeEndpointId").then(function (endpoint) {
+				endpoint.should.eql(testEndpoint);
 			});
 		});
 

@@ -27,9 +27,17 @@
 <dd></dd>
 <dt><a href="#GatherResponse">GatherResponse</a> : <code>Object</code></dt>
 <dd></dd>
+<<<<<<< HEAD
 <dt><a href="#Conference">Conference</a></dt>
 <dd></dd>
 <dt><a href="#ConferenceResponse">ConferenceResponse</a> : <code>Object</code></dt>
+=======
+<dt><a href="#EventResponse">EventResponse</a> : <code>Object</code></dt>
+<dd></dd>
+<dt><a href="#RecordingResponse">RecordingResponse</a> : <code>Object</code></dt>
+<dd></dd>
+<dt><a href="#TranscriptionResponse">TranscriptionResponse</a> : <code>Object</code></dt>
+>>>>>>> 2.0-preview
 <dd></dd>
 <dt><a href="#Domain">Domain</a></dt>
 <dd></dd>
@@ -64,6 +72,10 @@
 <dt><a href="#PhoneNumberResponse">PhoneNumberResponse</a> : <code>Object</code></dt>
 <dd></dd>
 <dt><a href="#Recording">Recording</a></dt>
+<dd></dd>
+<dt><a href="#RecordingResponse">RecordingResponse</a> : <code>Object</code></dt>
+<dd></dd>
+<dt><a href="#TranscriptionResponse">TranscriptionResponse</a> : <code>Object</code></dt>
 <dd></dd>
 </dl>
 
@@ -602,6 +614,9 @@ Gets information about a bridge.
     * [.create(params, [callback])](#Call+create) ⇒ <code>[CallResponse](#CallResponse)</code>
     * [.get(callId, callback)](#Call+get) ⇒ <code>Promise</code>
     * [.list(params, callback)](#Call+list) ⇒ <code>Promise</code>
+    * [.answer(callId, [callback])](#Call+answer) ⇒ <code>Promise</code>
+    * [.reject(callId, [callback])](#Call+reject) ⇒ <code>Promise</code>
+    * [.hangup(callId, [callback])](#Call+hangup) ⇒ <code>Promise</code>
     * [.transfer(params, [callback])](#Call+transfer) ⇒ <code>[CallResponse](#CallResponse)</code>
     * [.speakSentence(callId, sentence, [callback])](#Call+speakSentence) ⇒ <code>Promise</code>
     * [.playAudioFile(callId, fileUrl, [callback])](#Call+playAudioFile) ⇒ <code>Promise</code>
@@ -609,6 +624,11 @@ Gets information about a bridge.
     * [.createGather(callId, params, [callback])](#Call+createGather) ⇒ <code>[CallResponse](#CallResponse)</code>
     * [.getGather(callId, gatherId, [callback])](#Call+getGather) ⇒ <code>[GatherResponse](#GatherResponse)</code>
     * [.completeGather(callId, gatherId, [callback])](#Call+completeGather) ⇒ <code>Promise</code>
+    * [.getEvents(callId, [callback])](#Call+getEvents) ⇒ <code>[Array.&lt;EventResponse&gt;](#EventResponse)</code>
+    * [.getEvent(callId, eventId, [callback])](#Call+getEvent) ⇒ <code>[EventResponse](#EventResponse)</code>
+    * [.getRecordings(callId, [callback])](#Call+getRecordings) ⇒ <code>[Array.&lt;RecordingResponse&gt;](#RecordingResponse)</code>
+    * [.getTranscriptions(callId, [callback])](#Call+getTranscriptions) ⇒ <code>[Array.&lt;TranscriptionResponse&gt;](#TranscriptionResponse)</code>
+    * [.sendDtmf(callId, dtmfOut, [callback])](#Call+sendDtmf) ⇒ <code>Promise</code>
 
 <a name="new_Call_new"></a>
 
@@ -674,6 +694,69 @@ Gets a list of active and historic calls you made or received.
 | [params.size] | <code>Number</code> | <code>25</code> | Used for pagination to indicate the size of each page requested for querying a list of calls. If no value is specified the default value is 25 (maximum value 1000). |
 | callback | <code>function</code> |  | A callback with the list of calls |
 
+<a name="Call+answer"></a>
+
+### call.answer(callId, [callback]) ⇒ <code>Promise</code>
+Answer an incoming call
+
+**Kind**: instance method of <code>[Call](#Call)</code>  
+**Returns**: <code>Promise</code> - A promise for the operation  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| callId | <code>String</code> | The ID of the incoming call |
+| [callback] | <code>function</code> | Callback for the operation |
+
+**Example**  
+```js
+//Promise
+client.Call.answer("callID").then(function () {});
+
+//Callback
+client.Call.answer("callID", function (err) {});
+```
+<a name="Call+reject"></a>
+
+### call.reject(callId, [callback]) ⇒ <code>Promise</code>
+Reject an incoming call
+
+**Kind**: instance method of <code>[Call](#Call)</code>  
+**Returns**: <code>Promise</code> - A promise for the operation  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| callId | <code>String</code> | The ID of the incoming call |
+| [callback] | <code>function</code> | Callback for the operation |
+
+**Example**  
+```js
+//Promise
+client.Call.reject("callID").then(function () {});
+
+//Callback
+client.Call.reject("callID", function (err) {});
+```
+<a name="Call+hangup"></a>
+
+### call.hangup(callId, [callback]) ⇒ <code>Promise</code>
+Complete active call
+
+**Kind**: instance method of <code>[Call](#Call)</code>  
+**Returns**: <code>Promise</code> - A promise for the operation  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| callId | <code>String</code> | The ID of the call |
+| [callback] | <code>function</code> | Callback for the operation |
+
+**Example**  
+```js
+//Promise
+client.Call.hangup("callID").then(function () {});
+
+//Callback
+client.Call.hangup("callID", function (err) {});
+```
 <a name="Call+transfer"></a>
 
 ### call.transfer(params, [callback]) ⇒ <code>[CallResponse](#CallResponse)</code>
@@ -889,6 +972,108 @@ Complete the gather.
 | gatherId | <code>String</code> | The ID of the gather |
 | [callback] | <code>function</code> | Callback of the operation |
 
+<a name="Call+getEvents"></a>
+
+### call.getEvents(callId, [callback]) ⇒ <code>[Array.&lt;EventResponse&gt;](#EventResponse)</code>
+Get events for the call.
+
+**Kind**: instance method of <code>[Call](#Call)</code>  
+**Returns**: <code>[Array.&lt;EventResponse&gt;](#EventResponse)</code> - A promise for the event list  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| callId | <code>String</code> | The ID of the call |
+| [callback] | <code>function</code> | Callback with the event list |
+
+**Example**  
+```js
+// Promise
+client.Call.getEvents(callId).then(function (events) {});
+// Callback
+client.Call.getEvents(callId, function (err, events) {});
+```
+<a name="Call+getEvent"></a>
+
+### call.getEvent(callId, eventId, [callback]) ⇒ <code>[EventResponse](#EventResponse)</code>
+Get a single event for the call.
+
+**Kind**: instance method of <code>[Call](#Call)</code>  
+**Returns**: <code>[EventResponse](#EventResponse)</code> - A promise for the event list  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| callId | <code>String</code> | The ID of the call |
+| eventId | <code>String</code> | The ID of the event to get |
+| [callback] | <code>function</code> | Callback with the event list |
+
+**Example**  
+```js
+// Promise
+client.Call.getEvent(callId, evenId).then(function (callEvent) {});
+// Callback
+client.Call.getEvent(callId, eventId, function (err, callEvent) {});
+```
+<a name="Call+getRecordings"></a>
+
+### call.getRecordings(callId, [callback]) ⇒ <code>[Array.&lt;RecordingResponse&gt;](#RecordingResponse)</code>
+Get recordings for the call.
+
+**Kind**: instance method of <code>[Call](#Call)</code>  
+**Returns**: <code>[Array.&lt;RecordingResponse&gt;](#RecordingResponse)</code> - A promise for the recording list  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| callId | <code>String</code> | The ID of the call |
+| [callback] | <code>function</code> | Callback with the recording list |
+
+**Example**  
+```js
+// Promise
+client.Call.getRecordings(callId).then(function (list) {});
+// Callback
+client.Call.getRecordings(callId, function (err, list) {});
+```
+<a name="Call+getTranscriptions"></a>
+
+### call.getTranscriptions(callId, [callback]) ⇒ <code>[Array.&lt;TranscriptionResponse&gt;](#TranscriptionResponse)</code>
+Get transcriptions for the call.
+
+**Kind**: instance method of <code>[Call](#Call)</code>  
+**Returns**: <code>[Array.&lt;TranscriptionResponse&gt;](#TranscriptionResponse)</code> - A promise for the transcription list  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| callId | <code>String</code> | The ID of the call |
+| [callback] | <code>function</code> | Callback with the transcription list |
+
+**Example**  
+```js
+// Promise
+client.Call.getTranscriptions(callId).then(function (list) {});
+// Callback
+client.Call.getTranscriptions(callId, function (err, list) {});
+```
+<a name="Call+sendDtmf"></a>
+
+### call.sendDtmf(callId, dtmfOut, [callback]) ⇒ <code>Promise</code>
+Send DTMF (phone keypad digit presses).
+
+**Kind**: instance method of <code>[Call](#Call)</code>  
+**Returns**: <code>Promise</code> - A promise for the operation  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| callId | <code>String</code> | The ID of the call |
+| dtmfOut | <code>String</code> | String containing the DTMF characters to be sent in a call. |
+| [callback] | <code>function</code> | Callback for the operation |
+
+**Example**  
+```js
+// Promise
+client.Call.sendDtmf(callId, "1").then(function () {});
+// Callback
+client.Call.sendDtmf(callId, "1", function (err) {});
+```
 <a name="CallResponse"></a>
 
 ## CallResponse : <code>Object</code>
@@ -942,6 +1127,7 @@ Complete the gather.
 | completedTime | <code>String</code> | TIme of completion of the gather. |
 | digits | <code>String</code> | Gathered digits. |
 
+<<<<<<< HEAD
 <a name="Conference"></a>
 
 ## Conference
@@ -1383,11 +1569,45 @@ client.Conference.playAudioAdvanced("conferenceId", options, function (err,res) 
 <a name="ConferenceResponse"></a>
 
 ## ConferenceResponse : <code>Object</code>
+=======
+<a name="EventResponse"></a>
+
+## EventResponse : <code>Object</code>
 **Kind**: global class  
 **Properties**
 
 | Name | Type | Description |
 | --- | --- | --- |
+| id | <code>String</code> | The call event id. |
+| time | <code>String</code> | The time the event occurred. |
+| name | <code>String</code> | The name of the event. |
+| data | <code>String</code> | Data about event. |
+
+<a name="RecordingResponse"></a>
+
+## RecordingResponse : <code>Object</code>
+**Kind**: global class  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| id | <code>String</code> | The recording id. |
+| startTime | <code>String</code> | Date/time when the recording started. |
+| endTime | <code>String</code> | Date/time when the recording ended. |
+| call | <code>String</code> | The complete URL to the call resource this recording is associated with. |
+| media | <code>String</code> | The complete URL to the media resource this recording is associated with. |
+| state | <code>String</code> | The state of the recording |
+
+<a name="TranscriptionResponse"></a>
+
+## TranscriptionResponse : <code>Object</code>
+>>>>>>> 2.0-preview
+**Kind**: global class  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+<<<<<<< HEAD
 | id | <code>String</code> | The unique ID of the conference. |
 | state | <code>String</code> | Conference state. Possible state values are described here. |
 | from | <code>String</code> | The phone number that will host the conference. |
@@ -1401,6 +1621,15 @@ client.Conference.playAudioAdvanced("conferenceId", options, function (err,res) 
 | callbackTimeout | <code>String</code> | Determine how long should the platform wait for callbackUrl's response before timing out in milliseconds. |
 | fallbackUrl | <code>String</code> | Determine how long should the platform wait for callbackUrl's response before timing out in milliseconds. |
 | tag | <code>String</code> | A string that will be included in the callback events of the conference. |
+=======
+| id | <code>String</code> | The transcription id. |
+| state | <code>String</code> | The state of the transcription |
+| text | <code>String</code> | The transcribed text (only first 1000 characters) |
+| time | <code>String</code> | The date/time the transcription resource was created |
+| chargeableDuration | <code>Number</code> | The seconds between activeTime and endTime for the recording;  this is the time that is going to be used to charge the resource. |
+| textSize | <code>Number</code> | The size of the transcribed text. |
+| textUrl | <code>String</code> | An url to the full text |
+>>>>>>> 2.0-preview
 
 <a name="Domain"></a>
 
@@ -1479,10 +1708,11 @@ Delete a domain.
 * [Endpoint](#Endpoint)
     * [new Endpoint()](#new_Endpoint_new)
     * [.create(domainId, params, [callback])](#Endpoint+create) ⇒ <code>[EndpointResponse](#EndpointResponse)</code>
-    * [.list(domainId, params, callback)](#Endpoint+list) ⇒ <code>[Array.&lt;EndpointResponse&gt;](#EndpointResponse)</code>
+    * [.list(domainId, params, [callback])](#Endpoint+list) ⇒ <code>[Array.&lt;EndpointResponse&gt;](#EndpointResponse)</code>
+    * [.get(domainId, endpointId, [callback])](#Endpoint+get) ⇒ <code>[EndpointResponse](#EndpointResponse)</code>
     * [.delete(domainId, endpointId, [callback])](#Endpoint+delete) ⇒ <code>Promise</code>
     * [.update(domainId, endpointId, params, [callback])](#Endpoint+update) ⇒ <code>Promise</code>
-    * [.createAuthToken(domainId, endpointId, [callback])](#Endpoint+createAuthToken) ⇒ <code>Promise</code>
+    * [.createAuthToken(domainId, endpointId, params, [callback])](#Endpoint+createAuthToken) ⇒ <code>Promise</code>
 
 <a name="new_Endpoint_new"></a>
 
@@ -1518,7 +1748,7 @@ credentials : { password : "123456" }}, function (err, endpoint) {});
 ```
 <a name="Endpoint+list"></a>
 
-### endpoint.list(domainId, params, callback) ⇒ <code>[Array.&lt;EndpointResponse&gt;](#EndpointResponse)</code>
+### endpoint.list(domainId, params, [callback]) ⇒ <code>[Array.&lt;EndpointResponse&gt;](#EndpointResponse)</code>
 Gets a list of all endpoints for the domain.
 
 **Kind**: instance method of <code>[Endpoint](#Endpoint)</code>  
@@ -1529,7 +1759,7 @@ Gets a list of all endpoints for the domain.
 | domainId | <code>String</code> | Id of the domain to list the endpoints |
 | params | <code>Object</code> | Parameters for listing endpoints on domain |
 | [params.size] | <code>Number</code> | OPTIONAL The maximum number of endpoints returned by the query per page (Max size: 1000). |
-| callback | <code>function</code> | A callback with the list of domains |
+| [callback] | <code>function</code> | A callback with the list of endpoints |
 
 **Example**  
 ```js
@@ -1552,6 +1782,28 @@ client.Endpoint.list("domainId", {size: 1000})
 ```js
 // Specify number of endpoints using callbacks
 client.Endpoint.list("domainId" {size: 1000}, function (err, res) {});
+```
+<a name="Endpoint+get"></a>
+
+### endpoint.get(domainId, endpointId, [callback]) ⇒ <code>[EndpointResponse](#EndpointResponse)</code>
+Get a single endpoint.
+
+**Kind**: instance method of <code>[Endpoint](#Endpoint)</code>  
+**Returns**: <code>[EndpointResponse](#EndpointResponse)</code> - A promise for the endpoint.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| domainId | <code>String</code> | Id of the domain |
+| endpointId | <code>String</code> | Id of the endpoint |
+| [callback] | <code>function</code> | A callback with the endpoint |
+
+**Example**  
+```js
+// Promise
+client.Endpoint.get(domainId, endpointId).then(function(endpoint){});
+
+// Callback
+client.Endpoint.get(domainId, endpointId, function(err, endpoint){});
 ```
 <a name="Endpoint+delete"></a>
 
@@ -1601,7 +1853,7 @@ client.Endpoint.update("domainId", "endpointId", { enabled : true }, function (e
 ```
 <a name="Endpoint+createAuthToken"></a>
 
-### endpoint.createAuthToken(domainId, endpointId, [callback]) ⇒ <code>Promise</code>
+### endpoint.createAuthToken(domainId, endpointId, params, [callback]) ⇒ <code>Promise</code>
 Generate auth token for the endpoint.
 
 **Kind**: instance method of <code>[Endpoint](#Endpoint)</code>  
@@ -1611,6 +1863,8 @@ Generate auth token for the endpoint.
 | --- | --- | --- |
 | domainId | <code>String</code> | Id of domain |
 | endpointId | <code>String</code> | ID of the endpoint to update. |
+| params | <code>Object</code> | parameters of token. |
+| params.expires | <code>Number</code> | Expiration time of token in seconds |
 | [callback] | <code>function</code> | A callback with token value. |
 
 **Example**  
@@ -1742,7 +1996,7 @@ Catapult API Client
     * [.upload(name, data, contentType, [callback])](#Media+upload) ⇒ <code>Promise</code>
     * [.download(name, [callback])](#Media+download) ⇒ <code>[DownloadMediaFileResponse](#DownloadMediaFileResponse)</code>
     * [.list([callback])](#Media+list) ⇒ <code>[Array.&lt;MediaFileResponse&gt;](#MediaFileResponse)</code>
-    * [.remove(name, [callback])](#Media+remove) ⇒ <code>Promise</code>
+    * [.delete(name, [callback])](#Media+delete) ⇒ <code>Promise</code>
 
 <a name="new_Media_new"></a>
 
@@ -1789,9 +2043,9 @@ Gets a list of your media files.
 | --- | --- | --- |
 | [callback] | <code>function</code> | Callback for the operation |
 
-<a name="Media+remove"></a>
+<a name="Media+delete"></a>
 
-### media.remove(name, [callback]) ⇒ <code>Promise</code>
+### media.delete(name, [callback]) ⇒ <code>Promise</code>
 Remove a media file
 
 **Kind**: instance method of <code>[Media](#Media)</code>  
@@ -1987,7 +2241,7 @@ client.NumberInfo.get("+1234567890", function(err, info){});
     * [.get(phoneNumberOrId, callback)](#PhoneNumber+get) ⇒ <code>[PhoneNumberResponse](#PhoneNumberResponse)</code>
     * [.list(params, callback)](#PhoneNumber+list) ⇒ <code>[Array.&lt;PhoneNumberResponse&gt;](#PhoneNumberResponse)</code>
     * [.update(phoneNumberId, params, [callback])](#PhoneNumber+update) ⇒ <code>Promise</code>
-    * [.remove(phoneNumberId, [callback])](#PhoneNumber+remove) ⇒ <code>Promise</code>
+    * [.delete(phoneNumberId, [callback])](#PhoneNumber+delete) ⇒ <code>Promise</code>
 
 <a name="new_PhoneNumber_new"></a>
 
@@ -2098,9 +2352,9 @@ client.PhoneNumber.update(numberId, {name: "Another Name"}).then(function(){});
 // Callback
 client.PhoneNumber.update(numberId, {name: "Another Name"}, function(err){});
 ```
-<a name="PhoneNumber+remove"></a>
+<a name="PhoneNumber+delete"></a>
 
-### phoneNumber.remove(phoneNumberId, [callback]) ⇒ <code>Promise</code>
+### phoneNumber.delete(phoneNumberId, [callback]) ⇒ <code>Promise</code>
 Remove the number
 
 **Kind**: instance method of <code>[PhoneNumber](#PhoneNumber)</code>  
@@ -2114,10 +2368,10 @@ Remove the number
 **Example**  
 ```js
 // Promise
-client.PhoneNumber.remove(numberId).then(function(){});
+client.PhoneNumber.delete(numberId).then(function(){});
 
 // Callback
-client.PhoneNumber.remove(numberId, function(err){});
+client.PhoneNumber.delete(numberId, function(err){});
 ```
 <a name="PhoneNumberResponse"></a>
 
@@ -2147,8 +2401,11 @@ client.PhoneNumber.remove(numberId, function(err){});
 
 * [Recording](#Recording)
     * [new Recording()](#new_Recording_new)
-    * [.get(recordingId, [callback])](#Recording+get) ⇒ <code>RecordingResponse</code>
-    * [.list(params, [callback])](#Recording+list) ⇒ <code>RecordingResponse</code>
+    * [.get(recordingId, [callback])](#Recording+get) ⇒ <code>[RecordingResponse](#RecordingResponse)</code>
+    * [.list(params, [callback])](#Recording+list) ⇒ <code>[RecordingResponse](#RecordingResponse)</code>
+    * [.createTranscription(recordingId, [callback])](#Recording+createTranscription) ⇒ <code>[TranscriptionResponse](#TranscriptionResponse)</code>
+    * [.getTranscription(recordingId, transcriptionId, [callback])](#Recording+getTranscription) ⇒ <code>[TranscriptionResponse](#TranscriptionResponse)</code>
+    * [.getTranscriptions(recordingId, [callback])](#Recording+getTranscriptions) ⇒ <code>[TranscriptionResponse](#TranscriptionResponse)</code>
 
 <a name="new_Recording_new"></a>
 
@@ -2157,11 +2414,11 @@ Retrieve information about call recordings
 
 <a name="Recording+get"></a>
 
-### recording.get(recordingId, [callback]) ⇒ <code>RecordingResponse</code>
+### recording.get(recordingId, [callback]) ⇒ <code>[RecordingResponse](#RecordingResponse)</code>
 Get a recording
 
 **Kind**: instance method of <code>[Recording](#Recording)</code>  
-**Returns**: <code>RecordingResponse</code> - A promise for the recording object  
+**Returns**: <code>[RecordingResponse](#RecordingResponse)</code> - A promise for the recording object  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2170,16 +2427,110 @@ Get a recording
 
 <a name="Recording+list"></a>
 
-### recording.list(params, [callback]) ⇒ <code>RecordingResponse</code>
+### recording.list(params, [callback]) ⇒ <code>[RecordingResponse](#RecordingResponse)</code>
 Get a list of recordings
 
 **Kind**: instance method of <code>[Recording](#Recording)</code>  
-**Returns**: <code>RecordingResponse</code> - A promise for the recording objects  
+**Returns**: <code>[RecordingResponse](#RecordingResponse)</code> - A promise for the recording objects  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | params | <code>Object</code> | [description] |
 | [callback] | <code>function</code> | Callback with the recording objects |
+
+<a name="Recording+createTranscription"></a>
+
+### recording.createTranscription(recordingId, [callback]) ⇒ <code>[TranscriptionResponse](#TranscriptionResponse)</code>
+Create a transcription
+
+**Kind**: instance method of <code>[Recording](#Recording)</code>  
+**Returns**: <code>[TranscriptionResponse](#TranscriptionResponse)</code> - A promise for the created transcription  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| recordingId | <code>String</code> | The ID of the recording |
+| [callback] | <code>function</code> | Callback with the create transcription |
+
+**Example**  
+```js
+// Promise
+client.Recording.createTranscription(recordingId).then(function(transcription){});
+
+// Callback
+client.Recording.createTranscription(recordingId, function(err, transcription){});
+```
+<a name="Recording+getTranscription"></a>
+
+### recording.getTranscription(recordingId, transcriptionId, [callback]) ⇒ <code>[TranscriptionResponse](#TranscriptionResponse)</code>
+Get information about the transcription
+
+**Kind**: instance method of <code>[Recording](#Recording)</code>  
+**Returns**: <code>[TranscriptionResponse](#TranscriptionResponse)</code> - A promise for the transcription  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| recordingId | <code>String</code> | The ID of the recording |
+| transcriptionId | <code>String</code> | The ID of the transcription |
+| [callback] | <code>function</code> | Callback with the  transcription |
+
+**Example**  
+```js
+// Promise
+client.Recording.getTranscription(recordingId, transcriptionId).then(function(transcription){});
+
+// Callback
+client.Recording.getTranscription(recordingId, transcriptionId, function(err, transcription){});
+```
+<a name="Recording+getTranscriptions"></a>
+
+### recording.getTranscriptions(recordingId, [callback]) ⇒ <code>[TranscriptionResponse](#TranscriptionResponse)</code>
+Get list of all transcriptions for recording
+
+**Kind**: instance method of <code>[Recording](#Recording)</code>  
+**Returns**: <code>[TranscriptionResponse](#TranscriptionResponse)</code> - A promise for the transcriptions  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| recordingId | <code>String</code> | The ID of the recording |
+| [callback] | <code>function</code> | Callback with the  transcriptions |
+
+**Example**  
+```js
+// Promise
+client.Recording.getTranscriptions(recordingId).then(function(transcriptions){});
+
+// Callback
+client.Recording.getTranscriptions(recordingId, function(err, transcriptions){});
+```
+<a name="RecordingResponse"></a>
+
+## RecordingResponse : <code>Object</code>
+**Kind**: global class  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| id | <code>String</code> | The unique ID of the recording. |
+| startTime | <code>String</code> | Date/time when the recording started. |
+| endTime | <code>String</code> | Date/time when the recording ended. |
+| media | <code>String</code> | The complete URL to the media resource this recording is associated with. |
+| call | <code>String</code> | The complete URL to the call resource this recording is associated with. |
+| state | <code>String</code> | The state of the recording, |
+
+<a name="TranscriptionResponse"></a>
+
+## TranscriptionResponse : <code>Object</code>
+**Kind**: global class  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| id | <code>String</code> | The unique ID of the transcription. |
+| text | <code>String</code> | The transcribed text (only first 1000 characters). |
+| chargeableDuration | <code>Number</code> | The seconds between activeTime and endTime for the recording; this is the time that is going to be used to charge the resource. |
+| textSize | <code>Number</code> | The size of the transcribed text. |
+| state | <code>String</code> | The state of the transcription, |
+| textUrl | <code>String</code> | A url to the full text, |
 
 <a name="getNextLink"></a>
 
