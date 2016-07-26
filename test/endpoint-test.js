@@ -59,6 +59,8 @@ describe("Endpoint API", function () {
 
 		var tokenValue = { token : "token" };
 
+		var authTokenParams = { expires : 3600 };
+
 		before(function () {
 			client = new CatapultClient({
 				userId    : userId,
@@ -83,7 +85,7 @@ describe("Endpoint API", function () {
 				.reply(200)
 				.get("/v1/users/" + userId + "/domains/"  + domainId + "/endpoints/fakeEndpointId")
 				.reply(200, testEndpoint)
-				.post("/v1/users/" + userId + "/domains/"  + domainId + "/endpoints/fakeEndpointId/tokens")
+				.post("/v1/users/" + userId + "/domains/"  + domainId + "/endpoints/fakeEndpointId/tokens", authTokenParams)
 				.reply(201, tokenValue);
 		});
 
@@ -108,7 +110,7 @@ describe("Endpoint API", function () {
 		});
 
 		it("should create auth token for the endpoint", function () {
-			return client.Endpoint.createAuthToken(domainId, "fakeEndpointId")
+			return client.Endpoint.createAuthToken(domainId, "fakeEndpointId", authTokenParams)
 			.then(function (token) {
 				token.should.eql(tokenValue);
 			});
