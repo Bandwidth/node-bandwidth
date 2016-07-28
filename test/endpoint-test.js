@@ -139,14 +139,20 @@ describe("Endpoint API", function () {
 			});
 		});
 
-		it("those endpoints should not have more pages", function () {
+		it("hasNextPage should be false for those endpoints", function () {
 			return client.Endpoint.list(domainId)
 			.then(function (response) {
 				response.hasNextPage.should.be.false;
-				return response.getNextPage()
-				.catch(function (err) {
-					err.should.equal("Next page does not exist.");
-				});
+			});
+		});
+
+		it("those endpoints should not have more pages", function () {
+			return client.Endpoint.list(domainId)
+			.then(function (response) {
+				return response.getNextPage();
+			})
+			.catch(function (err) {
+				err.should.equal("Next page does not exist.");
 			});
 		});
 
@@ -170,10 +176,16 @@ describe("Endpoint API", function () {
 				nock.enableNetConnect();
 			});
 
-			it("should return a list of endpoints with a page to the next link", function () {
+			it("should return a list of endpoints", function () {
 				return client.Endpoint.list(domainId, { size : 25 })
 				.then(function (response) {
 					response.endpoints.should.eql(endpointList);
+				});
+			});
+
+			it("with a link to the next page", function () {
+				return client.Endpoint.list(domainId, { size : 25 })
+				.then(function (response) {
 					return response.getNextPage();
 				})
 				.then(function (more) {

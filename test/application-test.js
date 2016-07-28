@@ -98,14 +98,20 @@ describe("Application API", function () {
 			});
 		});
 
-		it("those applications should not have more pages", function () {
+		it("hasNextPage should be false for those applications", function () {
 			return client.Application.list({})
 			.then(function (applicationsResponse) {
 				applicationsResponse.hasNextPage.should.be.false;
-				return applicationsResponse.getNextPage()
-				.catch(function (err) {
-					err.should.equal("Next page does not exist.");
-				});
+			});
+		});
+
+		it("those applications should not have more pages", function () {
+			return client.Application.list({})
+			.then(function (applicationsResponse) {
+				return applicationsResponse.getNextPage();
+			})
+			.catch(function (err) {
+				err.should.equal("Next page does not exist.");
 			});
 		});
 
@@ -231,10 +237,16 @@ describe("Application API", function () {
 				nock.enableNetConnect();
 			});
 
-			it("should return a list of applications with a page to the next link", function () {
+			it("should return a list of applications", function () {
 				return client.Application.list({})
 				.then(function (applicationsResponse) {
 					applicationsResponse.applications.should.eql(applicationsList);
+				});
+			});
+
+			it("with a link to the next page", function () {
+				return client.Application.list({})
+				.then(function (applicationsResponse) {
 					return applicationsResponse.getNextPage();
 				})
 				.then(function (moreApplications) {

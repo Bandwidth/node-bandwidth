@@ -331,17 +331,26 @@ describe("Call API", function () {
 			});
 		});
 
-		it("those calls should not have more pages", function () {
+		it("hasNextPage should be false for those calls", function () {
 			return client.Call.list({
 				fromDateTime : fromDateTime,
 				toDateTime   : toDateTime
 			})
 			.then(function (callsResponse) {
 				callsResponse.hasNextPage.should.be.false;
-				return callsResponse.getNextPage()
-				.catch(function (err) {
-					err.should.equal("Next page does not exist.");
-				});
+			});
+		});
+
+		it("those calls should not have more pages", function () {
+			return client.Call.list({
+				fromDateTime : fromDateTime,
+				toDateTime   : toDateTime
+			})
+			.then(function (callsResponse) {
+				return callsResponse.getNextPage();
+			})
+			.catch(function (err) {
+				err.should.equal("Next page does not exist.");
 			});
 		});
 
@@ -416,10 +425,16 @@ describe("Call API", function () {
 			nock.enableNetConnect();
 		});
 
-		it("should return a list of calls with a page to the next link", function () {
+		it("should return a list of calls", function () {
 			return client.Call.list({})
 			.then(function (callResponse) {
 				callResponse.calls.should.eql(callsList);
+			});
+		});
+
+		it("With a link to the next page", function () {
+			return client.Call.list({})
+			.then(function (callResponse) {
 				return callResponse.getNextPage();
 			})
 			.then(function (moreCalls) {
