@@ -26,6 +26,14 @@ var sendMessageOnlyResponse = responseHeader + tab +
 	responseTail;
 var transferOnlyResponse = responseHeader + tab +
 	"<Transfer transferTo=\"+19195551212\"/>\n" + responseTail;
+var nestingResponse = responseHeader + tab +
+	"<Gather requestUrl=\"http://www.example.com/\">\n" + tab + tab +
+	"<SpeakSentence locale=\"en_US\" gender=\"female\" voice=\"julie\">Press some numbers!</SpeakSentence>\n" +
+	tab + "</Gather>\n" + responseTail;
+var chainingResponse = responseHeader + tab +
+	"<SpeakSentence locale=\"en_US\" gender=\"female\" voice=\"julie\">Hi! My name is:</SpeakSentence>\n" +
+	tab + "<SpeakSentence locale=\"en_US\" gender=\"female\" voice=\"julie\">What? My name is:</SpeakSentence>\n" +
+	responseTail;
 
 describe("XML Builder", function () {
 	var myApp;
@@ -34,7 +42,7 @@ describe("XML Builder", function () {
 			myApp = new XML.BXMLResponse();
 			myApp.say("Thank you for calling ACME Technical Support.");
 		});
-		it("Should work", function () {
+		it("Should generate correct BXML", function () {
 			myApp.toString().should.equal(sayOnlyResponse);
 		});
 	});
@@ -45,7 +53,7 @@ describe("XML Builder", function () {
 				requestUrl : "http://www.example.com/"
 			});
 		});
-		it("Should work", function () {
+		it("Should generate correct BXML", function () {
 			myApp.toString().should.equal(gatherOnlyResponse);
 		});
 	});
@@ -57,7 +65,7 @@ describe("XML Builder", function () {
 				to   : "+19195551213"
 			});
 		});
-		it("Should work", function () {
+		it("Should generate correct BXML", function () {
 			myApp.toString().should.equal(callOnlyResponse);
 		});
 	});
@@ -68,7 +76,7 @@ describe("XML Builder", function () {
 				from : "+19195551212"
 			});
 		});
-		it("Should work", function () {
+		it("Should generate correct BXML", function () {
 			myApp.toString().should.equal(conferenceOnlyResponse);
 		});
 	});
@@ -77,16 +85,16 @@ describe("XML Builder", function () {
 			myApp = new XML.BXMLResponse();
 			myApp.hangup({ });
 		});
-		it("Should work", function () {
+		it("Should generate correct BXML", function () {
 			myApp.toString().should.equal(hangupOnlyResponse);
 		});
 	});
 	describe("Individual verb - playAudio", function () {
 		before(function () {
 			myApp = new XML.BXMLResponse();
-			myApp.playAudio('http://www.example.com/example.mp3');
+			myApp.playAudio("http://www.example.com/example.mp3");
 		});
-		it("Should work", function () {
+		it("Should generate correct BXML", function () {
 			myApp.toString().should.equal(audioOnlyResponse);
 		});
 	});
@@ -98,7 +106,7 @@ describe("XML Builder", function () {
 				requestUrlTimeout : 12345
 			});
 		});
-		it("Should work", function () {
+		it("Should generate correct BXML", function () {
 			myApp.toString().should.equal(recordOnlyResponse);
 		});
 	});
@@ -110,7 +118,7 @@ describe("XML Builder", function () {
 				requestUrlTimeout : 12345
 			});
 		});
-		it("Should work", function () {
+		it("Should generate correct BXML", function () {
 			myApp.toString().should.equal(redirectOnlyResponse);
 		});
 	});
@@ -122,7 +130,7 @@ describe("XML Builder", function () {
 				to   : "+19195551213"
 			});
 		});
-		it("Should work", function () {
+		it("Should generate correct BXML", function () {
 			myApp.toString().should.equal(sendMessageOnlyResponse);
 		});
 	});
@@ -130,11 +138,34 @@ describe("XML Builder", function () {
 		before(function () {
 			myApp = new XML.BXMLResponse();
 			myApp.transfer({
-				transferTo   : "+19195551212"
+				transferTo : "+19195551212"
 			});
 		});
-		it("Should work", function () {
+		it("Should generate correct BXML", function () {
 			myApp.toString().should.equal(transferOnlyResponse);
+		});
+	});
+	describe("Nesting", function () {
+		before(function () {
+			myApp = new XML.BXMLResponse();
+			myApp.gather({
+				requestUrl : "http://www.example.com/"
+			}, function () {
+				this.say("Press some numbers!");
+			});
+		});
+		it("Should generate correct BXML", function () {
+			myApp.toString().should.equal(nestingResponse);
+		});
+	});
+	describe("Chaining", function () {
+		before(function () {
+			myApp = new XML.BXMLResponse();
+			myApp.say("Hi! My name is:")
+				.say("What? My name is:");
+		});
+		it("Should generate correct BXML", function () {
+			myApp.toString().should.equal(chainingResponse);
 		});
 	});
 });
