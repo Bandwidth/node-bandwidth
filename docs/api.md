@@ -71,6 +71,8 @@
 <dd></dd>
 <dt><a href="#TranscriptionResponse">TranscriptionResponse</a> : <code>Object</code></dt>
 <dd></dd>
+<dt><a href="#BXMLResponse">BXMLResponse</a></dt>
+<dd></dd>
 </dl>
 
 ## Functions
@@ -1404,9 +1406,9 @@ Generate auth token for the endpoint.
 **Example**  
 ```js
 // Promise
-client.Endpoint.createAuthToken("domainId", "endpointId").then(function (endpoint) {});
+client.Endpoint.createAuthToken("domainId", "endpointId", { expires : 3600 }).then(function (endpoint) {});
 // Callback
-client.Endpoint.createAuthToken("domainId", "endpointId", function (err, endpoint) {});
+client.Endpoint.createAuthToken("domainId", "endpointId", { expires : 3600 }, function (err, endpoint) {});
 ```
 <a name="EndpointResponse"></a>
 
@@ -2065,6 +2067,197 @@ client.Recording.getTranscriptions(recordingId, function(err, transcriptions){})
 | textSize | <code>Number</code> | The size of the transcribed text. |
 | state | <code>String</code> | The state of the transcription, |
 | textUrl | <code>String</code> | A url to the full text, |
+
+<a name="BXMLResponse"></a>
+
+## BXMLResponse
+**Kind**: global class  
+
+* [BXMLResponse](#BXMLResponse)
+    * [new BXMLResponse()](#new_BXMLResponse_new)
+    * [.speakSentence(sentence, params)](#BXMLResponse+speakSentence) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
+    * [.gather(params, [callback])](#BXMLResponse+gather) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
+    * [.toString()](#BXMLResponse+toString) ⇒ <code>string</code>
+    * [.call(params, [callback])](#BXMLResponse+call) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
+    * [.conference(params)](#BXMLResponse+conference) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
+    * [.hangup()](#BXMLResponse+hangup) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
+    * [.playAudio(audio)](#BXMLResponse+playAudio) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
+    * [.record(params)](#BXMLResponse+record) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
+    * [.redirect(params)](#BXMLResponse+redirect) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
+    * [.sendMessage(message, params)](#BXMLResponse+sendMessage) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
+    * [.transfer(params, callback)](#BXMLResponse+transfer) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
+
+<a name="new_BXMLResponse_new"></a>
+
+### new BXMLResponse()
+Creates a new BXML Response object.
+Call .toString() on this method to obtain the BXML string.
+
+<a name="BXMLResponse+speakSentence"></a>
+
+### bxmlResponse.speakSentence(sentence, params) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
+Create a SpeakSentence tag.
+
+**Kind**: instance method of <code>[BXMLResponse](#BXMLResponse)</code>  
+**Returns**: <code>[BXMLResponse](#BXMLResponse)</code> - this, for chaining  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| sentence | <code>string</code> |  | The sentence to have the voice say. |
+| params | <code>Object</code> |  | The parameters for the API SpeakSentence call. |
+| [params.gender] | <code>string</code> | <code>&quot;\&quot;female\&quot;&quot;</code> | The gender of the speaker. |
+| [params.locale] | <code>string</code> | <code>&quot;\&quot;en_US\&quot;&quot;</code> | The locale for the speaker. |
+| [params.voice] | <code>string</code> | <code>&quot;\&quot;julie\&quot;&quot;</code> | The voice for the speaker. |
+
+<a name="BXMLResponse+gather"></a>
+
+### bxmlResponse.gather(params, [callback]) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
+Create a Gather call, which collects pressed numbers.
+
+**Kind**: instance method of <code>[BXMLResponse](#BXMLResponse)</code>  
+**Returns**: <code>[BXMLResponse](#BXMLResponse)</code> - this, for chaining  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| params | <code>Object</code> |  | The parameters for the Gather verb. |
+| params.requestURL | <code>string</code> |  | Relative or absolute URL to send events to and request new BXML. |
+| [params.requestURLTimeout] | <code>number</code> | <code>3000</code> | Time to wait for requestURL response in ms. |
+| [params.terminatingDigits] | <code>string</code> | <code>&quot;#&quot;</code> | Digits to stop gather. |
+| [params.maxDigits] | <code>number</code> | <code>128</code> | Maximum number of digits to collect. |
+| [params.integerDigitTimeout] | <code>number</code> | <code>5</code> | Timeout between digits. |
+| [params.bargeable] | <code>boolean</code> | <code>true</code> | Boolean indicating if audio should stop when digit is pressed. |
+| [callback] | <code>function</code> |  | A function containing the verbs to be nested inside the Gather call. |
+
+<a name="BXMLResponse+toString"></a>
+
+### bxmlResponse.toString() ⇒ <code>string</code>
+**Kind**: instance method of <code>[BXMLResponse](#BXMLResponse)</code>  
+**Returns**: <code>string</code> - A string representation of the object's BXML.  
+<a name="BXMLResponse+call"></a>
+
+### bxmlResponse.call(params, [callback]) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
+Create a new call to another phone number.
+
+**Kind**: instance method of <code>[BXMLResponse](#BXMLResponse)</code>  
+**Returns**: <code>[BXMLResponse](#BXMLResponse)</code> - this, for chaining  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| params | <code>Object</code> | The parameters for the Call verb. |
+| params.from | <code>string</code> | Defines the number the call will be created from. |
+| params.to | <code>string</code> | Defines the number the call will be made to. |
+| [params.requestUrl] | <code>string</code> | URL to send event |
+| [params.timeout] | <code>number</code> | The timeout, in seconds, for the call to answer |
+| [params.requestUrlTimeout] | <code>number</code> | Timeout, in ms, to request new BXML document |
+| [callback] | <code>function</code> | A function containing the verbs to be nested inside the Call verb |
+
+<a name="BXMLResponse+conference"></a>
+
+### bxmlResponse.conference(params) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
+Create a new conference call.
+
+**Kind**: instance method of <code>[BXMLResponse](#BXMLResponse)</code>  
+**Returns**: <code>[BXMLResponse](#BXMLResponse)</code> - this, for chaining.  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| params | <code>Object</code> |  | The parameters for the Conference verb. |
+| params.from | <code>string</code> |  | The phone number that will host the conference. |
+| [params.statusCallbackUrl] | <code>string</code> |  | URL to which conference callbacks will be POSTed |
+| [params.joinTone] | <code>boolean</code> | <code>true</code> | Determines whether or not a tone is played on join. |
+| [params.leavingTone] | <code>boolean</code> | <code>true</code> | Determines whether or not a tone is played on leave. |
+| [params.tag] | <code>string</code> |  | A string that will be included in the callback events of the conference. |
+| [params.mute] | <code>boolean</code> | <code>false</code> | Determines whether or not the member will join muted. |
+| [params.hold] | <code>boolean</code> | <code>false</code> | Determines whether or not the member will join on hold. |
+
+<a name="BXMLResponse+hangup"></a>
+
+### bxmlResponse.hangup() ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
+Terminates an outgoing call.
+
+**Kind**: instance method of <code>[BXMLResponse](#BXMLResponse)</code>  
+**Returns**: <code>[BXMLResponse](#BXMLResponse)</code> - this, for chaining.  
+<a name="BXMLResponse+playAudio"></a>
+
+### bxmlResponse.playAudio(audio) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
+Plays an audio file located at a specified URL.
+
+**Kind**: instance method of <code>[BXMLResponse](#BXMLResponse)</code>  
+**Returns**: <code>[BXMLResponse](#BXMLResponse)</code> - this, for chaining.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| audio | <code>string</code> | The URL of the audio to be played. |
+
+<a name="BXMLResponse+record"></a>
+
+### bxmlResponse.record(params) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
+Records the call. At end of call, a call recording event is sent to the callback URL.
+
+**Kind**: instance method of <code>[BXMLResponse](#BXMLResponse)</code>  
+**Returns**: <code>[BXMLResponse](#BXMLResponse)</code> - this, for chaining.  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| params | <code>Object</code> |  | The parameters for the Record verb. |
+| [params.requestUrl] | <code>string</code> |  | URL to send event and request new BXML. |
+| [params.requestUrlTimeout] | <code>number</code> |  | Timeout, in ms, to wait for requestUrl response. |
+| [params.fileFormat] | <code>string</code> |  | The format in which to save the recording - mp3 or wav. |
+| [params.terminatingDigits] | <code>string</code> |  | One or more digits that will finish the recording. |
+| [params.maxDuration] | <code>number</code> | <code>300</code> | Time, in seconds, for max duration. Up to 3600 sec (1hr) |
+| [params.transcribe] | <code>boolean</code> | <code>false</code> | Boolean to indicate transcription of the recording. |
+| [params.transcribeCallbackUrl] | <code>string</code> |  | URL to send transcribed event. |
+
+<a name="BXMLResponse+redirect"></a>
+
+### bxmlResponse.redirect(params) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
+Redirects the current execution to run XML at another URL.
+
+**Kind**: instance method of <code>[BXMLResponse](#BXMLResponse)</code>  
+**Returns**: <code>[BXMLResponse](#BXMLResponse)</code> - this, for chaining.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| params | <code>Object</code> | The parameters for the Redirect verb. |
+| params.requestUrl | <code>string</code> | The URL to send event to and request new BXML. |
+| params.requestUrlTimeout | <code>number</code> | Timeout, in ms, to wait for requestUrl to respond. |
+
+<a name="BXMLResponse+sendMessage"></a>
+
+### bxmlResponse.sendMessage(message, params) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
+Sends a text message.
+
+**Kind**: instance method of <code>[BXMLResponse](#BXMLResponse)</code>  
+**Returns**: <code>[BXMLResponse](#BXMLResponse)</code> - this, for chaining.  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| message | <code>string</code> |  | The message to send. |
+| params | <code>Object</code> |  | The parameters for the SendMessage verb |
+| params.from | <code>string</code> |  | The number to send the message from. |
+| params.to | <code>string</code> |  | The number to send the message to. |
+| [params.requestUrl] | <code>string</code> |  | The URL to send events to and request new BXML from. |
+| [params.requestUrlTimeout] | <code>number</code> | <code>30</code> | Timeout, in seconds, to wait for requestUrl to respond. |
+| [params.statusCallbackUrl] | <code>string</code> |  | URL to send the message callback to. |
+
+<a name="BXMLResponse+transfer"></a>
+
+### bxmlResponse.transfer(params, callback) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
+Transfers the call to another number.
+
+**Kind**: instance method of <code>[BXMLResponse](#BXMLResponse)</code>  
+**Returns**: <code>[BXMLResponse](#BXMLResponse)</code> - this, for chaining.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| params | <code>Object</code> | The parameters for the Transfer verb. |
+| params.transferTo | <code>string</code> | The number to transfer the call to. |
+| [params.transferCallerId] | <code>string</code> | The caller ID to use on the transferred call. |
+| [params.callTimeout] | <code>number</code> | The timeout, in seconds, for the call to be answered. |
+| [params.requestUrl] | <code>string</code> | URL to send event to and request new BXML from. |
+| [params.requestUrlTimeout] | <code>number</code> | Timeout, in msec, to wait for requestUrl to respond. |
+| [params.tag] | <code>string</code> | A string that will be included in the callback events. |
+| callback | <code>function</code> | The verbs to nest inside the Transfer verb. |
 
 <a name="getNextLink"></a>
 

@@ -1,49 +1,27 @@
 var XML = require("../lib/xml.js");
-var responseHeader = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Response>\n";
-var tab = "     ";
-var responseTail = "</Response>";
-var sayOnlyResponse = responseHeader + tab +
-	"<SpeakSentence locale=\"en_US\" gender=\"female\" voice=\"julie\">Thank" +
-	" you for calling ACME Technical Support.</SpeakSentence>\n" + responseTail;
-var gatherOnlyResponse = responseHeader + tab +
-	"<Gather requestUrl=\"http://www.example.com/\"/>\n" + responseTail;
-var callOnlyResponse = responseHeader + tab +
-	"<Call from=\"+19195551212\" to=\"+19195551213\"/>\n" + responseTail;
-var conferenceOnlyResponse = responseHeader + tab +
-	"<Conference from=\"+19195551212\" joinTone=\"true\" leavingTone=\"true\"/>\n" +
-	responseTail;
-var hangupOnlyResponse = responseHeader + tab + "<Hangup/>\n" + responseTail;
-var audioOnlyResponse = responseHeader + tab +
-	"<PlayAudio>http://www.example.com/example.mp3</PlayAudio>\n" + responseTail;
-var recordOnlyResponse = responseHeader + tab +
-	"<Record requestUrl=\"http://www.example.com\" requestUrlTimeout=\"12345\"/>\n" +
-	responseTail;
-var redirectOnlyResponse = responseHeader + tab +
-	"<Redirect requestUrl=\"http://www.example.com\" requestUrlTimeout=\"12345\"/>\n" +
-	responseTail;
-var sendMessageOnlyResponse = responseHeader + tab +
-	"<SendMessage from=\"+19195551212\" to=\"+19195551213\">Where are you?</SendMessage>\n" +
-	responseTail;
-var transferOnlyResponse = responseHeader + tab +
-	"<Transfer transferTo=\"+19195551212\"/>\n" + responseTail;
-var nestingResponse = responseHeader + tab +
-	"<Gather requestUrl=\"http://www.example.com/\">\n" + tab + tab +
-	"<SpeakSentence locale=\"en_US\" gender=\"female\" voice=\"julie\">Press some numbers!</SpeakSentence>\n" +
-	tab + "</Gather>\n" + responseTail;
-var chainingResponse = responseHeader + tab +
-	"<SpeakSentence locale=\"en_US\" gender=\"female\" voice=\"julie\">Hi! My name is:</SpeakSentence>\n" +
-	tab + "<SpeakSentence locale=\"en_US\" gender=\"female\" voice=\"julie\">What? My name is:</SpeakSentence>\n" +
-	responseTail;
+var fs = require("fs");
+var speakSentenceOnlyResponse = fs.readFileSync("./test/bxml-responses/speakSentence.xml", "utf8");
+var gatherOnlyResponse = fs.readFileSync("./test/bxml-responses/gather.xml", "utf8");
+var callOnlyResponse = fs.readFileSync("./test/bxml-responses/call.xml", "utf8");
+var conferenceOnlyResponse = fs.readFileSync("./test/bxml-responses/conference.xml", "utf8");
+var hangupOnlyResponse = fs.readFileSync("./test/bxml-responses/hangup.xml", "utf8");
+var audioOnlyResponse = fs.readFileSync("./test/bxml-responses/playAudio.xml", "utf8");
+var recordOnlyResponse = fs.readFileSync("./test/bxml-responses/record.xml", "utf8");
+var redirectOnlyResponse = fs.readFileSync("./test/bxml-responses/redirect.xml", "utf8");
+var sendMessageOnlyResponse = fs.readFileSync("./test/bxml-responses/sendMessage.xml", "utf8");
+var transferOnlyResponse = fs.readFileSync("./test/bxml-responses/transfer.xml", "utf8");
+var nestingResponse = fs.readFileSync("./test/bxml-responses/nesting.xml", "utf8");
+var chainingResponse = fs.readFileSync("./test/bxml-responses/chaining.xml", "utf8");
 
 describe("XML Builder", function () {
 	var myApp;
-	describe("Individual verb - say", function () {
+	describe("Individual verb - speakSentence", function () {
 		before(function () {
 			myApp = new XML.BXMLResponse();
-			myApp.say("Thank you for calling ACME Technical Support.");
+			myApp.speakSentence("Thank you for calling ACME Technical Support.");
 		});
 		it("Should generate correct BXML", function () {
-			myApp.toString().should.equal(sayOnlyResponse);
+			myApp.toString().should.equal(speakSentenceOnlyResponse);
 		});
 	});
 	describe("Individual verb - gather", function () {
@@ -151,7 +129,7 @@ describe("XML Builder", function () {
 			myApp.gather({
 				requestUrl : "http://www.example.com/"
 			}, function () {
-				this.say("Press some numbers!");
+				this.speakSentence("Press some numbers!");
 			});
 		});
 		it("Should generate correct BXML", function () {
@@ -161,8 +139,8 @@ describe("XML Builder", function () {
 	describe("Chaining", function () {
 		before(function () {
 			myApp = new XML.BXMLResponse();
-			myApp.say("Hi! My name is:")
-				.say("What? My name is:");
+			myApp.speakSentence("Hi! My name is:")
+				.speakSentence("What? My name is:");
 		});
 		it("Should generate correct BXML", function () {
 			myApp.toString().should.equal(chainingResponse);
