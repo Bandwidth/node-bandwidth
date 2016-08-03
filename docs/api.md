@@ -2109,6 +2109,14 @@ Create a SpeakSentence tag.
 | [params.locale] | <code>string</code> | <code>&quot;\&quot;en_US\&quot;&quot;</code> | The locale for the speaker. |
 | [params.voice] | <code>string</code> | <code>&quot;\&quot;julie\&quot;&quot;</code> | The voice for the speaker. |
 
+**Example**  
+```js
+//This app will speak two sentences.
+var myApp = new BXMLResponse();
+myApp.speakSentence("Thanks for calling Unicorn Enterprises.")
+     .speakSentence("Someone will be with you shortly.");
+myApp = myApp.toString();
+```
 <a name="BXMLResponse+gather"></a>
 
 ### bxmlResponse.gather(params, [callback]) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
@@ -2128,6 +2136,18 @@ Create a Gather call, which collects pressed numbers.
 | [params.bargeable] | <code>boolean</code> | <code>true</code> | Boolean indicating if audio should stop when digit is pressed. |
 | [callback] | <code>function</code> |  | A function containing the verbs to be nested inside the Gather call. |
 
+**Example**  
+```js
+//This app will collect a PIN code.
+var myApp = new BXMLResponse();
+myApp.gather({
+    requestUrl : 'http://unico.rn/pinApiEndpoint',
+    maxDigits  : 4
+}, function () {
+    this.speakSentence("Please enter your PIN code.")
+});
+myApp = myApp.toString();
+```
 <a name="BXMLResponse+toString"></a>
 
 ### bxmlResponse.toString() ⇒ <code>string</code>
@@ -2151,6 +2171,18 @@ Create a new call to another phone number.
 | [params.requestUrlTimeout] | <code>number</code> | Timeout, in ms, to request new BXML document |
 | [callback] | <code>function</code> | A function containing the verbs to be nested inside the Call verb |
 
+**Example**  
+```js
+//This app will create a call and tell the callee they are being called.
+var myApp = new BXMLResponse();
+myApp.call({
+     from : '+19195551212',
+     to   : '+19195551213'
+}, function () {
+     this.speakSentence("You are recieving a call from 919 555 1212.');
+});
+myApp = myApp.toString();
+```
 <a name="BXMLResponse+conference"></a>
 
 ### bxmlResponse.conference(params) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
@@ -2170,6 +2202,15 @@ Create a new conference call.
 | [params.mute] | <code>boolean</code> | <code>false</code> | Determines whether or not the member will join muted. |
 | [params.hold] | <code>boolean</code> | <code>false</code> | Determines whether or not the member will join on hold. |
 
+**Example**  
+```js
+//This app will create a conference call. Callers to (919) 555 1212 will be patched in.
+var myApp = new BXMLResponse();
+myApp.conference({
+    from : '+19195551212'
+});
+myApp = myApp.toString();
+```
 <a name="BXMLResponse+hangup"></a>
 
 ### bxmlResponse.hangup() ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
@@ -2177,6 +2218,15 @@ Terminates an outgoing call.
 
 **Kind**: instance method of <code>[BXMLResponse](#BXMLResponse)</code>  
 **Returns**: <code>[BXMLResponse](#BXMLResponse)</code> - this, for chaining.  
+**Example**  
+```js
+//This app will speak two sentences and hang up.
+var myApp = new BXMLResponse();
+myApp.speakSentence("Thanks for calling Unicorn Enterprises.")
+     .speakSentence("We have been acquired by BigCorp.")
+     .hangup();
+myApp = myApp.toString();
+```
 <a name="BXMLResponse+playAudio"></a>
 
 ### bxmlResponse.playAudio(audio) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
@@ -2189,6 +2239,15 @@ Plays an audio file located at a specified URL.
 | --- | --- | --- |
 | audio | <code>string</code> | The URL of the audio to be played. |
 
+**Example**  
+```js
+//This app will put you on hold.
+var myApp = new BXMLResponse();
+myApp.speakSentence("Thanks for calling Unicorn Enterprises.")
+     .speakSentence("All agents are currently busy playing ping-pong. Please hold.")
+     .playAudio("http://unico.rn/assets/postglamspeedfolk.mp3");
+myApp = myApp.toString();
+```
 <a name="BXMLResponse+record"></a>
 
 ### bxmlResponse.record(params) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
@@ -2208,6 +2267,17 @@ Records the call. At end of call, a call recording event is sent to the callback
 | [params.transcribe] | <code>boolean</code> | <code>false</code> | Boolean to indicate transcription of the recording. |
 | [params.transcribeCallbackUrl] | <code>string</code> |  | URL to send transcribed event. |
 
+**Example**  
+```js
+//This app will record a message.
+var myApp = new BXMLResponse();
+myApp.speakSentence("Thanks for calling Unicorn Enterprises.")
+     .speakSentence("Your call may be recorded for quality assurance.")
+     .record({
+           requestUrl : "http://unico.rn/recordsGetPutHere",
+           fileFormat : "mp3"
+		});
+```
 <a name="BXMLResponse+redirect"></a>
 
 ### bxmlResponse.redirect(params) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
@@ -2240,6 +2310,15 @@ Sends a text message.
 | [params.requestUrlTimeout] | <code>number</code> | <code>30</code> | Timeout, in seconds, to wait for requestUrl to respond. |
 | [params.statusCallbackUrl] | <code>string</code> |  | URL to send the message callback to. |
 
+**Example**  
+```js
+// This app will text a customer.
+var myApp = new BXMLResponse();
+myApp.sendMessage("Get $20 off your next purchase!", {
+		from : "+19195551212",
+		to   : "+19195551213"
+});
+```
 <a name="BXMLResponse+transfer"></a>
 
 ### bxmlResponse.transfer(params, callback) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
@@ -2259,6 +2338,18 @@ Transfers the call to another number.
 | [params.tag] | <code>string</code> | A string that will be included in the callback events. |
 | callback | <code>function</code> | The verbs to nest inside the Transfer verb. |
 
+**Example**  
+```js
+// This app will transfer a call.
+var myApp = new BXMLResponse();
+myApp.speakSentence("Your call is somewhat important to us.")
+		.speakSentence("Please wait while it is being transferred.")
+		.transfer({
+			transferTo: "+19195551213"
+		}, function (){
+			this.speakSentence("A call is being transferred to you from Customer Service.");
+		});
+```
 <a name="getNextLink"></a>
 
 ## getNextLink(response) ⇒
