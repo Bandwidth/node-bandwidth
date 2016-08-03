@@ -2179,7 +2179,7 @@ myApp.call({
      from : '+19195551212',
      to   : '+19195551213'
 }, function () {
-     this.speakSentence("You are recieving a call from 919 555 1212.');
+     this.speakSentence("You are recieving a call from 919 555 1212.");
 });
 myApp = myApp.toString();
 ```
