@@ -122,21 +122,21 @@ client.Message.send({
         * [X] Get Gather info
         * [X] Update Gather
 * [Conferences](http://ap.bandwidth.com/docs/rest-api/conferences/)
-    * [ ] Create conference
-    * [ ] Get info for single conference
-    * [ ] Play Audio
-        * [ ] Speak Sentence
-        * [ ] Play Audio File
-    * [ ] Members
-        * [ ] Add member
-        * [ ] List members
-        * [ ] Update members
-            * [ ] Mute
-            * [ ] Remove
-            * [ ] Hold
-        * [ ] Play Audio to single member
-            * [ ] Speak Sentence
-            * [ ] Play Audio File
+    * [X] Create conference
+    * [X] Get info for single conference
+    * [X] Play Audio
+        * [X] Speak Sentence
+        * [X] Play Audio File
+    * [X] Members
+        * [X] Add member
+        * [X] List members
+        * [X] Update members
+            * [X] Mute
+            * [X] Remove
+            * [X] Hold
+        * [X] Play Audio to single member
+            * [X] Speak Sentence
+            * [X] Play Audio File
 * [Domains](http://ap.bandwidth.com/docs/rest-api/domains/)
     * [X] List all domains
     * [X] create domain
@@ -177,6 +177,19 @@ client.Message.send({
     * [X] Create
     * [X] Get info for single transcrption
     * [X] Get all transcrptions for a recording
+* [BXML](http://ap.bandwidth.com/docs/xml/)
+    * [X] Call
+    * [X] Conference
+    * [X] Gather
+    * [X] Hangup
+    * [X] Media
+    * [X] Pause
+    * [X] PlayAudio
+    * [X] Record
+    * [X] Reject
+    * [X] SendMessage
+    * [X] SpeakSentence
+    * [X] Transfer
 
 ## Providing feedback on the developer preview
 
