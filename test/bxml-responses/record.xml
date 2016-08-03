@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Response>
+     <Record requestUrl="http://www.example.com" requestUrlTimeout="12345"/>
+</Response>

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Response>
+     <SpeakSentence locale="en_US" gender="female" voice="julie">Hi! My name is:</SpeakSentence>
+     <SpeakSentence locale="en_US" gender="female" voice="julie">What? My name is:</SpeakSentence>
+</Response>
