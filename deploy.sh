@@ -5,7 +5,7 @@ SOURCE_BRANCH="master"
 TARGET_BRANCH="gh-pages"
 
 function docGen {
-  npm run-script doc
+  npm run-script docs
   mv ./out/node-bandwidth/*/* ./out
 }
 
