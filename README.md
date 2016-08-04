@@ -14,7 +14,7 @@ For the full API Reference, please see [docs/api.md](docs/api.md).
 
 Because this version is not published via npm, you must install it by specifying the specific GitHub branch. Running the following command will install and save the latest version:
 
-	$ npm install --save https://github.com/bandwidthcom/node-bandwidth.git
+	$ npm install --save node-bandwidth
 
 ## Client initialization
 
