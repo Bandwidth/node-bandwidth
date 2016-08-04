@@ -1,0 +1,2375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Bridge - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Account.html">Account</a><ul class='methods'><li data-type='method'><a href="Account.html#get">get</a></li><li data-type='method'><a href="Account.html#getTransactions">getTransactions</a></li></ul></li><li><a href="AccountResponse.html">AccountResponse</a></li><li><a href="Application.html">Application</a><ul class='methods'><li data-type='method'><a href="Application.html#create">create</a></li><li data-type='method'><a href="Application.html#delete">delete</a></li><li data-type='method'><a href="Application.html#get">get</a></li><li data-type='method'><a href="Application.html#list">list</a></li><li data-type='method'><a href="Application.html#update">update</a></li></ul></li><li><a href="ApplicationResponse.html">ApplicationResponse</a></li><li><a href="AvailableNumber.html">AvailableNumber</a><ul class='methods'><li data-type='method'><a href="AvailableNumber.html#search">search</a></li><li data-type='method'><a href="AvailableNumber.html#searchAndOrder">searchAndOrder</a></li></ul></li><li><a href="AvailableNumberResponse.html">AvailableNumberResponse</a></li><li><a href="Bridge.html">Bridge</a><ul class='methods'><li data-type='method'><a href="Bridge.html#create">create</a></li><li data-type='method'><a href="Bridge.html#get">get</a></li><li data-type='method'><a href="Bridge.html#getCalls">getCalls</a></li><li data-type='method'><a href="Bridge.html#list">list</a></li><li data-type='method'><a href="Bridge.html#playAudioAdvanced">playAudioAdvanced</a></li><li data-type='method'><a href="Bridge.html#playAudioFile">playAudioFile</a></li><li data-type='method'><a href="Bridge.html#speakSentence">speakSentence</a></li><li data-type='method'><a href="Bridge.html#update">update</a></li></ul></li><li><a href="BridgeResponse.html">BridgeResponse</a></li><li><a href="BXMLResponse.html">BXMLResponse</a><ul class='methods'><li data-type='method'><a href="BXMLResponse.html#call">call</a></li><li data-type='method'><a href="BXMLResponse.html#conference">conference</a></li><li data-type='method'><a href="BXMLResponse.html#gather">gather</a></li><li data-type='method'><a href="BXMLResponse.html#hangup">hangup</a></li><li data-type='method'><a href="BXMLResponse.html#playAudio">playAudio</a></li><li data-type='method'><a href="BXMLResponse.html#record">record</a></li><li data-type='method'><a href="BXMLResponse.html#redirect">redirect</a></li><li data-type='method'><a href="BXMLResponse.html#sendMessage">sendMessage</a></li><li data-type='method'><a href="BXMLResponse.html#speakSentence">speakSentence</a></li><li data-type='method'><a href="BXMLResponse.html#toString">toString</a></li><li data-type='method'><a href="BXMLResponse.html#transfer">transfer</a></li></ul></li><li><a href="Call.html">Call</a><ul class='methods'><li data-type='method'><a href="Call.html#answer">answer</a></li><li data-type='method'><a href="Call.html#completeGather">completeGather</a></li><li data-type='method'><a href="Call.html#create">create</a></li><li data-type='method'><a href="Call.html#createGather">createGather</a></li><li data-type='method'><a href="Call.html#get">get</a></li><li data-type='method'><a href="Call.html#getEvent">getEvent</a></li><li data-type='method'><a href="Call.html#getEvents">getEvents</a></li><li data-type='method'><a href="Call.html#getGather">getGather</a></li><li data-type='method'><a href="Call.html#getRecordings">getRecordings</a></li><li data-type='method'><a href="Call.html#getTranscriptions">getTranscriptions</a></li><li data-type='method'><a href="Call.html#hangup">hangup</a></li><li data-type='method'><a href="Call.html#list">list</a></li><li data-type='method'><a href="Call.html#playAudioAdvanced">playAudioAdvanced</a></li><li data-type='method'><a href="Call.html#playAudioFile">playAudioFile</a></li><li data-type='method'><a href="Call.html#reject">reject</a></li><li data-type='method'><a href="Call.html#sendDtmf">sendDtmf</a></li><li data-type='method'><a href="Call.html#speakSentence">speakSentence</a></li><li data-type='method'><a href="Call.html#transfer">transfer</a></li></ul></li><li><a href="CallResponse.html">CallResponse</a></li><li><a href="CatapultClient.html">CatapultClient</a></li><li><a href="Conference.html">Conference</a><ul class='methods'><li data-type='method'><a href="Conference.html#create">create</a></li><li data-type='method'><a href="Conference.html#createMember">createMember</a></li><li data-type='method'><a href="Conference.html#get">get</a></li><li data-type='method'><a href="Conference.html#getMember">getMember</a></li><li data-type='method'><a href="Conference.html#getMembers">getMembers</a></li><li data-type='method'><a href="Conference.html#playAudioAdvanced">playAudioAdvanced</a></li><li data-type='method'><a href="Conference.html#playAudioAdvancedToMember">playAudioAdvancedToMember</a></li><li data-type='method'><a href="Conference.html#playAudioFile">playAudioFile</a></li><li data-type='method'><a href="Conference.html#playAudioFileToMember">playAudioFileToMember</a></li><li data-type='method'><a href="Conference.html#remove">remove</a></li><li data-type='method'><a href="Conference.html#removeMember">removeMember</a></li><li data-type='method'><a href="Conference.html#speakSentence">speakSentence</a></li><li data-type='method'><a href="Conference.html#speakSentenceToMember">speakSentenceToMember</a></li><li data-type='method'><a href="Conference.html#update">update</a></li><li data-type='method'><a href="Conference.html#updateMember">updateMember</a></li></ul></li><li><a href="ConferenceResponse.html">ConferenceResponse</a></li><li><a href="Domain.html">Domain</a><ul class='methods'><li data-type='method'><a href="Domain.html#create">create</a></li><li data-type='method'><a href="Domain.html#delete">delete</a></li><li data-type='method'><a href="Domain.html#list">list</a></li></ul></li><li><a href="DomainResponse.html">DomainResponse</a></li><li><a href="DownloadMediaFileResponse.html">DownloadMediaFileResponse</a></li><li><a href="Endpoint.html">Endpoint</a><ul class='methods'><li data-type='method'><a href="Endpoint.html#create">create</a></li><li data-type='method'><a href="Endpoint.html#createAuthToken">createAuthToken</a></li><li data-type='method'><a href="Endpoint.html#delete">delete</a></li><li data-type='method'><a href="Endpoint.html#get">get</a></li><li data-type='method'><a href="Endpoint.html#list">list</a></li><li data-type='method'><a href="Endpoint.html#update">update</a></li></ul></li><li><a href="EndpointResponse.html">EndpointResponse</a></li><li><a href="Error.html">Error</a><ul class='methods'><li data-type='method'><a href="Error.html#get">get</a></li><li data-type='method'><a href="Error.html#list">list</a></li></ul></li><li><a href="ErrorResponse.html">ErrorResponse</a></li><li><a href="EventResponse.html">EventResponse</a></li><li><a href="GatherResponse.html">GatherResponse</a></li><li><a href="Media.html">Media</a><ul class='methods'><li data-type='method'><a href="Media.html#delete">delete</a></li><li data-type='method'><a href="Media.html#download">download</a></li><li data-type='method'><a href="Media.html#list">list</a></li><li data-type='method'><a href="Media.html#upload">upload</a></li></ul></li><li><a href="MediaFileResponse.html">MediaFileResponse</a></li><li><a href="Message.html">Message</a><ul class='methods'><li data-type='method'><a href="Message.html#get">get</a></li><li data-type='method'><a href="Message.html#list">list</a></li><li data-type='method'><a href="Message.html#send">send</a></li></ul></li><li><a href="MessageResponse.html">MessageResponse</a></li><li><a href="NumberInfo.html">NumberInfo</a><ul class='methods'><li data-type='method'><a href="NumberInfo.html#get">get</a></li></ul></li><li><a href="NumberInfoResponse.html">NumberInfoResponse</a></li><li><a href="OrderedNumberResponse.html">OrderedNumberResponse</a></li><li><a href="PhoneNumber.html">PhoneNumber</a><ul class='methods'><li data-type='method'><a href="PhoneNumber.html#create">create</a></li><li data-type='method'><a href="PhoneNumber.html#delete">delete</a></li><li data-type='method'><a href="PhoneNumber.html#get">get</a></li><li data-type='method'><a href="PhoneNumber.html#list">list</a></li><li data-type='method'><a href="PhoneNumber.html#update">update</a></li></ul></li><li><a href="PhoneNumberResponse.html">PhoneNumberResponse</a></li><li><a href="Recording.html">Recording</a><ul class='methods'><li data-type='method'><a href="Recording.html#createTranscription">createTranscription</a></li><li data-type='method'><a href="Recording.html#get">get</a></li><li data-type='method'><a href="Recording.html#getTranscription">getTranscription</a></li><li data-type='method'><a href="Recording.html#getTranscriptions">getTranscriptions</a></li><li data-type='method'><a href="Recording.html#list">list</a></li></ul></li><li><a href="RecordingResponse.html">RecordingResponse</a></li><li><a href="TransactionResponse.html">TransactionResponse</a></li><li><a href="TranscriptionResponse.html">TranscriptionResponse</a></li></ul><h3>Global</h3><ul><li><a href="global.html#getNextLink">getNextLink</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">Bridge</h1>
+    
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        Bridge
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+    
+
+    <h4 class="name" id="Bridge"><span class="type-signature"></span>new Bridge<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Bridge</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="bridge.js.html">bridge.js</a>, <a href="bridge.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id="create"><span class="type-signature"></span>create<span class="signature">(params, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="BridgeResponse.html">BridgeResponse</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Create a new bridge</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>params</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Parameters for creating a bridge</p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>bridgeAudio</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    true
+                
+                </td>
+            
+
+            <td class="description last"><p>Enable/Disable two way audio path.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callIds</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;String></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>The list of call ids in the bridge. If the list of call ids
+is not provided the bridge is logically created and it can be used to place calls later.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Callback with the newly created bridge</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="bridge.js.html">bridge.js</a>, <a href="bridge.js.html#line18">line 18</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A promise for the newly created bridge</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="BridgeResponse.html">BridgeResponse</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="get"><span class="type-signature"></span>get<span class="signature">(bridgeId, callback)</span><span class="type-signature"> &rarr; {<a href="BridgeResponse.html">BridgeResponse</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Gets information about a bridge.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>bridgeId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The ID of the bridge to get</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>A callback with the call information</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="bridge.js.html">bridge.js</a>, <a href="bridge.js.html#line39">line 39</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A promise for the call information</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="BridgeResponse.html">BridgeResponse</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="getCalls"><span class="type-signature"></span>getCalls<span class="signature">(bridgeId, callback)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Gets information about a bridge.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>bridgeId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The ID of the bridge to get</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>A callback with the call information</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="bridge.js.html">bridge.js</a>, <a href="bridge.js.html#line213">line 213</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A promise for the call information</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="list"><span class="type-signature"></span>list<span class="signature">(params, callback)</span><span class="type-signature"> &rarr; {Array.&lt;<a href="BridgeResponse.html">BridgeResponse</a>>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Gets a list of bridges.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>params</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Query parameters for listing bridges</p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>size</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    25
+                
+                </td>
+            
+
+            <td class="description last"><p>Used for pagination to indicate the size of each page requested
+for querying a list of bridges. If no value is specified the default value is 25 (maximum value 1000).</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>A callback with the list of bridges</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="bridge.js.html">bridge.js</a>, <a href="bridge.js.html#line58">line 58</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A promise for the list of bridges</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Array.&lt;<a href="BridgeResponse.html">BridgeResponse</a>></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="playAudioAdvanced"><span class="type-signature"></span>playAudioAdvanced<span class="signature">(bridgeId, params, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Play audio file or speak sentence in bridge</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>bridgeId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The ID of the bridge</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>params</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Parameters to play audio in bridge.</p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>fileUrl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>The http location of an audio file to play (WAV and MP3 supported).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>sentence</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>The sentence to speak.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>gender</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    female
+                
+                </td>
+            
+
+            <td class="description last"><p>The gender of the voice used to synthesize the sentence.
+It will be considered only if sentence is not null. The female gender will be used by default.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>locale</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    en_US
+                
+                </td>
+            
+
+            <td class="description last"><p>The locale used to get the accent of the voice used to
+synthesize the sentence. Check out
+<a href="http://ap.bandwidth.com/docs/rest-api/bridges/#resourcePOSTv1usersuserIdbridgesbridgeIdaudio">docs</a>
+for list of supported locales.
+It will be considered only if sentence is not null/empty. The en_US will be used by default.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>voice</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    Susan
+                
+                </td>
+            
+
+            <td class="description last"><p>The voice to speak the sentence. Check out
+<a href="http://ap.bandwidth.com/docs/rest-api/bridges/#resourcePOSTv1usersuserIdbridgesbridgeIdaudio">docs</a>
+for list of supported voices
+It will be considered only if sentence is not null/empty. Susan's voice will be used by default.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>loopEnabled</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    false
+                
+                </td>
+            
+
+            <td class="description last"><p>When value is true, the audio will keep playing in a loop.
+Default: false.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Callback for the operation</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="bridge.js.html">bridge.js</a>, <a href="bridge.js.html#line203">line 203</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A promise for the operation</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+    <h5>Examples</h5>
+    
+    <pre class="prettyprint"><code>//Play Audio File on loop
+var options = {
+	fileUrl     : "http://myurl.com/file.mp3",
+	loopEnabled : true
+}
+//Promise
+client.Bridge.playAudioAdvanced("bridgeId", options).then(function (res) {});
+
+//Callback
+client.Bridge.playAudioAdvanced("bridgeId", options, function (err,res) {});</code></pre>
+
+    <pre class="prettyprint"><code>//Speak sentence with options
+var options = {
+	sentence : "hola de Bandwidth",
+	gender   : "male",
+	locale   : "es",
+	voice    : "Jorge"
+}
+//Promise
+client.Bridge.playAudioAdvanced("bridgeId", options).then(function (res) {});
+
+//Callback
+client.Bridge.playAudioAdvanced("bridgeId", options, function (err,res) {});</code></pre>
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="playAudioFile"><span class="type-signature"></span>playAudioFile<span class="signature">(bridgeId, fileUrl, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Play audio url to the bridge</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>bridgeId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The ID of the bridge</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>fileUrl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The http location of an audio file to play (WAV and MP3 supported).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Callback for the operation</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="bridge.js.html">bridge.js</a>, <a href="bridge.js.html#line153">line 153</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A promise for the operation</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>//Play Audio file on bridge
+
+//Promise
+client.Bridge.playAudioFile("bridgeID", "http://myurl.com/file.mp3").then(function (res) {});
+
+//Callback
+client.Bridge.playAudioFile("bridgeID", "http://myurl.com/file.wav", function (err, res) {});</code></pre>
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="speakSentence"><span class="type-signature"></span>speakSentence<span class="signature">(bridgeId, sentence, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Speak sentence to the bridge using default values</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>bridgeId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The ID of the bridge</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>sentence</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>A sentence to speak to the bridge.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Callback for the operation</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="bridge.js.html">bridge.js</a>, <a href="bridge.js.html#line134">line 134</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A promise for the operation</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>//Speak sentence in a bridge
+
+//Promise
+client.Bridge.speakSentence("bridgeID", "Hello From Bandwidth").then(function (res) {});
+
+//Callback
+client.Bridge.speakSentence("bridgeID", "Hello From Bandwidth", function (err, res) {});</code></pre>
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="update"><span class="type-signature"></span>update<span class="signature">(bridgeId, params, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="BridgeResponse.html">BridgeResponse</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Update the bridge</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>bridgeId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The ID of the bridge</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>params</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Changed parameters of the bridge</p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>bridgeAudio</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Enable/Disable two way audio path (default = true).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callIds</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;String></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The list of call ids in the bridge.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Callback with the newly created bridge</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="bridge.js.html">bridge.js</a>, <a href="bridge.js.html#line95">line 95</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A promise for the operation</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="BridgeResponse.html">BridgeResponse</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Thu Aug 04 2016 14:29:07 GMT+0000 (UTC) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>
