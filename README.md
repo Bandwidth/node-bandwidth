@@ -12,7 +12,7 @@ For the full API Reference, please see [docs/api.md](docs/api.md).
 
 ## Installing the developer preview
 
-	`npm install --save node-bandwidth`
+	npm install --save node-bandwidth
 
 ## Client initialization
 
