@@ -8,7 +8,7 @@ For version 1.3.3 check [here](https://github.com/bandwidthcom/node-bandwidth/tr
 
 
 ## [Full API Reference](docs/api.md)
-For the full API Reference, pelase see [docs/api.md](docs/api.md).
+For the full API Reference, please see [docs/api.md](docs/api.md).
 
 ## Installing the developer preview
 
