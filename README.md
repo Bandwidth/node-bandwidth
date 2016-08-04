@@ -7,8 +7,12 @@ v2.0 Is released
 For version 1.3.3 check [here](https://github.com/bandwidthcom/node-bandwidth/tree/v1.3.3)
 
 
-## [Full API Reference](docs/api.md)
-For the full API Reference, please see [docs/api.md](docs/api.md).
+## [Full API Reference](http://bwdemos.com/node-bandwidth/index.html)
+For the full API Reference, please see 
+
+* [Site](http://bwdemos.com/node-bandwidth/index.html).
+* [Single MD file](https://github.com/bandwidthcom/node-bandwidth/blob/master/docs/api.md)
+
 
 ## Installing the developer preview
 
