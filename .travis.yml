@@ -8,4 +8,4 @@ script: bash ./deploy.sh
 env:
   global:
     - ENCRYPTION_LABEL: 3985cea5a61f
-    - COMMIT_AUTHOR_EMAIL: "ims@live.unc.edu"
+    - COMMIT_AUTHOR_EMAIL: openapi@bandwidth.com 

@@ -5,7 +5,8 @@ var jshint = require("gulp-jshint");
 var jscs = require("gulp-jscs");
 var istanbul = require("gulp-istanbul");
 var rename = require("gulp-rename");
-
+var gulpJsdoc2md = require("gulp-jsdoc-to-markdown");
+var concat = require("gulp-concat")
 gulp.task("jshint", function () {
 	return gulp.src([ "./lib/*.js", "./test/*.js" ])
 		.pipe(jshint())
@@ -39,7 +40,17 @@ gulp.task("test", function () {
 		});
 });
 
-gulp.task("default", [ "jshint", "jscs", "test" ])
+gulp.task("doc", function () {
+	return gulp.src([ "lib/*.js" ])
+ 		.pipe(concat("api.md"))
+		.pipe(gulpJsdoc2md())
+		.pipe(rename(function (path) {
+			path.extname = ".md";
+		}))
+		.pipe(gulp.dest("docs"));
+});
+
+gulp.task("default", [ "jshint", "jscs", "test", "doc" ])
 	.on("finish", function () {
 		console.log("All done");
 	}).on("error", function () {
