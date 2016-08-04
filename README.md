@@ -1,7 +1,7 @@
 # node-bandwidth
 [![npm version](https://badge.fury.io/js/node-bandwidth.svg)](https://badge.fury.io/js/node-bandwidth)
 [![Build Status](https://travis-ci.org/bandwidthcom/node-bandwidth.svg?branch=master)](https://travis-ci.org/bandwidthcom/node-bandwidth)
-[![dependencies](https://david-dm.org/bandwidthcom/node-bandwidth.svg)]
+![dependencies](https://david-dm.org/bandwidthcom/node-bandwidth.svg)
 [![Known Vulnerabilities](https://snyk.io/package/npm/node-bandwidth/badge.svg)](https://snyk.io/package/npm/node-bandwidth)
 
 A Node.js client library for the [Bandwidth Application Platform](http://bandwidth.com/products/application-platform?utm_medium=social&utm_source=github&utm_campaign=dtolb&utm_content=_)
