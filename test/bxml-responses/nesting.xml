@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Response>
+     <Gather requestUrl="http://www.example.com/">
+          <SpeakSentence locale="en_US" gender="female" voice="julie">Press some numbers!</SpeakSentence>
+     </Gather>
+</Response>
