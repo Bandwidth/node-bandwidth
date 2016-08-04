@@ -12,9 +12,7 @@ For the full API Reference, please see [docs/api.md](docs/api.md).
 
 ## Installing the developer preview
 
-Because this version is not published via npm, you must install it by specifying the specific GitHub branch. Running the following command will install and save the latest version:
-
-	$ npm install --save node-bandwidth
+	`npm install --save node-bandwidth`
 
 ## Client initialization
 
