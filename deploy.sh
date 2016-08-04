@@ -8,7 +8,7 @@ function docGen {
   npm run-script docs
   mv ./out/node-bandwidth/*/* ./out
 }
-
+echo TRAVIS_NODE_VERSION
 # Pull requests and commits to other branches shouldn't try to deploy, just build to verify
 if [ "TRAVIS_NODE_VERSION" != "5" ]; then
     echo "Skipping deploy; just doing a build."
