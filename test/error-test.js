@@ -67,14 +67,20 @@ describe("Error API", function () {
 			});
 		});
 
-		it("those errors should not have more pages", function () {
+		it("hasNextPage should be false for those errors", function () {
 			return client.Error.list({})
 			.then(function (errorsResponse) {
 				errorsResponse.hasNextPage.should.be.false;
-				return errorsResponse.getNextPage()
-				.catch(function (err) {
-					err.should.equal("Next page does not exist.");
-				});
+			});
+		});
+
+		it("those errors should not have more pages", function () {
+			return client.Error.list({})
+			.then(function (errorsResponse) {
+				return errorsResponse.getNextPage();
+			})
+			.catch(function (err) {
+				err.should.equal("Next page does not exist.");
 			});
 		});
 
@@ -97,10 +103,16 @@ describe("Error API", function () {
 				nock.enableNetConnect();
 			});
 
-			it("should return a list of errors with a page to the next link", function () {
+			it("should return a list of errors", function () {
 				return client.Error.list({ size : 25 })
 				.then(function (errorsResponse) {
 					errorsResponse.errors.should.eql(errorsList);
+				});
+			});
+
+			it("with a link to the next page", function () {
+				return client.Error.list({ size : 25 })
+				.then(function (errorsResponse) {
 					return errorsResponse.getNextPage();
 				})
 				.then(function (moreErrors) {

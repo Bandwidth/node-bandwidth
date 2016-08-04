@@ -5,23 +5,42 @@ var baseUrl = "https://api.catapult.inetwork.com";
 
 describe("Call API", function () {
 
-	describe("global methods", function () {
-		var client;
+	var client;
 
-		var userId = "fakeUserId";
-		var apiToken = "fakeApiToken";
-		var apiSecret = "fakeapiSecret";
+	var userId = "fakeUserId";
+	var apiToken = "fakeApiToken";
+	var apiSecret = "fakeapiSecret";
 
-		var newTestCall = {
-			from : "+12345678901",
-			to   : "+12345678902",
-		};
+	var newTestCall = {
+		from : "+12345678901",
+		to   : "+12345678902",
+	};
 
-		var testCall = {
-			"id"                 : "fakeCallId",
+	var testCall = {
+		"id"                 : "fakeCallId",
+		"direction"          : "out",
+		"from"               : "{fromNumber}",
+		"to"                 : "{number}",
+		"recordingEnabled"   : false,
+		"callbackUrl"        : "",
+		"state"              : "completed",
+		"startTime"          : "2013-02-08T13:15:47.587Z",
+		"activeTime"         : "2013-02-08T13:15:52.347Z",
+		"endTime"            : "2013-02-08T13:15:55.887Z",
+		"chargeableDuration" : 60,
+		"events"             : "https://.../calls/fakeCallId/events",
+		"sipHeaders"         : {
+			"X-Header-1" : "value-1",
+			"X-Header-2" : "value2"
+		}
+	};
+
+	var callsList = [
+		{
+			"id"                 : "fakeCallId1",
 			"direction"          : "out",
 			"from"               : "{fromNumber}",
-			"to"                 : "{number}",
+			"to"                 : "{toNumber1}",
 			"recordingEnabled"   : false,
 			"callbackUrl"        : "",
 			"state"              : "completed",
@@ -29,139 +48,121 @@ describe("Call API", function () {
 			"activeTime"         : "2013-02-08T13:15:52.347Z",
 			"endTime"            : "2013-02-08T13:15:55.887Z",
 			"chargeableDuration" : 60,
-			"events"             : "https://.../calls/fakeCallId/events",
-			"sipHeaders"         : {
-				"X-Header-1" : "value-1",
-				"X-Header-2" : "value2"
-			}
-		};
+			"events"             : "https://.../calls/fakeCallId1/events"
+		},
+		{
+			"id"               : "fakeCallId2",
+			"direction"        : "out",
+			"from"             : "{fromNumber}",
+			"to"               : "{toNumber2}",
+			"recordingEnabled" : false,
+			"callbackUrl"      : "",
+			"state"            : "active",
+			"startTime"        : "2013-02-08T13:15:47.587Z",
+			"activeTime"       : "2013-02-08T13:15:52.347Z",
+			"events"           : "https://.../calls/fakeCallId2/events"
+		}
+	];
 
-		var callsList = [
-			{
-				"id"                 : "fakeCallId1",
-				"direction"          : "out",
-				"from"               : "{fromNumber}",
-				"to"                 : "{toNumber1}",
-				"recordingEnabled"   : false,
-				"callbackUrl"        : "",
-				"state"              : "completed",
-				"startTime"          : "2013-02-08T13:15:47.587Z",
-				"activeTime"         : "2013-02-08T13:15:52.347Z",
-				"endTime"            : "2013-02-08T13:15:55.887Z",
-				"chargeableDuration" : 60,
-				"events"             : "https://.../calls/fakeCallId1/events"
-			},
-			{
-				"id"               : "fakeCallId2",
-				"direction"        : "out",
-				"from"             : "{fromNumber}",
-				"to"               : "{toNumber2}",
-				"recordingEnabled" : false,
-				"callbackUrl"      : "",
-				"state"            : "active",
-				"startTime"        : "2013-02-08T13:15:47.587Z",
-				"activeTime"       : "2013-02-08T13:15:52.347Z",
-				"events"           : "https://.../calls/fakeCallId2/events"
-			}
-		];
+	var answerCallPayload = {
+		state : "active"
+	};
 
-		var answerCallPayload = {
-			state : "active"
-		};
+	var rejectCallPayload = {
+		state : "rejected"
+	};
 
-		var rejectCallPayload = {
-			state : "rejected"
-		};
+	var hangupCallPayload = {
+		state : "completed"
+	};
 
-		var hangupCallPayload = {
-			state : "completed"
-		};
+	var transferCallPayload = {
+		transferTo       : "+1234567891",
+		transferCallerId : "private",
+		state            : "transferring"
+	};
 
-		var transferCallPayload = {
-			transferTo       : "+1234567891",
-			transferCallerId : "private",
-			state            : "transferring"
-		};
+	var sampleSentence = "Hello world";
+	var speakSentencePayload = {
+		sentence : sampleSentence
+	};
 
-		var sampleSentence = "Hello world";
-		var speakSentencePayload = {
-			sentence : sampleSentence
-		};
+	var audioUrl = "http://somewhere/something.mp3";
+	var playAudioPayload = {
+		fileUrl : audioUrl
+	};
 
-		var audioUrl = "http://somewhere/something.mp3";
-		var playAudioPayload = {
-			fileUrl : audioUrl
-		};
+	var enableRecordingPayload = {
+		recordingEnabled : true
+	};
 
-		var enableRecordingPayload = {
-			recordingEnabled : true
-		};
+	var maxRecordingDuration = 90;
+	var setRecordingMaxDurationPayload = {
+		recordingMaxDuration : maxRecordingDuration
+	};
 
-		var maxRecordingDuration = 90;
-		var setRecordingMaxDurationPayload = {
-			recordingMaxDuration : maxRecordingDuration
-		};
+	var fromDateTime = "2012-10-04";
+	var toDateTime = "2012-10-06";
 
-		var fromDateTime = "2012-10-04";
-		var toDateTime = "2012-10-06";
+	var newTestGather = {
+		maxDigits         : "5",
+		terminatingDigits : "*",
+		interDigitTimeout : "7",
+		prompt            : {
+			sentence : "Please enter your 5 digit code"
+		}
+	};
 
-		var newTestGather = {
-			maxDigits         : "5",
-			terminatingDigits : "*",
-			interDigitTimeout : "7",
-			prompt            : {
-				sentence : "Please enter your 5 digit code"
-			}
-		};
+	var testGather = {
+		id            : "gatherId",
+		state         : "completed",
+		reason        : "max-digits",
+		createdTime   : "2014-02-12T19:33:56Z",
+		completedTime : "2014-02-12T19:33:59Z",
+		call          : "https://api.catapult.inetwork.com/v1/users/{userId}/calls/{callId}",
+		digits        : "123"
+	};
 
-		var testGather = {
-			id            : "gatherId",
-			state         : "completed",
-			reason        : "max-digits",
-			createdTime   : "2014-02-12T19:33:56Z",
-			completedTime : "2014-02-12T19:33:59Z",
-			call          : "https://api.catapult.inetwork.com/v1/users/{userId}/calls/{callId}",
-			digits        : "123"
-		};
+	var completeGather = {
+		state : "completed"
+	};
 
-		var completeGather = {
-			state : "completed"
-		};
+	var testEvent = {
+		"id"   : "callEventId1",
+		"time" : "2012-09-19T13:55:41.343Z",
+		"name" : "create"
+	};
 
-		var testEvent = {
-			"id"   : "callEventId1",
-			"time" : "2012-09-19T13:55:41.343Z",
-			"name" : "create"
-		};
+	var eventList = [ testEvent ];
 
-		var eventList = [ testEvent ];
+	var recordingList = [
+		{
+			"endTime"   : "2013-02-08T12:06:55.007Z",
+			"id"        : "{recordingId1}",
+			"media"     : "https://.../v1/users/.../media/{callId}-1.wav",
+			"call"      : "https://.../v1/users/.../calls/{callId}",
+			"startTime" : "2013-02-08T12:05:17.807Z",
+			"state"     : "complete"
+		}
+	];
 
-		var recordingList = [
-			{
-				"endTime"   : "2013-02-08T12:06:55.007Z",
-				"id"        : "{recordingId1}",
-				"media"     : "https://.../v1/users/.../media/{callId}-1.wav",
-				"call"      : "https://.../v1/users/.../calls/{callId}",
-				"startTime" : "2013-02-08T12:05:17.807Z",
-				"state"     : "complete"
-			}
-		];
+	var transcriptionList = [
+		{
+			"chargeableDuration" : 60,
+			"id"                 : "{transcription-id}",
+			"state"              : "completed",
+			"time"               : "2014-10-09T12:09:16Z",
+			"text"               : "{transcription-text}",
+			"textSize"           : 3627,
+			"textUrl"            : "{url-to-full-text}"
+		}
+	];
 
-		var transcriptionList = [
-			{
-				"chargeableDuration" : 60,
-				"id"                 : "{transcription-id}",
-				"state"              : "completed",
-				"time"               : "2014-10-09T12:09:16Z",
-				"text"               : "{transcription-text}",
-				"textSize"           : 3627,
-				"textUrl"            : "{url-to-full-text}"
-			}
-		];
+	var dtmfOut = {
+		"dtmfOut" : "1234"
+	};
 
-		var dtmfOut = {
-			"dtmfOut" : "1234"
-		};
+	describe("global methods", function () {
 
 		before(function () {
 			client = new CatapultClient({
@@ -310,9 +311,9 @@ describe("Call API", function () {
 				fromDateTime : fromDateTime,
 				toDateTime   : toDateTime
 			})
-			.then(function (calls) {
-				calls[0].should.eql(callsList[0]);
-				calls[1].should.eql(callsList[1]);
+			.then(function (callsResponse) {
+				callsResponse.calls[0].should.eql(callsList[0]);
+				callsResponse.calls[1].should.eql(callsList[1]);
 			});
 		});
 
@@ -320,13 +321,36 @@ describe("Call API", function () {
 			client.Call.list({
 				fromDateTime : fromDateTime,
 				toDateTime   : toDateTime
-			}, function (err, calls) {
+			}, function (err, callsResponse) {
 				if (err) {
 					throw err;
 				}
-				calls[0].should.eql(callsList[0]);
-				calls[1].should.eql(callsList[1]);
+				callsResponse.calls[0].should.eql(callsList[0]);
+				callsResponse.calls[1].should.eql(callsList[1]);
 				done();
+			});
+		});
+
+		it("hasNextPage should be false for those calls", function () {
+			return client.Call.list({
+				fromDateTime : fromDateTime,
+				toDateTime   : toDateTime
+			})
+			.then(function (callsResponse) {
+				callsResponse.hasNextPage.should.be.false;
+			});
+		});
+
+		it("those calls should not have more pages", function () {
+			return client.Call.list({
+				fromDateTime : fromDateTime,
+				toDateTime   : toDateTime
+			})
+			.then(function (callsResponse) {
+				return callsResponse.getNextPage();
+			})
+			.catch(function (err) {
+				err.should.equal("Next page does not exist.");
 			});
 		});
 
@@ -378,6 +402,44 @@ describe("Call API", function () {
 
 		it("should send dtmf string", function () {
 			return client.Call.sendDtmf(testCall.id, dtmfOut.dtmfOut);
+		});
+	});
+
+	describe("pagination tests", function () {
+
+		before(function () {
+			nock("https://api.catapult.inetwork.com")
+			.persist()
+			.get("/v1/users/" + userId + "/calls")
+			.reply(200, callsList,
+				{
+					"link" : "<https://api.catapult.inetwork.com/v1/users/" + userId +
+					"/calls?page=0&size=25>; rel=\"first\"," +
+					"<https://api.catapult.inetwork.com/v1/users/" + userId + "/calls>; rel=\"next\""
+				});
+			nock.disableNetConnect();
+		});
+
+		after(function () {
+			nock.cleanAll();
+			nock.enableNetConnect();
+		});
+
+		it("should return a list of calls", function () {
+			return client.Call.list({})
+			.then(function (callResponse) {
+				callResponse.calls.should.eql(callsList);
+			});
+		});
+
+		it("With a link to the next page", function () {
+			return client.Call.list({})
+			.then(function (callResponse) {
+				return callResponse.getNextPage();
+			})
+			.then(function (moreCalls) {
+				moreCalls.calls.should.eql(callsList);
+			});
 		});
 	});
 });

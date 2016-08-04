@@ -73,14 +73,20 @@ describe("Account API", function () {
 			});
 		});
 
-		it("those transactions should not have more pages", function () {
+		it("hasNextPage should be false for those transactions", function () {
 			return client.Account.getTransactions({})
 			.then(function (response) {
 				response.hasNextPage.should.be.false;
-				return response.getNextPage()
-				.catch(function (err) {
-					err.should.equal("Next page does not exist.");
-				});
+			});
+		});
+
+		it("those transactions should not have more pages", function () {
+			return client.Account.getTransactions({})
+			.then(function (response) {
+				return response.getNextPage();
+			})
+			.catch(function (err) {
+				err.should.equal("Next page does not exist.");
 			});
 		});
 
@@ -103,10 +109,16 @@ describe("Account API", function () {
 				nock.enableNetConnect();
 			});
 
-			it("should return a list of accounts with a page to the next link", function () {
+			it("should return a list of accounts", function () {
 				return client.Account.getTransactions({ size : 25 })
 				.then(function (response) {
 					response.transactions.should.eql(transactionList);
+				});
+			});
+
+			it("With a link to the next page", function () {
+				return client.Account.getTransactions({ size : 25 })
+				.then(function (response) {
 					return response.getNextPage();
 				})
 				.then(function (moreTransactions) {

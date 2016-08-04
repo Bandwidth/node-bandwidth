@@ -101,14 +101,20 @@ describe("PhoneNumber API", function () {
 			});
 		});
 
-		it("those phoneNumbers should not have more pages", function () {
+		it("hasNextPage should be false for those phoneNumbers", function () {
 			return client.PhoneNumber.list({})
 			.then(function (phoneNumbersResponse) {
 				phoneNumbersResponse.hasNextPage.should.be.false;
-				return phoneNumbersResponse.getNextPage()
-				.catch(function (err) {
-					err.should.equal("Next page does not exist.");
-				});
+			});
+		});
+
+		it("those phoneNumbers should not have more pages", function () {
+			return client.PhoneNumber.list({})
+			.then(function (phoneNumbersResponse) {
+				return phoneNumbersResponse.getNextPage();
+			})
+			.catch(function (err) {
+				err.should.equal("Next page does not exist.");
 			});
 		});
 
@@ -139,10 +145,16 @@ describe("PhoneNumber API", function () {
 				nock.enableNetConnect();
 			});
 
-			it("should return a list of phoneNumbers with a page to the next link", function () {
+			it("should return a list of phoneNumers", function () {
 				return client.PhoneNumber.list({ size : 25 })
 				.then(function (phoneNumbersResponse) {
 					phoneNumbersResponse.phoneNumbers.should.eql(phoneNumbersList);
+				});
+			});
+
+			it("with a link to the next page", function () {
+				return client.PhoneNumber.list({ size : 25 })
+				.then(function (phoneNumbersResponse) {
 					return phoneNumbersResponse.getNextPage();
 				})
 				.then(function (morePhoneNumbers) {

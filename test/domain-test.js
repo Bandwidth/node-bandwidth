@@ -80,14 +80,20 @@ describe("Domain API", function () {
 			});
 		});
 
-		it("those domains should not have more pages", function () {
+		it("hasNextPage should be false for those domains", function () {
 			return client.Domain.list({})
 			.then(function (domainsResponse) {
 				domainsResponse.hasNextPage.should.be.false;
-				return domainsResponse.getNextPage()
-				.catch(function (err) {
-					err.should.equal("Next page does not exist.");
-				});
+			});
+		});
+
+		it("those domains should not have more pages", function () {
+			return client.Domain.list({})
+			.then(function (domainsResponse) {
+				return domainsResponse.getNextPage();
+			})
+			.catch(function (err) {
+				err.should.equal("Next page does not exist.");
 			});
 		});
 
@@ -114,10 +120,16 @@ describe("Domain API", function () {
 				nock.enableNetConnect();
 			});
 
-			it("should return a list of applications with a page to the next link", function () {
+			it("should return a list of applications", function () {
 				return client.Domain.list({ size : 25 })
 				.then(function (domainsResponse) {
 					domainsResponse.domains.should.eql(domainsList);
+				});
+			});
+
+			it("with a link to the next page", function () {
+				return client.Domain.list({ size : 25 })
+				.then(function (domainsResponse) {
 					return domainsResponse.getNextPage();
 				})
 				.then(function (moreDomains) {

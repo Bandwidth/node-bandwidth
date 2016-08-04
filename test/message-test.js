@@ -104,8 +104,7 @@ describe("Message API", function () {
 				toDateTime   : toDateTime
 			})
 			.then(function (messageResponse) {
-				var messages = messageResponse.messages;
-				messages.should.eql(messagesList);
+				messageResponse.messages.should.eql(messagesList);
 			});
 		});
 
@@ -117,9 +116,31 @@ describe("Message API", function () {
 				if (err) {
 					throw err;
 				}
-				var messages = messageResponse.messages;
-				messages.should.eql(messagesList);
+				messageResponse.messages.should.eql(messagesList);
 				done();
+			});
+		});
+
+		it("hasNextPage should be false for those messages", function () {
+			return client.Message.list({
+				fromDateTime : fromDateTime,
+				toDateTime   : toDateTime
+			})
+			.then(function (messageResponse) {
+				messageResponse.hasNextPage.should.be.false;
+			});
+		});
+
+		it("those messages should not have more pages", function () {
+			return client.Message.list({
+				fromDateTime : fromDateTime,
+				toDateTime   : toDateTime
+			})
+			.then(function (messageResponse) {
+				return messageResponse.getNextPage();
+			})
+			.catch(function (err) {
+				err.should.equal("Next page does not exist.");
 			});
 		});
 	});
@@ -137,7 +158,7 @@ describe("Message API", function () {
 						"/v1/users/" + userId + "/messages?" + "sortKeyLT=1>; rel=\"next\""
 				})
 				.get("/v1/users/" + userId + "/messages?sortKeyLT=1")
-				.reply(200, []);
+				.reply(200, messagesList);
 		});
 
 		after(function () {
@@ -145,60 +166,20 @@ describe("Message API", function () {
 			nock.enableNetConnect();
 		});
 
-		it("should get the next page of messages (if it exists)", function () {
-			//Simulating a response which has 1 page of messages
+		it("should return a list of messages", function () {
 			return client.Message.list()
 			.then(function (messageResponse) {
-
-				var messages = messageResponse.messages;
-
-				messages[0].should.eql(messagesList[0]);
-				messages[1].should.eql(messagesList[1]);
-
-				return messageResponse.getNextPage();
-			})
-			.then(function (otherMessageResponse) {
-
-				messages = otherMessageResponse.messages;
-
-				(messages[0] === undefined).should.be.true;
-
-				return otherMessageResponse.getNextPage();
-			})
-			.catch(function (err) {
-				err.should.eql("Next page does not exist.");
+				messageResponse.messages.should.eql(messagesList);
 			});
 		});
-	});
 
-	describe("list function with no messages available", function () {
-
-		before(function () {
-			nock.disableNetConnect();
-
-			nock("https://api.catapult.inetwork.com")
-				.persist()
-				.get("/v1/users/" + userId + "/messages")
-				.reply(200, []);
-		});
-
-		after(function () {
-			nock.cleanAll();
-			nock.enableNetConnect();
-		});
-
-		it("should not get the next page of messages", function () {
-			//Simulating a response which has 0 pages of messages
+		it("with a link to the next page", function () {
 			return client.Message.list()
 			.then(function (messageResponse) {
-
-				var messages = messageResponse.messages;
-				(messages[0] === undefined).should.be.true;
-
 				return messageResponse.getNextPage();
 			})
-			.catch(function (err) {
-				err.should.eql("Next page does not exist.");
+			.then(function (more) {
+				more.messages.should.eql(messagesList);
 			});
 		});
 	});

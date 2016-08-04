@@ -164,14 +164,20 @@ describe("Bridge API", function () {
 			});
 		});
 
-		it("those bridges should not have more pages", function () {
+		it("hasNextPage should be false for those bridges", function () {
 			return client.Bridge.list({})
 			.then(function (bridgesResponse) {
 				bridgesResponse.hasNextPage.should.be.false;
-				return bridgesResponse.getNextPage()
-				.catch(function (err) {
-					err.should.equal("Next page does not exist.");
-				});
+			});
+		});
+
+		it("those bridges should not have more pages", function () {
+			return client.Bridge.list({})
+			.then(function (bridgesResponse) {
+				return bridgesResponse.getNextPage();
+			})
+			.catch(function (err) {
+				err.should.equal("Next page does not exist.");
 			});
 		});
 
@@ -230,10 +236,16 @@ describe("Bridge API", function () {
 				nock.enableNetConnect();
 			});
 
-			it("should return a list of bridges with a page to the next link", function () {
+			it("should return a list of bridges", function () {
 				return client.Bridge.list({ size : 25 })
 				.then(function (bridgesResponse) {
 					bridgesResponse.bridges.should.eql(bridgesList);
+				});
+			});
+
+			it("with a link to the next page", function () {
+				return client.Bridge.list({ size : 25 })
+				.then(function (bridgesResponse) {
 					return bridgesResponse.getNextPage();
 				})
 				.then(function (moreBridges) {
