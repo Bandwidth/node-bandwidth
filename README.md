@@ -2,8 +2,9 @@
 
 A Node.js client library for the Bandwidth Application Platform
 
-2.0 Developer Preview
-> Please note: this developer preview is still under heavy development, and is only intended to be used to gather feedback from developers using the SDK. Many things will change, and this code should not be used in any production applications.
+v2.0 Is released
+
+For version 1.3.3 check [here](https://github.com/bandwidthcom/node-bandwidth/tree/v1.3.3)
 
 
 ## [Full API Reference](docs/api.md)
@@ -13,7 +14,7 @@ For the full API Reference, pelase see [docs/api.md](docs/api.md).
 
 Because this version is not published via npm, you must install it by specifying the specific GitHub branch. Running the following command will install and save the latest version:
 
-	$ npm install --save https://github.com/bandwidthcom/node-bandwidth.git#2.0-preview
+	$ npm install --save https://github.com/bandwidthcom/node-bandwidth.git
 
 ## Client initialization
 
