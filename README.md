@@ -22,6 +22,19 @@ For the full API Reference, please see
 
 	npm install --save node-bandwidth
 
+## Supported Versions
+`node-bandwidth` should work on all levels of node greater than `0.10.*`. However, due to the rapid development in the Node & npm environment and the ever increasing surface area, we can only provide _support_ on [LTS versions of Node](https://github.com/nodejs/LTS)
+
+| Version | Support Level |
+|---------|---------------|
+| <0.10.* | Unsupported | 
+| 0.10.* | Supported |
+| 0.12.* | Supported |
+| >=4.0 <4.2 | Unsupported |
+| __>=4.2 <5.* (Node v4 argon LTS)__ | **Recommended** |
+| 5.* | Unsupported |
+| 6.* | Unsupported |
+
 ## Client initialization
 
 All interaction with the API is done through a `client` Object. The client constructor takes an Object containing configuration options. The following options are supported:
