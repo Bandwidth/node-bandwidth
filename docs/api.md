@@ -1,3 +1,5 @@
+## [HTML Docs](http://bwdemos.com/node-bandwidth/index.html)
+
 ## Classes
 
 <dl>
