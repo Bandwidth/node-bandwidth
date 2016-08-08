@@ -41,17 +41,17 @@ All interaction with the API is done through a `client` Object. The client const
 
 | Field name  | Description           | Default value                       | Required |
 |-------------|-----------------------|-------------------------------------|----------|
-| `userId`    | Your Catapult user ID | `undefined`                         | Yes      |
+| `userId`    | Your Bandwidth user ID | `undefined`                         | Yes      |
 | `apiToken`  | Your API token        | `undefined`                         | Yes      |
 | `apiSecret` | Your API secret       | `undefined`                         | Yes      |
-| `baseUrl`   | The Catapult API URL  | `https://api.catapult.inetwork.com` | No       |
+| `baseUrl`   | The Bandwidth API URL  | `https://api.catapult.inetwork.com` | No       |
 
 To initialize the client object, provide your API credentials which can be found on your account page in [the portal](https://catapult.inetwork.com/pages/catapult.jsf).
 
 ```javascript
-var CatapultClient = require("node-bandwidth");
+var Bandwidth = require("node-bandwidth");
 
-var client = new CatapultClient({
+var client = new Bandwidth({
 	userId    : "YOUR_USER_ID", // <-- note, this is not the same as the username you used to login to the portal
 	apiToken  : "YOUR_API_TOKEN",
 	apiSecret : "YOUR_API_SECRET"
