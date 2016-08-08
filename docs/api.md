@@ -1,5 +1,3 @@
-## [HTML Docs](http://bwdemos.com/node-bandwidth/index.html)
-
 ## Classes
 
 <dl>
@@ -7,9 +5,13 @@
 <dd></dd>
 <dt><a href="#AccountResponse">AccountResponse</a> : <code>Object</code></dt>
 <dd></dd>
+<dt><a href="#TransactionListResponse">TransactionListResponse</a> : <code>Object</code></dt>
+<dd></dd>
 <dt><a href="#TransactionResponse">TransactionResponse</a> : <code>Object</code></dt>
 <dd></dd>
 <dt><a href="#Application">Application</a></dt>
+<dd></dd>
+<dt><a href="#ApplicationListResponse">ApplicationListResponse</a> : <code>Object</code></dt>
 <dd></dd>
 <dt><a href="#ApplicationResponse">ApplicationResponse</a> : <code>Object</code></dt>
 <dd></dd>
@@ -20,6 +22,8 @@
 <dt><a href="#OrderedNumberResponse">OrderedNumberResponse</a> : <code>Object</code></dt>
 <dd></dd>
 <dt><a href="#Bridge">Bridge</a></dt>
+<dd></dd>
+<dt><a href="#BridgeListResponse">BridgeListResponse</a> : <code>Object</code></dt>
 <dd></dd>
 <dt><a href="#BridgeResponse">BridgeResponse</a> : <code>Object</code></dt>
 <dd></dd>
@@ -97,7 +101,7 @@
 * [Account](#Account)
     * [new Account()](#new_Account_new)
     * [.get(accountId, callback)](#Account+get) ⇒ <code>[AccountResponse](#AccountResponse)</code>
-    * [.getTransactions(params, [toDate], [fromDate], [type], callback)](#Account+getTransactions) ⇒ <code>[Array.&lt;TransactionResponse&gt;](#TransactionResponse)</code>
+    * [.getTransactions(params, [toDate], [fromDate], [type], callback)](#Account+getTransactions) ⇒ <code>[TransactionListResponse](#TransactionListResponse)</code>
 
 <a name="new_Account_new"></a>
 
@@ -127,11 +131,11 @@ client.Account.get(function(err, info){});
 ```
 <a name="Account+getTransactions"></a>
 
-### account.getTransactions(params, [toDate], [fromDate], [type], callback) ⇒ <code>[Array.&lt;TransactionResponse&gt;](#TransactionResponse)</code>
+### account.getTransactions(params, [toDate], [fromDate], [type], callback) ⇒ <code>[TransactionListResponse](#TransactionListResponse)</code>
 Gets a list of transactions from user's account.
 
 **Kind**: instance method of <code>[Account](#Account)</code>  
-**Returns**: <code>[Array.&lt;TransactionResponse&gt;](#TransactionResponse)</code> - A promise for the list of transactions  
+**Returns**: <code>[TransactionListResponse](#TransactionListResponse)</code> - A promise for the list of transactions  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -143,6 +147,23 @@ Gets a list of transactions from user's account.
 | [type] | <code>String</code> |  | Return only transactions that are this type. |
 | callback | <code>function</code> |  | A callback with the list of transactions |
 
+**Example**  
+```js
+//Promise
+client.Account.getTransactions()
+	.then(function (response) {
+		console.log(response.transactions);
+		if(response.hasNextPage) {
+			return response.getNextPage();
+		}
+		else {
+			return {transactions: []};
+		}
+	})
+	.then(function(response) {
+		console.log(response.transactions);
+	});
+```
 <a name="AccountResponse"></a>
 
 ## AccountResponse : <code>Object</code>
@@ -153,6 +174,18 @@ Gets a list of transactions from user's account.
 | --- | --- | --- |
 | balance | <code>String</code> | User's account balance in dollars, as a string; the currency symbol is not included. |
 | type | <code>String</code> | The type of account configured for your user. |
+
+<a name="TransactionListResponse"></a>
+
+## TransactionListResponse : <code>Object</code>
+**Kind**: global class  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| transactions | <code>[Array.&lt;TransactionResponse&gt;](#TransactionResponse)</code> | Array of transactions |
+| getNextPage | <code>function</code> | Calls the next page function |
+| hasNextPage | <code>boolean</code> | True/False flag for next |
 
 <a name="TransactionResponse"></a>
 
@@ -177,7 +210,7 @@ Gets a list of transactions from user's account.
 
 * [Application](#Application)
     * [new Application(client)](#new_Application_new)
-    * [.list(params, [callback])](#Application+list) ⇒ <code>[Array.&lt;ApplicationResponse&gt;](#ApplicationResponse)</code>
+    * [.list(params, [callback])](#Application+list) ⇒ <code>[ApplicationListResponse](#ApplicationListResponse)</code>
     * [.create(params, [callback])](#Application+create) ⇒ <code>[ApplicationResponse](#ApplicationResponse)</code>
     * [.get(applicationId, [callback])](#Application+get) ⇒ <code>[ApplicationResponse](#ApplicationResponse)</code>
     * [.update(applicationId, params, [callback])](#Application+update)
@@ -195,11 +228,11 @@ Application
 
 <a name="Application+list"></a>
 
-### application.list(params, [callback]) ⇒ <code>[Array.&lt;ApplicationResponse&gt;](#ApplicationResponse)</code>
+### application.list(params, [callback]) ⇒ <code>[ApplicationListResponse](#ApplicationListResponse)</code>
 List the user's applications
 
 **Kind**: instance method of <code>[Application](#Application)</code>  
-**Returns**: <code>[Array.&lt;ApplicationResponse&gt;](#ApplicationResponse)</code> - A promise for the list of applications, has a getNextPage
+**Returns**: <code>[ApplicationListResponse](#ApplicationListResponse)</code> - A promise for the list of applications, has a getNextPage
 function if the number of applications returned by the query exceeds the page size.  
 
 | Param | Type | Description |
@@ -208,6 +241,23 @@ function if the number of applications returned by the query exceeds the page si
 | [params.size] | <code>Number</code> | The maximum number of applications returned by the query per page (Max size: 1000). |
 | [callback] | <code>function</code> | A callback for the list of applications. |
 
+**Example**  
+```js
+//Promise
+client.Application.list()
+.then(function (response) {
+	console.log(response.applications);
+	if(response.hasNextPage) {
+		return response.getNextPage();
+	}
+	else {
+		return {applications: []};
+	}
+})
+.then(function(response) {
+	console.log(response.applications);
+});
+```
 <a name="Application+create"></a>
 
 ### application.create(params, [callback]) ⇒ <code>[ApplicationResponse](#ApplicationResponse)</code>
@@ -216,20 +266,46 @@ Create a new application
 **Kind**: instance method of <code>[Application](#Application)</code>  
 **Returns**: <code>[ApplicationResponse](#ApplicationResponse)</code> - A promise for the newly created application.  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| params | <code>Object</code> | Parameters for creating a new call |
-| [params.name] | <code>String</code> | A name you choose for this application. |
-| [params.incomingCallUrl] | <code>String</code> | A URL where call events will be sent for an inbound call. This is the endpoint where the Application Platform will send all call events. Either incomingCallUrl or incomingMessageUrl is required. |
-| [params.incomingCallUrlCallbackTimeout] | <code>String</code> | Determine how long should the platform wait for incomingCallUrl's response before timing out in milliseconds. |
-| [params.incomingCallFallbackUrl] | <code>String</code> | The URL used to send the callback event if the request to incomingCallUrl fails. |
-| [params.incomingMessageUrl] | <code>String</code> | A URL where message events will be sent for an inbound message. This is the endpoint where the Application Platform will send all message events. Either incomingMessageUrl or incomingCallUrl is required. |
-| [params.incomingMessageUrlCallbackTimeout] | <code>Number</code> | Determine how long should the platform wait for incomingMessageUrl's response before timing out in milliseconds. |
-| [params.incomingMessageFallbackUrl] | <code>String</code> | The URL used to send the callback event if the request to incomingMessageUrl fails. |
-| [params.callbackHttpMethod] | <code>String</code> | Determine if the callback event should be sent via HTTP GET or HTTP POST. Values are "get" or "post", default: "post". |
-| [params.autoAnswer] | <code>Boolean</code> | Determines whether or not an incoming call should be automatically answered. Default value is 'true'. |
-| [callback] | <code>function</code> | A callback for the list of applications |
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| params | <code>Object</code> |  | Parameters for creating a new call |
+| params.name | <code>String</code> |  | A name you choose for this application. |
+| params.incomingCallUrl | <code>String</code> |  | A URL where call events will be sent for an inbound call. This is the endpoint where the Application Platform will send all call events. Either incomingCallUrl or incomingMessageUrl is required. |
+| [params.incomingCallUrlCallbackTimeout] | <code>String</code> |  | Determine how long should the platform wait for incomingCallUrl's response before timing out in milliseconds. |
+| [params.incomingCallFallbackUrl] | <code>String</code> |  | The URL used to send the callback event if the request to incomingCallUrl fails. |
+| params.incomingMessageUrl | <code>String</code> |  | A URL where message events will be sent for an inbound message. This is the endpoint where the Application Platform will send all message events. Either incomingMessageUrl or incomingCallUrl is required. |
+| [params.incomingMessageUrlCallbackTimeout] | <code>Number</code> |  | Determine how long should the platform wait for incomingMessageUrl's response before timing out in milliseconds. |
+| [params.incomingMessageFallbackUrl] | <code>String</code> |  | The URL used to send the callback event if the request to incomingMessageUrl fails. |
+| [params.callbackHttpMethod] | <code>String</code> |  | Determine if the callback event should be sent via HTTP GET or HTTP POST. Values are "get" or "post", default: "post". |
+| [params.autoAnswer] | <code>Boolean</code> | <code>true</code> | Determines whether or not an incoming call should be automatically answered. Default value is 'true'. |
+| [callback] | <code>function</code> |  | A callback for the list of applications |
 
+**Example**  
+```js
+//Promise
+client.Application.create({
+	name: 'SampleApp',
+	incomingCallUrl: 'http://your-server.com/CallCallback',
+	incomingMessageUrl: 'http://your-server.com/MsgCallback'
+})
+.then(function (response) {
+	console.log(response);
+});
+
+//Callback
+client.Application.create({
+	name: 'SampleApp2',
+	incomingCallUrl: 'http://your-server.com/CallCallback',
+	incomingMessageUrl: 'http://your-server.com/MsgCallback'
+}, function (err, response) {
+	if (err) {
+		console.log(err);
+	}
+	else {
+		console.log(response)
+	}
+});
+```
 <a name="Application+get"></a>
 
 ### application.get(applicationId, [callback]) ⇒ <code>[ApplicationResponse](#ApplicationResponse)</code>
@@ -243,6 +319,25 @@ Get an application.
 | applicationId | <code>String</code> | The ID of the application to get. |
 | [callback] | <code>function</code> | A callback for the application. |
 
+**Example**  
+```js
+// Promise
+client.Application.get('a-j4f2jz53mq')
+.then(function (response) {
+	console.log(response);
+});
+
+// Callback
+client.Application.get('a-zuwwfzzrbea',
+	function (err, response) {
+		if (err) {
+			console.log(err);
+		}
+		else {
+			console.log(response);
+		}
+});
+```
 <a name="Application+update"></a>
 
 ### application.update(applicationId, params, [callback])
@@ -265,6 +360,32 @@ Make changes to an application.
 | [params.autoAnswer] | <code>Boolean</code> | Determines whether or not an incoming call should be automatically answered. Default value is 'true'. |
 | [callback] | <code>function</code> | A callback for the list of applications |
 
+**Example**  
+```js
+// Promise
+client.Application.update('a-j4f2j6vjmqz53mq', {
+	name: 'Rename App1',
+	autoAnswer: false
+})
+.then(function (response) {
+	console.log(response);
+});
+
+// Callback
+client.Application.update('a-zudcfzzrbea',
+	{
+		name: 'Rename App2',
+		autoAnswer: false
+	},
+	function (err, response) {
+		if (err) {
+			console.log(err);
+		}
+		else {
+			console.log(response);
+		}
+});
+```
 <a name="Application+delete"></a>
 
 ### application.delete(applicationId, [callback])
@@ -276,6 +397,37 @@ Delete an application.
 | --- | --- | --- |
 | applicationId | <code>String</code> | The ID of the application to delete. |
 | [callback] | <code>function</code> | A callback for the application. |
+
+**Example**  
+```js
+// Promise
+client.Application.delete('a-j4f2j6mqz53mq')
+.then(function (response) {
+	console.log(response);
+});
+
+// Callback
+client.Application.delete('a-zuwwzrbea',
+	function (err, response) {
+		if (err) {
+			console.log(err);
+		}
+		else {
+			console.log(response);
+		}
+});
+```
+<a name="ApplicationListResponse"></a>
+
+## ApplicationListResponse : <code>Object</code>
+**Kind**: global class  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| applications | <code>[Array.&lt;ApplicationResponse&gt;](#ApplicationResponse)</code> | Array of applications |
+| getNextPage | <code>function</code> | Calls the next page function |
+| hasNextPage | <code>boolean</code> | True/False flag for next |
 
 <a name="ApplicationResponse"></a>
 
@@ -295,6 +447,11 @@ Delete an application.
 | incomingMessageUrl | <code>String</code> | A URL where message events will be sent for an inbound message. This is the endpoint where the Application Platform will send all message events. Either incomingMessageUrl or incomingCallUrl is required. |
 | incomingMessageUrlCallbackTimeout | <code>Number</code> | Determine how long should the platform wait for incomingMessageUrl's response before timing out in milliseconds. |
 | incomingMessageFallbackUrl | <code>String</code> | The URL used to send the callback event if the request to incomingMessageUrl fails. |
+
+<a name="new_ApplicationResponse_new"></a>
+
+### new ApplicationResponse()
+ApplicationResponse
 
 <a name="AvailableNumber"></a>
 
@@ -343,6 +500,27 @@ client.AvailableNumber.search("local", { areaCode : "910", quantity : 3 }).then(
 // Callback
 client.AvailableNumber.search("local", { areaCode : "910", quantity : 3 }, function (err, numbers) {});
 ```
+**Example**  
+```js
+//Promise
+client.AvailableNumber.search("tollFree", {
+	quantity : 3 })
+.then(function (numbers) {
+	console.log(numbers)
+});
+
+// Callback
+client.AvailableNumber.search("tollFree", {
+	quantity : 3 },
+	function (err, numbers) {
+		if(err) {
+			console.log(err);
+		}
+		else {
+			console.log(numbers);
+		}
+	});
+```
 <a name="AvailableNumber+searchAndOrder"></a>
 
 ### availableNumber.searchAndOrder(type, params, callback) ⇒ <code>[Array.&lt;OrderedNumberResponse&gt;](#OrderedNumberResponse)</code>
@@ -372,7 +550,29 @@ Search for available local or tollFree numbers and order them
 client.AvailableNumber.searchAndOrder("local", { areaCode : "910", quantity : 2 }).then(function (numbers) {});
 
 // Callback
-client.AvailableNumber.searchAndOrder("local", { areaCode : "910", quantity : 2 }, function (err, numbers) {});
+client.AvailableNumber.serchAndOrder("local", { areaCode : "910", quantity : 2 }, function (err, numbers) {});
+```
+**Example**  
+```js
+//Search and order tollfree numbers
+//Promise
+client.AvailableNumber.searchAndOrder("tollFree", {
+	quantity : 1 })
+.then(function (numbers) {
+	console.log(numbers)
+});
+
+// Callback
+client.AvailableNumber.searchAndOrder("tollFree", {
+	quantity : 1 },
+	function (err, numbers) {
+		if(err) {
+			console.log(err);
+		}
+		else {
+			console.log(numbers);
+		}
+	});
 ```
 <a name="AvailableNumberResponse"></a>
 
@@ -411,7 +611,7 @@ client.AvailableNumber.searchAndOrder("local", { areaCode : "910", quantity : 2 
     * [new Bridge()](#new_Bridge_new)
     * [.create(params, [callback])](#Bridge+create) ⇒ <code>[BridgeResponse](#BridgeResponse)</code>
     * [.get(bridgeId, callback)](#Bridge+get) ⇒ <code>[BridgeResponse](#BridgeResponse)</code>
-    * [.list(params, callback)](#Bridge+list) ⇒ <code>[Array.&lt;BridgeResponse&gt;](#BridgeResponse)</code>
+    * [.list(params, callback)](#Bridge+list) ⇒ <code>[BridgeListResponse](#BridgeListResponse)</code>
     * [.update(bridgeId, params, [callback])](#Bridge+update) ⇒ <code>[BridgeResponse](#BridgeResponse)</code>
     * [.speakSentence(bridgeId, sentence, [callback])](#Bridge+speakSentence) ⇒ <code>Promise</code>
     * [.playAudioFile(bridgeId, fileUrl, [callback])](#Bridge+playAudioFile) ⇒ <code>Promise</code>
@@ -438,6 +638,30 @@ Create a new bridge
 | [params.callIds] | <code>Array.&lt;String&gt;</code> |  | The list of call ids in the bridge. If the list of call ids is not provided the bridge is logically created and it can be used to place calls later. |
 | [callback] | <code>function</code> |  | Callback with the newly created bridge |
 
+**Example**  
+```js
+//Promise
+client.Bridge.create({
+	bridgeAudio: true,
+	callIds: ['c-qbs5kwrsyx6wsdi', 'c-zan4g74pprsq']
+})
+.then(function (response) {
+	console.log(response);
+});
+
+//Callback
+client.Bridge.create({
+	bridgeAudio: true,
+	callIds: ['c-qbsx6wsdi', 'c-zan4g7prsq']
+}, function (err, response) {
+		if(err) {
+			console.log(err);
+		}
+		else {
+			console.log(response);
+		}
+	});
+```
 <a name="Bridge+get"></a>
 
 ### bridge.get(bridgeId, callback) ⇒ <code>[BridgeResponse](#BridgeResponse)</code>
@@ -451,13 +675,32 @@ Gets information about a bridge.
 | bridgeId | <code>String</code> | The ID of the bridge to get |
 | callback | <code>function</code> | A callback with the call information |
 
+**Example**  
+```js
+//Promise
+client.Bridge.get('brg-65dhjwrmbasiei')
+.then(function (response) {
+	console.log(response);
+});
+
+//Callback
+client.Bridge.get('brg-65dhmbasiei',
+	function (err, response) {
+		if(err) {
+			console.log(err);
+		}
+		else {
+			console.log(response);
+		}
+	});
+```
 <a name="Bridge+list"></a>
 
-### bridge.list(params, callback) ⇒ <code>[Array.&lt;BridgeResponse&gt;](#BridgeResponse)</code>
+### bridge.list(params, callback) ⇒ <code>[BridgeListResponse](#BridgeListResponse)</code>
 Gets a list of bridges.
 
 **Kind**: instance method of <code>[Bridge](#Bridge)</code>  
-**Returns**: <code>[Array.&lt;BridgeResponse&gt;](#BridgeResponse)</code> - A promise for the list of bridges  
+**Returns**: <code>[BridgeListResponse](#BridgeListResponse)</code> - A promise for the list of bridges  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -465,6 +708,22 @@ Gets a list of bridges.
 | [params.size] | <code>Number</code> | <code>25</code> | Used for pagination to indicate the size of each page requested for querying a list of bridges. If no value is specified the default value is 25 (maximum value 1000). |
 | callback | <code>function</code> |  | A callback with the list of bridges |
 
+**Example**  
+```js
+client.Bridge.list()
+.then(function (response) {
+	console.log(response.bridges);
+	if(response.hasNextPage) {
+		return response.getNextPage();
+	}
+	else {
+		return {bridges: []};
+	}
+})
+.then(function(response) {
+	console.log(response.bridges);
+});
+```
 <a name="Bridge+update"></a>
 
 ### bridge.update(bridgeId, params, [callback]) ⇒ <code>[BridgeResponse](#BridgeResponse)</code>
@@ -481,6 +740,28 @@ Update the bridge
 | params.callIds | <code>Array.&lt;String&gt;</code> | The list of call ids in the bridge. |
 | [callback] | <code>function</code> | Callback with the newly created bridge |
 
+**Example**  
+```js
+//Promise
+client.Bridge.update('brg-65dasiei', {
+	bridgeAudio: false
+})
+.then(function (response) {
+	console.log(response);
+});
+
+//Callback
+client.Bridge.update('brg-65dhjbanasiei', {
+	bridgeAudio: false
+}, function (err, response) {
+		if(err) {
+			console.log(err);
+		}
+		else {
+			console.log(response);
+		}
+	});
+```
 <a name="Bridge+speakSentence"></a>
 
 ### bridge.speakSentence(bridgeId, sentence, [callback]) ⇒ <code>Promise</code>
@@ -589,6 +870,37 @@ Gets information about a bridge.
 | --- | --- | --- |
 | bridgeId | <code>String</code> | The ID of the bridge to get |
 | callback | <code>function</code> | A callback with the call information |
+
+**Example**  
+```js
+//Promise
+client.Bridge.getCalls('brg-65dhjbiei')
+.then(function (response) {
+	console.log(response);
+});
+
+//Callback
+client.Bridge.getCalls('brg-65dhjrmbasiei',
+	function (err, response) {
+		if(err) {
+			console.log(err);
+		}
+		else {
+			console.log(response);
+		}
+	});
+```
+<a name="BridgeListResponse"></a>
+
+## BridgeListResponse : <code>Object</code>
+**Kind**: global class  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| bridges | <code>[Array.&lt;BridgeResponse&gt;](#BridgeResponse)</code> | Array of bridges |
+| getNextPage | <code>function</code> | Calls the next page function |
+| hasNextPage | <code>boolean</code> | True/False flag for next |
 
 <a name="BridgeResponse"></a>
 
