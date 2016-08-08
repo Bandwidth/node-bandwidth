@@ -18,7 +18,7 @@ For the full API Reference, please see
 * [Single MD file](https://github.com/bandwidthcom/node-bandwidth/blob/master/docs/api.md)
 
 
-## Installing the developer preview
+## Installing the SDK
 
 	npm install --save node-bandwidth
 
@@ -212,6 +212,6 @@ client.Message.send({
     * [X] SpeakSentence
     * [X] Transfer
 
-## Providing feedback on the developer preview
+## Providing feedback
 
 For current discussions on 2.0 please see the [2.0 issues section on GitHub](https://github.com/bandwidthcom/node-bandwidth/labels/2.0). To start a new topic on 2.0, please open an issue and use the `2.0` tag. Your feedback is greatly appreciated! Thanks for trying the preview and helping us make an awesome SDK!
