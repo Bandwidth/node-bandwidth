@@ -1,5 +1,3 @@
-## [HTML Docs](http://bwdemos.com/node-bandwidth/index.html)
-
 ## Classes
 
 <dl>
@@ -89,6 +87,13 @@
 </dd>
 </dl>
 
+## Typedefs
+
+<dl>
+<dt><a href="#ApplicationListRespone">ApplicationListRespone</a> : <code>Object</code></dt>
+<dd></dd>
+</dl>
+
 <a name="Account"></a>
 
 ## Account
@@ -143,6 +148,23 @@ Gets a list of transactions from user's account.
 | [type] | <code>String</code> |  | Return only transactions that are this type. |
 | callback | <code>function</code> |  | A callback with the list of transactions |
 
+**Example**  
+```js
+//Promise
+client.Account.getTransactions()
+	.then(function (response) {
+		console.log(response.transactions);
+		if(response.hasNextPage) {
+			return response.getNextPage();
+		}
+		else {
+			return {transactions: []};
+		}
+	})
+	.then(function(response) {
+		console.log(response.transactions);
+	});
+```
 <a name="AccountResponse"></a>
 
 ## AccountResponse : <code>Object</code>
@@ -177,7 +199,7 @@ Gets a list of transactions from user's account.
 
 * [Application](#Application)
     * [new Application(client)](#new_Application_new)
-    * [.list(params, [callback])](#Application+list) ⇒ <code>[Array.&lt;ApplicationResponse&gt;](#ApplicationResponse)</code>
+    * [.list(params, [callback])](#Application+list) ⇒ <code>[ApplicationListRespone](#ApplicationListRespone)</code>
     * [.create(params, [callback])](#Application+create) ⇒ <code>[ApplicationResponse](#ApplicationResponse)</code>
     * [.get(applicationId, [callback])](#Application+get) ⇒ <code>[ApplicationResponse](#ApplicationResponse)</code>
     * [.update(applicationId, params, [callback])](#Application+update)
@@ -195,11 +217,11 @@ Application
 
 <a name="Application+list"></a>
 
-### application.list(params, [callback]) ⇒ <code>[Array.&lt;ApplicationResponse&gt;](#ApplicationResponse)</code>
+### application.list(params, [callback]) ⇒ <code>[ApplicationListRespone](#ApplicationListRespone)</code>
 List the user's applications
 
 **Kind**: instance method of <code>[Application](#Application)</code>  
-**Returns**: <code>[Array.&lt;ApplicationResponse&gt;](#ApplicationResponse)</code> - A promise for the list of applications, has a getNextPage
+**Returns**: <code>[ApplicationListRespone](#ApplicationListRespone)</code> - A promise for the list of applications, has a getNextPage
 function if the number of applications returned by the query exceeds the page size.  
 
 | Param | Type | Description |
@@ -216,20 +238,46 @@ Create a new application
 **Kind**: instance method of <code>[Application](#Application)</code>  
 **Returns**: <code>[ApplicationResponse](#ApplicationResponse)</code> - A promise for the newly created application.  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| params | <code>Object</code> | Parameters for creating a new call |
-| [params.name] | <code>String</code> | A name you choose for this application. |
-| [params.incomingCallUrl] | <code>String</code> | A URL where call events will be sent for an inbound call. This is the endpoint where the Application Platform will send all call events. Either incomingCallUrl or incomingMessageUrl is required. |
-| [params.incomingCallUrlCallbackTimeout] | <code>String</code> | Determine how long should the platform wait for incomingCallUrl's response before timing out in milliseconds. |
-| [params.incomingCallFallbackUrl] | <code>String</code> | The URL used to send the callback event if the request to incomingCallUrl fails. |
-| [params.incomingMessageUrl] | <code>String</code> | A URL where message events will be sent for an inbound message. This is the endpoint where the Application Platform will send all message events. Either incomingMessageUrl or incomingCallUrl is required. |
-| [params.incomingMessageUrlCallbackTimeout] | <code>Number</code> | Determine how long should the platform wait for incomingMessageUrl's response before timing out in milliseconds. |
-| [params.incomingMessageFallbackUrl] | <code>String</code> | The URL used to send the callback event if the request to incomingMessageUrl fails. |
-| [params.callbackHttpMethod] | <code>String</code> | Determine if the callback event should be sent via HTTP GET or HTTP POST. Values are "get" or "post", default: "post". |
-| [params.autoAnswer] | <code>Boolean</code> | Determines whether or not an incoming call should be automatically answered. Default value is 'true'. |
-| [callback] | <code>function</code> | A callback for the list of applications |
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| params | <code>Object</code> |  | Parameters for creating a new call |
+| params.name | <code>String</code> |  | A name you choose for this application. |
+| params.incomingCallUrl | <code>String</code> |  | A URL where call events will be sent for an inbound call. This is the endpoint where the Application Platform will send all call events. Either incomingCallUrl or incomingMessageUrl is required. |
+| [params.incomingCallUrlCallbackTimeout] | <code>String</code> |  | Determine how long should the platform wait for incomingCallUrl's response before timing out in milliseconds. |
+| [params.incomingCallFallbackUrl] | <code>String</code> |  | The URL used to send the callback event if the request to incomingCallUrl fails. |
+| params.incomingMessageUrl | <code>String</code> |  | A URL where message events will be sent for an inbound message. This is the endpoint where the Application Platform will send all message events. Either incomingMessageUrl or incomingCallUrl is required. |
+| [params.incomingMessageUrlCallbackTimeout] | <code>Number</code> |  | Determine how long should the platform wait for incomingMessageUrl's response before timing out in milliseconds. |
+| [params.incomingMessageFallbackUrl] | <code>String</code> |  | The URL used to send the callback event if the request to incomingMessageUrl fails. |
+| [params.callbackHttpMethod] | <code>String</code> |  | Determine if the callback event should be sent via HTTP GET or HTTP POST. Values are "get" or "post", default: "post". |
+| [params.autoAnswer] | <code>Boolean</code> | <code>true</code> | Determines whether or not an incoming call should be automatically answered. Default value is 'true'. |
+| [callback] | <code>function</code> |  | A callback for the list of applications |
 
+**Example**  
+```js
+//Promise
+client.Application.create({
+	name: 'SampleApp',
+	incomingCallUrl: 'http://your-server.com/CallCallback',
+	incomingMessageUrl: 'http://your-server.com/MsgCallback'
+})
+.then(function (response) {
+	console.log(response);
+});
+
+//Callback
+client.Application.create({
+	name: 'SampleApp2',
+	incomingCallUrl: 'http://your-server.com/CallCallback',
+	incomingMessageUrl: 'http://your-server.com/MsgCallback'
+}, function (err, response) {
+	if (err) {
+		console.log(err);
+	}
+	else {
+		console.log(response)
+	}
+});
+```
 <a name="Application+get"></a>
 
 ### application.get(applicationId, [callback]) ⇒ <code>[ApplicationResponse](#ApplicationResponse)</code>
@@ -243,6 +291,25 @@ Get an application.
 | applicationId | <code>String</code> | The ID of the application to get. |
 | [callback] | <code>function</code> | A callback for the application. |
 
+**Example**  
+```js
+// Promise
+client.Application.get('a-j4f2jz53mq')
+.then(function (response) {
+	console.log(response);
+});
+
+// Callback
+client.Application.get('a-zuwwfzzrbea',
+	function (err, response) {
+		if (err) {
+			console.log(err);
+		}
+		else {
+			console.log(response);
+		}
+});
+```
 <a name="Application+update"></a>
 
 ### application.update(applicationId, params, [callback])
@@ -2827,4 +2894,16 @@ getNextLink
 | Param | Type | Description |
 | --- | --- | --- |
 | response | <code>Object</code> | A headers object returned from calling 'client.makeRequest' (response.headers) |
+
+<a name="ApplicationListRespone"></a>
+
+## ApplicationListRespone : <code>Object</code>
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| applications | <code>[Array.&lt;ApplicationResponse&gt;](#ApplicationResponse)</code> | Array of applications |
+| getNextPage | <code>function</code> | Calls the next page function |
+| hasNextPage | <code>boolean</code> | True/False flag for next |
 
