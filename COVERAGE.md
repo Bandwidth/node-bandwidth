@@ -86,6 +86,8 @@
     * [ ] List all messages
     * [ ] Send Message
     * [ ] Get single message
+	* [ ] [Batch Messages](http://ap.bandwidth.com/docs/rest-api/messages/#resourcePOSTv1usersuserIdmessages) (single request, multiple messages)
+
 * [Number Info](http://ap.bandwidth.com/docs/rest-api/numberinfo/)
     * [ ] Get number info
 * [Phone Numbers](http://ap.bandwidth.com/docs/rest-api/phonenumbers/)
