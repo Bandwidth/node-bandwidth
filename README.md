@@ -182,6 +182,7 @@ client.Message.send({
     * [X] List all messages
     * [X] Send Message
     * [X] Get single message
+    * [ ] [Batch Messages](http://ap.bandwidth.com/docs/rest-api/messages/#resourcePOSTv1usersuserIdmessages) (single request, multiple messages)
 * [Number Info](http://ap.bandwidth.com/docs/rest-api/numberinfo/)
     * [X] Get number info
 * [Phone Numbers](http://ap.bandwidth.com/docs/rest-api/phonenumbers/)
