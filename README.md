@@ -6,13 +6,11 @@
 
 A Node.js client library for the [Bandwidth Application Platform](http://bandwidth.com/products/application-platform?utm_medium=social&utm_source=github&utm_campaign=dtolb&utm_content=_)
 
-v2.0 Is released
-
-For version 1.3.3 check [here](https://github.com/bandwidthcom/node-bandwidth/tree/v1.3.3)
+The current version is v2, released 5 August, 2016. Version 1.3.3 is available  [here](https://github.com/bandwidthcom/node-bandwidth/tree/v1.3.3).
 
 
 ## [Full API Reference](http://bwdemos.com/node-bandwidth/index.html)
-For the full API Reference, please see 
+The Full API Reference is available either as an interactive site or as a single Markdown file:
 
 * [Site](http://bwdemos.com/node-bandwidth/index.html).
 * [Single MD file](https://github.com/bandwidthcom/node-bandwidth/blob/master/docs/api.md)
@@ -20,10 +18,12 @@ For the full API Reference, please see
 
 ## Installing the SDK
 
+`node-bandwidth` is available on NPM:
+
 	npm install --save node-bandwidth
 
 ## Supported Versions
-`node-bandwidth` should work on all levels of node greater than `0.10.*`. However, due to the rapid development in the Node & npm environment and the ever increasing surface area, we can only provide _support_ on [LTS versions of Node](https://github.com/nodejs/LTS)
+`node-bandwidth` should work on all versions of node newer than `0.10.*`. However, due to the rapid development in the Node and npm environment, we can only provide _support_ on [LTS versions of Node](https://github.com/nodejs/LTS)
 
 | Version | Support Level |
 |---------|---------------|
@@ -93,6 +93,9 @@ client.Message.send({
 	console.log("Message sent with ID " + message.id);
 });
 ```
+## Providing feedback
+
+For current discussions on 2.0 please see the [2.0 issues section on GitHub](https://github.com/bandwidthcom/node-bandwidth/labels/2.0). To start a new topic on 2.0, please open an issue and use the `2.0` tag. Your feedback is greatly appreciated!
 
 ## Rest API Coverage
 ------------
@@ -212,6 +215,3 @@ client.Message.send({
     * [X] SpeakSentence
     * [X] Transfer
 
-## Providing feedback
-
-For current discussions on 2.0 please see the [2.0 issues section on GitHub](https://github.com/bandwidthcom/node-bandwidth/labels/2.0). To start a new topic on 2.0, please open an issue and use the `2.0` tag. Your feedback is greatly appreciated! Thanks for trying the preview and helping us make an awesome SDK!
