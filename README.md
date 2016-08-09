@@ -23,7 +23,7 @@ The Full API Reference is available either as an interactive site or as a single
 	npm install --save node-bandwidth
 
 ## Supported Versions
-`node-bandwidth` should work on all versions of node newer than `0.10.*`. However, due to the rapid development in the Node and npm environment, as well as the ever-increasing service area, we can only provide _support_ on [LTS versions of Node](https://github.com/nodejs/LTS)
+`node-bandwidth` should work on all versions of node newer than `0.10.*`. However, due to the rapid development in the Node and npm environment, we can only provide _support_ on [LTS versions of Node](https://github.com/nodejs/LTS)
 
 | Version | Support Level |
 |---------|---------------|
