@@ -31,7 +31,11 @@ describe("Client", function () {
 			nock(baseUrl)
 				.persist()
 				.get("/v1/users/fakeUserId/account")
-				.reply(200, accountResponse);
+				.reply(200, accountResponse)
+				.post("/v1/users/fakeUserId/201endpoint")
+				.reply(201,{},{})
+				.post("/v1/users/fakeUserId/202endpoint")
+				.reply(202,{},{});
 		});
 
 		after(function () {
@@ -43,6 +47,32 @@ describe("Client", function () {
 				path : "account"
 			}).then(function (res) {
 				res.body.should.eql(accountResponse);
+			});
+		});
+
+		it("should not error on 200 responses", function () {
+			return client.makeRequest({
+				path : "account"
+			}).then(function (res) {
+				res.statusCode.should.eql(200);
+			});
+		});
+
+		it("should not error on 201 responses", function () {
+			return client.makeRequest({
+				path   : "201endpoint",
+				method : "POST"
+			}).then(function (res) {
+				res.statusCode.should.eql(201);
+			});
+		});
+
+		it("should not error on 202 responses", function () {
+			return client.makeRequest({
+				path   : "202endpoint",
+				method : "POST"
+			}).then(function (res) {
+				res.statusCode.should.eql(202);
 			});
 		});
 	});

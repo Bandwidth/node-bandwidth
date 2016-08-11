@@ -2128,12 +2128,20 @@ Send a new SMS or MMS message
 
 **Example**  
 ```js
-var CatapultClient = require('node-bandwidth');
-client = new CatapultClient({
-	 userId    : $YOUR_USER_ID,
-  apiToken  : $YOUR_API_TOKEN,
-  apiSecret : $YOUR_API_SECRET
+client.Message.send({
+  from : "+19195551212",
+  to   : "+19195551213",
+  text : "Thank you for susbcribing to Unicorn Enterprises!"
+})
+.then(function(message){
+  console.log(message);
 });
+//{
+//  from : "+19195551212",
+//  to   : "+19195551213",
+//  text : "Thank you for susbcribing to Unicorn Enterprises!",
+//  id   : "..."
+//}
 ```
 <a name="Message+sendMultiple"></a>
 
@@ -2158,6 +2166,52 @@ This is much more performant than calling `send` multiple times.
 | [params.receiptRequested] | <code>String</code> | <code>none</code> | Requested receipt option for outbound messages: `none` `all` `error` |
 | [callback] | <code>function</code> |  | A callback for the array of ExtendedMessageResponse |
 
+**Example**  
+```js
+client.Message.sendMultiple({
+  from : "+19195551211",
+  to   : "+19195551213",
+  text : "Thank you for susbcribing to Unicorn Enterprises!"
+}, {
+  from : "+19195151212",
+  to   : "+19195551214",
+  text : "Thank you for susbcribing to Unicorn Enterprises!"
+})
+.then(function(messages){
+  console.log(messages);
+});
+//[{
+//  result : "failed",
+//  error: {
+//    category : "authorization",
+//    code     : "number-access-denied",
+//    message  : "User ... does not have permission to use number +19195551211",
+//    details  : [
+//      {
+//        name  : "userId",
+//        value : "..."
+//      },
+//      {
+//        name  : "number",
+//        value : "+19195551211"
+//      }
+//    ],
+//  },
+//  message : {
+//    from : "+19195551211",
+//    to   : "+19195551213",
+//    text : "Thank you for susbcribing to Unicorn Enterprises!"
+//  }
+//},{
+//  result  : "accepted",
+//  message : {
+//    from : "+19195551212",
+//    to   : "+19195551214",
+//    text : "Thank you for susbcribing to Unicorn Enterprises!",
+//    id   : "..."
+//  }
+//}]
+```
 <a name="Message+get"></a>
 
 ### message.get(messageId, [callback]) ⇒ <code>[MessageResponse](#MessageResponse)</code>
