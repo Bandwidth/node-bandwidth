@@ -117,10 +117,10 @@ describe("Message API", function () {
 		});
 
 		it("should send multiple messages", function () {
-			return client.Message.send([ newTestMessage, otherTestMessage ])
+			return client.Message.sendMultiple([ newTestMessage, otherTestMessage ])
 			.then(function (messages) {
-				messages.successful[0].message.should.eql(newTestMessage);
-				messages.failed[0].message.error.should.eql({
+				messages[0].message.should.eql(newTestMessage);
+				messages[1].error.should.eql({
 					category : "bad-request",
 					code     : "blank-property",
 					message  : "The 'message' resource property 'to' must contain at " +
