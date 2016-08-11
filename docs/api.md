@@ -1,5 +1,3 @@
-## [HTML Docs](http://bwdemos.com/node-bandwidth/index.html)
-
 ## Classes
 
 <dl>
@@ -2107,11 +2105,12 @@ SMS or MMS Message
 Send a new SMS or MMS message
 
 **Kind**: instance method of <code>[Message](#Message)</code>  
-**Returns**: <code>[MessageResponse](#MessageResponse)</code> - A promise for the new message object  
+**Returns**: <code>[MessageResponse](#MessageResponse)</code> - A promise for the new message object, if one message is sent;
+an array of objects, if multiple messages are set.  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| params | <code>Object</code> |  | Parameters for sending a new message |
+| params | <code>Object</code> |  | Parameters for sending a new message, or an array of such parameters. |
 | The | <code>params.text</code> |  | message text to send |
 | The | <code>params.from</code> |  | message sender"s telephone number (or short code) This must be a Catapult number that you own |
 | [params.to] | <code>String</code> |  | Message recipient telephone number (or short code) |
@@ -2121,7 +2120,7 @@ Send a new SMS or MMS message
 | [params.fallbackUrl] | <code>String</code> |  | The server URL used to send message events if the request to callbackUrl fails |
 | [params.tag] | <code>String</code> |  | A string that will be included in the callback events of the message |
 | [params.receiptRequested] | <code>String</code> | <code>none</code> | Requested receipt option for outbound messages: `none` `all` `error` |
-| [callback] | <code>function</code> |  | A callback for the new message object |
+| [callback] | <code>function</code> |  | A callback for the new message object, if one message is sent; an array of objects, if multiple messages are set. |
 
 <a name="Message+get"></a>
 
