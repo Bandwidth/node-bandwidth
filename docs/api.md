@@ -2090,7 +2090,7 @@ Remove a media file
 * [Message](#Message)
     * [new Message(client)](#new_Message_new)
     * [.send(params, [callback])](#Message+send) ⇒ <code>[MessageResponse](#MessageResponse)</code>
-    * [.sendMultiple(params, The, The, [callback])](#Message+sendMultiple) ⇒
+    * [.sendMultiple(params, The, The, [callback])](#Message+sendMultiple) ⇒ <code>[ExtendedMessageResponse](#ExtendedMessageResponse)</code>
     * [.get(messageId, [callback])](#Message+get) ⇒ <code>[MessageResponse](#MessageResponse)</code>
     * [.list(params, [callback])](#Message+list) ⇒ <code>Array</code>
 
@@ -2145,12 +2145,12 @@ client.Message.send({
 ```
 <a name="Message+sendMultiple"></a>
 
-### message.sendMultiple(params, The, The, [callback]) ⇒
+### message.sendMultiple(params, The, The, [callback]) ⇒ <code>[ExtendedMessageResponse](#ExtendedMessageResponse)</code>
 Send multiple SMS or MMS messages with one API call.
 This is much more performant than calling `send` multiple times.
 
 **Kind**: instance method of <code>[Message](#Message)</code>  
-**Returns**: [ExtendedMessageResponse] A promise for the array of ExtendedMessageResponse  
+**Returns**: <code>[ExtendedMessageResponse](#ExtendedMessageResponse)</code> - A promise for the array of ExtendedMessageResponse  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
