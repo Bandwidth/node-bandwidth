@@ -16,6 +16,11 @@ describe("Message API", function () {
 		text : "Hello world."
 	};
 
+	var otherTestMessage = {
+		from : "+12345678902",
+		text : "Hello world."
+	};
+
 	var testMessage = {
 		"id"        : "fakeMessageId",
 		"messageId" : "fakeMessageId",
@@ -57,12 +62,32 @@ describe("Message API", function () {
 
 			nock("https://api.catapult.inetwork.com")
 				.persist()
-				.post("/v1/users/" + userId + "/messages", newTestMessage.id)
+				.post("/v1/users/" + userId + "/messages", newTestMessage)
 				.reply(201,
 					{},
 					{
 						"Location" : "/v1/users/" + userId + "/messages/fakeMessageId"
 					})
+				.post("/v1/users/" + userId + "/messages", [ newTestMessage, otherTestMessage ])
+				.reply(202,
+					[
+						{
+							result   : "accepted",
+							location : "https://api.catapult.inetwork.com/v1/users/" + userId +
+								"/messages/fakeMessageId"
+						},
+						{
+							result : "error",
+							error  : {
+								category : "bad-request",
+								code     : "blank-property",
+								message  : "The 'message' resource property 'to' must contain at least" +
+									" one non-whitespace character",
+								details  : []
+							}
+						}
+					]
+				)
 				.get("/v1/users/" + userId + "/messages/" + testMessage.id)
 				.reply(200, testMessage)
 				.get("/v1/users/" + userId + "/messages?fromDateTime=" + fromDateTime + "&" + "toDateTime=" + toDateTime)
@@ -88,6 +113,20 @@ describe("Message API", function () {
 				}
 				message.should.eql(newTestMessage);
 				done();
+			});
+		});
+
+		it("should send multiple messages", function () {
+			return client.Message.sendMultiple([ newTestMessage, otherTestMessage ])
+			.then(function (messages) {
+				messages[0].message.should.eql(newTestMessage);
+				messages[1].error.should.eql({
+					category : "bad-request",
+					code     : "blank-property",
+					message  : "The 'message' resource property 'to' must contain at " +
+						"least one non-whitespace character",
+					details  : []
+				});
 			});
 		});
 
