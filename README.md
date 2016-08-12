@@ -185,7 +185,7 @@ For current discussions on 2.0 please see the [2.0 issues section on GitHub](htt
     * [X] List all messages
     * [X] Send Message
     * [X] Get single message
-    * [ ] [Batch Messages](http://ap.bandwidth.com/docs/rest-api/messages/#resourcePOSTv1usersuserIdmessages) (single request, multiple messages)
+    * [X] [Batch Messages](http://ap.bandwidth.com/docs/rest-api/messages/#resourcePOSTv1usersuserIdmessages) (single request, multiple messages)
 * [Number Info](http://ap.bandwidth.com/docs/rest-api/numberinfo/)
     * [X] Get number info
 * [Phone Numbers](http://ap.bandwidth.com/docs/rest-api/phonenumbers/)
