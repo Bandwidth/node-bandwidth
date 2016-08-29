@@ -339,7 +339,7 @@ client.Account.get(function(err, info){});</code></pre>
 
     
 
-    <h4 class="name" id="getTransactions"><span class="type-signature"></span>getTransactions<span class="signature">(params, toDate<span class="signature-attributes">opt</span>, fromDate<span class="signature-attributes">opt</span>, type<span class="signature-attributes">opt</span>, callback)</span><span class="type-signature"> &rarr; {<a href="TransactionListResponse.html">TransactionListResponse</a>}</span></h4>
+    <h4 class="name" id="getTransactions"><span class="type-signature"></span>getTransactions<span class="signature">(params, callback)</span><span class="type-signature"> &rarr; {<a href="TransactionListResponse.html">TransactionListResponse</a>}</span></h4>
 
     
 
@@ -370,8 +370,6 @@ client.Account.get(function(err, info){});</code></pre>
         <th>Type</th>
 
         
-        <th>Attributes</th>
-        
 
         
 
@@ -396,14 +394,6 @@ client.Account.get(function(err, info){});</code></pre>
             
             </td>
 
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
             
 
             
@@ -512,13 +502,6 @@ for querying a list of transactions. If no value is specified the default value 
         </tr>
 
     
-    </tbody>
-</table>
-
-            </td>
-        </tr>
-
-    
 
         <tr>
             
@@ -546,6 +529,10 @@ for querying a list of transactions. If no value is specified the default value 
                 </td>
             
 
+            
+                <td class="default">
+                
+                </td>
             
 
             <td class="description last"><p>Return only transactions that are newer than the parameter.</p></td>
@@ -580,6 +567,10 @@ for querying a list of transactions. If no value is specified the default value 
             
 
             
+                <td class="default">
+                
+                </td>
+            
 
             <td class="description last"><p>Return only transactions that are older than the parameter.</p></td>
         </tr>
@@ -613,8 +604,19 @@ for querying a list of transactions. If no value is specified the default value 
             
 
             
+                <td class="default">
+                
+                </td>
+            
 
             <td class="description last"><p>Return only transactions that are this type.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
         </tr>
 
     
@@ -633,14 +635,6 @@ for querying a list of transactions. If no value is specified the default value 
             
             </td>
 
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
             
 
             
@@ -686,7 +680,7 @@ for querying a list of transactions. If no value is specified the default value 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="account.js.html">account.js</a>, <a href="account.js.html#line62">line 62</a>
+        <a href="account.js.html">account.js</a>, <a href="account.js.html#line140">line 140</a>
     </li></ul></dd>
     
 
@@ -733,10 +727,87 @@ for querying a list of transactions. If no value is specified the default value 
     
 
 
-    <h5>Example</h5>
+    <h5>Examples</h5>
     
     <pre class="prettyprint"><code>//Promise
 client.Account.getTransactions()
+	.then(function (response) {
+		console.log(response.transactions);
+		if(response.hasNextPage) {
+			return response.getNextPage();
+		}
+		else {
+			return {transactions: []};
+		}
+	})
+	.then(function(response) {
+		console.log(response.transactions);
+	});</code></pre>
+
+    <pre class="prettyprint"><code>//Get transactions filtering by date
+//Promise
+var params = {
+	fromDate: "2013-02-21T13:38:00"
+};
+client.Account.getTransactions(params)
+	.then(function (response) {
+		console.log(response.transactions);
+		if(response.hasNextPage) {
+			return response.getNextPage();
+		}
+		else {
+			return {transactions: []};
+		}
+	})
+	.then(function(response) {
+		console.log(response.transactions);
+	});</code></pre>
+
+    <pre class="prettyprint"><code>//Get transactions filtering by date
+//Promise
+var params = {
+	fromDate: "2013-02-21T13:38:00",
+	toDate:   "2013-02-21T13:40:00"
+};
+client.Account.getTransactions(params)
+	.then(function (response) {
+		console.log(response.transactions);
+		if(response.hasNextPage) {
+			return response.getNextPage();
+		}
+		else {
+			return {transactions: []};
+		}
+	})
+	.then(function(response) {
+		console.log(response.transactions);
+	});</code></pre>
+
+    <pre class="prettyprint"><code>//Get transactions limiting result
+//Promise
+var params = {
+	maxItems: 1
+};
+client.Account.getTransactions(params)
+	.then(function (response) {
+		console.log(response.transactions);
+		if(response.hasNextPage) {
+			return response.getNextPage();
+		}
+		else {
+			return {transactions: []};
+		}
+	})
+	.then(function(response) {
+		console.log(response.transactions);
+	});</code></pre>
+
+    <pre class="prettyprint"><code>//Get transactions of `payment` type
+//Promise
+var params = {
+	type: "Payment"
+};
+client.Account.getTransactions(params)
 	.then(function (response) {
 		console.log(response.transactions);
 		if(response.hasNextPage) {
@@ -770,7 +841,7 @@ client.Account.getTransactions()
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Fri Aug 12 2016 17:48:24 GMT+0000 (UTC) using the Minami theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Mon Aug 29 2016 20:43:25 GMT+0000 (UTC) using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>
