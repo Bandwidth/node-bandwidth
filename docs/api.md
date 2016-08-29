@@ -105,7 +105,7 @@
 * [Account](#Account)
     * [new Account()](#new_Account_new)
     * [.get(accountId, callback)](#Account+get) ⇒ <code>[AccountResponse](#AccountResponse)</code>
-    * [.getTransactions(params, [toDate], [fromDate], [type], callback)](#Account+getTransactions) ⇒ <code>[TransactionListResponse](#TransactionListResponse)</code>
+    * [.getTransactions(params, callback)](#Account+getTransactions) ⇒ <code>[TransactionListResponse](#TransactionListResponse)</code>
 
 <a name="new_Account_new"></a>
 
@@ -135,7 +135,7 @@ client.Account.get(function(err, info){});
 ```
 <a name="Account+getTransactions"></a>
 
-### account.getTransactions(params, [toDate], [fromDate], [type], callback) ⇒ <code>[TransactionListResponse](#TransactionListResponse)</code>
+### account.getTransactions(params, callback) ⇒ <code>[TransactionListResponse](#TransactionListResponse)</code>
 Gets a list of transactions from user's account.
 
 **Kind**: instance method of <code>[Account](#Account)</code>  
@@ -146,15 +146,100 @@ Gets a list of transactions from user's account.
 | params | <code>Object</code> |  | Query parameters for listing accounts |
 | [params.size] | <code>Number</code> | <code>25</code> | Used for pagination to indicate the size of each page requested for querying a list of transactions. If no value is specified the default value is 25 (maximum value 1000). |
 | [params.maxItems] | <code>Number</code> |  | Limit the number of transactions that will be returned |
-| [toDate] | <code>String</code> |  | Return only transactions that are newer than the parameter. |
-| [fromDate] | <code>String</code> |  | Return only transactions that are older than the parameter. |
-| [type] | <code>String</code> |  | Return only transactions that are this type. |
+| [params.toDate] | <code>String</code> |  | Return only transactions that are newer than the parameter. |
+| [params.fromDate] | <code>String</code> |  | Return only transactions that are older than the parameter. |
+| [params.type] | <code>String</code> |  | Return only transactions that are this type. |
 | callback | <code>function</code> |  | A callback with the list of transactions |
 
 **Example**  
 ```js
 //Promise
 client.Account.getTransactions()
+	.then(function (response) {
+		console.log(response.transactions);
+		if(response.hasNextPage) {
+			return response.getNextPage();
+		}
+		else {
+			return {transactions: []};
+		}
+	})
+	.then(function(response) {
+		console.log(response.transactions);
+	});
+```
+**Example**  
+```js
+//Get transactions filtering by date
+//Promise
+var params = {
+	fromDate: "2013-02-21T13:38:00"
+};
+client.Account.getTransactions(params)
+	.then(function (response) {
+		console.log(response.transactions);
+		if(response.hasNextPage) {
+			return response.getNextPage();
+		}
+		else {
+			return {transactions: []};
+		}
+	})
+	.then(function(response) {
+		console.log(response.transactions);
+	});
+```
+**Example**  
+```js
+//Get transactions filtering by date
+//Promise
+var params = {
+	fromDate: "2013-02-21T13:38:00",
+	toDate:   "2013-02-21T13:40:00"
+};
+client.Account.getTransactions(params)
+	.then(function (response) {
+		console.log(response.transactions);
+		if(response.hasNextPage) {
+			return response.getNextPage();
+		}
+		else {
+			return {transactions: []};
+		}
+	})
+	.then(function(response) {
+		console.log(response.transactions);
+	});
+```
+**Example**  
+```js
+//Get transactions limiting result
+//Promise
+var params = {
+	maxItems: 1
+};
+client.Account.getTransactions(params)
+	.then(function (response) {
+		console.log(response.transactions);
+		if(response.hasNextPage) {
+			return response.getNextPage();
+		}
+		else {
+			return {transactions: []};
+		}
+	})
+	.then(function(response) {
+		console.log(response.transactions);
+	});
+```
+**Example**  
+```js
+//Get transactions of `payment` type
+//Promise
+var params = {
+	type: "Payment"
+};
+client.Account.getTransactions(params)
 	.then(function (response) {
 		console.log(response.transactions);
 		if(response.hasNextPage) {
@@ -2464,7 +2549,7 @@ Send multiple SMS or MMS messages with one API call.
 This is much more performant than calling `send` multiple times.
 
 **Kind**: instance method of <code>[Message](#Message)</code>  
-**Returns**: <code>[ExtendedMessageResponse](#ExtendedMessageResponse)</code> - A promise for the array of ExtendedMessageResponse  
+**Returns**: <code>[ExtendedMessageResponse](#ExtendedMessageResponse)</code> - A promise for the array of ExtendedMessageResponses  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
