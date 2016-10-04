@@ -1,4 +1,4 @@
-var XML = require("../lib/xml.js");
+var BXMLResponse = require("../lib/xml.js");
 var fs = require("fs");
 var speakSentenceOnlyResponse = fs.readFileSync("./test/bxml-responses/speakSentence.xml", "utf8");
 var gatherOnlyResponse = fs.readFileSync("./test/bxml-responses/gather.xml", "utf8");
@@ -13,11 +13,11 @@ var transferOnlyResponse = fs.readFileSync("./test/bxml-responses/transfer.xml",
 var nestingResponse = fs.readFileSync("./test/bxml-responses/nesting.xml", "utf8");
 var chainingResponse = fs.readFileSync("./test/bxml-responses/chaining.xml", "utf8");
 
-describe("XML Builder", function () {
+describe("Builder", function () {
 	var myApp;
 	describe("Individual verb - speakSentence", function () {
 		before(function () {
-			myApp = new XML.BXMLResponse();
+			myApp = new BXMLResponse();
 			myApp.speakSentence("Thank you for calling ACME Technical Support.");
 		});
 		it("Should generate correct BXML", function () {
@@ -26,7 +26,7 @@ describe("XML Builder", function () {
 	});
 	describe("Individual verb - gather", function () {
 		before(function () {
-			myApp = new XML.BXMLResponse();
+			myApp = new BXMLResponse();
 			myApp.gather({
 				requestUrl : "http://www.example.com/"
 			});
@@ -37,7 +37,7 @@ describe("XML Builder", function () {
 	});
 	describe("Individual verb - call", function () {
 		before(function () {
-			myApp = new XML.BXMLResponse();
+			myApp = new BXMLResponse();
 			myApp.call({
 				from : "+19195551212",
 				to   : "+19195551213"
@@ -49,7 +49,7 @@ describe("XML Builder", function () {
 	});
 	describe("Individual verb - conference", function () {
 		before(function () {
-			myApp = new XML.BXMLResponse();
+			myApp = new BXMLResponse();
 			myApp.conference({
 				from : "+19195551212"
 			});
@@ -60,7 +60,7 @@ describe("XML Builder", function () {
 	});
 	describe("Individual verb - hangup", function () {
 		before(function () {
-			myApp = new XML.BXMLResponse();
+			myApp = new BXMLResponse();
 			myApp.hangup({ });
 		});
 		it("Should generate correct BXML", function () {
@@ -69,7 +69,7 @@ describe("XML Builder", function () {
 	});
 	describe("Individual verb - playAudio", function () {
 		before(function () {
-			myApp = new XML.BXMLResponse();
+			myApp = new BXMLResponse();
 			myApp.playAudio("http://www.example.com/example.mp3");
 		});
 		it("Should generate correct BXML", function () {
@@ -78,7 +78,7 @@ describe("XML Builder", function () {
 	});
 	describe("Individual verb - record", function () {
 		before(function () {
-			myApp = new XML.BXMLResponse();
+			myApp = new BXMLResponse();
 			myApp.record({
 				requestUrl        : "http://www.example.com",
 				requestUrlTimeout : 12345
@@ -90,7 +90,7 @@ describe("XML Builder", function () {
 	});
 	describe("Individual verb - redirect", function () {
 		before(function () {
-			myApp = new XML.BXMLResponse();
+			myApp = new BXMLResponse();
 			myApp.redirect({
 				requestUrl        : "http://www.example.com",
 				requestUrlTimeout : 12345
@@ -102,7 +102,7 @@ describe("XML Builder", function () {
 	});
 	describe("Individual verb - sendMessage", function () {
 		before(function () {
-			myApp = new XML.BXMLResponse();
+			myApp = new BXMLResponse();
 			myApp.sendMessage("Where are you?", {
 				from : "+19195551212",
 				to   : "+19195551213"
@@ -114,7 +114,7 @@ describe("XML Builder", function () {
 	});
 	describe("Individual verb - transfer", function () {
 		before(function () {
-			myApp = new XML.BXMLResponse();
+			myApp = new BXMLResponse();
 			myApp.transfer({
 				transferTo : "+19195551212"
 			});
@@ -125,7 +125,7 @@ describe("XML Builder", function () {
 	});
 	describe("Nesting", function () {
 		before(function () {
-			myApp = new XML.BXMLResponse();
+			myApp = new BXMLResponse();
 			myApp.gather({
 				requestUrl : "http://www.example.com/"
 			}, function () {
@@ -138,7 +138,7 @@ describe("XML Builder", function () {
 	});
 	describe("Chaining", function () {
 		before(function () {
-			myApp = new XML.BXMLResponse();
+			myApp = new BXMLResponse();
 			myApp.speakSentence("Hi! My name is:")
 				.speakSentence("What? My name is:");
 		});
