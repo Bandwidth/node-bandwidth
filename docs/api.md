@@ -65,6 +65,8 @@
 <dd></dd>
 <dt><a href="#Message">Message</a></dt>
 <dd></dd>
+<dt><a href="#MessageListResponse">MessageListResponse</a> : <code>Object</code></dt>
+<dd></dd>
 <dt><a href="#ExtendedMessageResponse">ExtendedMessageResponse</a> : <code>Object</code></dt>
 <dd></dd>
 <dt><a href="#MessageError">MessageError</a> : <code>Object</code></dt>
@@ -2491,7 +2493,7 @@ Remove a media file
     * [.send(params, [callback])](#Message+send) ⇒ <code>[MessageResponse](#MessageResponse)</code>
     * [.sendMultiple(params, The, The, [callback])](#Message+sendMultiple) ⇒ <code>[ExtendedMessageResponse](#ExtendedMessageResponse)</code>
     * [.get(messageId, [callback])](#Message+get) ⇒ <code>[MessageResponse](#MessageResponse)</code>
-    * [.list(params, [callback])](#Message+list) ⇒ <code>Array</code>
+    * [.list(params, [callback])](#Message+list) ⇒ <code>[MessageListResponse](#MessageListResponse)</code>
 
 <a name="new_Message_new"></a>
 
@@ -2626,11 +2628,11 @@ Get a message
 
 <a name="Message+list"></a>
 
-### message.list(params, [callback]) ⇒ <code>Array</code>
+### message.list(params, [callback]) ⇒ <code>[MessageListResponse](#MessageListResponse)</code>
 Gets a list of messages
 
 **Kind**: instance method of <code>[Message](#Message)</code>  
-**Returns**: <code>Array</code> - A promise for the list of messages  
+**Returns**: <code>[MessageListResponse](#MessageListResponse)</code> - A promise for the list of messages  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2645,6 +2647,48 @@ Gets a list of messages
 | [params.deliveryState] | <code>String</code> | The message delivery state to filter. Values are waiting, delivered, not-delivered |
 | [params.sortOrder] | <code>String</code> | How to sort the messages. Values are asc or desc If no value is specified the default value is asc |
 | [callback] | <code>function</code> | A callback for the list of messages |
+
+**Example**  
+```js
+//Download the node sdk from ap.bandwidth.com/docs/helper-libraries/node-js
+//API credentials which can be found on your account page at https://catapult.inetwork.com/pages/login.jsf
+var userId = 'u-userid';  //{user_id}
+var token = 't-token'; //{token}
+var secret = 'secret'; //{secret}
+
+var Bandwidth = require('node-bandwidth');
+
+var client = new Bandwidth({
+	userId: userId,
+	apiToken: token,
+	apiSecret: secret
+});
+
+client.Message.list()
+.then(function (response) {
+	console.log(response.messages);
+	if(response.hasNextPage) {
+		return response.getNextPage();
+	}
+	else {
+		return {messages: []};
+	}
+})
+.then(function(response) {
+	console.log(response.messages);
+});
+```
+<a name="MessageListResponse"></a>
+
+## MessageListResponse : <code>Object</code>
+**Kind**: global class  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| messages | <code>[Array.&lt;MessageResponse&gt;](#MessageResponse)</code> | Array of messages |
+| getNextPage | <code>function</code> | Calls the next page function |
+| hasNextPage | <code>boolean</code> | True/False flag for next |
 
 <a name="ExtendedMessageResponse"></a>
 
