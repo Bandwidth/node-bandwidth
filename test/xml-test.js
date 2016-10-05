@@ -14,8 +14,9 @@ var nestingResponse = fs.readFileSync("./test/bxml-responses/nesting.xml", "utf8
 var chainingResponse = fs.readFileSync("./test/bxml-responses/chaining.xml", "utf8");
 
 describe("Builder", function () {
-	var myApp;
+
 	describe("Individual verb - speakSentence", function () {
+		var myApp;
 		before(function () {
 			myApp = new BXMLResponse();
 			myApp.speakSentence("Thank you for calling ACME Technical Support.");
@@ -25,6 +26,7 @@ describe("Builder", function () {
 		});
 	});
 	describe("Individual verb - gather", function () {
+		var myApp;
 		before(function () {
 			myApp = new BXMLResponse();
 			myApp.gather({
@@ -36,6 +38,7 @@ describe("Builder", function () {
 		});
 	});
 	describe("Individual verb - call", function () {
+		var myApp;
 		before(function () {
 			myApp = new BXMLResponse();
 			myApp.call({
@@ -48,6 +51,7 @@ describe("Builder", function () {
 		});
 	});
 	describe("Individual verb - conference", function () {
+		var myApp;
 		before(function () {
 			myApp = new BXMLResponse();
 			myApp.conference({
@@ -59,6 +63,7 @@ describe("Builder", function () {
 		});
 	});
 	describe("Individual verb - hangup", function () {
+		var myApp;
 		before(function () {
 			myApp = new BXMLResponse();
 			myApp.hangup({ });
@@ -68,6 +73,7 @@ describe("Builder", function () {
 		});
 	});
 	describe("Individual verb - playAudio", function () {
+		var myApp;
 		before(function () {
 			myApp = new BXMLResponse();
 			myApp.playAudio("http://www.example.com/example.mp3");
@@ -77,6 +83,7 @@ describe("Builder", function () {
 		});
 	});
 	describe("Individual verb - record", function () {
+		var myApp;
 		before(function () {
 			myApp = new BXMLResponse();
 			myApp.record({
@@ -89,6 +96,7 @@ describe("Builder", function () {
 		});
 	});
 	describe("Individual verb - redirect", function () {
+		var myApp;
 		before(function () {
 			myApp = new BXMLResponse();
 			myApp.redirect({
@@ -101,6 +109,7 @@ describe("Builder", function () {
 		});
 	});
 	describe("Individual verb - sendMessage", function () {
+		var myApp;
 		before(function () {
 			myApp = new BXMLResponse();
 			myApp.sendMessage("Where are you?", {
@@ -113,6 +122,7 @@ describe("Builder", function () {
 		});
 	});
 	describe("Individual verb - transfer", function () {
+		var myApp;
 		before(function () {
 			myApp = new BXMLResponse();
 			myApp.transfer({
@@ -124,6 +134,7 @@ describe("Builder", function () {
 		});
 	});
 	describe("Nesting", function () {
+		var myApp;
 		before(function () {
 			myApp = new BXMLResponse();
 			myApp.gather({
@@ -137,6 +148,7 @@ describe("Builder", function () {
 		});
 	});
 	describe("Chaining", function () {
+		var myApp;
 		before(function () {
 			myApp = new BXMLResponse();
 			myApp.speakSentence("Hi! My name is:")
