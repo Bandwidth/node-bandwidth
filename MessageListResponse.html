@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>media.js - Documentation</title>
+    <title>MessageListResponse - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,158 +28,226 @@
 
 <div id="main">
     
-    <h1 class="page-title">media.js</h1>
+    <h1 class="page-title">MessageListResponse</h1>
     
 
     
 
 
 
+
+<section>
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>var Promise = require("bluebird");
-var stream = require("stream");
-var fs = require("fs");
-var request = require("request");
+        <h2>
+        MessageListResponse
+        </h2>
+        
+    
+</header>
 
-function getReadStreamData(data) {
-	return new Promise(function (resolve, reject) {
-		var s;
-		if (data instanceof Buffer) {
-			s = new stream.Readable();
-			s.push(data);
-			s.push(null);
-			return resolve({ stream : s, size : data.length });
-		}
-		if (typeof data === "string") {
-			return fs.stat(data, function (err, stat) {
-				if (err) {
-					return reject(err);
-				}
-				resolve({ stream : fs.createReadStream(data), size : stat.size });
-			});
-		}
-		if (data instanceof stream.Readable) {
-			// we have to detect stream size first
-			var size = 0;
-			s = new stream.Readable(); // new stream in memory to store data from original stream
-			data.on("data", function (buffer) {
-				s.push(buffer);
-				size += buffer.length;
-			});
-			data.on("end", function () {
-				s.push(null);
-				resolve({ stream : s, size : size });
-			});
-			data.resume();
-			return;
-		}
-		reject(new Error("data should be string, Buffer or readable stream"));
-	});
-}
+<article>
+    <div class="container-overview">
+    
+        
 
-/**
- * Media
- * @constructor
- */
-var Media = function (client) {
-	/**
-	 * Upload a media file
-	 * @param {String} name The name of uploaded file.
-	 * @param {String|Buffer|Readable} data Data to upload. If data is string it should be path to file to upload.
-	 * @param {String} contentType Optional MIME type of uploaded data (default: application/octet-stream).
-	 * @param {Function} [callback] Callback for the operation
-	 * @return {Promise} A promise for the operation
-	 */
-	this.upload = function (name, data, contentType, callback) {
-		if (!callback &amp;&amp; typeof contentType === "function") {
-			callback = contentType;
-			contentType = null;
-		}
-		return getReadStreamData(data)
-		.then(function (streamData) {
-			return new Promise(function (resolve, reject) {
-				var req = request(client.createRequestOptions({
-					path   : "media/" + encodeURIComponent(name),
-					method : "PUT"
-				}));
-				req.headers["Content-Type"] = contentType || "application/octet-stream";
-				req.headers["Content-Length"] = streamData.size;
-				req.on("error", reject);
-				req.on("response", resolve);
-				streamData.stream.pipe(req);
-			});
-		})
-		.then(client.handleResponse)
-		.asCallback(callback);
-	};
+    
 
-	/**
-	 * Download a media file
-	 * @param {String} name The name of downloaded file.
-	 * @param {Function} [callback] Callback for the operation
-	 * @return {DownloadMediaFileResponse} A promise for the operation
-	 */
-	this.download = function (name, callback) {
-		return client.makeRequest({
-			path   : "media/" + encodeURIComponent(name),
-			method : "GET"
-		})
-		.then(function (response) {
-			return { contentType : response.headers["content-type"], content : response.body };
-		})
-		.asCallback(callback);
-	};
+    <h4 class="name" id="MessageListResponse"><span class="type-signature"></span>new MessageListResponse<span class="signature">()</span><span class="type-signature"></span></h4>
 
-	/**
-	 * Gets a list of your media files.
-	 * @param {Function} [callback] Callback for the operation
-	 * @return {Array&lt;MediaFileResponse>} A promise for the operation
-	 */
-	this.list = function (callback) {
-		return client.makeRequest({
-			path   : "media",
-			method : "GET"
-		})
-		.then(function (response) {
-			return response.body;
-		})
-		.asCallback(callback);
-	};
+    
 
-	/**
-	 * Remove a media file
-	 * @param {String} name The name of file to remove.
-	 * @param {Function} [callback] Callback for the operation
-	 * @return {Promise} A promise for the operation
-	 */
-	this.delete = function (name, callback) {
-		return client.makeRequest({
-			path   : "media/" + encodeURIComponent(name),
-			method : "DELETE"
-		})
-		.asCallback(callback);
-	};
-};
 
-module.exports = Media;
-/**
- * @class DownloadMediaFileResponse
- * @type {Object}
- * @property {String} contentType MIME type of downloaded file.
- * @property {String|Buffer|Readable} content Content of file.
- */
 
-/**
- * @class MediaFileResponse
- * @type {Object}
- * @property {String} mediaName name of media file.
- * @property {Number} contentLength Length of media file.
- */
-</code></pre>
-        </article>
-    </section>
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>messages</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="MessageResponse.html">MessageResponse</a>></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Array of messages</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>getNextPage</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Calls the next page function</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>hasNextPage</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>True/False flag for next</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="message.js.html">message.js</a>, <a href="message.js.html#line266">line 266</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 
