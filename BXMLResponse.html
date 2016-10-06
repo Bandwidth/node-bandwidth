@@ -487,7 +487,7 @@ Call .toString() on this method to obtain the BXML string.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="xml.js.html">xml.js</a>, <a href="xml.js.html#line98">line 98</a>
+        <a href="xml.js.html">xml.js</a>, <a href="xml.js.html#line101">line 101</a>
     </li></ul></dd>
     
 
@@ -537,7 +537,8 @@ Call .toString() on this method to obtain the BXML string.</p>
     <h5>Example</h5>
     
     <pre class="prettyprint"><code>//This app will create a call and tell the callee they are being called.
-var myApp = new BXMLResponse();
+var Bandwidth = require("node-bandwidth");
+var myApp = new Bandwidth.BXMLResponse();
 myApp.call({
      from : '+19195551212',
      to   : '+19195551213'
@@ -948,7 +949,7 @@ myApp = myApp.toString();</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="xml.js.html">xml.js</a>, <a href="xml.js.html#line126">line 126</a>
+        <a href="xml.js.html">xml.js</a>, <a href="xml.js.html#line130">line 130</a>
     </li></ul></dd>
     
 
@@ -998,7 +999,8 @@ myApp = myApp.toString();</code></pre>
     <h5>Example</h5>
     
     <pre class="prettyprint"><code>//This app will create a conference call. Callers to (919) 555 1212 will be patched in.
-var myApp = new BXMLResponse();
+var Bandwidth = require("node-bandwidth");
+var myApp = new Bandwidth.BXMLResponse();
 myApp.conference({
     from : '+19195551212'
 });
@@ -1414,7 +1416,7 @@ myApp = myApp.toString();</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="xml.js.html">xml.js</a>, <a href="xml.js.html#line59">line 59</a>
+        <a href="xml.js.html">xml.js</a>, <a href="xml.js.html#line61">line 61</a>
     </li></ul></dd>
     
 
@@ -1464,7 +1466,8 @@ myApp = myApp.toString();</code></pre>
     <h5>Example</h5>
     
     <pre class="prettyprint"><code>//This app will collect a PIN code.
-var myApp = new BXMLResponse();
+var Bandwidth = require("node-bandwidth");
+var myApp = new Bandwidth.BXMLResponse();
 myApp.gather({
     requestUrl : 'http://unico.rn/pinApiEndpoint',
     maxDigits  : 4
@@ -1531,7 +1534,7 @@ myApp = myApp.toString();</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="xml.js.html">xml.js</a>, <a href="xml.js.html#line145">line 145</a>
+        <a href="xml.js.html">xml.js</a>, <a href="xml.js.html#line150">line 150</a>
     </li></ul></dd>
     
 
@@ -1581,7 +1584,8 @@ myApp = myApp.toString();</code></pre>
     <h5>Example</h5>
     
     <pre class="prettyprint"><code>//This app will speak two sentences and hang up.
-var myApp = new BXMLResponse();
+var Bandwidth = require("node-bandwidth");
+var myApp = new Bandwidth.BXMLResponse();
 myApp.speakSentence("Thanks for calling Unicorn Enterprises.")
      .speakSentence("We have been acquired by BigCorp.")
      .hangup();
@@ -1694,7 +1698,7 @@ myApp = myApp.toString();</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="xml.js.html">xml.js</a>, <a href="xml.js.html#line163">line 163</a>
+        <a href="xml.js.html">xml.js</a>, <a href="xml.js.html#line168">line 168</a>
     </li></ul></dd>
     
 
@@ -1743,8 +1747,8 @@ myApp = myApp.toString();</code></pre>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>//This app will put you on hold.
-var myApp = new BXMLResponse();
+    <pre class="prettyprint"><code>var Bandwidth = require("node-bandwidth");
+var myApp = new Bandwidth.BXMLResponse();
 myApp.speakSentence("Thanks for calling Unicorn Enterprises.")
      .speakSentence("All agents are currently busy playing ping-pong. Please hold.")
      .playAudio("http://unico.rn/assets/postglamspeedfolk.mp3");
@@ -2150,7 +2154,7 @@ myApp = myApp.toString();</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="xml.js.html">xml.js</a>, <a href="xml.js.html#line189">line 189</a>
+        <a href="xml.js.html">xml.js</a>, <a href="xml.js.html#line195">line 195</a>
     </li></ul></dd>
     
 
@@ -2200,7 +2204,8 @@ myApp = myApp.toString();</code></pre>
     <h5>Example</h5>
     
     <pre class="prettyprint"><code>//This app will record a message.
-var myApp = new BXMLResponse();
+var Bandwidth = require("node-bandwidth");
+var myApp = new Bandwidth.BXMLResponse();
 myApp.speakSentence("Thanks for calling Unicorn Enterprises.")
      .speakSentence("Your call may be recorded for quality assurance.")
      .record({
@@ -2387,7 +2392,7 @@ myApp.speakSentence("Thanks for calling Unicorn Enterprises.")
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="xml.js.html">xml.js</a>, <a href="xml.js.html#line202">line 202</a>
+        <a href="xml.js.html">xml.js</a>, <a href="xml.js.html#line208">line 208</a>
     </li></ul></dd>
     
 
@@ -2776,7 +2781,7 @@ myApp.speakSentence("Thanks for calling Unicorn Enterprises.")
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="xml.js.html">xml.js</a>, <a href="xml.js.html#line224">line 224</a>
+        <a href="xml.js.html">xml.js</a>, <a href="xml.js.html#line231">line 231</a>
     </li></ul></dd>
     
 
@@ -2826,7 +2831,8 @@ myApp.speakSentence("Thanks for calling Unicorn Enterprises.")
     <h5>Example</h5>
     
     <pre class="prettyprint"><code>// This app will text a customer.
-var myApp = new BXMLResponse();
+var Bandwidth = require("node-bandwidth");
+var myApp = new Bandwidth.BXMLResponse();
 myApp.sendMessage("Get $20 off your next purchase!", {
 		from : "+19195551212",
 		to   : "+19195551213"
@@ -3109,7 +3115,7 @@ myApp.sendMessage("Get $20 off your next purchase!", {
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="xml.js.html">xml.js</a>, <a href="xml.js.html#line28">line 28</a>
+        <a href="xml.js.html">xml.js</a>, <a href="xml.js.html#line29">line 29</a>
     </li></ul></dd>
     
 
@@ -3159,7 +3165,8 @@ myApp.sendMessage("Get $20 off your next purchase!", {
     <h5>Example</h5>
     
     <pre class="prettyprint"><code>//This app will speak two sentences.
-var myApp = new BXMLResponse();
+var Bandwidth = require("node-bandwidth");
+var myApp = new Bandwidth.BXMLResponse();
 myApp.speakSentence("Thanks for calling Unicorn Enterprises.")
      .speakSentence("Someone will be with you shortly.");
 myApp = myApp.toString();</code></pre>
@@ -3218,7 +3225,7 @@ myApp = myApp.toString();</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="xml.js.html">xml.js</a>, <a href="xml.js.html#line70">line 70</a>
+        <a href="xml.js.html">xml.js</a>, <a href="xml.js.html#line72">line 72</a>
     </li></ul></dd>
     
 
@@ -3618,7 +3625,7 @@ myApp = myApp.toString();</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="xml.js.html">xml.js</a>, <a href="xml.js.html#line251">line 251</a>
+        <a href="xml.js.html">xml.js</a>, <a href="xml.js.html#line259">line 259</a>
     </li></ul></dd>
     
 
@@ -3668,7 +3675,8 @@ myApp = myApp.toString();</code></pre>
     <h5>Example</h5>
     
     <pre class="prettyprint"><code>// This app will transfer a call.
-var myApp = new BXMLResponse();
+var Bandwidth = require("node-bandwidth");
+var myApp = new Bandwidth.BXMLResponse();
 myApp.speakSentence("Your call is somewhat important to us.")
 		.speakSentence("Please wait while it is being transferred.")
 		.transfer({
@@ -3697,7 +3705,7 @@ myApp.speakSentence("Your call is somewhat important to us.")
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Wed Oct 05 2016 20:13:21 GMT+0000 (UTC) using the Minami theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Thu Oct 06 2016 12:31:18 GMT+0000 (UTC) using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>
