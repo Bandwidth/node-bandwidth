@@ -3135,7 +3135,8 @@ Create a SpeakSentence tag.
 **Example**  
 ```js
 //This app will speak two sentences.
-var myApp = new BXMLResponse();
+var Bandwidth = require("node-bandwidth");
+var myApp = new Bandwidth.BXMLResponse();
 myApp.speakSentence("Thanks for calling Unicorn Enterprises.")
      .speakSentence("Someone will be with you shortly.");
 myApp = myApp.toString();
@@ -3162,7 +3163,8 @@ Create a Gather call, which collects pressed numbers.
 **Example**  
 ```js
 //This app will collect a PIN code.
-var myApp = new BXMLResponse();
+var Bandwidth = require("node-bandwidth");
+var myApp = new Bandwidth.BXMLResponse();
 myApp.gather({
     requestUrl : 'http://unico.rn/pinApiEndpoint',
     maxDigits  : 4
@@ -3197,7 +3199,8 @@ Create a new call to another phone number.
 **Example**  
 ```js
 //This app will create a call and tell the callee they are being called.
-var myApp = new BXMLResponse();
+var Bandwidth = require("node-bandwidth");
+var myApp = new Bandwidth.BXMLResponse();
 myApp.call({
      from : '+19195551212',
      to   : '+19195551213'
@@ -3228,7 +3231,8 @@ Create a new conference call.
 **Example**  
 ```js
 //This app will create a conference call. Callers to (919) 555 1212 will be patched in.
-var myApp = new BXMLResponse();
+var Bandwidth = require("node-bandwidth");
+var myApp = new Bandwidth.BXMLResponse();
 myApp.conference({
     from : '+19195551212'
 });
@@ -3244,7 +3248,8 @@ Terminates an outgoing call.
 **Example**  
 ```js
 //This app will speak two sentences and hang up.
-var myApp = new BXMLResponse();
+var Bandwidth = require("node-bandwidth");
+var myApp = new Bandwidth.BXMLResponse();
 myApp.speakSentence("Thanks for calling Unicorn Enterprises.")
      .speakSentence("We have been acquired by BigCorp.")
      .hangup();
@@ -3264,8 +3269,8 @@ Plays an audio file located at a specified URL.
 
 **Example**  
 ```js
-//This app will put you on hold.
-var myApp = new BXMLResponse();
+var Bandwidth = require("node-bandwidth");
+var myApp = new Bandwidth.BXMLResponse();
 myApp.speakSentence("Thanks for calling Unicorn Enterprises.")
      .speakSentence("All agents are currently busy playing ping-pong. Please hold.")
      .playAudio("http://unico.rn/assets/postglamspeedfolk.mp3");
@@ -3293,7 +3298,8 @@ Records the call. At end of call, a call recording event is sent to the callback
 **Example**  
 ```js
 //This app will record a message.
-var myApp = new BXMLResponse();
+var Bandwidth = require("node-bandwidth");
+var myApp = new Bandwidth.BXMLResponse();
 myApp.speakSentence("Thanks for calling Unicorn Enterprises.")
      .speakSentence("Your call may be recorded for quality assurance.")
      .record({
@@ -3336,7 +3342,8 @@ Sends a text message.
 **Example**  
 ```js
 // This app will text a customer.
-var myApp = new BXMLResponse();
+var Bandwidth = require("node-bandwidth");
+var myApp = new Bandwidth.BXMLResponse();
 myApp.sendMessage("Get $20 off your next purchase!", {
 		from : "+19195551212",
 		to   : "+19195551213"
@@ -3364,7 +3371,8 @@ Transfers the call to another number.
 **Example**  
 ```js
 // This app will transfer a call.
-var myApp = new BXMLResponse();
+var Bandwidth = require("node-bandwidth");
+var myApp = new Bandwidth.BXMLResponse();
 myApp.speakSentence("Your call is somewhat important to us.")
 		.speakSentence("Please wait while it is being transferred.")
 		.transfer({
