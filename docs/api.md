@@ -1225,7 +1225,7 @@ var speakSentence = {
 	transferTo       : "+15555555555",
 	transferCallerId : "private",
 	whisperAudio     : {
-		sentence : 'You have an incoming call',
+		sentence : "You have an incoming call",
 		gender   : "female",
 		voice    : "julie",
 		locale   : "en"
