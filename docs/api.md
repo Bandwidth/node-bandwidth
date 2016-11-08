@@ -1027,6 +1027,7 @@ client.Bridge.getCalls('brg-65dhjrmbasiei',
     * [.speakSentence(callId, sentence, [callback])](#Call+speakSentence) ⇒ <code>Promise</code>
     * [.playAudioFile(callId, fileUrl, [callback])](#Call+playAudioFile) ⇒ <code>Promise</code>
     * [.playAudioAdvanced(callId, params, [callback])](#Call+playAudioAdvanced) ⇒ <code>Promise</code>
+    * [.enableRecording(callId, [callback])](#Call+enableRecording) ⇒ <code>Promise</code>
     * [.createGather(callId, params, [callback])](#Call+createGather) ⇒ <code>[CallResponse](#CallResponse)</code>
     * [.getGather(callId, gatherId, [callback])](#Call+getGather) ⇒ <code>[GatherResponse](#GatherResponse)</code>
     * [.completeGather(callId, gatherId, [callback])](#Call+completeGather) ⇒ <code>Promise</code>
@@ -1338,6 +1339,29 @@ client.Call.playAudioAdvanced("callId", options).then(function (res) {});
 
 //Callback
 client.Call.playAudioAdvanced("callId", options, function (err,res) {});
+```
+<a name="Call+enableRecording"></a>
+
+### call.enableRecording(callId, [callback]) ⇒ <code>Promise</code>
+Turns on call recording for the active call
+
+**Kind**: instance method of <code>[Call](#Call)</code>  
+**Returns**: <code>Promise</code> - A promise for the operation  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| callId | <code>String</code> | The ID of the call |
+| [callback] | <code>function</code> | Callback for the operation |
+
+**Example**  
+```js
+//Turn on recording
+
+//Promise
+client.Call.enableRecording("callId").then(function (res) {});
+
+//Callback
+client.Call.enableRecording("callId", function (err, res) {});
 ```
 <a name="Call+createGather"></a>
 
