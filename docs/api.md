@@ -1019,6 +1019,7 @@ client.Bridge.getCalls('brg-65dhjrmbasiei',
     * [.create(params, [callback])](#Call+create) ⇒ <code>[CallResponse](#CallResponse)</code>
     * [.get(callId, callback)](#Call+get) ⇒ <code>Promise</code>
     * [.list(params, callback)](#Call+list) ⇒ <code>Promise</code>
+    * [.update(callId, params, [callback])](#Call+update) ⇒ <code>Promise</code>
     * [.answer(callId, [callback])](#Call+answer) ⇒ <code>Promise</code>
     * [.reject(callId, [callback])](#Call+reject) ⇒ <code>Promise</code>
     * [.hangup(callId, [callback])](#Call+hangup) ⇒ <code>Promise</code>
@@ -1099,6 +1100,41 @@ Gets a list of active and historic calls you made or received.
 | [params.size] | <code>Number</code> | <code>25</code> | Used for pagination to indicate the size of each page requested for querying a list of calls. If no value is specified the default value is 25 (maximum value 1000). |
 | callback | <code>function</code> |  | A callback with the list of calls |
 
+<a name="Call+update"></a>
+
+### call.update(callId, params, [callback]) ⇒ <code>Promise</code>
+Update properties of an active phone call.
+
+**Kind**: instance method of <code>[Call](#Call)</code>  
+**Returns**: <code>Promise</code> - A promise for the operation  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| callId | <code>String</code> | The ID of the incoming call |
+| params | <code>Object</code> | The propreties to update |
+| [params.state] | <code>string</code> | The call state. Possible values: `rejected` to reject not answer, `active` to answer the call, `completed` to hangup the call, `transferring` to start and connect call to a new outbound call. |
+| [params.recordingEnabled] | <code>string</code> | Indicates if the call should be recorded. Values `true` or `false`. You can turn recording on/off and have multiple recordings on a single call. |
+| [params.recordingFileFormat] | <code>string</code> | The file format of the recorded call. Supported values are `wav` (default) and `mp3`. |
+| [params.transferTo] | <code>string</code> | Phone number or SIP address that the call is going to be transferred to. |
+| [params.transferCallerId] | <code>string</code> | This is the caller id that will be used when the call is transferred. This parameter is only considered in `transfer` state. <br> - transferring an incoming call: Allowed values are 1) "private" 2) the incoming call "from" number or 3) any Bandwidth number owned by user. <br> - transferring an outgoing call call: allowed values are 1) "private" or 2) any Bandwidth phone number owned by user. |
+| [params.whisperAudio] | <code>string</code> | Audio to be played to the caller that the call will be transferred to. |
+| [params.callbackUrl] | <code>string</code> | The server URL where the call events for the new call will be sent. |
+| [callback] | <code>function</code> | Callback for the operation |
+
+**Example**  
+```js
+//Start recording a mp3 and update the callback url
+var payLoad = {
+	recordingEnabled: "true",
+	recordingFileFormat = "mp3",
+	callbackUrl: "http://yourUrl.com/callbacks/callrecording"
+};
+
+client.call.update("callId", payload)
+.then(function () {
+	// keep on keeping on here;
+});
+```
 <a name="Call+answer"></a>
 
 ### call.answer(callId, [callback]) ⇒ <code>Promise</code>
@@ -1189,12 +1225,13 @@ Transfer a call
 var speakSentence = {
 	transferTo       : "+15555555555",
 	transferCallerId : "private",
-	whipserAudio     : {
-		sentence : "You will be transferred to 555-555-5555",
+	whisperAudio     : {
+		sentence : "You have an incoming call",
 		gender   : "female",
 		voice    : "julie",
 		locale   : "en"
-	};
+	}
+};
 
 //Using Promises
 client.Call.transfer("callId", speakSentence).then(function (res) {});
