@@ -1229,8 +1229,8 @@ var speakSentence = {
 		gender   : "female",
 		voice    : "julie",
 		locale   : "en"
-		}
-	};
+	}
+};
 
 //Using Promises
 client.Call.transfer("callId", speakSentence).then(function (res) {});
