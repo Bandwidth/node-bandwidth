@@ -1125,10 +1125,11 @@ Update properties of an active phone call.
 ```js
 //Start recording a mp3 and update the callback url
 var payLoad = {
-	recordingEnabled: 'true',
-	recordingFileFormat = 'mp3',
+	recordingEnabled: "true",
+	recordingFileFormat = "mp3",
 	callbackUrl: "http://yourUrl.com/callbacks/callrecording"
 };
+
 client.call.update("callId", payload)
 .then(function () {
 	// keep on keeping on here;
