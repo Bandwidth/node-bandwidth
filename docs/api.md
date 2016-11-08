@@ -1116,9 +1116,9 @@ Update properties of an active phone call.
 | [params.recordingEnabled] | <code>string</code> | Indicates if the call should be recorded. Values `true` or `false`. You can turn recording on/off and have multiple recordings on a single call. |
 | [params.recordingFileFormat] | <code>string</code> | The file format of the recorded call. Supported values are `wav` (default) and `mp3`. |
 | [params.transferTo] | <code>string</code> | Phone number or SIP address that the call is going to be transferred to. |
-| [params.transferCallerId] | <code>string</code> | This is the caller id that will be used when the call is transferred. This parameter is only considered in `transfer` state. <br> - transferring an incoming call: allowed values are 1) "private" 2) the incoming call "from" number or 3) any Bandwidth number owned by user. <br> - transferring an outgoing call call: allowed values are 1) "private" or 2) any Bandwidth phone number owned by user. |
+| [params.transferCallerId] | <code>string</code> | This is the caller id that will be used when the call is transferred. This parameter is only considered in `transfer` state. <br> - transferring an incoming call: Allowed values are 1) "private" 2) the incoming call "from" number or 3) any Bandwidth number owned by user. <br> - transferring an outgoing call call: allowed values are 1) "private" or 2) any Bandwidth phone number owned by user. |
 | [params.whisperAudio] | <code>string</code> | Audio to be played to the caller that the call will be transferred to. |
-| [params.callbackUrl] | <code>string</code> | The server URL where the call events for the new call will be sent upon transferring. |
+| [params.callbackUrl] | <code>string</code> | The server URL where the call events for the new call will be sent. |
 | [callback] | <code>function</code> | Callback for the operation |
 
 **Example**  
