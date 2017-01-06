@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Response>
+     <SpeakSentence locale="en_US" gender="female" voice="julie">Your call is somewhat important to us.</SpeakSentence>
+     <SpeakSentence locale="en_US" gender="female" voice="julie">Please wait while it is being transferred.</SpeakSentence>
+     <Transfer>
+          <PhoneNumber>transferOne</PhoneNumber>
+          <PhoneNumber>transferTwo</PhoneNumber>
+          <PhoneNumber>transferThree</PhoneNumber>
+          <SpeakSentence locale="en_US" gender="female" voice="julie">A call is being transferred to you from Customer Service.</SpeakSentence>
+     </Transfer>
+</Response>

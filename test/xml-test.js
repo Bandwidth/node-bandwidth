@@ -12,6 +12,7 @@ var sendMessageOnlyResponse = fs.readFileSync("./test/bxml-responses/sendMessage
 var transferOnlyResponse = fs.readFileSync("./test/bxml-responses/transfer.xml", "utf8");
 var nestingResponse = fs.readFileSync("./test/bxml-responses/nesting.xml", "utf8");
 var chainingResponse = fs.readFileSync("./test/bxml-responses/chaining.xml", "utf8");
+var multiTransferResponse = fs.readFileSync("./test/bxml-responses/multiTransfer.xml", "utf8");
 
 describe("Builder", function () {
 
@@ -156,6 +157,23 @@ describe("Builder", function () {
 		});
 		it("Should generate correct BXML", function () {
 			myApp.toString().should.equal(chainingResponse);
+		});
+	});
+	describe("Multiple Transfer with Speak Sentence", function () {
+		var myApp;
+		before(function () {
+			myApp = new BXMLResponse();
+			myApp.speakSentence("Your call is somewhat important to us.")
+				.speakSentence("Please wait while it is being transferred.")
+				.transfer({}, function () {
+					this.phoneNumber("transferOne");
+					this.phoneNumber("transferTwo");
+					this.phoneNumber("transferThree");
+					this.speakSentence("A call is being transferred to you from Customer Service.");
+				});
+		});
+		it("Should generate correct BXML", function () {
+			myApp.toString().should.equal(multiTransferResponse);
 		});
 	});
 });

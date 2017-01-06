@@ -3169,6 +3169,7 @@ client.Recording.getTranscriptions(recordingId, function(err, transcriptions){})
     * [.record(params)](#BXMLResponse+record) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
     * [.redirect(params)](#BXMLResponse+redirect) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
     * [.sendMessage(message, params)](#BXMLResponse+sendMessage) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
+    * [.phoneNumber(phoneNumber)](#BXMLResponse+phoneNumber) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
     * [.transfer(params, callback)](#BXMLResponse+transfer) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
 
 <a name="new_BXMLResponse_new"></a>
@@ -3410,6 +3411,18 @@ myApp.sendMessage("Get $20 off your next purchase!", {
 		to   : "+19195551213"
 });
 ```
+<a name="BXMLResponse+phoneNumber"></a>
+
+### bxmlResponse.phoneNumber(phoneNumber) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
+Used to direct call flow for multiple transfer
+
+**Kind**: instance method of <code>[BXMLResponse](#BXMLResponse)</code>  
+**Returns**: <code>[BXMLResponse](#BXMLResponse)</code> - this, for chaining.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| phoneNumber | <code>String</code> | The phone number to try a transfer |
+
 <a name="BXMLResponse+transfer"></a>
 
 ### bxmlResponse.transfer(params, callback) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
@@ -3441,6 +3454,20 @@ myApp.speakSentence("Your call is somewhat important to us.")
 		}, function (){
 			this.speakSentence("A call is being transferred to you from Customer Service.");
 		});
+```
+**Example**  
+```js
+// Multiple transfer with speak senetence - Try 3 numbers
+var myApp = new Bandwidth.BXMLResponse();
+myApp.speakSentence("Your call is somewhat important to us.")
+	.speakSentence("Please wait while it is being transferred.")
+	.transfer({}, function (){
+		this.phoneNumber("+13334445555");
+		this.phoneNumber("+13334445556");
+		this.phoneNumber("+13334445557");
+		this.speakSentence("A call is being transferred to you from Customer Service.");
+	});
+console.log(myApp.toString());
 ```
 <a name="getNextLink"></a>
 
