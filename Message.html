@@ -1545,7 +1545,7 @@ if the request to callbackUrl fails</p></td>
 
     
 
-    <h4 class="name" id="sendMultiple"><span class="type-signature"></span>sendMultiple<span class="signature">(params, The, The, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="ExtendedMessageResponse.html">ExtendedMessageResponse</a>}</span></h4>
+    <h4 class="name" id="sendMultiple"><span class="type-signature"></span>sendMultiple<span class="signature">(params, callback<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="ExtendedMessageResponse.html">ExtendedMessageResponse</a>}</span></h4>
 
     
 
@@ -1581,8 +1581,6 @@ This is much more performant than calling <code>send</code> multiple times.</p>
         
 
         
-        <th>Default</th>
-        
 
         <th class="last">Description</th>
     </tr>
@@ -1616,92 +1614,40 @@ This is much more performant than calling <code>send</code> multiple times.</p>
             
 
             
-                <td class="default">
-                
-                </td>
-            
 
             <td class="description last"><p>An array of params objects, each of which
 represents a single text message. The returned array will be in
-the same order as this array, so you can iterate over it.</p></td>
-        </tr>
+the same order as this array, so you can iterate over it.</p>
+                <h6>Properties</h6>
+                
 
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
     
 
         <tr>
             
-                <td class="name"><code>The</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">params.text</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>message text to send</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>The</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">params.from</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>message sender&quot;s telephone number (or short code)
-This must be a Catapult number that you own.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>params.to</code></td>
+                <td class="name"><code>text</code></td>
             
 
             <td class="type">
@@ -1716,7 +1662,76 @@ This must be a Catapult number that you own.</p></td>
             
                 <td class="attributes">
                 
-                    &lt;optional><br>
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>The message text to send</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>from</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>The message sender's telephone number (or short code)
+This must be a Catapult number that you own.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>to</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
                 
 
                 
@@ -1738,7 +1753,7 @@ This must be a Catapult number that you own.</p></td>
 
         <tr>
             
-                <td class="name"><code>params.media</code></td>
+                <td class="name"><code>media</code></td>
             
 
             <td class="type">
@@ -1778,7 +1793,7 @@ Example: http://customer-web-site.com/file.jpg</p></td>
 
         <tr>
             
-                <td class="name"><code>params.callbackUrl</code></td>
+                <td class="name"><code>callbackUrl</code></td>
             
 
             <td class="type">
@@ -1816,7 +1831,7 @@ outgoing message will be sent</p></td>
 
         <tr>
             
-                <td class="name"><code>params.callbackTimeout</code></td>
+                <td class="name"><code>callbackTimeout</code></td>
             
 
             <td class="type">
@@ -1847,14 +1862,14 @@ outgoing message will be sent</p></td>
             
 
             <td class="description last"><p>Determine how long should the platform wait for
-callbackUrl&quot;s response before timing out (milliseconds)</p></td>
+callbackUrl's response before timing out (milliseconds)</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>params.fallbackUrl</code></td>
+                <td class="name"><code>fallbackUrl</code></td>
             
 
             <td class="type">
@@ -1892,7 +1907,7 @@ if the request to callbackUrl fails</p></td>
 
         <tr>
             
-                <td class="name"><code>params.tag</code></td>
+                <td class="name"><code>tag</code></td>
             
 
             <td class="type">
@@ -1929,7 +1944,7 @@ if the request to callbackUrl fails</p></td>
 
         <tr>
             
-                <td class="name"><code>params.receiptRequested</code></td>
+                <td class="name"><code>receiptRequested</code></td>
             
 
             <td class="type">
@@ -1966,6 +1981,13 @@ if the request to callbackUrl fails</p></td>
         </tr>
 
     
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
 
         <tr>
             
@@ -1993,10 +2015,6 @@ if the request to callbackUrl fails</p></td>
                 </td>
             
 
-            
-                <td class="default">
-                
-                </td>
             
 
             <td class="description last"><p>A callback for the array of ExtendedMessageResponse</p></td>
@@ -2153,7 +2171,7 @@ if the request to callbackUrl fails</p></td>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue Nov 22 2016 16:44:36 GMT+0000 (UTC) using the Minami theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Mon Jan 09 2017 14:55:20 GMT+0000 (UTC) using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>
