@@ -2552,7 +2552,7 @@ Remove a media file
 * [Message](#Message)
     * [new Message(client)](#new_Message_new)
     * [.send(params, [callback])](#Message+send) ⇒ <code>[MessageResponse](#MessageResponse)</code>
-    * [.sendMultiple(params, The, The, [callback])](#Message+sendMultiple) ⇒ <code>[ExtendedMessageResponse](#ExtendedMessageResponse)</code>
+    * [.sendMultiple(params, [callback])](#Message+sendMultiple) ⇒ <code>[ExtendedMessageResponse](#ExtendedMessageResponse)</code>
     * [.get(messageId, [callback])](#Message+get) ⇒ <code>[MessageResponse](#MessageResponse)</code>
     * [.list(params, [callback])](#Message+list) ⇒ <code>[MessageListResponse](#MessageListResponse)</code>
 
@@ -2607,7 +2607,7 @@ client.Message.send({
 ```
 <a name="Message+sendMultiple"></a>
 
-### message.sendMultiple(params, The, The, [callback]) ⇒ <code>[ExtendedMessageResponse](#ExtendedMessageResponse)</code>
+### message.sendMultiple(params, [callback]) ⇒ <code>[ExtendedMessageResponse](#ExtendedMessageResponse)</code>
 Send multiple SMS or MMS messages with one API call.
 This is much more performant than calling `send` multiple times.
 
@@ -2617,12 +2617,12 @@ This is much more performant than calling `send` multiple times.
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | params | <code>Array</code> |  | An array of params objects, each of which represents a single text message. The returned array will be in the same order as this array, so you can iterate over it. |
-| The | <code>params.text</code> |  | message text to send |
-| The | <code>params.from</code> |  | message sender"s telephone number (or short code) This must be a Catapult number that you own. |
-| [params.to] | <code>String</code> |  | Message recipient telephone number (or short code) |
+| params.text | <code>String</code> |  | The message text to send |
+| params.from | <code>String</code> |  | The message sender's telephone number (or short code) This must be a Catapult number that you own. |
+| params.to | <code>String</code> |  | Message recipient telephone number (or short code) |
 | [params.media] | <code>Array</code> |  | Json array containing list of media urls to be sent as content for an mms. Valid URLs are: https://api.catapult.inetwork.com/v1/users/<user-id>/media/ We also support media URLs that are external to Bandwidth API, http:// or https:// format: Example: http://customer-web-site.com/file.jpg |
 | [params.callbackUrl] | <code>String</code> |  | The complete URL where the events related to the outgoing message will be sent |
-| [params.callbackTimeout] | <code>Number</code> |  | Determine how long should the platform wait for callbackUrl"s response before timing out (milliseconds) |
+| [params.callbackTimeout] | <code>Number</code> |  | Determine how long should the platform wait for callbackUrl's response before timing out (milliseconds) |
 | [params.fallbackUrl] | <code>String</code> |  | The server URL used to send message events if the request to callbackUrl fails |
 | [params.tag] | <code>String</code> |  | A string that will be included in the callback events of the message |
 | [params.receiptRequested] | <code>String</code> | <code>none</code> | Requested receipt option for outbound messages: `none` `all` `error` |
