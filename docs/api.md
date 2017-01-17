@@ -3421,7 +3421,7 @@ Used to direct call flow for multiple transfer
 
 | Param | Type | Description |
 | --- | --- | --- |
-| phoneNumber | <code>String</code> | The phone number to try a transfer |
+| phoneNumber | <code>String</code> | The phone number to try for a transfer |
 
 <a name="BXMLResponse+transfer"></a>
 
