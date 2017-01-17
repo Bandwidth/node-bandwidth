@@ -63,38 +63,42 @@
 <table>
 <thead>
 <tr>
-<th>Version</th>
-<th>Support Level</th>
+<th style="text-align:left">Version</th>
+<th style="text-align:left">Support Level</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>&lt;0.10.*</td>
-<td>Unsupported</td>
+<td style="text-align:left">&lt;0.10.*</td>
+<td style="text-align:left">Unsupported</td>
 </tr>
 <tr>
-<td>0.10.*</td>
-<td>Supported</td>
+<td style="text-align:left">0.10.*</td>
+<td style="text-align:left">Supported</td>
 </tr>
 <tr>
-<td>0.12.*</td>
-<td>Supported</td>
+<td style="text-align:left">0.12.*</td>
+<td style="text-align:left">Supported</td>
 </tr>
 <tr>
-<td>&gt;=4.0 &lt;4.2</td>
-<td>Unsupported</td>
+<td style="text-align:left">&gt;=4.0 &lt;4.2</td>
+<td style="text-align:left">Unsupported</td>
 </tr>
 <tr>
-<td><strong>&gt;=4.2 &lt;5.* (Node v4 argon LTS)</strong></td>
-<td><strong>Recommended</strong></td>
+<td style="text-align:left">&gt;=4.2 &lt;5.* (Node v4 argon LTS)</td>
+<td style="text-align:left">Supported</td>
 </tr>
 <tr>
-<td>5.*</td>
-<td>Unsupported</td>
+<td style="text-align:left">5.*</td>
+<td style="text-align:left">Unsupported</td>
 </tr>
 <tr>
-<td>6.*</td>
-<td>Unsupported</td>
+<td style="text-align:left"><em>6.9.4 (Node v6 Boron LTS)</em></td>
+<td style="text-align:left"><strong>Recommended</strong></td>
+</tr>
+<tr>
+<td style="text-align:left">7.*</td>
+<td style="text-align:left">Unsupported</td>
 </tr>
 </tbody>
 </table>
@@ -102,36 +106,36 @@
 <table>
 <thead>
 <tr>
-<th>Field name</th>
-<th>Description</th>
-<th>Default value</th>
-<th>Required</th>
+<th style="text-align:left">Field name</th>
+<th style="text-align:left">Description</th>
+<th style="text-align:left">Default value</th>
+<th style="text-align:left">Required</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>userId</code></td>
-<td>Your Bandwidth user ID</td>
-<td><code>undefined</code></td>
-<td>Yes</td>
+<td style="text-align:left"><code>userId</code></td>
+<td style="text-align:left">Your Bandwidth user ID</td>
+<td style="text-align:left"><code>undefined</code></td>
+<td style="text-align:left">Yes</td>
 </tr>
 <tr>
-<td><code>apiToken</code></td>
-<td>Your API token</td>
-<td><code>undefined</code></td>
-<td>Yes</td>
+<td style="text-align:left"><code>apiToken</code></td>
+<td style="text-align:left">Your API token</td>
+<td style="text-align:left"><code>undefined</code></td>
+<td style="text-align:left">Yes</td>
 </tr>
 <tr>
-<td><code>apiSecret</code></td>
-<td>Your API secret</td>
-<td><code>undefined</code></td>
-<td>Yes</td>
+<td style="text-align:left"><code>apiSecret</code></td>
+<td style="text-align:left">Your API secret</td>
+<td style="text-align:left"><code>undefined</code></td>
+<td style="text-align:left">Yes</td>
 </tr>
 <tr>
-<td><code>baseUrl</code></td>
-<td>The Bandwidth API URL</td>
-<td><code>https://api.catapult.inetwork.com</code></td>
-<td>No</td>
+<td style="text-align:left"><code>baseUrl</code></td>
+<td style="text-align:left">The Bandwidth API URL</td>
+<td style="text-align:left"><code>https://api.catapult.inetwork.com</code></td>
+<td style="text-align:left">No</td>
 </tr>
 </tbody>
 </table>
@@ -165,177 +169,7 @@ var client = new Bandwidth({
         return;
     }
     console.log(&quot;Message sent with ID &quot; + message.id);
-});</code></pre><h2>Providing feedback</h2><p>For current discussions on 2.0 please see the <a href="https://github.com/bandwidthcom/node-bandwidth/labels/2.0">2.0 issues section on GitHub</a>. To start a new topic on 2.0, please open an issue and use the <code>2.0</code> tag. Your feedback is greatly appreciated!</p>
-<h2>Rest API Coverage</h2><hr>
-<ul>
-<li><a href="http://ap.bandwidth.com/docs/rest-api/account/">Account</a><ul>
-<li>[X] Information</li>
-<li>[X] Transactions</li>
-</ul>
-</li>
-<li><a href="http://ap.bandwidth.com/docs/rest-api/applications/">Applications</a><ul>
-<li>[X] List</li>
-<li>[X] Create</li>
-<li>[X] Get info</li>
-<li>[X] Update</li>
-<li>[X] Delete</li>
-</ul>
-</li>
-<li><a href="http://ap.bandwidth.com/docs/rest-api/available-numbers/">Available Numbers</a><ul>
-<li>[X] Search Local</li>
-<li>[X] Buy Local</li>
-<li>[X] Search Tollfree</li>
-<li>[X] Buy Tollfree</li>
-</ul>
-</li>
-<li><a href="http://ap.bandwidth.com/docs/rest-api/bridges/">Bridges</a><ul>
-<li>[X] List</li>
-<li>[X] Create</li>
-<li>[X] Get info</li>
-<li>[X] Update Calls</li>
-<li>[X] Play Audio<ul>
-<li>[X] Speak Sentence</li>
-<li>[X] Play Audio File</li>
-</ul>
-</li>
-<li>[X] Get Calls</li>
-</ul>
-</li>
-<li><a href="http://ap.bandwidth.com/docs/rest-api/calls/">Calls</a><ul>
-<li>[X] List all calls</li>
-<li>[X] Create</li>
-<li>[X] Get info</li>
-<li>[X] Update Status<ul>
-<li>[X] Transfer</li>
-<li>[X] Answer</li>
-<li>[X] Hangup</li>
-<li>[X] Reject</li>
-</ul>
-</li>
-<li>[X] Play Audio<ul>
-<li>[X] Speak Sentence</li>
-<li>[X] Play Audio File</li>
-</ul>
-</li>
-<li>[X] Send DTMF</li>
-<li>[X] Events<ul>
-<li>[X] List</li>
-<li>[X] Get individual info</li>
-</ul>
-</li>
-<li>[X] List Recordings</li>
-<li>[X] List Transciptions</li>
-<li>[X] Gather<ul>
-<li>[X] Create Gather</li>
-<li>[X] Get Gather info</li>
-<li>[X] Update Gather</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="http://ap.bandwidth.com/docs/rest-api/conferences/">Conferences</a><ul>
-<li>[X] Create conference</li>
-<li>[X] Get info for single conference</li>
-<li>[X] Play Audio<ul>
-<li>[X] Speak Sentence</li>
-<li>[X] Play Audio File</li>
-</ul>
-</li>
-<li>[X] Members<ul>
-<li>[X] Add member</li>
-<li>[X] List members</li>
-<li>[X] Update members<ul>
-<li>[X] Mute</li>
-<li>[X] Remove</li>
-<li>[X] Hold</li>
-</ul>
-</li>
-<li>[X] Play Audio to single member<ul>
-<li>[X] Speak Sentence</li>
-<li>[X] Play Audio File</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="http://ap.bandwidth.com/docs/rest-api/domains/">Domains</a><ul>
-<li>[X] List all domains</li>
-<li>[X] create domain</li>
-<li>[X] Delete domain</li>
-</ul>
-</li>
-<li><a href="http://ap.bandwidth.com/docs/rest-api/endpoints/">Endpoints</a><ul>
-<li>[X] List all endpoints</li>
-<li>[X] Create Endpoint</li>
-<li>[X] Get Single Endpoint</li>
-<li>[X] Update Single Endpoint</li>
-<li>[X] Delete Single Endpoint</li>
-<li>[X] Create auth token</li>
-</ul>
-</li>
-<li><a href="http://ap.bandwidth.com/docs/rest-api/errors/">Errors</a><ul>
-<li>[X] Get all errors</li>
-<li>[X] Get info on Single Error</li>
-</ul>
-</li>
-<li><a href="http://ap.bandwidth.com/docs/rest-api/intelligenceservices/">Intelligence Services</a><ul>
-<li>[ ] Number Intelligence</li>
-</ul>
-</li>
-<li><a href="http://ap.bandwidth.com/docs/rest-api/media/">Media</a><ul>
-<li>[X] List all media</li>
-<li>[X] Upload media</li>
-<li>[X] Download single media file</li>
-<li>[X] Delete single media</li>
-</ul>
-</li>
-<li><a href="http://ap.bandwidth.com/docs/rest-api/messages/">Messages</a><ul>
-<li>[X] List all messages</li>
-<li>[X] Send Message</li>
-<li>[X] Get single message</li>
-<li>[X] <a href="http://ap.bandwidth.com/docs/rest-api/messages/#resourcePOSTv1usersuserIdmessages">Batch Messages</a> (single request, multiple messages)</li>
-</ul>
-</li>
-<li><a href="http://ap.bandwidth.com/docs/rest-api/numberinfo/">Number Info</a><ul>
-<li>[X] Get number info</li>
-</ul>
-</li>
-<li><a href="http://ap.bandwidth.com/docs/rest-api/phonenumbers/">Phone Numbers</a><ul>
-<li>[X] List all phonenumbers</li>
-<li>[X] Get single phonenumber</li>
-<li>[X] Order singe number</li>
-<li>[X] Update single number</li>
-<li>[X] Delete number</li>
-</ul>
-</li>
-<li><a href="http://ap.bandwidth.com/docs/rest-api/recordings/">Recordings</a><ul>
-<li>[X] List all recordings</li>
-<li>[X] Get single recording info</li>
-</ul>
-</li>
-<li><a href="http://ap.bandwidth.com/docs/rest-api/recordingsidtranscriptions/">Transciptions</a><ul>
-<li>[X] Create</li>
-<li>[X] Get info for single transcrption</li>
-<li>[X] Get all transcrptions for a recording</li>
-</ul>
-</li>
-<li><a href="http://ap.bandwidth.com/docs/xml/">BXML</a><ul>
-<li>[X] Call</li>
-<li>[X] Conference</li>
-<li>[X] Gather</li>
-<li>[X] Hangup</li>
-<li>[X] Media</li>
-<li>[X] Pause</li>
-<li>[X] PlayAudio</li>
-<li>[X] Record</li>
-<li>[X] Reject</li>
-<li>[X] SendMessage</li>
-<li>[X] SpeakSentence</li>
-<li>[X] Transfer</li>
-</ul>
-</li>
-</ul></article>
+});</code></pre><h2>Providing feedback</h2><p>For current discussions on 2.0 please see the <a href="https://github.com/bandwidthcom/node-bandwidth/labels/2.0">2.0 issues section on GitHub</a>. To start a new topic on 2.0, please open an issue and use the <code>2.0</code> tag. Your feedback is greatly appreciated!</p></article>
     </section>
 
 
@@ -348,7 +182,7 @@ var client = new Bandwidth({
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Mon Jan 09 2017 14:55:25 GMT+0000 (UTC) using the Minami theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue Jan 17 2017 16:55:51 GMT+0000 (UTC) using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>
