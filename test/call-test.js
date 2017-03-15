@@ -97,6 +97,10 @@ describe("Call API", function () {
 			recordingEnabled : true
 		};
 
+		var disableRecordingPayload = {
+			recordingEnabled : false
+		};
+
 		var maxRecordingDuration = 90;
 		var setRecordingMaxDurationPayload = {
 			recordingMaxDuration : maxRecordingDuration
@@ -199,8 +203,6 @@ describe("Call API", function () {
 				.reply(200)
 				.post("/v1/users/" + userId + "/calls/" + testCall.id + "/audio", playAudioPayload)
 				.reply(200)
-				.post("/v1/users/" + userId + "/calls/" + testCall.id, enableRecordingPayload)
-				.reply(200)
 				.post("/v1/users/" + userId + "/calls/" + testCall.id, setRecordingMaxDurationPayload)
 				.reply(200)
 				.post("/v1/users/" + userId + "/calls/" + testCall.id + "/gather", newTestGather)
@@ -280,8 +282,47 @@ describe("Call API", function () {
 			return client.Call.playAudioAdvanced(testCall.id, { fileUrl : audioUrl }, done);
 		});
 
-		it("should enable recording on a call", function () {
-			return client.Call.enableRecording(testCall.id);
+		describe("Recording toggle", function () {
+
+			describe("turn recording on", function () {
+
+				before(function () {
+					nock("https://api.catapult.inetwork.com")
+					.persist()
+					.post("/v1/users/" + userId + "/calls/" + testCall.id, enableRecordingPayload)
+					.reply(200);
+				});
+
+				after(function () {
+					nock.cleanAll();
+					nock.enableNetConnect();
+				});
+
+				it("should enable recording on a call", function () {
+					return client.Call.enableRecording(testCall.id);
+				});
+
+			});
+
+			describe("turn recording off", function () {
+
+				before(function () {
+					nock("https://api.catapult.inetwork.com")
+					.persist()
+					.post("/v1/users/" + userId + "/calls/" + testCall.id, disableRecordingPayload)
+					.reply(200);
+				});
+
+				after(function () {
+					nock.cleanAll();
+					nock.enableNetConnect();
+				});
+
+				it("should enable recording on a call", function () {
+					return client.Call.disableRecording(testCall.id);
+				});
+
+			});
 		});
 
 		it("should set the maximum recording duration on a call", function () {
