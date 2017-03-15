@@ -28,8 +28,8 @@ The Full API Reference is available either as an interactive site or as a single
 | Version                        | Support Level   |
 |:-------------------------------|:----------------|
 | <0.10.*                        | Unsupported     |
-| 0.10.*                         | Supported       |
-| 0.12.*                         | Supported       |
+| 0.10.*                         | End-of-Life (2016-10-31) |
+| 0.12.*                         | End-of-Life (2016-10-31) |
 | >=4.0 <4.2                     | Unsupported     |
 | >=4.2 <5.* (Node v4 argon LTS) | Supported       |
 | 5.*                            | Unsupported     |
