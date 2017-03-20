@@ -853,6 +853,37 @@ client.Bridge.update('brg-65dhjbanasiei', {
 		}
 	});
 ```
+**Example**  
+```js
+// end bridge
+var bridgeOptions = {
+	callIds: []
+};
+
+client.Bridge.update("{bridgeId}", bridgeOptions)
+.then(function () {
+	// continue
+});
+```
+**Example**  
+```js
+// Add two calls to bridge then remove one
+var bridgeOptions = {
+	bridgeAudio : true,
+	callIds: ["{callId1}","{callId2}"]
+};
+
+client.Bridge.update("{bridgeId}", bridgeOptions)
+.then(function () {
+	var callIdsToRemainInBridge = {
+		callIds: ["{callId1"]
+	};
+	return client.Bridge.update("{bridgeId}", callIdsToRemainInBridge)
+})
+.then(function () {
+	//continue
+});
+```
 <a name="Bridge+speakSentence"></a>
 
 ### bridge.speakSentence(bridgeId, sentence, [callback]) ⇒ <code>Promise</code>
@@ -1028,6 +1059,7 @@ client.Bridge.getCalls('brg-65dhjrmbasiei',
     * [.playAudioFile(callId, fileUrl, [callback])](#Call+playAudioFile) ⇒ <code>Promise</code>
     * [.playAudioAdvanced(callId, params, [callback])](#Call+playAudioAdvanced) ⇒ <code>Promise</code>
     * [.enableRecording(callId, [callback])](#Call+enableRecording) ⇒ <code>Promise</code>
+    * [.disableRecording(callId, [callback])](#Call+disableRecording) ⇒ <code>Promise</code>
     * [.createGather(callId, params, [callback])](#Call+createGather) ⇒ <code>[CallResponse](#CallResponse)</code>
     * [.getGather(callId, gatherId, [callback])](#Call+getGather) ⇒ <code>[GatherResponse](#GatherResponse)</code>
     * [.completeGather(callId, gatherId, [callback])](#Call+completeGather) ⇒ <code>Promise</code>
@@ -1244,6 +1276,16 @@ var playAudio = {
 //Using callbacks
 client.Call.transfer("callId", playAudio, function (err, res) {});
 ```
+**Example**  
+```js
+//Example: Transfer a call using the caller Id of the party being transferred
+var transferPayload = {
+	transferTo       : "+18382947878",
+};
+
+//Using Promises
+client.Call.transfer("callId", transferPayload).then(function (res) {});
+```
 <a name="Call+speakSentence"></a>
 
 ### call.speakSentence(callId, sentence, [callback]) ⇒ <code>Promise</code>
@@ -1362,6 +1404,29 @@ client.Call.enableRecording("callId").then(function (res) {});
 
 //Callback
 client.Call.enableRecording("callId", function (err, res) {});
+```
+<a name="Call+disableRecording"></a>
+
+### call.disableRecording(callId, [callback]) ⇒ <code>Promise</code>
+Turns off call recording for the active call
+
+**Kind**: instance method of <code>[Call](#Call)</code>  
+**Returns**: <code>Promise</code> - A promise for the operation  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| callId | <code>String</code> | The ID of the call |
+| [callback] | <code>function</code> | Callback for the operation |
+
+**Example**  
+```js
+//Turn off recording
+
+//Promise
+client.Call.disableRecording("callId").then(function (res) {});
+
+//Callback
+client.Call.disableRecording("callId", function (err, res) {});
 ```
 <a name="Call+createGather"></a>
 
