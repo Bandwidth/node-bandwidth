@@ -318,7 +318,7 @@ describe("Call API", function () {
 					nock.enableNetConnect();
 				});
 
-				it("should enable recording on a call", function () {
+				it("should disable recording on a call", function () {
 					return client.Call.disableRecording(testCall.id);
 				});
 

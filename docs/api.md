@@ -867,18 +867,18 @@ client.Bridge.update("{bridgeId}", bridgeOptions)
 ```
 **Example**  
 ```js
-// Add two calls to bridge the remove one
+// Add two calls to bridge then remove one
 var bridgeOptions = {
 	bridgeAudio : true,
-	callIds: ["{callId1","callId2"]
+	callIds: ["{callId1}","{callId2}"]
 };
 
 client.Bridge.update("{bridgeId}", bridgeOptions)
 .then(function () {
-	var removeCall2 = {
+	var callIdsToRemainInBridge = {
 		callIds: ["{callId1"]
 	};
-	return client.Bridge.update("{bridgeId}", removeCall2)
+	return client.Bridge.update("{bridgeId}", callIdsToRemainInBridge)
 })
 .then(function () {
 	//continue
