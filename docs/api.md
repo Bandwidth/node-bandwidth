@@ -2617,6 +2617,7 @@ Remove a media file
 * [Message](#Message)
     * [new Message(client)](#new_Message_new)
     * [.send(params, [callback])](#Message+send) ⇒ <code>[MessageResponse](#MessageResponse)</code>
+    * [.sendGroup(params, [callback])](#Message+sendGroup) ⇒ <code>[MessageResponse](#MessageResponse)</code>
     * [.sendMultiple(params, [callback])](#Message+sendMultiple) ⇒ <code>[ExtendedMessageResponse](#ExtendedMessageResponse)</code>
     * [.get(messageId, [callback])](#Message+get) ⇒ <code>[MessageResponse](#MessageResponse)</code>
     * [.list(params, [callback])](#Message+list) ⇒ <code>[MessageListResponse](#MessageListResponse)</code>
@@ -2669,6 +2670,50 @@ client.Message.send({
 //  text : "Thank you for susbcribing to Unicorn Enterprises!",
 //  id   : "..."
 //}
+```
+<a name="Message+sendGroup"></a>
+
+### message.sendGroup(params, [callback]) ⇒ <code>[MessageResponse](#MessageResponse)</code>
+Send a new Group SMS or MMS message
+
+**Kind**: instance method of <code>[Message](#Message)</code>  
+**Returns**: <code>[MessageResponse](#MessageResponse)</code> - A promise for the new message object  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| params | <code>Object</code> | Parameters for sending a new message. |
+| params.text | <code>String</code> | The message text to send |
+| params.from | <code>String</code> | The message sender"s telephone number (or short code) This must be a Catapult number that you own |
+| [params.to] | <code>Array</code> | Message recipient telephone number (or short code) |
+| [params.media] | <code>Array</code> | Json array containing list of media urls to be sent as content for an mms. Valid URLs are: https://api.catapult.inetwork.com/v1/users/<user-id>/media/ We also support media URLs that are external to Bandwidth API, http:// or https:// format: Example: http://customer-web-site.com/file.jpg |
+| [params.tag] | <code>String</code> | A string that will be included in the callback events of the message |
+| [callback] | <code>function</code> | A callback for the new message object |
+
+**Example**  
+```js
+//Send normal text messages
+client.Message.sendGroup({
+  from : "+19195551212",
+  to   : ["+19195551213", "+19195551244", "+18284443333"]
+  text : "Thank you for susbcribing to Unicorn Enterprises!"
+})
+.then(function(message){
+  console.log(message);
+});
+
+//Send MMS (pictures)
+```
+**Example**  
+```js
+client.Message.sendGroup({
+  from  : "+19195551212",
+  to    : ["+19195551213", "+19195551244", "+18284443333"]
+  text  : "Thank you for susbcribing to Unicorn Enterprises!"
+  media : ["https://s3.amazonaws.com/bw-v2-api/demo.jpg"]
+})
+.then(function(message){
+  console.log(message);
+});
 ```
 <a name="Message+sendMultiple"></a>
 
