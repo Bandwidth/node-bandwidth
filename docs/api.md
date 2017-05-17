@@ -2699,12 +2699,15 @@ client.Message.sendGroup({
 })
 .then(function(message){
   console.log(message);
+// { to: [ '+19195551213', '+19195551244', '+18284443333' ],
+//   from: '+19195551212',
+//   text: 'Thank you for susbcribing to Unicorn Enterprises!',
+//   id: 'asdlfkj3509823059sdf' }
 });
-
-//Send MMS (pictures)
 ```
 **Example**  
 ```js
+//Send MMS (pictures)
 client.Message.sendGroup({
   from  : "+19195551212",
   to    : ["+19195551213", "+19195551244", "+18284443333"]
@@ -2713,6 +2716,11 @@ client.Message.sendGroup({
 })
 .then(function(message){
   console.log(message);
+// { to: [ '+19195551213', '+19195551244', '+18284443333' ],
+//   from: '+19195551212',
+//   text: 'Thank you for susbcribing to Unicorn Enterprises!',
+//   media: [ 'https://s3.amazonaws.com/bw-v2-api/demo.jpg' ],
+//   id: 'abc123asdfasdf' }
 });
 ```
 <a name="Message+sendMultiple"></a>
