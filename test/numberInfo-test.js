@@ -31,7 +31,7 @@ describe("NumberInfo API", function () {
 
 			nock("https://api.catapult.inetwork.com")
 				.persist()
-				.get("/v1/numberInfo/" + number)
+				.get("/v1/phoneNumbers/numberInfo/" + number)
 				.reply(200, testNumberInfo);
 		});
 
