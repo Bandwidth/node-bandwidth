@@ -1746,6 +1746,7 @@ Create a new conference
 | [params.callbackHttpMethod] | <code>String</code> | <code>post</code> | Determine if the callback event should be sent via HTTP GET or HTTP POST. |
 | [params.callbackTimeout] | <code>String</code> |  | Determine how long should the platform wait for callbackUrl's response before timing out in milliseconds. |
 | [params.fallbackUrl] | <code>String</code> |  | Determine how long should the platform wait for callbackUrl's response before timing out in milliseconds. |
+| [params.profile] | <code>String</code> |  | Determines how DTMF is used. |
 | [params.tag] | <code>String</code> |  | A string that will be included in the callback events of the conference. |
 | [callback] | <code>function</code> |  | Callback with the newly created conference |
 
