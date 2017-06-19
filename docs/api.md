@@ -1746,7 +1746,7 @@ Create a new conference
 | [params.callbackHttpMethod] | <code>String</code> | <code>post</code> | Determine if the callback event should be sent via HTTP GET or HTTP POST. |
 | [params.callbackTimeout] | <code>String</code> |  | Determine how long should the platform wait for callbackUrl's response before timing out in milliseconds. |
 | [params.fallbackUrl] | <code>String</code> |  | Determine how long should the platform wait for callbackUrl's response before timing out in milliseconds. |
-| [params.profile] | <code>String</code> |  | Determines how DTMF is used. |
+| [params.profile] | <code>String</code> |  | Determines how DTMF is used. Values are: `interpret_digits`: the conference will handle DTMF with the default behavior, or `passthru_digits`: allows the application to receive DTMF events and use the `gather` API. |
 | [params.tag] | <code>String</code> |  | A string that will be included in the callback events of the conference. |
 | [callback] | <code>function</code> |  | Callback with the newly created conference |
 
@@ -2158,6 +2158,7 @@ client.Conference.playAudioAdvanced("conferenceId", options, function (err,res) 
 | hold | <code>String</code> | If "true", all member can't hear or speak in the conference. If "false", all members can hear and speak in the conference (unless set at the member level). |
 | mute | <code>String</code> | If "true", all member can't speak in the conference. If "false", all members can speak in the conference (unless set at the member level). |
 | callbackUrl | <code>String</code> | The complete URL where the events related to the Conference will be sent to. |
+| profile | <code>String</code> | If "interpret_digits": the conference will handle DTMF with the default behavior or if "passthru_digits": allows the application to receive DTMF events and use the `gather` API. |
 | callbackHttpMethod | <code>String</code> | Determine if the callback event should be sent via HTTP GET or HTTP POST. |
 | callbackTimeout | <code>String</code> | Determine how long should the platform wait for callbackUrl's response before timing out in milliseconds. |
 | fallbackUrl | <code>String</code> | Determine how long should the platform wait for callbackUrl's response before timing out in milliseconds. |
