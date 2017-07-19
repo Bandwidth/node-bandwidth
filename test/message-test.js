@@ -2,243 +2,260 @@ var nock = require("nock");
 var CatapultClient = require("../index");
 var baseUrl = "https://api.catapult.inetwork.com";
 
-describe("Message API", function () {
+describe("Message API", function() {
+  var client;
 
-	var client;
+  var userId = "fakeUserId";
+  var apiToken = "fakeApiToken";
+  var apiSecret = "fakeapiSecret";
 
-	var userId = "fakeUserId";
-	var apiToken = "fakeApiToken";
-	var apiSecret = "fakeapiSecret";
+  var newTestMessage = {
+    from: "+12345678901",
+    to: "+12345678902",
+    text: "Hello world."
+  };
 
-	var newTestMessage = {
-		from : "+12345678901",
-		to   : "+12345678902",
-		text : "Hello world."
-	};
+  var otherTestMessage = {
+    from: "+12345678902",
+    text: "Hello world."
+  };
 
-	var otherTestMessage = {
-		from : "+12345678902",
-		text : "Hello world."
-	};
+  var testMessage = {
+    id: "fakeMessageId",
+    messageId: "fakeMessageId",
+    from: "+12345678901",
+    to: "+12345678902",
+    text: "Good morning, this is a test message",
+    time: "2012-10-05T20:37:38.048Z",
+    direction: "out",
+    state: "sent",
+    media: []
+  };
 
-	var testMessage = {
-		"id"        : "fakeMessageId",
-		"messageId" : "fakeMessageId",
-		"from"      : "+12345678901",
-		"to"        : "+12345678902",
-		"text"      : "Good morning, this is a test message",
-		"time"      : "2012-10-05T20:37:38.048Z",
-		"direction" : "out",
-		"state"     : "sent",
-		"media"     : []
-	};
+  var someOtherTestMessage = {
+    id: "fakeMessageId2",
+    messageId: "fakeMessageId2",
+    from: "+12345678902",
+    to: "+12345678901",
+    text: "I received your test message",
+    time: "2012-10-05T20:38:11.023Z",
+    direction: "in",
+    state: "received",
+    media: []
+  };
 
-	var someOtherTestMessage = {
-		"id"        : "fakeMessageId2",
-		"messageId" : "fakeMessageId2",
-		"from"      : "+12345678902",
-		"to"        : "+12345678901",
-		"text"      : "I received your test message",
-		"time"      : "2012-10-05T20:38:11.023Z",
-		"direction" : "in",
-		"state"     : "received",
-		"media"     : []
-	};
+  var messagesList = [testMessage, someOtherTestMessage];
 
-	var messagesList = [ testMessage, someOtherTestMessage ];
+  var fromDateTime = "2012-10-04";
+  var toDateTime = "2012-10-06";
 
-	var fromDateTime = "2012-10-04";
-	var toDateTime = "2012-10-06";
+  describe("global methods using single page response", function() {
+    before(function() {
+      client = new CatapultClient({
+        userId: userId,
+        apiToken: apiToken,
+        apiSecret: apiSecret
+      });
+      nock.disableNetConnect();
 
-	describe("global methods using single page response", function () {
+      nock("https://api.catapult.inetwork.com")
+        .persist()
+        .post("/v1/users/" + userId + "/messages", newTestMessage)
+        .reply(
+          201,
+          {},
+          {
+            Location: "/v1/users/" + userId + "/messages/fakeMessageId"
+          }
+        )
+        .post("/v1/users/" + userId + "/messages", [
+          newTestMessage,
+          otherTestMessage
+        ])
+        .reply(202, [
+          {
+            result: "accepted",
+            location:
+              "https://api.catapult.inetwork.com/v1/users/" +
+              userId +
+              "/messages/fakeMessageId"
+          },
+          {
+            result: "error",
+            error: {
+              category: "bad-request",
+              code: "blank-property",
+              message:
+                "The 'message' resource property 'to' must contain at least" +
+                " one non-whitespace character",
+              details: []
+            }
+          }
+        ])
+        .get("/v1/users/" + userId + "/messages/" + testMessage.id)
+        .reply(200, testMessage)
+        .get(
+          "/v1/users/" +
+            userId +
+            "/messages?fromDateTime=" +
+            fromDateTime +
+            "&" +
+            "toDateTime=" +
+            toDateTime
+        )
+        .reply(200, messagesList);
+    });
 
-		before(function () {
-			client = new CatapultClient({
-				userId    : userId,
-				apiToken  : apiToken,
-				apiSecret : apiSecret
-			});
-			nock.disableNetConnect();
+    after(function() {
+      nock.cleanAll();
+      nock.enableNetConnect();
+    });
 
-			nock("https://api.catapult.inetwork.com")
-				.persist()
-				.post("/v1/users/" + userId + "/messages", newTestMessage)
-				.reply(201,
-					{},
-					{
-						"Location" : "/v1/users/" + userId + "/messages/fakeMessageId"
-					})
-				.post("/v1/users/" + userId + "/messages", [ newTestMessage, otherTestMessage ])
-				.reply(202,
-					[
-						{
-							result   : "accepted",
-							location : "https://api.catapult.inetwork.com/v1/users/" + userId +
-								"/messages/fakeMessageId"
-						},
-						{
-							result : "error",
-							error  : {
-								category : "bad-request",
-								code     : "blank-property",
-								message  : "The 'message' resource property 'to' must contain at least" +
-									" one non-whitespace character",
-								details  : []
-							}
-						}
-					]
-				)
-				.get("/v1/users/" + userId + "/messages/" + testMessage.id)
-				.reply(200, testMessage)
-				.get("/v1/users/" + userId + "/messages?fromDateTime=" + fromDateTime + "&" + "toDateTime=" + toDateTime)
-				.reply(200, messagesList);
-		});
+    it("should send a message, promise style", function() {
+      return client.Message.send(newTestMessage).then(function(message) {
+        message.should.eql(newTestMessage);
+      });
+    });
 
-		after(function () {
-			nock.cleanAll();
-			nock.enableNetConnect();
-		});
+    it("should send a message, callback style", function(done) {
+      client.Message.send(newTestMessage, function(err, message) {
+        if (err) {
+          throw err;
+        }
+        message.should.eql(newTestMessage);
+        done();
+      });
+    });
 
-		it("should send a message, promise style", function () {
-			return client.Message.send(newTestMessage)
-			.then(function (message) {
-				message.should.eql(newTestMessage);
-			});
-		});
+    it("should send multiple messages", function() {
+      return client.Message
+        .sendMultiple([newTestMessage, otherTestMessage])
+        .then(function(messages) {
+          messages[0].message.should.eql(newTestMessage);
+          messages[1].error.should.eql({
+            category: "bad-request",
+            code: "blank-property",
+            message:
+              "The 'message' resource property 'to' must contain at " +
+              "least one non-whitespace character",
+            details: []
+          });
+        });
+    });
 
-		it("should send a message, callback style", function (done) {
-			client.Message.send(newTestMessage, function (err, message) {
-				if (err) {
-					throw err;
-				}
-				message.should.eql(newTestMessage);
-				done();
-			});
-		});
+    it("should get a message, promise style", function() {
+      return client.Message.get(testMessage.id).then(function(message) {
+        message.should.eql(testMessage);
+      });
+    });
 
-		it("should send multiple messages", function () {
-			return client.Message.sendMultiple([ newTestMessage, otherTestMessage ])
-			.then(function (messages) {
-				messages[0].message.should.eql(newTestMessage);
-				messages[1].error.should.eql({
-					category : "bad-request",
-					code     : "blank-property",
-					message  : "The 'message' resource property 'to' must contain at " +
-						"least one non-whitespace character",
-					details  : []
-				});
-			});
-		});
+    it("should get a list of messages, promise style", function() {
+      return client.Message
+        .list({
+          fromDateTime: fromDateTime,
+          toDateTime: toDateTime
+        })
+        .then(function(messageResponse) {
+          var messages = messageResponse.messages;
+          messages.should.eql(messagesList);
+        });
+    });
 
-		it("should get a message, promise style", function () {
-			return client.Message.get(testMessage.id)
-			.then(function (message) {
-				message.should.eql(testMessage);
-			});
-		});
+    it("should get a list of messages, callback style", function(done) {
+      client.Message.list(
+        {
+          fromDateTime: fromDateTime,
+          toDateTime: toDateTime
+        },
+        function(err, messageResponse) {
+          if (err) {
+            throw err;
+          }
+          var messages = messageResponse.messages;
+          messages.should.eql(messagesList);
+          done();
+        }
+      );
+    });
+  });
 
-		it("should get a list of messages, promise style", function () {
-			return client.Message.list({
-				fromDateTime : fromDateTime,
-				toDateTime   : toDateTime
-			})
-			.then(function (messageResponse) {
-				var messages = messageResponse.messages;
-				messages.should.eql(messagesList);
-			});
-		});
+  describe("list function with a multiple page response", function() {
+    before(function() {
+      nock.disableNetConnect();
 
-		it("should get a list of messages, callback style", function (done) {
-			client.Message.list({
-				fromDateTime : fromDateTime,
-				toDateTime   : toDateTime
-			}, function (err, messageResponse) {
-				if (err) {
-					throw err;
-				}
-				var messages = messageResponse.messages;
-				messages.should.eql(messagesList);
-				done();
-			});
-		});
-	});
+      nock("https://api.catapult.inetwork.com")
+        .persist()
+        .get("/v1/users/" + userId + "/messages")
+        .reply(200, messagesList, {
+          link:
+            "<https://api.catapult.inetwork.com" +
+            "/v1/users/" +
+            userId +
+            "/messages?" +
+            'sortKeyLT=1>; rel="next"'
+        })
+        .get("/v1/users/" + userId + "/messages?sortKeyLT=1")
+        .reply(200, []);
+    });
 
-	describe("list function with a multiple page response", function () {
+    after(function() {
+      nock.cleanAll();
+      nock.enableNetConnect();
+    });
 
-		before(function () {
-			nock.disableNetConnect();
+    it("should get the next page of messages (if it exists)", function() {
+      //Simulating a response which has 1 page of messages
+      return client.Message
+        .list()
+        .then(function(messageResponse) {
+          var messages = messageResponse.messages;
 
-			nock("https://api.catapult.inetwork.com")
-				.persist()
-				.get("/v1/users/" + userId + "/messages")
-				.reply(200, messagesList, {
-					"link" : "<https://api.catapult.inetwork.com" +
-						"/v1/users/" + userId + "/messages?" + "sortKeyLT=1>; rel=\"next\""
-				})
-				.get("/v1/users/" + userId + "/messages?sortKeyLT=1")
-				.reply(200, []);
-		});
+          messages[0].should.eql(messagesList[0]);
+          messages[1].should.eql(messagesList[1]);
 
-		after(function () {
-			nock.cleanAll();
-			nock.enableNetConnect();
-		});
+          return messageResponse.getNextPage();
+        })
+        .then(function(otherMessageResponse) {
+          messages = otherMessageResponse.messages;
 
-		it("should get the next page of messages (if it exists)", function () {
-			//Simulating a response which has 1 page of messages
-			return client.Message.list()
-			.then(function (messageResponse) {
+          (messages[0] === undefined).should.be.true;
 
-				var messages = messageResponse.messages;
+          return otherMessageResponse.getNextPage();
+        })
+        .catch(function(err) {
+          err.should.eql("Next page does not exist.");
+        });
+    });
+  });
 
-				messages[0].should.eql(messagesList[0]);
-				messages[1].should.eql(messagesList[1]);
+  describe("list function with no messages available", function() {
+    before(function() {
+      nock.disableNetConnect();
 
-				return messageResponse.getNextPage();
-			})
-			.then(function (otherMessageResponse) {
+      nock("https://api.catapult.inetwork.com")
+        .persist()
+        .get("/v1/users/" + userId + "/messages")
+        .reply(200, []);
+    });
 
-				messages = otherMessageResponse.messages;
+    after(function() {
+      nock.cleanAll();
+      nock.enableNetConnect();
+    });
 
-				(messages[0] === undefined).should.be.true;
+    it("should not get the next page of messages", function() {
+      //Simulating a response which has 0 pages of messages
+      return client.Message
+        .list()
+        .then(function(messageResponse) {
+          var messages = messageResponse.messages;
+          (messages[0] === undefined).should.be.true;
 
-				return otherMessageResponse.getNextPage();
-			})
-			.catch(function (err) {
-				err.should.eql("Next page does not exist.");
-			});
-		});
-	});
-
-	describe("list function with no messages available", function () {
-
-		before(function () {
-			nock.disableNetConnect();
-
-			nock("https://api.catapult.inetwork.com")
-				.persist()
-				.get("/v1/users/" + userId + "/messages")
-				.reply(200, []);
-		});
-
-		after(function () {
-			nock.cleanAll();
-			nock.enableNetConnect();
-		});
-
-		it("should not get the next page of messages", function () {
-			//Simulating a response which has 0 pages of messages
-			return client.Message.list()
-			.then(function (messageResponse) {
-
-				var messages = messageResponse.messages;
-				(messages[0] === undefined).should.be.true;
-
-				return messageResponse.getNextPage();
-			})
-			.catch(function (err) {
-				err.should.eql("Next page does not exist.");
-			});
-		});
-	});
+          return messageResponse.getNextPage();
+        })
+        .catch(function(err) {
+          err.should.eql("Next page does not exist.");
+        });
+    });
+  });
 });
