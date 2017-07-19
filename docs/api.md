@@ -707,6 +707,7 @@ client.AvailableNumber.searchAndOrder("tollFree", {
     * [.speakSentence(bridgeId, sentence, [callback])](#Bridge+speakSentence) ⇒ <code>Promise</code>
     * [.playAudioFile(bridgeId, fileUrl, [callback])](#Bridge+playAudioFile) ⇒ <code>Promise</code>
     * [.playAudioAdvanced(bridgeId, params, [callback])](#Bridge+playAudioAdvanced) ⇒ <code>Promise</code>
+    * [.stopAudioFilePlayback(bridgeId)](#Bridge+stopAudioFilePlayback) ⇒ <code>Promise</code>
     * [.getCalls(bridgeId, callback)](#Bridge+getCalls) ⇒ <code>Promise</code>
 
 <a name="new_Bridge_new"></a>
@@ -980,6 +981,18 @@ client.Bridge.playAudioAdvanced("bridgeId", options).then(function (res) {});
 //Callback
 client.Bridge.playAudioAdvanced("bridgeId", options, function (err,res) {});
 ```
+<a name="Bridge+stopAudioFilePlayback"></a>
+
+### bridge.stopAudioFilePlayback(bridgeId) ⇒ <code>Promise</code>
+This stops any file audio playback on the bridge
+
+**Kind**: instance method of <code>[Bridge](#Bridge)</code>  
+**Returns**: <code>Promise</code> - A promise of the operation  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| bridgeId | <code>String</code> | the Id of the bridge to stop file playback |
+
 <a name="Bridge+getCalls"></a>
 
 ### bridge.getCalls(bridgeId, callback) ⇒ <code>Promise</code>
