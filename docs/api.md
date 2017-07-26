@@ -2817,6 +2817,7 @@ client.Message.list()
 | messages | <code>[Array.&lt;MessageResponse&gt;](#MessageResponse)</code> | Array of messages |
 | getNextPage | <code>function</code> | Calls the next page function |
 | hasNextPage | <code>boolean</code> | True/False flag for next |
+| nextLink | <code>Object</code> | The values to attach to the next `get` request for messages. |
 
 <a name="ExtendedMessageResponse"></a>
 
