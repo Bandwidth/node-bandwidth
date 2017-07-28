@@ -88,6 +88,10 @@ describe("Bridge API", function () {
 			fileUrl : ""
 		};
 
+		var stopSpeakingPayload = {
+			sentence : ""
+		};
+
 		before(function () {
 			client = new CatapultClient({
 				userId    : userId,
@@ -109,6 +113,8 @@ describe("Bridge API", function () {
 				.get("/v1/users/" + userId + "/bridges")
 				.reply(200, bridgesList)
 				.post("/v1/users/" + userId + "/bridges/" + testBridge.id + "/audio", speakSentencePayload)
+				.reply(200)
+				.post("/v1/users/" + userId + "/bridges/" + testBridge.id + "/audio", stopSpeakingPayload)
 				.reply(200)
 				.post("/v1/users/" + userId + "/bridges/" + testBridge.id + "/audio", playAudioPayload)
 				.reply(200)
@@ -187,6 +193,14 @@ describe("Bridge API", function () {
 
 		it("should speak a sentence to the bridge, callback style", function (done) {
 			return client.Bridge.speakSentence(testBridge.id, sampleSentence, done);
+		});
+
+		it("should stop a sentence from speaking, promise style", function () {
+			return client.Bridge.stopSpeaking(testBridge.id);
+		});
+
+		it("should stop a sentence from speaking, callback style", function (done) {
+			return client.Bridge.stopSpeaking(testBridge.id, done);
 		});
 
 		it("should play an audio file on sentence to the bridge, promise style", function () {
