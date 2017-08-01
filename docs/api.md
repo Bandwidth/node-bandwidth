@@ -705,8 +705,10 @@ client.AvailableNumber.searchAndOrder("tollFree", {
     * [.list(params, callback)](#Bridge+list) ⇒ <code>[BridgeListResponse](#BridgeListResponse)</code>
     * [.update(bridgeId, params, [callback])](#Bridge+update) ⇒ <code>[BridgeResponse](#BridgeResponse)</code>
     * [.speakSentence(bridgeId, sentence, [callback])](#Bridge+speakSentence) ⇒ <code>Promise</code>
+    * [.stopSpeaking(bridgeId)](#Bridge+stopSpeaking) ⇒ <code>Promise</code>
     * [.playAudioFile(bridgeId, fileUrl, [callback])](#Bridge+playAudioFile) ⇒ <code>Promise</code>
     * [.playAudioAdvanced(bridgeId, params, [callback])](#Bridge+playAudioAdvanced) ⇒ <code>Promise</code>
+    * [.stopAudioFilePlayback(bridgeId)](#Bridge+stopAudioFilePlayback) ⇒ <code>Promise</code>
     * [.getCalls(bridgeId, callback)](#Bridge+getCalls) ⇒ <code>Promise</code>
 
 <a name="new_Bridge_new"></a>
@@ -908,6 +910,23 @@ client.Bridge.speakSentence("bridgeID", "Hello From Bandwidth").then(function (r
 //Callback
 client.Bridge.speakSentence("bridgeID", "Hello From Bandwidth", function (err, res) {});
 ```
+<a name="Bridge+stopSpeaking"></a>
+
+### bridge.stopSpeaking(bridgeId) ⇒ <code>Promise</code>
+This stops any file audio playback on the bridge
+
+**Kind**: instance method of <code>[Bridge](#Bridge)</code>  
+**Returns**: <code>Promise</code> - A promise of the operation  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| bridgeId | <code>String</code> | the Id of the bridge to stop speaking |
+
+**Example**  
+```js
+//Promise
+client.Bridge.stopSpeaking("bridgeId").then(function (res) {});
+```
 <a name="Bridge+playAudioFile"></a>
 
 ### bridge.playAudioFile(bridgeId, fileUrl, [callback]) ⇒ <code>Promise</code>
@@ -979,6 +998,23 @@ client.Bridge.playAudioAdvanced("bridgeId", options).then(function (res) {});
 
 //Callback
 client.Bridge.playAudioAdvanced("bridgeId", options, function (err,res) {});
+```
+<a name="Bridge+stopAudioFilePlayback"></a>
+
+### bridge.stopAudioFilePlayback(bridgeId) ⇒ <code>Promise</code>
+This stops any file audio playback on the bridge
+
+**Kind**: instance method of <code>[Bridge](#Bridge)</code>  
+**Returns**: <code>Promise</code> - A promise of the operation  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| bridgeId | <code>String</code> | the Id of the bridge to stop file playback |
+
+**Example**  
+```js
+//Promise
+client.Bridge.stopAudioFilePlayback("bridgeId").then(function (res) {});
 ```
 <a name="Bridge+getCalls"></a>
 
@@ -1714,8 +1750,10 @@ client.Call.sendDtmf(callId, "1", function (err) {});
     * [.update(conferenceId, params, [callback])](#Conference+update) ⇒ <code>Promise</code>
     * [.remove(conferenceId, [callback])](#Conference+remove) ⇒ <code>Promise</code>
     * [.speakSentence(conferenceId, sentence, [callback])](#Conference+speakSentence) ⇒ <code>Promise</code>
+    * [.stopSpeaking(conferenceId)](#Conference+stopSpeaking) ⇒ <code>Promise</code>
     * [.playAudioFile(conferenceId, fileUrl, [callback])](#Conference+playAudioFile) ⇒ <code>Promise</code>
     * [.playAudioAdvanced(conferenceId, params, [callback])](#Conference+playAudioAdvanced) ⇒ <code>Promise</code>
+    * [.stopAudioFilePlayback(conferenceId)](#Conference+stopAudioFilePlayback) ⇒ <code>Promise</code>
     * [.getMembers(conferenceId, callback)](#Conference+getMembers) ⇒ <code>Promise</code>
     * [.getMember(conferenceId, memberId, callback)](#Conference+getMember) ⇒ <code>Promise</code>
     * [.createMember(params, [callback])](#Conference+createMember) ⇒ <code>[ConferenceResponse](#ConferenceResponse)</code>
@@ -1850,6 +1888,23 @@ client.Conference.speakSentence("conferenceID", "Hello From Bandwidth").then(fun
 //Callback
 client.Conference.speakSentence("conferenceID", "Hello From Bandwidth", function (err, res) {});
 ```
+<a name="Conference+stopSpeaking"></a>
+
+### conference.stopSpeaking(conferenceId) ⇒ <code>Promise</code>
+This stops any file audio playback on the conference
+
+**Kind**: instance method of <code>[Conference](#Conference)</code>  
+**Returns**: <code>Promise</code> - A promise of the operation  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| conferenceId | <code>String</code> | the Id of the conference to stop speaking |
+
+**Example**  
+```js
+//Promise
+client.Conference.stopSpeaking("conferenceId").then(function (res) {});
+```
 <a name="Conference+playAudioFile"></a>
 
 ### conference.playAudioFile(conferenceId, fileUrl, [callback]) ⇒ <code>Promise</code>
@@ -1921,6 +1976,23 @@ client.Conference.playAudioAdvanced("conferenceId", options).then(function (res)
 
 //Callback
 client.Conference.playAudioAdvanced("conferenceId", options, function (err,res) {});
+```
+<a name="Conference+stopAudioFilePlayback"></a>
+
+### conference.stopAudioFilePlayback(conferenceId) ⇒ <code>Promise</code>
+This stops any file audio playback on the conference
+
+**Kind**: instance method of <code>[Conference](#Conference)</code>  
+**Returns**: <code>Promise</code> - A promise of the operation  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| conferenceId | <code>String</code> | the Id of the conference to stop file playback |
+
+**Example**  
+```js
+//Promise
+client.Conference.stopAudioFilePlayback("conferenceId").then(function (res) {});
 ```
 <a name="Conference+getMembers"></a>
 
