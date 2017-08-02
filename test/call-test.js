@@ -303,11 +303,11 @@ describe("Call API", function () {
 		});
 
 		it("should stop audio file playback, promise style", function () {
-			return client.Call.stopFilePlayback(testCall.id);
+			return client.Call.stopAudioFilePlayback(testCall.id);
 		});
 
 		it("should stop audio file playback, callback style", function (done) {
-			return client.Call.stopFilePlayback(testCall.id, done);
+			return client.Call.stopAudioFilePlayback(testCall.id, done);
 		});
 
 		describe("Recording toggle", function () {

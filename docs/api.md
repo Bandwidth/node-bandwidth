@@ -1092,7 +1092,9 @@ client.Bridge.getCalls('brg-65dhjrmbasiei',
     * [.hangup(callId, [callback])](#Call+hangup) ⇒ <code>Promise</code>
     * [.transfer(params, [callback])](#Call+transfer) ⇒ <code>[CallResponse](#CallResponse)</code>
     * [.speakSentence(callId, sentence, [callback])](#Call+speakSentence) ⇒ <code>Promise</code>
+    * [.stopSpeaking(callId)](#Call+stopSpeaking) ⇒ <code>Promise</code>
     * [.playAudioFile(callId, fileUrl, [callback])](#Call+playAudioFile) ⇒ <code>Promise</code>
+    * [.stopAudioFilePlayback(callId)](#Call+stopAudioFilePlayback) ⇒ <code>Promise</code>
     * [.playAudioAdvanced(callId, params, [callback])](#Call+playAudioAdvanced) ⇒ <code>Promise</code>
     * [.enableRecording(callId, [callback])](#Call+enableRecording) ⇒ <code>Promise</code>
     * [.disableRecording(callId, [callback])](#Call+disableRecording) ⇒ <code>Promise</code>
@@ -1346,6 +1348,23 @@ client.Call.speakSentence("callID", "Hello From Bandwidth").then(function (res) 
 //Callback
 client.Call.speakSentence("callID", "Hello From Bandwidth", function (err, res) {});
 ```
+<a name="Call+stopSpeaking"></a>
+
+### call.stopSpeaking(callId) ⇒ <code>Promise</code>
+This stops any speak sentence audio playback on the call
+
+**Kind**: instance method of <code>[Call](#Call)</code>  
+**Returns**: <code>Promise</code> - A promise for the call information  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| callId | <code>String</code> | The ID of the call to stop file playback |
+
+**Example**  
+```js
+//Stop Audio file on call
+client.Call.stopSpeaking("callId").then(function (res) {});
+```
 <a name="Call+playAudioFile"></a>
 
 ### call.playAudioFile(callId, fileUrl, [callback]) ⇒ <code>Promise</code>
@@ -1369,6 +1388,23 @@ client.Call.playAudioFile("callId", "http://myurl.com/file.mp3").then(function (
 
 //Callback
 client.Call.playAudioFile("callId", "http://myurl.com/file.wav", function (err, res) {});
+```
+<a name="Call+stopAudioFilePlayback"></a>
+
+### call.stopAudioFilePlayback(callId) ⇒ <code>Promise</code>
+This stops any stop file audio playback on the call
+
+**Kind**: instance method of <code>[Call](#Call)</code>  
+**Returns**: <code>Promise</code> - A promise for the call information  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| callId | <code>String</code> | The ID of the call to stop file playback |
+
+**Example**  
+```js
+//Stop Audio file on call
+client.Call.stopAudioFilePlayback("callId").then(function (res) {});
 ```
 <a name="Call+playAudioAdvanced"></a>
 
