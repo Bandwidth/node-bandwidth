@@ -148,6 +148,17 @@ describe("Message API", function () {
 			});
 		});
 
+		it("should contain the nextLink in response", function () {
+			return client.Message.list({
+				fromDateTime : fromDateTime,
+				toDateTime   : toDateTime
+			})
+			.then(function (messageResponse) {
+				var nextLink = messageResponse.nextLink;
+				nextLink.should.eql({});
+			});
+		});
+
 		it("should get a list of messages, callback style", function (done) {
 			client.Message.list({
 				fromDateTime : fromDateTime,
@@ -206,6 +217,16 @@ describe("Message API", function () {
 			})
 			.catch(function (err) {
 				err.should.eql("Next page does not exist.");
+			});
+		});
+
+		it("should return the nextLink header", function () {
+			//Simulating a response which has 1 page of messages
+			return client.Message.list()
+			.then(function (messageResponse) {
+
+				var nextLink = messageResponse.nextLink;
+				nextLink.should.eql({ sortKeyLT : "1" });
 			});
 		});
 	});
