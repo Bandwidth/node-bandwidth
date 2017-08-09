@@ -13,7 +13,10 @@
   },
   "keywords": [
     "bandwidth",
-    "catapult"
+    "catapult",
+    "cpaas",
+    "voice",
+    "messaging"
   ],
   "author": "bandwidth",
   "license": "MIT",
