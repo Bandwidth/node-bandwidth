@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">src/account.js | node-bandwidth</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="NodeJs Client library for Catapult API"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="node-bandwidth"><meta property="twitter:description" content="NodeJs Client library for Catapult API"></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/bandwidthcom/node-bandwidth.git"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  </ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/account.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">var getNextLink = require(&quot;./headerParsingLib&quot;).getNextLink;
+var Promise = require(&quot;bluebird&quot;);
+
+/**
+ * Account
+ * @constructor
+ */
+var Account = function(client) {
+  /**
+	 * Gets information about user&apos;s account.
+	 * @param  {String} accountId The ID of the account to get
+	 * @param  {Function} callback A callback with the account information
+	 * @return {AccountResponse} A promise for the account information
+	 * @example
+	 * // Promise
+	 * client.Account.get().then(function(info){});
+	 *
+	 * // Callback
+	 * client.Account.get(function(err, info){});
+	 */
+  this.get = function(callback) {
+    return client
+      .makeRequest({
+        path: &quot;account&quot;,
+        method: &quot;GET&quot;
+      })
+      .then(function(response) {
+        return response.body;
+      })
+      .asCallback(callback);
+  };
+
+  /**
+	 * Gets a list of transactions from user&apos;s account.
+	 * @param {Object} params Query parameters for listing accounts
+	 * @param {Number} [params.size=25] Used for pagination to indicate the size of each page requested
+	 * for querying a list of transactions. If no value is specified the default value is 25 (maximum value 1000).
+	 * @param {Number} [params.maxItems] Limit the number of transactions that will be returned
+	 * @param {String} [params.toDate] Return only transactions that are newer than the parameter.
+	 * @param {String} [params.fromDate] Return only transactions that are older than the parameter.
+	 * @param {String} [params.type] Return only transactions that are this type.
+	 * @param {Function} callback A callback with the list of transactions
+	 * @return {TransactionListResponse} A promise for the list of transactions
+	 * @example
+	 *
+	 * //Promise
+	 * client.Account.getTransactions()
+	 * 	.then(function (response) {
+	 * 		console.log(response.transactions);
+	 * 		if(response.hasNextPage) {
+	 * 			return response.getNextPage();
+	 * 		}
+	 * 		else {
+	 * 			return {transactions: []};
+	 * 		}
+	 * 	})
+	 * 	.then(function(response) {
+	 * 		console.log(response.transactions);
+	 * 	});
+	 * @example
+	 * //Get transactions filtering by date
+	 * //Promise
+	 * var params = {
+	 * 	fromDate: &quot;2013-02-21T13:38:00&quot;
+	 * };
+	 * client.Account.getTransactions(params)
+	 * 	.then(function (response) {
+	 * 		console.log(response.transactions);
+	 * 		if(response.hasNextPage) {
+	 * 			return response.getNextPage();
+	 * 		}
+	 * 		else {
+	 * 			return {transactions: []};
+	 * 		}
+	 * 	})
+	 * 	.then(function(response) {
+	 * 		console.log(response.transactions);
+	 * 	});
+	 * @example
+	 * //Get transactions filtering by date
+	 * //Promise
+	 * var params = {
+	 * 	fromDate: &quot;2013-02-21T13:38:00&quot;,
+	 * 	toDate:   &quot;2013-02-21T13:40:00&quot;
+	 * };
+	 * client.Account.getTransactions(params)
+	 * 	.then(function (response) {
+	 * 		console.log(response.transactions);
+	 * 		if(response.hasNextPage) {
+	 * 			return response.getNextPage();
+	 * 		}
+	 * 		else {
+	 * 			return {transactions: []};
+	 * 		}
+	 * 	})
+	 * 	.then(function(response) {
+	 * 		console.log(response.transactions);
+	 * 	});
+	 * @example
+	 * //Get transactions limiting result
+	 * //Promise
+	 * var params = {
+	 * 	maxItems: 1
+	 * };
+	 * client.Account.getTransactions(params)
+	 * 	.then(function (response) {
+	 * 		console.log(response.transactions);
+	 * 		if(response.hasNextPage) {
+	 * 			return response.getNextPage();
+	 * 		}
+	 * 		else {
+	 * 			return {transactions: []};
+	 * 		}
+	 * 	})
+	 * 	.then(function(response) {
+	 * 		console.log(response.transactions);
+	 * 	});
+	 *
+	 * @example
+	 * //Get transactions of `payment` type
+	 * //Promise
+	 * var params = {
+	 * 	type: &quot;Payment&quot;
+	 * };
+	 * client.Account.getTransactions(params)
+	 * 	.then(function (response) {
+	 * 		console.log(response.transactions);
+	 * 		if(response.hasNextPage) {
+	 * 			return response.getNextPage();
+	 * 		}
+	 * 		else {
+	 * 			return {transactions: []};
+	 * 		}
+	 * 	})
+	 * 	.then(function(response) {
+	 * 		console.log(response.transactions);
+	 * 	});
+	 *
+	 */
+  this.getTransactions = function(params, callback) {
+    var self = this;
+    return client
+      .makeRequest({
+        path: &quot;account/transactions&quot;,
+        method: &quot;GET&quot;,
+        qs: params
+      })
+      .then(function(response) {
+        var transactionListResponse = {
+          transactions: response.body,
+          hasNextPage: false,
+          getNextPage: function(nextCallback) {
+            return Promise.reject(&quot;Next page does not exist.&quot;).asCallback(
+              nextCallback
+            );
+          }
+        };
+        var nextLink = getNextLink(response.headers);
+        if (nextLink) {
+          transactionListResponse.hasNextPage = true;
+          transactionListResponse.getNextPage = function(nextCallback) {
+            return self.getTransactions(nextLink, nextCallback);
+          };
+        }
+        return transactionListResponse;
+      })
+      .asCallback(callback);
+  };
+};
+
+module.exports = Account;
+
+/**
+ * @class AccountResponse
+ * @type {Object}
+ * @property {String} balance User&apos;s account balance in dollars, as a string;
+ * the currency symbol is not included.
+ * @property {String} type The type of account configured for your user.
+ */
+
+/**
+ * @class TransactionListResponse
+ * @type {Object}
+ * @property {Array.&lt;TransactionResponse&gt;} transactions Array of transactions
+ * @property {function} getNextPage Calls the next page function
+ * @property {boolean} hasNextPage True/False flag for next
+ */
+
+/**
+ * @class TransactionResponse
+ * @type {Object}
+ * @property {String} id The unique identifier for the transaction.
+ * @property {String} time The time the transaction was processed.
+ * @property {String} amount The transaction amount in dollars, as a string;
+ * the currency symbol is not included.
+ * @property {String} type The type of transaction.
+ * @property {String} units The number of product units the transaction charged or credited.
+ * @property {String} productType The product the transaction was related to
+ * @property {String} number The phone number the transaction was related to
+ */
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.0.1)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

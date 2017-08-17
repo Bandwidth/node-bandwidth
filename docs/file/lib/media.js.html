@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">lib/media.js | node-bandwidth</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="NodeJs Client library for Catapult API"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="node-bandwidth"><meta property="twitter:description" content="NodeJs Client library for Catapult API"></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/bandwidthcom/node-bandwidth.git"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  </ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">lib/media.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">var Promise = require(&quot;bluebird&quot;);
+var stream = require(&quot;stream&quot;);
+var fs = require(&quot;fs&quot;);
+var request = require(&quot;request&quot;);
+
+function getReadStreamData(data) {
+  return new Promise(function(resolve, reject) {
+    var s;
+    if (data instanceof Buffer) {
+      s = new stream.Readable();
+      s.push(data);
+      s.push(null);
+      return resolve({ stream: s, size: data.length });
+    }
+    if (typeof data === &quot;string&quot;) {
+      return fs.stat(data, function(err, stat) {
+        if (err) {
+          return reject(err);
+        }
+        resolve({ stream: fs.createReadStream(data), size: stat.size });
+      });
+    }
+    if (data instanceof stream.Readable) {
+      // we have to detect stream size first
+      var size = 0;
+      s = new stream.Readable(); // new stream in memory to store data from original stream
+      data.on(&quot;data&quot;, function(buffer) {
+        s.push(buffer);
+        size += buffer.length;
+      });
+      data.on(&quot;end&quot;, function() {
+        s.push(null);
+        resolve({ stream: s, size: size });
+      });
+      data.resume();
+      return;
+    }
+    reject(new Error(&quot;data should be string, Buffer or readable stream&quot;));
+  });
+}
+
+/**
+ * Media
+ * @constructor
+ */
+var Media = function(client) {
+  /**
+	 * Upload a media file
+	 * @param {String} name The name of uploaded file.
+	 * @param {String|Buffer|Readable} data Data to upload. If data is string it should be path to file to upload.
+	 * @param {String} contentType Optional MIME type of uploaded data (default: application/octet-stream).
+	 * @param {Function} [callback] Callback for the operation
+	 * @return {Promise} A promise for the operation
+	 */
+  this.upload = function(name, data, contentType, callback) {
+    if (!callback &amp;&amp; typeof contentType === &quot;function&quot;) {
+      callback = contentType;
+      contentType = null;
+    }
+    return getReadStreamData(data)
+      .then(function(streamData) {
+        return new Promise(function(resolve, reject) {
+          var req = request(
+            client.createRequestOptions({
+              path: &quot;media/&quot; + encodeURIComponent(name),
+              method: &quot;PUT&quot;
+            })
+          );
+          req.headers[&quot;Content-Type&quot;] =
+            contentType || &quot;application/octet-stream&quot;;
+          req.headers[&quot;Content-Length&quot;] = streamData.size;
+          req.on(&quot;error&quot;, reject);
+          req.on(&quot;response&quot;, resolve);
+          streamData.stream.pipe(req);
+        });
+      })
+      .then(client.handleResponse)
+      .asCallback(callback);
+  };
+
+  /**
+	 * Download a media file
+	 * @param {String} name The name of downloaded file.
+	 * @param {Function} [callback] Callback for the operation
+	 * @return {DownloadMediaFileResponse} A promise for the operation
+	 */
+  this.download = function(name, callback) {
+    return client
+      .makeRequest({
+        path: &quot;media/&quot; + encodeURIComponent(name),
+        method: &quot;GET&quot;,
+        encoding: &quot;binary&quot;
+      })
+      .then(function(response) {
+        return {
+          contentType: response.headers[&quot;content-type&quot;],
+          content: response.body
+        };
+      })
+      .asCallback(callback);
+  };
+
+  /**
+	 * Gets a list of your media files.
+	 * @param {Function} [callback] Callback for the operation
+	 * @return {Array&lt;MediaFileResponse&gt;} A promise for the operation
+	 */
+  this.list = function(callback) {
+    return client
+      .makeRequest({
+        path: &quot;media&quot;,
+        method: &quot;GET&quot;
+      })
+      .then(function(response) {
+        return response.body;
+      })
+      .asCallback(callback);
+  };
+
+  /**
+	 * Remove a media file
+	 * @param {String} name The name of file to remove.
+	 * @param {Function} [callback] Callback for the operation
+	 * @return {Promise} A promise for the operation
+	 */
+  this.delete = function(name, callback) {
+    return client
+      .makeRequest({
+        path: &quot;media/&quot; + encodeURIComponent(name),
+        method: &quot;DELETE&quot;
+      })
+      .asCallback(callback);
+  };
+};
+
+module.exports = Media;
+/**
+ * @class DownloadMediaFileResponse
+ * @type {Object}
+ * @property {String} contentType MIME type of downloaded file.
+ * @property {String|Buffer|Readable} content Content of file.
+ */
+
+/**
+ * @class MediaFileResponse
+ * @type {Object}
+ * @property {String} mediaName name of media file.
+ * @property {Number} contentLength Length of media file.
+ */
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.0.1)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

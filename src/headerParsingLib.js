@@ -1,13 +1,13 @@
 /**
 * Imports
-*/
+*/ 
 var parse = require("parse-link-header");
 var _ = require("lodash");
 
 /**
  * @function
  *  @name getNextLink
- * @param {Object} headers Response A headers object returned from calling 'client.makeRequest' (response.headers)
+ * @param {Object} Response A headers object returned from calling 'client.makeRequest' (response.headers)
  * @return {String}  A parsed version of the link to the subsequent page, or null if no such page exists.
  */
 var getNextLink = function(headers) {

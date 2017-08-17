@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">test/application-test.js | node-bandwidth</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="NodeJs Client library for Catapult API"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="node-bandwidth"><meta property="twitter:description" content="NodeJs Client library for Catapult API"></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/bandwidthcom/node-bandwidth.git"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  </ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">test/application-test.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">var nock = require(&quot;nock&quot;);
+var CatapultClient = require(&quot;../index&quot;);
+
+var baseUrl = &quot;https://api.catapult.inetwork.com&quot;;
+
+describe(&quot;Application API&quot;, function() {
+  describe(&quot;global methods&quot;, function() {
+    var client;
+    var requestSpy;
+    var updateNock;
+    var deleteNock;
+
+    var userId = &quot;fakeUserId&quot;;
+    var apiToken = &quot;fakeApiToken&quot;;
+    var apiSecret = &quot;fakeapiSecret&quot;;
+
+    var page = 1;
+    var size = 1;
+
+    var applicationsList = [
+      {
+        id: &quot;fakeApplicationId&quot;,
+        name: &quot;fakeApp&quot;,
+        incomingCallUrl: &quot;http://example.com/calls.php&quot;,
+        incomingMessageUrl: &quot;http://example.com/messages.php&quot;,
+        autoAnswer: true
+      },
+      {
+        id: &quot;fakeApplicationId2&quot;,
+        name: &quot;fakeApp2&quot;,
+        incomingCallUrl: &quot;http://example.com/calls2.php&quot;,
+        incomingMessageUrl: &quot;http://example.com/messages2.php&quot;,
+        autoAnswer: true
+      }
+    ];
+
+    var newApplication = {
+      name: &quot;NewApplication&quot;,
+      incomingCallUrl: &quot;http://example.com/calls3.php&quot;,
+      incomingMessageUrl: &quot;http://example.com/messages3.php&quot;,
+      autoAnswer: true
+    };
+
+    var testApplication = {
+      id: &quot;fakeTestApplicationId&quot;,
+      name: &quot;NewApplication&quot;,
+      incomingCallUrl: &quot;http://example.com/calls3.php&quot;,
+      incomingMessageUrl: &quot;http://example.com/messages3.php&quot;,
+      autoAnswer: true
+    };
+
+    before(function() {
+      client = new CatapultClient({
+        userId: userId,
+        apiToken: apiToken,
+        apiSecret: apiSecret
+      });
+      nock.disableNetConnect();
+
+      nock(&quot;https://api.catapult.inetwork.com&quot;)
+        .persist()
+        .get(&quot;/v1/users/&quot; + userId + &quot;/applications&quot;)
+        .reply(200, applicationsList, {
+          link:
+            &quot;&lt;https://api.catapult.inetwork.com/v1/users/&quot; +
+            userId +
+            &quot;/applications?page=0&amp;size=25&gt;; rel=&apos;first&apos;&quot;
+        })
+        .post(&quot;/v1/users/&quot; + userId + &quot;/applications&quot;)
+        .reply(
+          201,
+          {},
+          {
+            location: &quot;/v1/users/&quot; + userId + &quot;/messages/fakeApplicationId3&quot;
+          }
+        )
+        .get(&quot;/v1/users/&quot; + userId + &quot;/applications/&quot; + testApplication.id)
+        .reply(200, testApplication)
+        .get(
+          &quot;/v1/users/&quot; + userId + &quot;/applications?page=&quot; + page + &quot;&amp;size=&quot; + size
+        )
+        .reply(200, applicationsList);
+    });
+
+    after(function() {
+      nock.cleanAll();
+      nock.enableNetConnect();
+    });
+
+    it(&quot;should get a list of applications, promise style&quot;, function() {
+      return client.Application.list({}).then(function(applicationsResponse) {
+        applicationsResponse.applications.should.eql(applicationsList);
+      });
+    });
+
+    it(&quot;should get a list of applications, callback style&quot;, function() {
+      client.Application.list({}, function(err, applicationsResponse) {
+        if (err) {
+          throw err;
+        }
+        applicationsResponse.applications.should.eql(applicationsList);
+      });
+    });
+
+    it(&quot;those applications should not have more pages&quot;, function() {
+      return client.Application.list({}).then(function(applicationsResponse) {
+        applicationsResponse.hasNextPage.should.be.false;
+        return applicationsResponse.getNextPage().catch(function(err) {
+          err.should.equal(&quot;Next page does not exist.&quot;);
+        });
+      });
+    });
+
+    it(&quot;should create an application, promise style&quot;, function() {
+      return client.Application
+        .create(newApplication)
+        .then(function(applicationResponse) {
+          applicationResponse.id.should.equal(&quot;fakeApplicationId3&quot;);
+          applicationResponse.name.should.equal(newApplication.name);
+          applicationResponse.incomingCallUrl.should.equal(
+            newApplication.incomingCallUrl
+          );
+          applicationResponse.incomingMessageUrl.should.equal(
+            newApplication.incomingMessageUrl
+          );
+          applicationResponse.autoAnswer.should.equal(
+            newApplication.autoAnswer
+          );
+        });
+    });
+
+    it(&quot;should create an application, callback style&quot;, function() {
+      client.Application.create(newApplication, function(
+        err,
+        applicationResponse
+      ) {
+        if (err) {
+          throw err;
+        }
+        applicationResponse.id.should.equal(&quot;fakeApplicationId3&quot;);
+        applicationResponse.name.should.equal(newApplication.name);
+        applicationResponse.incomingCallUrl.should.equal(
+          newApplication.incomingCallUrl
+        );
+        applicationResponse.incomingMessageUrl.should.equal(
+          newApplication.incomingMessageUrl
+        );
+        applicationResponse.autoAnswer.should.equal(newApplication.autoAnswer);
+      });
+    });
+
+    it(&quot;should get an application, promise style&quot;, function() {
+      return client.Application
+        .get(testApplication.id)
+        .then(function(applicationResponse) {
+          applicationResponse.should.eql(testApplication);
+        });
+    });
+
+    it(&quot;should get an application, callback style&quot;, function() {
+      client.Application.get(testApplication.id, function(
+        err,
+        applicationResponse
+      ) {
+        if (err) {
+          throw err;
+        }
+        applicationResponse.should.eql(testApplication);
+      });
+    });
+
+    describe(&quot;testing global void methods&quot;, function() {
+      describe(&quot;updating applications&quot;, function() {
+        beforeEach(function() {
+          updateNock = nock(&quot;https://api.catapult.inetwork.com&quot;)
+            .persist()
+            .post(&quot;/v1/users/&quot; + userId + &quot;/applications/&quot; + testApplication.id)
+            .reply(200, {});
+        });
+
+        afterEach(function() {
+          nock.cleanAll();
+        });
+
+        it(&quot;should update an application, promise style&quot;, function() {
+          return client.Application
+            .update(testApplication.id, { name: &quot;newTestApplication&quot; })
+            .then(function() {
+              updateNock.isDone().should.equal(true);
+            });
+        });
+
+        it(&quot;should update an application, callback style&quot;, function() {
+          client.Application.update(
+            testApplication.id,
+            { name: &quot;anotherNewTestApplication&quot; },
+            function(err, response) {
+              if (err) {
+                throw err;
+              }
+              updateNock.isDone().should.equal(true);
+            }
+          );
+        });
+      });
+
+      describe(&quot;deleting applications&quot;, function() {
+        beforeEach(function() {
+          deleteNock = nock(&quot;https://api.catapult.inetwork.com&quot;)
+            .persist()
+            .delete(
+              &quot;/v1/users/&quot; + userId + &quot;/applications/&quot; + testApplication.id
+            )
+            .reply(200, {});
+        });
+
+        afterEach(function() {
+          nock.cleanAll();
+        });
+
+        it(&quot;should delete an application, promise style&quot;, function() {
+          return client.Application.delete(testApplication.id).then(function() {
+            deleteNock.isDone().should.equal(true);
+          });
+        });
+
+        it(&quot;should delete an application, callback style&quot;, function() {
+          client.Application.delete(testApplication.id, function(
+            err,
+            response
+          ) {
+            if (err) {
+              throw err;
+            }
+            deleteNock.isDone().should.equal(true);
+          });
+        });
+      });
+    });
+
+    describe(&quot;pagination tests&quot;, function() {
+      before(function() {
+        nock(&quot;https://api.catapult.inetwork.com&quot;)
+          .persist()
+          .get(&quot;/v1/users/&quot; + userId + &quot;/applications&quot;)
+          .reply(200, applicationsList, {
+            link:
+              &quot;&lt;https://api.catapult.inetwork.com/v1/users/&quot; +
+              userId +
+              &apos;/applications?page=0&amp;size=25&gt;; rel=&quot;first&quot;,&apos; +
+              &quot;&lt;https://api.catapult.inetwork.com/v1/users/&quot; +
+              userId +
+              &apos;/applications&gt;; rel=&quot;next&quot;&apos;
+          });
+      });
+
+      after(function() {
+        nock.cleanAll();
+        nock.enableNetConnect();
+      });
+
+      it(&quot;should return a list of applications with a page to the next link&quot;, function() {
+        return client.Application
+          .list({})
+          .then(function(applicationsResponse) {
+            applicationsResponse.applications.should.eql(applicationsList);
+            return applicationsResponse.getNextPage();
+          })
+          .then(function(moreApplications) {
+            moreApplications.applications.should.eql(applicationsList);
+          });
+      });
+    });
+  });
+});
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.0.1)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">test/bridge-test.js | node-bandwidth</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="NodeJs Client library for Catapult API"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="node-bandwidth"><meta property="twitter:description" content="NodeJs Client library for Catapult API"></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/bandwidthcom/node-bandwidth.git"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  </ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">test/bridge-test.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">var nock = require(&quot;nock&quot;);
+var CatapultClient = require(&quot;../index&quot;);
+
+var baseUrl = &quot;https://api.catapult.inetwork.com&quot;;
+
+describe(&quot;Bridge API&quot;, function() {
+  describe(&quot;global methods&quot;, function() {
+    var client;
+
+    var userId = &quot;fakeUserId&quot;;
+    var apiToken = &quot;fakeApiToken&quot;;
+    var apiSecret = &quot;fakeapiSecret&quot;;
+
+    var newTestBridge = {
+      bridgeAudio: true,
+      callIds: [&quot;callId&quot;]
+    };
+
+    var changes = {
+      bridgeAudio: true,
+      callIds: [&quot;callId1&quot;]
+    };
+
+    var testBridge = {
+      id: &quot;bridgeId&quot;,
+      state: &quot;completed&quot;,
+      bridgeAudio: &quot;true&quot;,
+      calls: &quot;https://.../v1/users/{userId}/bridges/{bridgeId}/calls&quot;,
+      createdTime: &quot;2013-04-22T13:55:30.279Z&quot;,
+      activatedTime: &quot;2013-04-22T13:55:30.280Z&quot;,
+      completedTime: &quot;2013-04-22T13:59:30.122Z&quot;
+    };
+
+    var bridgesList = [testBridge];
+
+    var callsList = [
+      {
+        id: &quot;fakeCallId1&quot;,
+        direction: &quot;out&quot;,
+        from: &quot;{fromNumber}&quot;,
+        to: &quot;{toNumber1}&quot;,
+        recordingEnabled: false,
+        callbackUrl: &quot;&quot;,
+        state: &quot;completed&quot;,
+        startTime: &quot;2013-02-08T13:15:47.587Z&quot;,
+        activeTime: &quot;2013-02-08T13:15:52.347Z&quot;,
+        endTime: &quot;2013-02-08T13:15:55.887Z&quot;,
+        chargeableDuration: 60,
+        events: &quot;https://.../calls/fakeCallId1/events&quot;
+      },
+      {
+        id: &quot;fakeCallId2&quot;,
+        direction: &quot;out&quot;,
+        from: &quot;{fromNumber}&quot;,
+        to: &quot;{toNumber2}&quot;,
+        recordingEnabled: false,
+        callbackUrl: &quot;&quot;,
+        state: &quot;active&quot;,
+        startTime: &quot;2013-02-08T13:15:47.587Z&quot;,
+        activeTime: &quot;2013-02-08T13:15:52.347Z&quot;,
+        events: &quot;https://.../calls/fakeCallId2/events&quot;
+      }
+    ];
+
+    var tag = &quot;tag&quot;;
+    var sampleSentence = &quot;Hello world&quot;;
+    var speakSentencePayload = {
+      sentence: sampleSentence
+    };
+
+    var speakSentencePayloadWithTag = {
+      sentence: sampleSentence,
+      tag: tag
+    };
+
+    var audioUrl = &quot;http://somewhere/something.mp3&quot;;
+    var playAudioPayload = {
+      fileUrl: audioUrl
+    };
+
+    var playAudioPayloadWithTag = {
+      fileUrl: audioUrl,
+      tag: tag
+    };
+
+    before(function() {
+      client = new CatapultClient({
+        userId: userId,
+        apiToken: apiToken,
+        apiSecret: apiSecret
+      });
+      nock.disableNetConnect();
+
+      nock(&quot;https://api.catapult.inetwork.com&quot;)
+        .persist()
+        .post(&quot;/v1/users/&quot; + userId + &quot;/bridges&quot;, newTestBridge)
+        .reply(
+          201,
+          {},
+          {
+            Location: &quot;/v1/users/&quot; + userId + &quot;/bridges/fakeBridgeId&quot;
+          }
+        )
+        .get(&quot;/v1/users/&quot; + userId + &quot;/bridges/&quot; + testBridge.id)
+        .reply(200, testBridge)
+        .get(&quot;/v1/users/&quot; + userId + &quot;/bridges&quot;)
+        .reply(200, bridgesList)
+        .post(
+          &quot;/v1/users/&quot; + userId + &quot;/bridges/&quot; + testBridge.id + &quot;/audio&quot;,
+          speakSentencePayload
+        )
+        .reply(200)
+        .post(
+          &quot;/v1/users/&quot; + userId + &quot;/bridges/&quot; + testBridge.id + &quot;/audio&quot;,
+          playAudioPayload
+        )
+        .reply(200)
+        .post(
+          &quot;/v1/users/&quot; + userId + &quot;/bridges/&quot; + testBridge.id + &quot;/audio&quot;,
+          speakSentencePayloadWithTag
+        )
+        .reply(200)
+        .post(
+          &quot;/v1/users/&quot; + userId + &quot;/bridges/&quot; + testBridge.id + &quot;/audio&quot;,
+          playAudioPayloadWithTag
+        )
+        .reply(200)
+        .post(&quot;/v1/users/&quot; + userId + &quot;/bridges/&quot; + testBridge.id, changes)
+        .reply(200)
+        .get(&quot;/v1/users/&quot; + userId + &quot;/bridges/&quot; + testBridge.id + &quot;/calls&quot;)
+        .reply(200, callsList);
+    });
+
+    after(function() {
+      nock.cleanAll();
+      nock.enableNetConnect();
+    });
+
+    it(&quot;should create a bridge, promise style&quot;, function() {
+      return client.Bridge.create(newTestBridge).then(function(bridge) {
+        bridge.should.eql(newTestBridge);
+      });
+    });
+
+    it(&quot;should create a bridge, callback style&quot;, function(done) {
+      client.Bridge.create(newTestBridge, function(err, call) {
+        if (err) {
+          throw err;
+        }
+        call.should.eql(newTestBridge);
+        done();
+      });
+    });
+
+    it(&quot;should get a bridge, promise style&quot;, function() {
+      return client.Bridge.get(testBridge.id).then(function(bridge) {
+        bridge.should.eql(testBridge);
+      });
+    });
+
+    it(&quot;should get a list of bridges, promise style&quot;, function() {
+      return client.Bridge.list({}).then(function(bridgesResponse) {
+        bridgesResponse.bridges[0].should.eql(bridgesList[0]);
+      });
+    });
+
+    it(&quot;should get a list of bridges, callback style&quot;, function(done) {
+      client.Bridge.list({}, function(err, bridgesResponse) {
+        if (err) {
+          throw err;
+        }
+        bridgesResponse.bridges[0].should.eql(bridgesList[0]);
+        done();
+      });
+    });
+
+    it(&quot;those bridges should not have more pages&quot;, function() {
+      return client.Bridge.list({}).then(function(bridgesResponse) {
+        bridgesResponse.hasNextPage.should.be.false;
+        return bridgesResponse.getNextPage().catch(function(err) {
+          err.should.equal(&quot;Next page does not exist.&quot;);
+        });
+      });
+    });
+
+    it(&quot;should speak a sentence to the bridge, promise style&quot;, function() {
+      return client.Bridge.speakSentence(testBridge.id, sampleSentence);
+    });
+
+    it(&quot;should speak a sentence to the bridge, callback style&quot;, function(done) {
+      return client.Bridge.speakSentence(testBridge.id, sampleSentence, done);
+    });
+
+    it(&quot;should play an audio file on sentence to the bridge, promise style&quot;, function() {
+      return client.Bridge.playAudioFile(testBridge.id, audioUrl);
+    });
+
+    it(&quot;should play an audio file on sentence to the bridge, callback style&quot;, function(
+      done
+    ) {
+      return client.Bridge.playAudioFile(testBridge.id, audioUrl, done);
+    });
+
+    it(&quot;should play an audio with custom params to the bridge, promise style&quot;, function() {
+      return client.Bridge.playAudioAdvanced(testBridge.id, {
+        fileUrl: audioUrl
+      });
+    });
+
+    it(&quot;should play an audio with custom params to the bridge, callback style&quot;, function(
+      done
+    ) {
+      return client.Bridge.playAudioAdvanced(
+        testBridge.id,
+        { fileUrl: audioUrl },
+        done
+      );
+    });
+
+    it(&quot;should update the bridge, promise style&quot;, function() {
+      return client.Bridge.update(testBridge.id, changes);
+    });
+
+    it(&quot;should get a list of calls for the bridge, promise style&quot;, function() {
+      return client.Bridge.getCalls(testBridge.id).then(function(calls) {
+        calls[0].should.eql(callsList[0]);
+        calls[1].should.eql(callsList[1]);
+      });
+    });
+
+    describe(&quot;pagination tests&quot;, function() {
+      before(function() {
+        nock(&quot;https://api.catapult.inetwork.com&quot;)
+          .persist()
+          .get(&quot;/v1/users/&quot; + userId + &quot;/bridges?size=25&quot;)
+          .reply(200, bridgesList, {
+            link:
+              &quot;&lt;https://api.catapult.inetwork.com/v1/users/&quot; +
+              userId +
+              &apos;/bridges?page=0&amp;size=25&gt;; rel=&quot;first&quot;,&apos; +
+              &quot;&lt;https://api.catapult.inetwork.com/v1/users/&quot; +
+              userId +
+              &apos;/bridges&gt;; rel=&quot;next&quot;&apos;
+          });
+      });
+
+      after(function() {
+        nock.cleanAll();
+        nock.enableNetConnect();
+      });
+
+      it(&quot;should return a list of bridges with a page to the next link&quot;, function() {
+        return client.Bridge
+          .list({ size: 25 })
+          .then(function(bridgesResponse) {
+            bridgesResponse.bridges.should.eql(bridgesList);
+            return bridgesResponse.getNextPage();
+          })
+          .then(function(moreBridges) {
+            moreBridges.bridges.should.eql(bridgesList);
+          });
+      });
+    });
+  });
+});
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.0.1)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">src/bridge.js | node-bandwidth</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="NodeJs Client library for Catapult API"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="node-bandwidth"><meta property="twitter:description" content="NodeJs Client library for Catapult API"></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/bandwidthcom/node-bandwidth.git"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  </ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/bridge.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">var getNextLink = require(&quot;./headerParsingLib&quot;).getNextLink;
+var Promise = require(&quot;bluebird&quot;);
+
+/**
+ * Bridge
+ * @constructor
+ */
+var Bridge = function(client) {
+  /**
+	 * Create a new bridge
+	 * @param {Object} params Parameters for creating a bridge
+	 * @param {Boolean} [params.bridgeAudio=true] Enable/Disable two way audio path.
+	 * @param {Array&lt;String&gt;} [params.callIds] The list of call ids in the bridge. If the list of call ids
+	 * is not provided the bridge is logically created and it can be used to place calls later.
+	 * @param {Function} [callback] Callback with the newly created bridge
+	 * @return {BridgeResponse} A promise for the newly created bridge
+	 * @example
+	 * //Promise
+	 * client.Bridge.create({
+	 * 	bridgeAudio: true,
+	 * 	callIds: [&apos;c-qbs5kwrsyx6wsdi&apos;, &apos;c-zan4g74pprsq&apos;]
+	 * })
+	 * .then(function (response) {
+	 * 	console.log(response);
+	 * });
+	 *
+	 * //Callback
+	 * client.Bridge.create({
+	 * 	bridgeAudio: true,
+	 * 	callIds: [&apos;c-qbsx6wsdi&apos;, &apos;c-zan4g7prsq&apos;]
+	 * }, function (err, response) {
+	 * 		if(err) {
+	 * 			console.log(err);
+	 * 		}
+	 * 		else {
+	 * 			console.log(response);
+	 * 		}
+	 * 	});
+	 */
+  this.create = function(params, callback) {
+    return client
+      .makeRequest({
+        path: &quot;bridges&quot;,
+        method: &quot;POST&quot;,
+        body: params
+      })
+      .then(function(response) {
+        var bridge = params;
+        var location = response.headers.location;
+        bridge.id = location.substring(location.lastIndexOf(&quot;/&quot;) + 1);
+        return bridge;
+      })
+      .asCallback(callback);
+  };
+
+  /**
+	 * Gets information about a bridge.
+	 * @param  {String} bridgeId The ID of the bridge to get
+	 * @param  {Function} callback A callback with the call information
+	 * @return {BridgeResponse} A promise for the call information
+	 * @example
+	 * //Promise
+	 * client.Bridge.get(&apos;brg-65dhjwrmbasiei&apos;)
+	 * .then(function (response) {
+	 * 	console.log(response);
+	 * });
+	 *
+	 * //Callback
+	 * client.Bridge.get(&apos;brg-65dhmbasiei&apos;,
+	 * 	function (err, response) {
+	 * 		if(err) {
+	 * 			console.log(err);
+	 * 		}
+	 * 		else {
+	 * 			console.log(response);
+	 * 		}
+	 * 	});
+	 */
+  this.get = function(bridgeId, callback) {
+    return client
+      .makeRequest({
+        path: &quot;bridges/&quot; + bridgeId,
+        method: &quot;GET&quot;
+      })
+      .then(function(response) {
+        return response.body;
+      })
+      .asCallback(callback);
+  };
+
+  /**
+	 * Gets a list of bridges.
+	 * @param {Object} params Query parameters for listing bridges
+	 * @param {Number} [params.size=25] Used for pagination to indicate the size of each page requested
+	 * for querying a list of bridges. If no value is specified the default value is 25 (maximum value 1000).
+	 * @param {Function} callback A callback with the list of bridges
+	 * @return {BridgeListResponse} A promise for the list of bridges
+	 * @example
+	 * client.Bridge.list()
+	 * .then(function (response) {
+	 * 	console.log(response.bridges);
+	 * 	if(response.hasNextPage) {
+	 * 		return response.getNextPage();
+	 * 	}
+	 * 	else {
+	 * 		return {bridges: []};
+	 * 	}
+	 * })
+	 * .then(function(response) {
+	 * 	console.log(response.bridges);
+	 * });
+	 */
+  this.list = function(params, callback) {
+    var self = this;
+    return client
+      .makeRequest({
+        path: &quot;bridges&quot;,
+        method: &quot;GET&quot;,
+        qs: params
+      })
+      .then(function(response) {
+        var bridgeListResponse = {
+          bridges: response.body,
+          hasNextPage: false,
+          getNextPage: function(nextCallback) {
+            return Promise.reject(&quot;Next page does not exist.&quot;).asCallback(
+              nextCallback
+            );
+          }
+        };
+        var nextLink = getNextLink(response.headers);
+        if (nextLink) {
+          bridgeListResponse.hasNextPage = true;
+          bridgeListResponse.getNextPage = function(nextCallback) {
+            return self.list(nextLink, nextCallback);
+          };
+        }
+        return bridgeListResponse;
+      })
+      .asCallback(callback);
+  };
+
+  /**
+	 * Update the bridge
+	 * @param  {String} bridgeId The ID of the bridge
+	 * @param {Object} params Changed parameters of the bridge
+	 * @param {Boolean} params.bridgeAudio Enable/Disable two way audio path (default = true).
+	 * @param {Array&lt;String&gt;} params.callIds The list of call ids in the bridge.
+	 * @param {Function} [callback] Callback with the newly created bridge
+	 * @return {BridgeResponse} A promise for the operation
+	 * @example
+	 * //Promise
+	 * client.Bridge.update(&apos;brg-65dasiei&apos;, {
+	 * 	bridgeAudio: false
+	 * })
+	 * .then(function (response) {
+	 * 	console.log(response);
+	 * });
+	 *
+	 * //Callback
+	 * client.Bridge.update(&apos;brg-65dhjbanasiei&apos;, {
+	 * 	bridgeAudio: false
+	 * }, function (err, response) {
+	 * 		if(err) {
+	 * 			console.log(err);
+	 * 		}
+	 * 		else {
+	 * 			console.log(response);
+	 * 		}
+	 * 	});
+	 *
+	 * @example
+	 * // end bridge
+	 * var bridgeOptions = {
+	 * 	callIds: []
+	 * };
+	 *
+	 * client.Bridge.update(&quot;{bridgeId}&quot;, bridgeOptions)
+	 * .then(function () {
+	 * 	// continue
+	 * });
+	 *
+	 * @example
+	 * // Add two calls to bridge then remove one
+	 * var bridgeOptions = {
+	 * 	bridgeAudio : true,
+	 * 	callIds: [&quot;{callId1}&quot;,&quot;{callId2}&quot;]
+	 * };
+	 *
+	 * client.Bridge.update(&quot;{bridgeId}&quot;, bridgeOptions)
+	 * .then(function () {
+	 * 	var callIdsToRemainInBridge = {
+	 * 		callIds: [&quot;{callId1&quot;]
+	 * 	};
+	 * 	return client.Bridge.update(&quot;{bridgeId}&quot;, callIdsToRemainInBridge)
+	 * })
+	 * .then(function () {
+	 * 	//continue
+	 * });
+	 */
+  this.update = function(bridgeId, params, callback) {
+    return client
+      .makeRequest({
+        path: &quot;bridges/&quot; + bridgeId,
+        method: &quot;POST&quot;,
+        body: params
+      })
+      .then(function() {
+        return;
+      })
+      .asCallback(callback);
+  };
+
+  function audioApi(bridgeId, params, callback) {
+    return client
+      .makeRequest({
+        path: &quot;bridges/&quot; + bridgeId + &quot;/audio&quot;,
+        method: &quot;POST&quot;,
+        body: params
+      })
+      .then(function(response) {
+        return response.body;
+      })
+      .asCallback(callback);
+  }
+
+  /**
+	 * Speak sentence to the bridge using default values
+	 * @param {String} bridgeId The ID of the bridge
+	 * @param {String} sentence A sentence to speak to the bridge.
+	 * @param {Function} [callback] Callback for the operation
+	 * @return {Promise} A promise for the operation
+	 * @example
+	 * //Speak sentence in a bridge
+	 *
+	 * //Promise
+	 * client.Bridge.speakSentence(&quot;bridgeID&quot;, &quot;Hello From Bandwidth&quot;).then(function (res) {});
+	 *
+	 * //Callback
+	 * client.Bridge.speakSentence(&quot;bridgeID&quot;, &quot;Hello From Bandwidth&quot;, function (err, res) {});
+	 */
+  this.speakSentence = function(bridgeId, sentence, callback) {
+    return audioApi(bridgeId, { sentence: sentence }).asCallback(callback);
+  };
+
+  /**
+	 * Play audio url to the bridge
+	 * @param {String} bridgeId The ID of the bridge
+	 * @param {String} fileUrl The http location of an audio file to play (WAV and MP3 supported).
+	 * @param {Function} [callback] Callback for the operation
+	 * @return {Promise} A promise for the operation
+	 * @example
+	 * //Play Audio file on bridge
+	 *
+	 * //Promise
+	 * client.Bridge.playAudioFile(&quot;bridgeID&quot;, &quot;http://myurl.com/file.mp3&quot;).then(function (res) {});
+	 *
+	 * //Callback
+	 * client.Bridge.playAudioFile(&quot;bridgeID&quot;, &quot;http://myurl.com/file.wav&quot;, function (err, res) {});
+	 */
+  this.playAudioFile = function(bridgeId, fileUrl, callback) {
+    return audioApi(bridgeId, { fileUrl: fileUrl }).asCallback(callback);
+  };
+
+  /**
+	 * Play audio file or speak sentence in bridge
+	 * @param {String} bridgeId The ID of the bridge
+	 * @param {Object} params Parameters to play audio in bridge.
+	 * @param {String} [params.fileUrl] The http location of an audio file to play (WAV and MP3 supported).
+	 * @param {String} [params.sentence] The sentence to speak.
+	 * @param {String} [params.gender=female] The gender of the voice used to synthesize the sentence.
+	 * It will be considered only if sentence is not null. The female gender will be used by default.
+	 * @param {String=} [params.locale=en_US] The locale used to get the accent of the voice used to
+	 * synthesize the sentence. Check out
+	 * {@link http://ap.bandwidth.com/docs/rest-api/bridges/#resourcePOSTv1usersuserIdbridgesbridgeIdaudio|docs}
+	 * for list of supported locales.
+	 * It will be considered only if sentence is not null/empty. The en_US will be used by default.
+	 * @param {String} [params.voice=Susan] The voice to speak the sentence. Check out
+	 * {@link http://ap.bandwidth.com/docs/rest-api/bridges/#resourcePOSTv1usersuserIdbridgesbridgeIdaudio|docs}
+	 * for list of supported voices
+	 * It will be considered only if sentence is not null/empty. Susan&apos;s voice will be used by default.
+	 * @param {Boolean} [params.loopEnabled=false] When value is true, the audio will keep playing in a loop.
+	 * Default: false.
+	 * @param {Function} [callback] Callback for the operation
+	 * @return {Promise} A promise for the operation
+	 * @example
+	 * //Play Audio File on loop
+	 * var options = {
+	 * 	fileUrl     : &quot;http://myurl.com/file.mp3&quot;,
+	 * 	loopEnabled : true
+	 * }
+	 * //Promise
+	 * client.Bridge.playAudioAdvanced(&quot;bridgeId&quot;, options).then(function (res) {});
+	 *
+	 * //Callback
+	 * client.Bridge.playAudioAdvanced(&quot;bridgeId&quot;, options, function (err,res) {});
+	 * @example
+	 * //Speak sentence with options
+	 * var options = {
+	 * 	sentence : &quot;hola de Bandwidth&quot;,
+	 * 	gender   : &quot;male&quot;,
+	 * 	locale   : &quot;es&quot;,
+	 * 	voice    : &quot;Jorge&quot;
+	 * }
+	 * //Promise
+	 * client.Bridge.playAudioAdvanced(&quot;bridgeId&quot;, options).then(function (res) {});
+	 *
+	 * //Callback
+	 * client.Bridge.playAudioAdvanced(&quot;bridgeId&quot;, options, function (err,res) {});
+	 */
+  this.playAudioAdvanced = function(bridgeId, params, callback) {
+    return audioApi(bridgeId, params).asCallback(callback);
+  };
+
+  /**
+	 * Gets information about a bridge.
+	 * @param  {String} bridgeId The ID of the bridge to get
+	 * @param  {Function} callback A callback with the call information
+	 * @return {Promise} A promise for the call information
+	 * @example
+	 * //Promise
+	 * client.Bridge.getCalls(&apos;brg-65dhjbiei&apos;)
+	 * .then(function (response) {
+	 * 	console.log(response);
+	 * });
+	 *
+	 * //Callback
+	 * client.Bridge.getCalls(&apos;brg-65dhjrmbasiei&apos;,
+	 * 	function (err, response) {
+	 * 		if(err) {
+	 * 			console.log(err);
+	 * 		}
+	 * 		else {
+	 * 			console.log(response);
+	 * 		}
+	 * 	});
+	 */
+  this.getCalls = function(bridgeId, callback) {
+    return client
+      .makeRequest({
+        path: &quot;bridges/&quot; + bridgeId + &quot;/calls&quot;,
+        method: &quot;GET&quot;
+      })
+      .then(function(response) {
+        return response.body;
+      })
+      .asCallback(callback);
+  };
+};
+
+module.exports = Bridge;
+
+/**
+ * @class BridgeListResponse
+ * @type {Object}
+ * @property {Array.&lt;BridgeResponse&gt;} bridges Array of bridges
+ * @property {function} getNextPage Calls the next page function
+ * @property {boolean} hasNextPage True/False flag for next
+ */
+
+/**
+ * @class BridgeResponse
+ * @type {Object}
+ * @property {String} id The unique ID of the bridge.
+ * @property {String} state Bridge state. Possible state values are described here.
+ * @property {Array&lt;String&gt;} callIds List of call Ids that will be in the bridge.
+ * @property {Boolean} bridgeAudio Enable/Disable two way audio path.
+ * @property {String} completedTime The time when the bridge was completed.
+ * @property {String} createdTime The time that bridge was created.
+ * @property {String} activatedTime The time that the bridge got into active state.
+ */
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.0.1)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

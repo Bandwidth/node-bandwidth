@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">src/application.js | node-bandwidth</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="NodeJs Client library for Catapult API"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="node-bandwidth"><meta property="twitter:description" content="NodeJs Client library for Catapult API"></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/bandwidthcom/node-bandwidth.git"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  </ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/application.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">var getNextLink = require(&quot;./headerParsingLib&quot;).getNextLink;
+var Promise = require(&quot;bluebird&quot;);
+
+/**
+ * Application
+ * @constructor
+ * @param {Object} client Catapult client
+ */
+
+var Application = function(client) {
+  /**
+	 * List the user&apos;s applications
+	 * @param {Object} params Parameters for filtering applications.
+	 * @param {Number} [params.size] The maximum number of applications returned by
+	 * the query per page (Max size: 1000).
+	 * @param {Function} [callback] A callback for the list of applications.
+	 * @return {ApplicationListResponse} A promise for the list of applications, has a getNextPage
+	 * function if the number of applications returned by the query exceeds the page size.
+	 * @example
+	 * //Promise
+	 * client.Application.list()
+	 * .then(function (response) {
+	 * 	console.log(response.applications);
+	 * 	if(response.hasNextPage) {
+	 * 		return response.getNextPage();
+	 * 	}
+	 * 	else {
+	 * 		return {applications: []};
+	 * 	}
+	 * })
+	 * .then(function(response) {
+	 * 	console.log(response.applications);
+	 * });
+	 */
+  this.list = function(params, callback) {
+    var self = this;
+    return client
+      .makeRequest({
+        path: &quot;applications&quot;,
+        method: &quot;GET&quot;,
+        qs: params
+      })
+      .then(function(response) {
+        var applicationListResponse = {
+          applications: response.body,
+          hasNextPage: false,
+          getNextPage: function(nextCallback) {
+            return Promise.reject(&quot;Next page does not exist.&quot;).asCallback(
+              nextCallback
+            );
+          }
+        };
+        var nextLink = getNextLink(response.headers);
+        if (nextLink) {
+          applicationListResponse.hasNextPage = true;
+          applicationListResponse.getNextPage = function(nextCallback) {
+            return self.list(nextLink, nextCallback);
+          };
+        }
+        return applicationListResponse;
+      })
+      .asCallback(callback);
+  };
+
+  /**
+	 * Create a new application
+	 * @param {Object} params Parameters for creating a new call
+	 * @param {String} params.name A name you choose for this application.
+ 	 * @param {String} params.incomingCallUrl A URL where call events will be sent for an inbound call.
+ 	 * This is the endpoint where the Application Platform will send all call events.
+	 * Either incomingCallUrl or incomingMessageUrl is required.
+ 	 * @param {String} [params.incomingCallUrlCallbackTimeout] Determine how long should the platform wait
+ 	 * for incomingCallUrl&apos;s response before timing out in milliseconds.
+ 	 * @param {String} [params.incomingCallFallbackUrl] The URL used to send the callback
+ 	 * event if the request to incomingCallUrl fails.
+ 	 * @param {String} params.incomingMessageUrl A URL where message events will be sent for an inbound message.
+ 	 * This is the endpoint where the Application Platform will send all message events.
+ 	 * Either incomingMessageUrl or incomingCallUrl is required.
+	 * @param {Number} [params.incomingMessageUrlCallbackTimeout] Determine how long should the platform wait for
+ 	 * incomingMessageUrl&apos;s response before timing out in milliseconds.
+	 * @param {String} [params.incomingMessageFallbackUrl] The URL used to send the callback event if
+	 * the request to incomingMessageUrl fails.
+	 * @param {String} [params.callbackHttpMethod] Determine if the callback event should be sent via HTTP GET
+ 	 * or HTTP POST. Values are &quot;get&quot; or &quot;post&quot;, default: &quot;post&quot;.
+ 	 * @param {Boolean} [params.autoAnswer=true] Determines whether or not an incoming call should be
+ 	 * automatically answered. Default value is &apos;true&apos;.
+ 	 * @param {Function} [callback] A callback for the list of applications
+	 * @return {ApplicationResponse} A promise for the newly created application.
+	 * @example
+	 * //Promise
+	 * client.Application.create({
+	 * 	name: &apos;SampleApp&apos;,
+	 * 	incomingCallUrl: &apos;http://your-server.com/CallCallback&apos;,
+	 * 	incomingMessageUrl: &apos;http://your-server.com/MsgCallback&apos;
+	 * })
+	 * .then(function (response) {
+	 * 	console.log(response);
+	 * });
+	 *
+	 * //Callback
+	 * client.Application.create({
+	 * 	name: &apos;SampleApp2&apos;,
+	 * 	incomingCallUrl: &apos;http://your-server.com/CallCallback&apos;,
+	 * 	incomingMessageUrl: &apos;http://your-server.com/MsgCallback&apos;
+	 * }, function (err, response) {
+	 * 	if (err) {
+	 * 		console.log(err);
+	 * 	}
+	 * 	else {
+	 * 		console.log(response)
+	 * 	}
+	 * });
+	 */
+  this.create = function(params, callback) {
+    return client
+      .makeRequest({
+        path: &quot;applications&quot;,
+        method: &quot;POST&quot;,
+        body: params
+      })
+      .then(function(response) {
+        var application = params;
+        var location = response.headers.location;
+        var applicationId = location.substring(location.lastIndexOf(&quot;/&quot;) + 1);
+        application.id = applicationId;
+        return application;
+      })
+      .asCallback(callback);
+  };
+
+  /**
+	 * Get an application.
+	 * @param  {String} applicationId The ID of the application to get.
+	 * @param  {Function} [callback] A callback for the application.
+	 * @return {ApplicationResponse} A promise for the application.
+	 * @example
+	 * // Promise
+	 * client.Application.get(&apos;a-j4f2jz53mq&apos;)
+	 * .then(function (response) {
+	 * 	console.log(response);
+	 * });
+	 *
+	 * // Callback
+	 * client.Application.get(&apos;a-zuwwfzzrbea&apos;,
+	 * 	function (err, response) {
+	 * 		if (err) {
+	 * 			console.log(err);
+	 * 		}
+	 * 		else {
+	 * 			console.log(response);
+	 * 		}
+	 * });
+	 */
+  this.get = function(applicationId, callback) {
+    return client
+      .makeRequest({
+        path: &quot;applications/&quot; + applicationId,
+        method: &quot;GET&quot;
+      })
+      .then(function(response) {
+        return response.body;
+      })
+      .asCallback(callback);
+  };
+
+  /**
+	 * Make changes to an application.
+	 * @param {String} applicationId The ID of the application to modify.
+	 * @param {Object} params Parameters for creating a new call
+	 * @param {String} [params.name] A name you choose for this application.
+ 	 * @param {String} [params.incomingCallUrl] A URL where call events will be sent for an inbound call.
+ 	 * This is the endpoint where the Application Platform will send all call events.
+	 * Either incomingCallUrl or incomingMessageUrl is required.
+ 	 * @param {String} [params.incomingCallUrlCallbackTimeout] Determine how long should the platform wait
+ 	 * for incomingCallUrl&apos;s response before timing out in milliseconds.
+ 	 * @param {String} [params.incomingCallFallbackUrl] The URL used to send the callback
+ 	 * event if the request to incomingCallUrl fails.
+ 	 * @param {String} [params.incomingMessageUrl] A URL where message events will be sent for an inbound message.
+ 	 * This is the endpoint where the Application Platform will send all message events.
+ 	 * Either incomingMessageUrl or incomingCallUrl is required.
+	 * @param {Number} [params.incomingMessageUrlCallbackTimeout] Determine how long should the platform wait for
+ 	 * incomingMessageUrl&apos;s response before timing out in milliseconds.
+	 * @param {String} [params.incomingMessageFallbackUrl] The URL used to send the callback event if
+	 * the request to incomingMessageUrl fails.
+	 * @param {String} [params.callbackHttpMethod] Determine if the callback event should be sent via HTTP GET
+ 	 * or HTTP POST. Values are &quot;get&quot; or &quot;post&quot;, default: &quot;post&quot;.
+ 	 * @param {Boolean} [params.autoAnswer] Determines whether or not an incoming call should be
+ 	 * automatically answered. Default value is &apos;true&apos;.
+ 	 * @param {Function} [callback] A callback for the list of applications
+ 	 * @example
+	 * // Promise
+	 * client.Application.update(&apos;a-j4f2j6vjmqz53mq&apos;, {
+	 * 	name: &apos;Rename App1&apos;,
+	 * 	autoAnswer: false
+	 * })
+	 * .then(function (response) {
+	 * 	console.log(response);
+	 * });
+	 *
+	 * // Callback
+	 * client.Application.update(&apos;a-zudcfzzrbea&apos;,
+	 * 	{
+	 * 		name: &apos;Rename App2&apos;,
+	 * 		autoAnswer: false
+	 * 	},
+	 * 	function (err, response) {
+	 * 		if (err) {
+	 * 			console.log(err);
+	 * 		}
+	 * 		else {
+	 * 			console.log(response);
+	 * 		}
+	 * });
+	 */
+  this.update = function(applicationId, params, callback) {
+    return client
+      .makeRequest({
+        path: &quot;applications/&quot; + applicationId,
+        method: &quot;POST&quot;,
+        body: params
+      })
+      .then(function() {
+        return;
+      })
+      .asCallback(callback);
+  };
+
+  /**
+	 * Delete an application.
+	 * @param  {String} applicationId The ID of the application to delete.
+	 * @param  {Function} [callback] A callback for the application.
+	 * @example
+	 * // Promise
+	 * client.Application.delete(&apos;a-j4f2j6mqz53mq&apos;)
+	 * .then(function (response) {
+	 * 	console.log(response);
+	 * });
+	 *
+	 * // Callback
+	 * client.Application.delete(&apos;a-zuwwzrbea&apos;,
+	 * 	function (err, response) {
+	 * 		if (err) {
+	 * 			console.log(err);
+	 * 		}
+	 * 		else {
+	 * 			console.log(response);
+	 * 		}
+	 * });
+	 */
+  this.delete = function(applicationId, callback) {
+    return client
+      .makeRequest({
+        path: &quot;applications/&quot; + applicationId,
+        method: &quot;DELETE&quot;
+      })
+      .then(function() {
+        return;
+      })
+      .asCallback(callback);
+  };
+};
+
+module.exports = Application;
+
+/**
+ * @class ApplicationListResponse
+ * @type {Object}
+ * @property {Array.&lt;ApplicationResponse&gt;} applications Array of applications
+ * @property {function} getNextPage Calls the next page function
+ * @property {boolean} hasNextPage True/False flag for next
+ */
+
+/**
+ * ApplicationResponse
+ * @class ApplicationResponse
+ * @type {Object}
+ * @property {String} id The unique identifier for the application.
+ * @property {String} name A name you choose for this application.
+ * @property {String} incomingCallUrl A URL where call events will be sent for an inbound call.
+ * This is the endpoint where the Application Platform will send all call events.
+ * Either incomingCallUrl or incomingMessageUrl is required.
+ * @property {String} incomingCallUrlCallbackTimeout Determine how long should the platform wait
+ * for incomingCallUrl&apos;s response before timing out in milliseconds.
+ * @property {String} incomingCallFallbackUrl The URL used to send the callback
+ * event if the request to incomingCallUrl fails.
+ * @property {String} callbackHttpMethod Determine if the callback event should be sent via HTTP GET
+ * or HTTP POST. Values are &quot;get&quot; or &quot;post&quot;, default: &quot;post&quot;.
+ * @property {Boolean} autoAnswer Determines whether or not an incoming call should be
+ * automatically answered. Default value is &apos;true&apos;.
+ * @property {String} incomingMessageUrl A URL where message events will be sent for an inbound message.
+ * This is the endpoint where the Application Platform will send all message events.
+ * Either incomingMessageUrl or incomingCallUrl is required.
+ * @property {Number} incomingMessageUrlCallbackTimeout Determine how long should the platform wait for
+ * incomingMessageUrl&apos;s response before timing out in milliseconds.
+ * @property {String} incomingMessageFallbackUrl The URL used to send the callback event if
+ * the request to incomingMessageUrl fails.
+ */
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.0.1)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

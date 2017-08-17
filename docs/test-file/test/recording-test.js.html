@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">test/recording-test.js | node-bandwidth</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="NodeJs Client library for Catapult API"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="node-bandwidth"><meta property="twitter:description" content="NodeJs Client library for Catapult API"></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/bandwidthcom/node-bandwidth.git"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  </ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">test/recording-test.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">var nock = require(&quot;nock&quot;);
+var CatapultClient = require(&quot;../index&quot;);
+
+var baseUrl = &quot;https://api.catapult.inetwork.com&quot;;
+
+describe(&quot;Recording API&quot;, function() {
+  describe(&quot;global methods&quot;, function() {
+    var client;
+
+    var userId = &quot;fakeUserId&quot;;
+    var apiToken = &quot;fakeApiToken&quot;;
+    var apiSecret = &quot;fakeapiSecret&quot;;
+
+    var newTestMessage = {
+      from: &quot;+12345678901&quot;,
+      to: &quot;+12345678902&quot;,
+      text: &quot;Hello world.&quot;
+    };
+
+    var testRecording = {
+      endTime: &quot;2013-02-08T13:17:12.181Z&quot;,
+      id: &quot;fakeRecordingId&quot;,
+      media: &quot;https://.../v1/users/.../media/c-bonay3r4mtwbplurq4nkt7q-1.wav&quot;,
+      call: &quot;https://.../v1/users/.../calls/{callId}&quot;,
+      startTime: &quot;2013-02-08T13:15:47.587Z&quot;,
+      state: &quot;complete&quot;
+    };
+
+    var recordingList = [
+      {
+        endTime: &quot;2013-02-08T13:17:12.181Z&quot;,
+        id: &quot;fakeRecordingId1&quot;,
+        media: &quot;https://.../v1/users/.../media/c-bonay3r4mtwbplurq4nkt7q-1.wav&quot;,
+        call: &quot;https://.../v1/users/.../calls/{callId}&quot;,
+        startTime: &quot;2013-02-08T13:15:47.587Z&quot;,
+        state: &quot;complete&quot;
+      },
+      {
+        endTime: &quot;2013-02-08T13:17:12.181Z&quot;,
+        id: &quot;fakeRecordingId2&quot;,
+        media: &quot;https://.../v1/users/.../media/c-bonay3r4mtwbplurq4nkt7q-1.wav&quot;,
+        call: &quot;https://.../v1/users/.../calls/{callId}&quot;,
+        startTime: &quot;2013-02-08T13:15:47.587Z&quot;,
+        state: &quot;complete&quot;
+      }
+    ];
+
+    var testTranscription = {
+      chargeableDuration: 11,
+      id: &quot;transcriptionId&quot;,
+      state: &quot;completed&quot;,
+      text: &quot;Hey there, I was calling to talk about plans for this saturday. &quot;,
+      textSize: 63,
+      textUrl: &quot;https://api.catapult.inetwork.com/.../media/{transcriptionId}&quot;,
+      time: &quot;2014-12-23T23:08:59Z&quot;
+    };
+
+    var transcriptionList = [testTranscription];
+
+    before(function() {
+      client = new CatapultClient({
+        userId: userId,
+        apiToken: apiToken,
+        apiSecret: apiSecret
+      });
+      nock.disableNetConnect();
+
+      nock(&quot;https://api.catapult.inetwork.com&quot;)
+        .persist()
+        .get(&quot;/v1/users/&quot; + userId + &quot;/recordings/&quot; + testRecording.id)
+        .reply(200, testRecording)
+        .get(&quot;/v1/users/&quot; + userId + &quot;/recordings&quot;)
+        .reply(200, recordingList)
+        .get(
+          &quot;/v1/users/&quot; +
+            userId +
+            &quot;/recordings/&quot; +
+            testRecording.id +
+            &quot;/transcriptions&quot;
+        )
+        .reply(200, transcriptionList)
+        .get(
+          &quot;/v1/users/&quot; +
+            userId +
+            &quot;/recordings/&quot; +
+            testRecording.id +
+            &quot;/transcriptions/&quot; +
+            testTranscription.id
+        )
+        .reply(200, testTranscription)
+        .post(
+          &quot;/v1/users/&quot; +
+            userId +
+            &quot;/recordings/&quot; +
+            testRecording.id +
+            &quot;/transcriptions&quot;
+        )
+        .reply(
+          201,
+          {},
+          {
+            Location:
+              &quot;/v1/users/&quot; +
+              userId +
+              &quot;/recordings/&quot; +
+              testRecording.id +
+              &quot;/transcriptions/&quot; +
+              testTranscription.id
+          }
+        );
+    });
+
+    after(function() {
+      nock.cleanAll();
+      nock.enableNetConnect();
+    });
+
+    it(&quot;should get a recording&quot;, function() {
+      return client.Recording.get(testRecording.id).then(function(recording) {
+        recording.should.eql(testRecording);
+      });
+    });
+
+    it(&quot;should get a list of recordings, promise style&quot;, function() {
+      return client.Recording.list().then(function(recordings) {
+        recordings.should.eql(recordingList);
+      });
+    });
+
+    it(&quot;should get a list of transcriptions, promise style&quot;, function() {
+      return client.Recording
+        .getTranscriptions(testRecording.id)
+        .then(function(transcriptions) {
+          transcriptions.should.eql(transcriptionList);
+        });
+    });
+
+    it(&quot;should get a transcriptions, promise style&quot;, function() {
+      return client.Recording
+        .getTranscription(testRecording.id, testTranscription.id)
+        .then(function(transcription) {
+          transcription.should.eql(testTranscription);
+        });
+    });
+
+    it(&quot;should create a transcriptions, promise style&quot;, function() {
+      return client.Recording
+        .createTranscription(testRecording.id)
+        .then(function(transcription) {
+          transcription.id.should.eql(testTranscription.id);
+        });
+    });
+  });
+});
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.0.1)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

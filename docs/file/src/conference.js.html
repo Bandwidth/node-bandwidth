@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">src/conference.js | node-bandwidth</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="NodeJs Client library for Catapult API"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="node-bandwidth"><meta property="twitter:description" content="NodeJs Client library for Catapult API"></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/bandwidthcom/node-bandwidth.git"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  </ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/conference.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">/**
+ * Conference
+ * @constructor
+ */
+var Conference = function(client) {
+  /**
+	 * Create a new conference
+	 * @param {Object} params Parameters for creating a conference
+	 * @param {String} params.from The phone number that will host the conference.
+	 * @param {String} [params.callbackUrl] The complete URL where the events related to the
+	 * Conference will be sent to.
+	 * @param {String} [params.callbackHttpMethod=post] Determine if the callback event should be sent
+	 * via HTTP GET or HTTP POST.
+	 * @param {String} [params.callbackTimeout] Determine how long should the platform wait for
+	 * callbackUrl&apos;s response before timing out in milliseconds.
+	 * @param {String} [params.fallbackUrl] Determine how long should the platform wait
+	 * for callbackUrl&apos;s response before timing out in milliseconds.
+	 * @param {String} [params.profile] Determines how DTMF is used. Values are:
+	 *`interpret_digits`: the conference will handle DTMF with the default behavior, or `passthru_digits`:
+	 * allows the application to receive DTMF events and use the `gather` API.
+	 * @param {String} [params.tag] A string that will be included in the callback events
+	 * of the conference.
+	 * @param {Function} [callback] Callback with the newly created conference
+	 * @return {ConferenceResponse} A promise for the newly created conference
+	 * @example
+	 * // Promise
+	 * client.Conference.create({from: &quot;+1234567890&quot;}).then(function(conference){});
+	 * // Callback
+	 * client.Conference.create({from: &quot;+1234567890&quot;}, function(err, conference){});
+	 */
+  this.create = function(params, callback) {
+    return client
+      .makeRequest({
+        path: &quot;conferences&quot;,
+        method: &quot;POST&quot;,
+        body: params
+      })
+      .then(function(response) {
+        var conference = params;
+        var location = response.headers.location;
+        conference.id = location.substring(location.lastIndexOf(&quot;/&quot;) + 1);
+        return conference;
+      })
+      .asCallback(callback);
+  };
+
+  /**
+	 * Gets information about a conference.
+	 * @param  {String} conferenceId The ID of the conference to get
+	 * @param  {Function} [callback] A callback with the conference information
+	 * @return {ConferenceResponse} A promise for the conference information
+	 * @example
+	 * // Promise
+	 * client.Conference.get(&quot;conferenceId&quot;).then(function(conference){});
+	 * // Callback
+	 * client.Conference.get(&quot;conferenceId&quot;, function(err, conference){});
+	 */
+  this.get = function(conferenceId, callback) {
+    return client
+      .makeRequest({
+        path: &quot;conferences/&quot; + conferenceId,
+        method: &quot;GET&quot;
+      })
+      .then(function(response) {
+        return response.body;
+      })
+      .asCallback(callback);
+  };
+
+  /**
+	 * Update the conference
+	 * @param  {String} conferenceId The ID of the conference
+	 * @param {Object} params Changed parameters of the conference
+	 * @param {String} [params.state] Conference state. Possible state values are:
+	 * &quot;completed&quot; to terminate the conference.
+	 * @param {String} [params.hold] If &quot;true&quot;, all member can&apos;t hear or speak in the conference.
+	 * If &quot;false&quot;, all members can hear and speak in the conference (unless set at the member level).
+	 * @param {String} [params.mute] If &quot;true&quot;, all member can&apos;t speak in the conference.
+	 * If &quot;false&quot;, all members can speak in the conference (unless set at the member level).
+	 * @param {String} [params.callbackUrl] The complete URL where the events related to the
+	 * Conference will be sent to.
+	 * @param {String} [params.callbackHttpMethod=post] Determine if the callback event should be sent
+	 * via HTTP GET or HTTP POST.
+	 * @param {String} [params.callbackTimeout] Determine how long should the platform wait for
+	 * callbackUrl&apos;s response before timing out in milliseconds.
+	 * @param {String} [params.fallbackUrl] Determine how long should the platform wait
+	 * for callbackUrl&apos;s response before timing out in milliseconds.
+	 * @param {String} [params.tag] A string that will be included in the callback events
+	 * of the conference.
+	 * @param {Function} [callback] Callback for the operation
+	 * @return {Promise} A promise for the operation
+	 * @example
+	 * // Promise
+	 * client.Conference.update(&quot;conferenceID&quot;, {mute: &quot;true&quot;}).then(function(){});
+	 * // Callback
+	 * client.Conference.update(&quot;conferenceID&quot;, {mute: &quot;true&quot;}, function(err){});
+	 */
+  this.update = function(conferenceId, params, callback) {
+    return client
+      .makeRequest({
+        path: &quot;conferences/&quot; + conferenceId,
+        method: &quot;POST&quot;,
+        body: params
+      })
+      .then(function() {
+        return;
+      })
+      .asCallback(callback);
+  };
+
+  /**
+	 * Remove the conference
+	 * @param  {String} conferenceId The ID of the conference
+	 * @param {Function} [callback] Callback for the operation
+	 * @return {Promise} A promise for the operation
+	 * @example
+	 * // Promise
+	 * client.Conference.remove(&quot;conferenceID&quot;).then(function(){});
+	 * // Callback
+	 * client.Conference.remove(&quot;conferenceID&quot;, function(err){});
+	 */
+  this.remove = function(conferenceId, callback) {
+    return this.update(conferenceId, { state: &quot;completed&quot; }, callback);
+  };
+
+  function audioApi(conferenceId, memberId, params, callback) {
+    var path = &quot;conferences/&quot; + conferenceId;
+    if (typeof memberId === &quot;string&quot;) {
+      path = path + &quot;/members/&quot; + memberId;
+    } else {
+      callback = params;
+      params = memberId;
+    }
+    path += &quot;/audio&quot;;
+    return client
+      .makeRequest({
+        path: path,
+        method: &quot;POST&quot;,
+        body: params
+      })
+      .then(function(response) {
+        return response.body;
+      })
+      .asCallback(callback);
+  }
+
+  /**
+	 * Speak sentence to the conference using default values
+	 * @param {String} conferenceId The ID of the conference
+	 * @param {String} sentence A sentence to speak to the conference.
+	 * @param {Function} [callback] Callback for the operation
+	 * @return {Promise} A promise for the operation
+	 * @example
+	 * //Speak sentence in a conference
+	 *
+	 * //Promise
+	 * client.Conference.speakSentence(&quot;conferenceID&quot;, &quot;Hello From Bandwidth&quot;).then(function (res) {});
+	 *
+	 * //Callback
+	 * client.Conference.speakSentence(&quot;conferenceID&quot;, &quot;Hello From Bandwidth&quot;, function (err, res) {});
+	 */
+  this.speakSentence = function(conferenceId, sentence, callback) {
+    return audioApi(conferenceId, { sentence: sentence }).asCallback(callback);
+  };
+
+  /**
+	 * Play audio url to the conference
+	 * @param {String} conferenceId The ID of the conference
+	 * @param {String} fileUrl The http location of an audio file to play (WAV and MP3 supported).
+	 * @param {Function} [callback] Callback for the operation
+	 * @return {Promise} A promise for the operation
+	 * @example
+	 * //Play Audio file on conference
+	 *
+	 * //Promise
+	 * client.Conference.playAudioFile(&quot;conferenceID&quot;, &quot;http://myurl.com/file.mp3&quot;).then(function (res) {});
+	 *
+	 * //Callback
+	 * client.Conference.playAudioFile(&quot;conferenceID&quot;, &quot;http://myurl.com/file.wav&quot;, function (err, res) {});
+	 */
+  this.playAudioFile = function(conferenceId, fileUrl, callback) {
+    return audioApi(conferenceId, { fileUrl: fileUrl }).asCallback(callback);
+  };
+
+  /**
+	 * Play audio file or speak sentence in conference
+	 * @param {String} conferenceId The ID of the conference
+	 * @param {Object} params Parameters to play audio in conference.
+	 * @param {String} [params.fileUrl] The http location of an audio file to play (WAV and MP3 supported).
+	 * @param {String} [params.sentence] The sentence to speak.
+	 * @param {String} [params.gender=female] The gender of the voice used to synthesize the sentence.
+	 * It will be considered only if sentence is not null. The female gender will be used by default.
+	 * @param {String=} [params.locale=en_US] The locale used to get the accent of the voice used to
+	 * synthesize the sentence.
+	 * It will be considered only if sentence is not null/empty. The en_US will be used by default.
+	 * @param {String} [params.voice=Susan] The voice to speak the sentence.
+	 * for list of supported voices
+	 * It will be considered only if sentence is not null/empty. Susan&apos;s voice will be used by default.
+	 * @param {Boolean} [params.loopEnabled=false] When value is true, the audio will keep playing in a loop.
+	 * Default: false.
+	 * @param {Function} [callback] Callback for the operation
+	 * @return {Promise} A promise for the operation
+	 * @example
+	 * //Play Audio File on loop
+	 * var options = {
+	 * 	fileUrl     : &quot;http://myurl.com/file.mp3&quot;,
+	 * 	loopEnabled : true
+	 * }
+	 * //Promise
+	 * client.Conference.playAudioAdvanced(&quot;conferenceId&quot;, options).then(function (res) {});
+	 *
+	 * //Callback
+	 * client.Conference.playAudioAdvanced(&quot;conferenceId&quot;, options, function (err,res) {});
+	 * @example
+	 * //Speak sentence with options
+	 * var options = {
+	 * 	sentence : &quot;hola de Bandwidth&quot;,
+	 * 	gender   : &quot;male&quot;,
+	 * 	locale   : &quot;es&quot;,
+	 * 	voice    : &quot;Jorge&quot;
+	 * }
+	 * //Promise
+	 * client.Conference.playAudioAdvanced(&quot;conferenceId&quot;, options).then(function (res) {});
+	 *
+	 * //Callback
+	 * client.Conference.playAudioAdvanced(&quot;conferenceId&quot;, options, function (err,res) {});
+	 */
+  this.playAudioAdvanced = function(conferenceId, params, callback) {
+    return audioApi(conferenceId, params).asCallback(callback);
+  };
+
+  /**
+	 * Gets information about a conference members.
+	 * @param  {String} conferenceId The ID of the conference to get memebers
+	 * @param  {Function} callback A callback with member list
+	 * @return {Promise} A promise for member list
+	 * @example
+	 * // Promise
+	 * client.Conference.getMembers(&quot;conferenceId&quot;).then(function(members){});
+	 * // Callback
+	 * client.Conference.getMembers(&quot;conferenceId&quot;, function(err, members){});
+	 */
+  this.getMembers = function(conferenceId, callback) {
+    return client
+      .makeRequest({
+        path: &quot;conferences/&quot; + conferenceId + &quot;/members&quot;,
+        method: &quot;GET&quot;
+      })
+      .then(function(response) {
+        return response.body;
+      })
+      .asCallback(callback);
+  };
+
+  /**
+	 * Gets information about a single conference member.
+	 * @param  {String} conferenceId The ID of the conference
+	 * @param  {String} memberId The ID of the member
+	 * @param  {Function} callback A callback with the member
+	 * @return {Promise} A promise for the member
+	 * @example
+	 * // Promise
+	 * client.Conference.getMember(&quot;conferenceId&quot;, &quot;memberId&quot;).then(function(member){});
+	 * // Callback
+	 * client.Conference.getMember(&quot;conferenceId&quot;, &quot;memberId&quot;, function(err, member){});
+	 */
+  this.getMember = function(conferenceId, memberId, callback) {
+    return client
+      .makeRequest({
+        path: &quot;conferences/&quot; + conferenceId + &quot;/members/&quot; + memberId,
+        method: &quot;GET&quot;
+      })
+      .then(function(response) {
+        return response.body;
+      })
+      .asCallback(callback);
+  };
+
+  /**
+	 * Add members to a conference.
+	 * @param {Object} params Parameters for new member
+	 * @param {String} params.callId The callId must refer to an active call that was created
+	 * using this conferenceId.
+	 * @param {String} [params.joinTone] If &quot;true&quot;, will play a tone when the member joins the conference.
+	 * If &quot;false&quot;, no tone is played when the member joins the conference.
+	 * @param {String} [params.leavingTone] If &quot;true&quot;, will play a tone when the member leaves the conference.
+	 * If &quot;false&quot;, no tone is played when the member leaves the conference.
+	 * @param {String} [params.mute] If &quot;true&quot;, member can&apos;t speak in the conference. If &quot;false&quot;,
+	 * this members can speak in the conference (unless set at the conference level).
+	 * @param {String} [params.hold] If &quot;true&quot;, member can&apos;t hear or speak in the conference.
+	 * If &quot;false&quot;, member can hear and speak in the conference (unless set at the conference level).
+	 * @param {Function} [callback] Callback with the added member
+	 * @return {ConferenceResponse} A promise for the added member
+	 * @example
+	 * // Promise
+	 * client.Conference.createMember(&quot;conferenceId&quot;, {callId: &quot;callID&quot;}).then(function(member){});
+	 * // Callback
+	 * client.Conference.createMember(&quot;conferenceId&quot;, {callId: &quot;callID&quot;}, function(err, member){});
+	 */
+  this.createMember = function(conferenceId, params, callback) {
+    return client
+      .makeRequest({
+        path: &quot;conferences/&quot; + conferenceId + &quot;/members&quot;,
+        method: &quot;POST&quot;,
+        body: params
+      })
+      .then(function(response) {
+        var conference = params;
+        var location = response.headers.location;
+        conference.id = location.substring(location.lastIndexOf(&quot;/&quot;) + 1);
+        return conference;
+      })
+      .asCallback(callback);
+  };
+
+  /**
+	 * Update the conference member
+	 * @param  {String} conferenceId The ID of the conference
+	 * @param  {String} memberId The ID of the member
+	 * @param {Object} params Changed parameters of the member
+	 * @param {String} [params.joinTone] If &quot;true&quot;, will play a tone when the member joins the conference.
+	 * If &quot;false&quot;, no tone is played when the member joins the conference.
+	 * @param {String} [params.leavingTone] If &quot;true&quot;, will play a tone when the member leaves the conference.
+	 * If &quot;false&quot;, no tone is played when the member leaves the conference.
+	 * @param {String} [params.mute] If &quot;true&quot;, member can&apos;t speak in the conference. If &quot;false&quot;,
+	 * this members can speak in the conference (unless set at the conference level).
+	 * @param {String} [params.hold] If &quot;true&quot;, member can&apos;t hear or speak in the conference.
+	 * If &quot;false&quot;, member can hear and speak in the conference (unless set at the conference level).
+	 * @param {Function} [callback] Callback for the operation
+	 * @return {Promise} A promise for the operation
+	 * @example
+	 * // Promise
+	 * client.Conference.updateMember(&quot;conferenceID&quot;, &quot;memberId&quot;, {mute: &quot;true&quot;}).then(function(){});
+	 * // Callback
+	 * client.Conference.updateMember(&quot;conferenceID&quot;, &quot;memberId&quot;, {mute: &quot;true&quot;}, function(err){});
+	 */
+  this.updateMember = function(conferenceId, memberId, params, callback) {
+    return client
+      .makeRequest({
+        path: &quot;conferences/&quot; + conferenceId + &quot;/members/&quot; + memberId,
+        method: &quot;POST&quot;,
+        body: params
+      })
+      .then(function() {
+        return;
+      })
+      .asCallback(callback);
+  };
+
+  /**
+	 * Remove the conference member
+	 * @param  {String} conferenceId The ID of the conference
+	 * @param  {String} memberId The ID of the member
+	 * @param {Function} [callback] Callback for the operation
+	 * @return {Promise} A promise for the operation
+	 * @example
+	 * // Promise
+	 * client.Conference.removeMember(&quot;conferenceID&quot;, &quot;memberId&quot;).then(function(){});
+	 * // Callback
+	 * client.Conference.removeMember(&quot;conferenceID&quot;, &quot;memberId&quot;, function(err){});
+	 */
+  this.removeMember = function(conferenceId, memberId, callback) {
+    return this.updateMember(
+      conferenceId,
+      memberId,
+      { state: &quot;completed&quot; },
+      callback
+    );
+  };
+
+  /**
+	 * Speak sentence to the conference member using default values
+	 * @param {String} conferenceId The ID of the conference
+	 * @param {String} memberId The ID of the member
+	 * @param {String} sentence A sentence to speak to the member.
+	 * @param {Function} [callback] Callback for the operation
+	 * @return {Promise} A promise for the operation
+	 * @example
+	 * //Speak sentence
+	 *
+	 * //Promise
+	 * client.Conference.speakSentenceToMember(&quot;conferenceID&quot;, &quot;memberID&quot;, Hello From Bandwidth&quot;)
+	 *   .then(function (res) {});
+	 *
+	 * //Callback
+	 * client.Conference.speakSentenceToMember(&quot;conferenceID&quot;, &quot;memberID&quot;, &quot;Hello From Bandwidth&quot;,
+	 *   function (err, res) {});
+	 */
+  this.speakSentenceToMember = function(
+    conferenceId,
+    memberId,
+    sentence,
+    callback
+  ) {
+    return audioApi(conferenceId, memberId, { sentence: sentence }).asCallback(
+      callback
+    );
+  };
+
+  /**
+	 * Play audio url to the conference member
+	 * @param {String} conferenceId The ID of the conference
+	 * @param {String} memberId The ID of the member
+	 * @param {String} fileUrl The http location of an audio file to play (WAV and MP3 supported).
+	 * @param {Function} [callback] Callback for the operation
+	 * @return {Promise} A promise for the operation
+	 * @example
+	 * //Play Audio file
+	 *
+	 * //Promise
+	 * client.Conference.playAudioFileToMember(&quot;conferenceID&quot;, &quot;memberId&quot;, http://myurl.com/file.mp3&quot;)
+	 *   .then(function (res) {});
+	 *
+	 * //Callback
+	 * client.Conference.playAudioFileToMember(&quot;conferenceID&quot;, &quot;memberId&quot;, http://myurl.com/file.wav&quot;,
+	 *    function (err, res) {});
+	 */
+  this.playAudioFileToMember = function(
+    conferenceId,
+    memberId,
+    fileUrl,
+    callback
+  ) {
+    return audioApi(conferenceId, memberId, { fileUrl: fileUrl }).asCallback(
+      callback
+    );
+  };
+
+  /**
+	 * Play audio file or speak sentence to the conference member
+	 * @param {String} conferenceId The ID of the conference
+	 * @param {String} memberId The ID of the member
+	 * @param {Object} params Parameters to play audio.
+	 * @param {String} [params.fileUrl] The http location of an audio file to play (WAV and MP3 supported).
+	 * @param {String} [params.sentence] The sentence to speak.
+	 * @param {String} [params.gender=female] The gender of the voice used to synthesize the sentence.
+	 * It will be considered only if sentence is not null. The female gender will be used by default.
+	 * @param {String=} [params.locale=en_US] The locale used to get the accent of the voice used to
+	 * synthesize the sentence.
+	 * It will be considered only if sentence is not null/empty. The en_US will be used by default.
+	 * @param {String} [params.voice=Susan] The voice to speak the sentence.
+	 * It will be considered only if sentence is not null/empty. Susan&apos;s voice will be used by default.
+	 * @param {Boolean} [params.loopEnabled=false] When value is true, the audio will keep playing in a loop.
+	 * Default: false.
+	 * @param {Function} [callback] Callback for the operation
+	 * @return {Promise} A promise for the operation
+	 * @example
+	 * //Play Audio File on loop
+	 * var options = {
+	 * 	fileUrl     : &quot;http://myurl.com/file.mp3&quot;,
+	 * 	loopEnabled : true
+	 * }
+	 * //Promise
+	 * client.Conference.playAudioAdvancedToMember(&quot;conferenceId&quot;, &quot;memberId&quot;, options)
+	 *  .then(function (res) {});
+	 *
+	 * //Callback
+	 * client.Conference.playAudioAdvancedToMember(&quot;conferenceId&quot;, &quot;memberId&quot;, options,
+	 *   function (err,res) {});
+	 * @example
+	 * //Speak sentence with options
+	 * var options = {
+	 * 	sentence : &quot;hola de Bandwidth&quot;,
+	 * 	gender   : &quot;male&quot;,
+	 * 	locale   : &quot;es&quot;,
+	 * 	voice    : &quot;Jorge&quot;
+	 * }
+	 * //Promise
+	 * client.Conference.playAudioAdvancedToMember(&quot;conferenceId&quot;, &quot;memberId&quot;, options)
+	 *   .then(function (res) {});
+	 *
+	 * //Callback
+	 * client.Conference.playAudioAdvanced(&quot;conferenceId&quot;, options, function (err,res) {});
+	 */
+  this.playAudioAdvancedToMember = function(
+    conferenceId,
+    memberId,
+    params,
+    callback
+  ) {
+    return audioApi(conferenceId, memberId, params).asCallback(callback);
+  };
+};
+
+module.exports = Conference;
+
+/**
+ * @class ConferenceResponse
+ * @type {Object}
+ * @property {String} id The unique ID of the conference.
+ * @property {String} state Conference state. Possible state values are described here.
+ * @property {String} from The phone number that will host the conference.
+ * @property {String} createdTime The time that the Conference was created (UTC).
+ * @property {String} completedTime The time that the Conference was completed (UTC).
+ * @property {Number} activeMembers The number of active conference members.
+ * @property {String} hold If &quot;true&quot;, all member can&apos;t hear or speak in the conference.
+ * If &quot;false&quot;, all members can hear and speak in the conference (unless set at the member level).
+ * @property {String} mute If &quot;true&quot;, all member can&apos;t speak in the conference.
+ * If &quot;false&quot;, all members can speak in the conference (unless set at the member level).
+ * @property {String} callbackUrl The complete URL where the events related to the
+ * Conference will be sent to.
+ * @property {String} profile If &quot;interpret_digits&quot;: the conference will handle DTMF with the default behavior
+ * or if &quot;passthru_digits&quot;: allows the application to receive DTMF events and use the `gather` API.
+ * @property {String} callbackHttpMethod Determine if the callback event should be sent
+ * via HTTP GET or HTTP POST.
+ * @property {String} callbackTimeout Determine how long should the platform wait for
+ * callbackUrl&apos;s response before timing out in milliseconds.
+ * @property {String} fallbackUrl Determine how long should the platform wait
+ * for callbackUrl&apos;s response before timing out in milliseconds.
+ * @property {String} tag A string that will be included in the callback events
+ * of the conference.
+ */
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.0.1)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

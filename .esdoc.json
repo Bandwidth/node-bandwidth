@@ -1,0 +1,15 @@
+{
+  "source": "./lib",
+  "destination": "./docs",
+  "plugins": [{
+    "name": "esdoc-standard-plugin",
+    "option": {
+        "lint": {"enable": true},
+        "test": {
+          "source": "./test/",
+          "interfaces": ["describe", "it", "context", "suite", "test"],
+          "includes": ["(spec|Spec|test|Test)\\.js$"]
+        }
+      }
+    }]
+}

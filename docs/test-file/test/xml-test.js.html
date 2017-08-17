@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">test/xml-test.js | node-bandwidth</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="NodeJs Client library for Catapult API"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="node-bandwidth"><meta property="twitter:description" content="NodeJs Client library for Catapult API"></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/bandwidthcom/node-bandwidth.git"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  </ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">test/xml-test.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">var BXMLResponse = require(&quot;../lib/xml.js&quot;);
+var fs = require(&quot;fs&quot;);
+var speakSentenceOnlyResponse = fs.readFileSync(
+  &quot;./test/bxml-responses/speakSentence.xml&quot;,
+  &quot;utf8&quot;
+);
+var gatherOnlyResponse = fs.readFileSync(
+  &quot;./test/bxml-responses/gather.xml&quot;,
+  &quot;utf8&quot;
+);
+var callOnlyResponse = fs.readFileSync(
+  &quot;./test/bxml-responses/call.xml&quot;,
+  &quot;utf8&quot;
+);
+var conferenceOnlyResponse = fs.readFileSync(
+  &quot;./test/bxml-responses/conference.xml&quot;,
+  &quot;utf8&quot;
+);
+var hangupOnlyResponse = fs.readFileSync(
+  &quot;./test/bxml-responses/hangup.xml&quot;,
+  &quot;utf8&quot;
+);
+var audioOnlyResponse = fs.readFileSync(
+  &quot;./test/bxml-responses/playAudio.xml&quot;,
+  &quot;utf8&quot;
+);
+var recordOnlyResponse = fs.readFileSync(
+  &quot;./test/bxml-responses/record.xml&quot;,
+  &quot;utf8&quot;
+);
+var redirectOnlyResponse = fs.readFileSync(
+  &quot;./test/bxml-responses/redirect.xml&quot;,
+  &quot;utf8&quot;
+);
+var sendMessageOnlyResponse = fs.readFileSync(
+  &quot;./test/bxml-responses/sendMessage.xml&quot;,
+  &quot;utf8&quot;
+);
+var transferOnlyResponse = fs.readFileSync(
+  &quot;./test/bxml-responses/transfer.xml&quot;,
+  &quot;utf8&quot;
+);
+var nestingResponse = fs.readFileSync(
+  &quot;./test/bxml-responses/nesting.xml&quot;,
+  &quot;utf8&quot;
+);
+var chainingResponse = fs.readFileSync(
+  &quot;./test/bxml-responses/chaining.xml&quot;,
+  &quot;utf8&quot;
+);
+var multiTransferResponse = fs.readFileSync(
+  &quot;./test/bxml-responses/multiTransfer.xml&quot;,
+  &quot;utf8&quot;
+);
+
+describe(&quot;Builder&quot;, function() {
+  describe(&quot;Individual verb - speakSentence&quot;, function() {
+    var myApp;
+    before(function() {
+      myApp = new BXMLResponse();
+      myApp.speakSentence(&quot;Thank you for calling ACME Technical Support.&quot;);
+    });
+    it(&quot;Should generate correct BXML&quot;, function() {
+      myApp.toString().should.equal(speakSentenceOnlyResponse);
+    });
+  });
+  describe(&quot;Individual verb - gather&quot;, function() {
+    var myApp;
+    before(function() {
+      myApp = new BXMLResponse();
+      myApp.gather({
+        requestUrl: &quot;http://www.example.com/&quot;
+      });
+    });
+    it(&quot;Should generate correct BXML&quot;, function() {
+      myApp.toString().should.equal(gatherOnlyResponse);
+    });
+  });
+  describe(&quot;Individual verb - call&quot;, function() {
+    var myApp;
+    before(function() {
+      myApp = new BXMLResponse();
+      myApp.call({
+        from: &quot;+19195551212&quot;,
+        to: &quot;+19195551213&quot;
+      });
+    });
+    it(&quot;Should generate correct BXML&quot;, function() {
+      myApp.toString().should.equal(callOnlyResponse);
+    });
+  });
+  describe(&quot;Individual verb - conference&quot;, function() {
+    var myApp;
+    before(function() {
+      myApp = new BXMLResponse();
+      myApp.conference({
+        from: &quot;+19195551212&quot;
+      });
+    });
+    it(&quot;Should generate correct BXML&quot;, function() {
+      myApp.toString().should.equal(conferenceOnlyResponse);
+    });
+  });
+  describe(&quot;Individual verb - hangup&quot;, function() {
+    var myApp;
+    before(function() {
+      myApp = new BXMLResponse();
+      myApp.hangup({});
+    });
+    it(&quot;Should generate correct BXML&quot;, function() {
+      myApp.toString().should.equal(hangupOnlyResponse);
+    });
+  });
+  describe(&quot;Individual verb - playAudio&quot;, function() {
+    var myApp;
+    before(function() {
+      myApp = new BXMLResponse();
+      myApp.playAudio(&quot;http://www.example.com/example.mp3&quot;);
+    });
+    it(&quot;Should generate correct BXML&quot;, function() {
+      myApp.toString().should.equal(audioOnlyResponse);
+    });
+  });
+  describe(&quot;Individual verb - record&quot;, function() {
+    var myApp;
+    before(function() {
+      myApp = new BXMLResponse();
+      myApp.record({
+        requestUrl: &quot;http://www.example.com&quot;,
+        requestUrlTimeout: 12345
+      });
+    });
+    it(&quot;Should generate correct BXML&quot;, function() {
+      myApp.toString().should.equal(recordOnlyResponse);
+    });
+  });
+  describe(&quot;Individual verb - redirect&quot;, function() {
+    var myApp;
+    before(function() {
+      myApp = new BXMLResponse();
+      myApp.redirect({
+        requestUrl: &quot;http://www.example.com&quot;,
+        requestUrlTimeout: 12345
+      });
+    });
+    it(&quot;Should generate correct BXML&quot;, function() {
+      myApp.toString().should.equal(redirectOnlyResponse);
+    });
+  });
+  describe(&quot;Individual verb - sendMessage&quot;, function() {
+    var myApp;
+    before(function() {
+      myApp = new BXMLResponse();
+      myApp.sendMessage(&quot;Where are you?&quot;, {
+        from: &quot;+19195551212&quot;,
+        to: &quot;+19195551213&quot;
+      });
+    });
+    it(&quot;Should generate correct BXML&quot;, function() {
+      myApp.toString().should.equal(sendMessageOnlyResponse);
+    });
+  });
+  describe(&quot;Individual verb - transfer&quot;, function() {
+    var myApp;
+    before(function() {
+      myApp = new BXMLResponse();
+      myApp.transfer({
+        transferTo: &quot;+19195551212&quot;
+      });
+    });
+    it(&quot;Should generate correct BXML&quot;, function() {
+      myApp.toString().should.equal(transferOnlyResponse);
+    });
+  });
+  describe(&quot;Nesting&quot;, function() {
+    var myApp;
+    before(function() {
+      myApp = new BXMLResponse();
+      myApp.gather(
+        {
+          requestUrl: &quot;http://www.example.com/&quot;
+        },
+        function() {
+          this.speakSentence(&quot;Press some numbers!&quot;);
+        }
+      );
+    });
+    it(&quot;Should generate correct BXML&quot;, function() {
+      myApp.toString().should.equal(nestingResponse);
+    });
+  });
+  describe(&quot;Chaining&quot;, function() {
+    var myApp;
+    before(function() {
+      myApp = new BXMLResponse();
+      myApp.speakSentence(&quot;Hi! My name is:&quot;).speakSentence(&quot;What? My name is:&quot;);
+    });
+    it(&quot;Should generate correct BXML&quot;, function() {
+      myApp.toString().should.equal(chainingResponse);
+    });
+  });
+  describe(&quot;Multiple Transfer with Speak Sentence&quot;, function() {
+    var myApp;
+    before(function() {
+      myApp = new BXMLResponse();
+      myApp
+        .speakSentence(&quot;Your call is somewhat important to us.&quot;)
+        .speakSentence(&quot;Please wait while it is being transferred.&quot;)
+        .transfer({}, function() {
+          this.phoneNumber(&quot;transferOne&quot;);
+          this.phoneNumber(&quot;transferTwo&quot;);
+          this.phoneNumber(&quot;transferThree&quot;);
+          this.speakSentence(
+            &quot;A call is being transferred to you from Customer Service.&quot;
+          );
+        });
+    });
+    it(&quot;Should generate correct BXML&quot;, function() {
+      myApp.toString().should.equal(multiTransferResponse);
+    });
+  });
+});
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.0.1)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

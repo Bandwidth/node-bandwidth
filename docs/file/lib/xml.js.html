@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">lib/xml.js | node-bandwidth</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="NodeJs Client library for Catapult API"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="node-bandwidth"><meta property="twitter:description" content="NodeJs Client library for Catapult API"></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/bandwidthcom/node-bandwidth.git"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  </ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">lib/xml.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">var builder = require(&quot;xmlbuilder&quot;);
+/**
+ * Creates a new BXML Response object.
+ * Call .toString() on this method to obtain the BXML string.
+ * @constructor
+ */
+
+var BXMLResponse = function() {
+  this.xml = builder.create(&quot;Response&quot;, {
+    encoding: &quot;UTF-8&quot;
+  });
+  /**
+	 * Create a SpeakSentence tag.
+	 * @param {string} sentence The sentence to have the voice say.
+	 * @param {Object} params The parameters for the API SpeakSentence call.
+	 * @param {string} [params.gender=&quot;female&quot;] The gender of the speaker.
+	 * @param {string} [params.locale=&quot;en_US&quot;] The locale for the speaker.
+	 * @param {string} [params.voice=&quot;julie&quot;] The voice for the speaker.
+	 * @return {BXMLResponse} this, for chaining
+	 * @example
+	 * //This app will speak two sentences.
+	 * var Bandwidth = require(&quot;node-bandwidth&quot;);
+	 * var myApp = new Bandwidth.BXMLResponse();
+	 * myApp.speakSentence(&quot;Thanks for calling Unicorn Enterprises.&quot;)
+	 *      .speakSentence(&quot;Someone will be with you shortly.&quot;);
+	 * myApp = myApp.toString();
+	 */
+
+  this.speakSentence = function(sentence, params) {
+    params = params || {};
+    params.locale = params.locale || &quot;en_US&quot;;
+    params.gender = params.gender || &quot;female&quot;;
+    params.voice = params.voice || &quot;julie&quot;;
+    this.xml = this.xml.ele(&quot;SpeakSentence&quot;, params, sentence).up();
+    return this;
+  };
+
+  /**
+	 * Create a Gather call, which collects pressed numbers.
+	 * @param {Object} params The parameters for the Gather verb.
+	 * @param {string} params.requestURL Relative or absolute URL to send events to and request new BXML.
+	 * @param {number} [params.requestURLTimeout=3000] Time to wait for requestURL response in ms.
+	 * @param {string} [params.terminatingDigits=#] Digits to stop gather.
+	 * @param {number} [params.maxDigits=128] Maximum number of digits to collect.
+	 * @param {number} [params.integerDigitTimeout=5] Timeout between digits.
+	 * @param {boolean} [params.bargeable=true] Boolean indicating if audio should stop when digit is pressed.
+	 * @param {function} [callback] A function containing the verbs to be nested inside the Gather call.
+	 * @return {BXMLResponse} this, for chaining
+	 * @example
+	 * //This app will collect a PIN code.
+	 * var Bandwidth = require(&quot;node-bandwidth&quot;);
+	 * var myApp = new Bandwidth.BXMLResponse();
+	 * myApp.gather({
+	 *     requestUrl : &apos;http://unico.rn/pinApiEndpoint&apos;,
+	 *     maxDigits  : 4
+	 * }, function () {
+	 *     this.speakSentence(&quot;Please enter your PIN code.&quot;)
+	 * });
+	 * myApp = myApp.toString();
+	 */
+  this.gather = function(params, callback) {
+    this.xml = this.xml.ele(&quot;Gather&quot;, params);
+    callback = callback || function() {};
+    callback.call(this);
+    this.xml = this.xml.up();
+    return this;
+  };
+
+  /**
+	 * @return {string} A string representation of the object&apos;s BXML.
+	 */
+  this.toString = function() {
+    return this.xml
+      .end({
+        pretty: true,
+        indent: &quot;     &quot;
+      })
+      .toString();
+  };
+
+  /**
+	 * Create a new call to another phone number.
+	 * @param {Object} params The parameters for the Call verb.
+	 * @param {string} params.from Defines the number the call will be created from.
+	 * @param {string} params.to Defines the number the call will be made to.
+	 * @param {string} [params.requestUrl] URL to send event
+	 * @param {number} [params.timeout] The timeout, in seconds, for the call to answer
+	 * @param {number} [params.requestUrlTimeout] Timeout, in ms, to request new BXML document
+	 * @param {function} [callback] A function containing the verbs to be nested inside the Call verb
+	 * @return {BXMLResponse} this, for chaining
+	 * @example
+	 * //This app will create a call and tell the callee they are being called.
+	 * var Bandwidth = require(&quot;node-bandwidth&quot;);
+	 * var myApp = new Bandwidth.BXMLResponse();
+	 * myApp.call({
+	 *      from : &apos;+19195551212&apos;,
+	 *      to   : &apos;+19195551213&apos;
+	 * }, function () {
+	 *      this.speakSentence(&quot;You are recieving a call from 919 555 1212.&quot;);
+	 * });
+	 * myApp = myApp.toString();
+	 */
+  this.call = function(params, callback) {
+    this.xml = this.xml.ele(&quot;Call&quot;, params);
+    callback = callback || function() {};
+    callback.call(this);
+    this.xml = this.xml.up();
+    return this;
+  };
+
+  /**
+	 * Create a new conference call.
+	 * @param {Object} params The parameters for the Conference verb.
+	 * @param {string} params.from The phone number that will host the conference.
+	 * @param {string} [params.statusCallbackUrl] URL to which conference callbacks will be POSTed
+	 * @param {boolean} [params.joinTone=true] Determines whether or not a tone is played on join.
+	 * @param {boolean} [params.leavingTone=true] Determines whether or not a tone is played on leave.
+	 * @param {string} [params.tag] A string that will be included in the callback events of the conference.
+	 * @param {boolean} [params.mute=false] Determines whether or not the member will join muted.
+	 * @param {boolean} [params.hold=false] Determines whether or not the member will join on hold.
+	 * @return {BXMLResponse} this, for chaining.
+	 * @example
+	 * //This app will create a conference call. Callers to (919) 555 1212 will be patched in.
+	 * var Bandwidth = require(&quot;node-bandwidth&quot;);
+	 * var myApp = new Bandwidth.BXMLResponse();
+	 * myApp.conference({
+	 *     from : &apos;+19195551212&apos;
+	 * });
+	 * myApp = myApp.toString();
+	 */
+
+  this.conference = function(params) {
+    params.joinTone = params.joinTone || true;
+    params.leavingTone = params.leavingTone || true;
+    this.xml = this.xml.ele(&quot;Conference&quot;, params).up();
+    return this;
+  };
+
+  /**
+	 * Terminates an outgoing call.
+	 * @return {BXMLResponse} this, for chaining.
+	 * @example
+	 * //This app will speak two sentences and hang up.
+	 * var Bandwidth = require(&quot;node-bandwidth&quot;);
+	 * var myApp = new Bandwidth.BXMLResponse();
+	 * myApp.speakSentence(&quot;Thanks for calling Unicorn Enterprises.&quot;)
+	 *      .speakSentence(&quot;We have been acquired by BigCorp.&quot;)
+	 *      .hangup();
+	 * myApp = myApp.toString();
+	 */
+
+  this.hangup = function() {
+    this.xml = this.xml.ele(&quot;Hangup&quot;).up();
+    return this;
+  };
+
+  /**
+	 * Plays an audio file located at a specified URL.
+	 * @param {string} audio The URL of the audio to be played.
+	 * @return {BXMLResponse} this, for chaining.
+	 * @example
+	 * var Bandwidth = require(&quot;node-bandwidth&quot;);
+	 * var myApp = new Bandwidth.BXMLResponse();
+	 * myApp.speakSentence(&quot;Thanks for calling Unicorn Enterprises.&quot;)
+	 *      .speakSentence(&quot;All agents are currently busy playing ping-pong. Please hold.&quot;)
+	 *      .playAudio(&quot;http://unico.rn/assets/postglamspeedfolk.mp3&quot;);
+	 * myApp = myApp.toString();
+	 */
+
+  this.playAudio = function(audio) {
+    this.xml = this.xml.ele(&quot;PlayAudio&quot;, {}, audio).up();
+    return this;
+  };
+  /**
+	 * Records the call. At end of call, a call recording event is sent to the callback URL.
+	 * @param {Object} params The parameters for the Record verb.
+	 * @param {string} [params.requestUrl] URL to send event and request new BXML.
+	 * @param {number} [params.requestUrlTimeout] Timeout, in ms, to wait for requestUrl response.
+	 * @param {string} [params.fileFormat] The format in which to save the recording - mp3 or wav.
+	 * @param {string} [params.terminatingDigits] One or more digits that will finish the recording.
+	 * @param {number} [params.maxDuration=300] Time, in seconds, for max duration. Up to 3600 sec (1hr)
+	 * @param {boolean} [params.transcribe=false] Boolean to indicate transcription of the recording.
+	 * @param {string} [params.transcribeCallbackUrl] URL to send transcribed event.
+	 * @return {BXMLResponse} this, for chaining.
+	 * @example
+	 * //This app will record a message.
+	 * var Bandwidth = require(&quot;node-bandwidth&quot;);
+	 * var myApp = new Bandwidth.BXMLResponse();
+	 * myApp.speakSentence(&quot;Thanks for calling Unicorn Enterprises.&quot;)
+	 *      .speakSentence(&quot;Your call may be recorded for quality assurance.&quot;)
+	 *      .record({
+	 *            requestUrl : &quot;http://unico.rn/recordsGetPutHere&quot;,
+	 *            fileFormat : &quot;mp3&quot;
+	 *		});
+	 */
+
+  this.record = function(params) {
+    this.xml = this.xml.ele(&quot;Record&quot;, params).up();
+    return this;
+  };
+
+  /**
+	 * Redirects the current execution to run XML at another URL.
+	 * @param {Object} params The parameters for the Redirect verb.
+	 * @param {string} params.requestUrl The URL to send event to and request new BXML.
+	 * @param {number} params.requestUrlTimeout Timeout, in ms, to wait for requestUrl to respond.
+	 * @return {BXMLResponse} this, for chaining.
+	 */
+
+  this.redirect = function(params) {
+    this.xml = this.xml.ele(&quot;Redirect&quot;, params).up();
+    return this;
+  };
+  /**
+	 * Sends a text message.
+	 * @param {string} message The message to send.
+	 * @param {Object} params The parameters for the SendMessage verb
+	 * @param {string} params.from The number to send the message from.
+	 * @param {string} params.to The number to send the message to.
+	 * @param {string} [params.requestUrl] The URL to send events to and request new BXML from.
+	 * @param {number} [params.requestUrlTimeout=30] Timeout, in seconds, to wait for requestUrl to respond.
+	 * @param {string} [params.statusCallbackUrl] URL to send the message callback to.
+	 * @return {BXMLResponse} this, for chaining.
+	 * @example
+	 * // This app will text a customer.
+	 * var Bandwidth = require(&quot;node-bandwidth&quot;);
+	 * var myApp = new Bandwidth.BXMLResponse();
+	 * myApp.sendMessage(&quot;Get $20 off your next purchase!&quot;, {
+	 * 		from : &quot;+19195551212&quot;,
+	 *		to   : &quot;+19195551213&quot;
+	 * });
+	 */
+  this.sendMessage = function(message, params) {
+    this.xml = this.xml.ele(&quot;SendMessage&quot;, params, message).up();
+    return this;
+  };
+
+  /**
+	 * Used to direct call flow for multiple transfer
+	 * @param  {String} phoneNumber The phone number to try for a transfer
+	 * @return {BXMLResponse} this, for chaining.
+	 */
+  this.phoneNumber = function(phoneNumber) {
+    this.xml = this.xml.ele(&quot;PhoneNumber&quot;, phoneNumber).up();
+    return this;
+  };
+
+  /**
+	 * Transfers the call to another number.
+	 * @param {Object} params The parameters for the Transfer verb.
+	 * @param {string} params.transferTo The number to transfer the call to.
+	 * @param {string} [params.transferCallerId] The caller ID to use on the transferred call.
+	 * @param {number} [params.callTimeout] The timeout, in seconds, for the call to be answered.
+	 * @param {string} [params.requestUrl] URL to send event to and request new BXML from.
+	 * @param {number} [params.requestUrlTimeout] Timeout, in msec, to wait for requestUrl to respond.
+	 * @param {string} [params.tag] A string that will be included in the callback events.
+	 * @param {function} callback The verbs to nest inside the Transfer verb.
+	 * @return {BXMLResponse} this, for chaining.
+	 * @example
+	 * // This app will transfer a call.
+	 * var Bandwidth = require(&quot;node-bandwidth&quot;);
+	 * var myApp = new Bandwidth.BXMLResponse();
+	 * myApp.speakSentence(&quot;Your call is somewhat important to us.&quot;)
+	 *		.speakSentence(&quot;Please wait while it is being transferred.&quot;)
+	 *		.transfer({
+	 * 			transferTo: &quot;+19195551213&quot;
+	 *		}, function (){
+	 * 			this.speakSentence(&quot;A call is being transferred to you from Customer Service.&quot;);
+	 *		});
+	 * @example
+	 * // Multiple transfer with speak senetence - Try 3 numbers
+	 * var myApp = new Bandwidth.BXMLResponse();
+	 * myApp.speakSentence(&quot;Your call is somewhat important to us.&quot;)
+	 * 	.speakSentence(&quot;Please wait while it is being transferred.&quot;)
+	 * 	.transfer({}, function (){
+	 * 		this.phoneNumber(&quot;+13334445555&quot;);
+	 * 		this.phoneNumber(&quot;+13334445556&quot;);
+	 * 		this.phoneNumber(&quot;+13334445557&quot;);
+	 * 		this.speakSentence(&quot;A call is being transferred to you from Customer Service.&quot;);
+	 * 	});
+console.log(myApp.toString());
+	 */
+  this.transfer = function(params, callback) {
+    this.xml = this.xml.ele(&quot;Transfer&quot;, params);
+    callback = callback || function() {};
+    callback.call(this);
+    this.xml = this.xml.up();
+    return this;
+  };
+};
+
+module.exports = BXMLResponse;
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.0.1)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

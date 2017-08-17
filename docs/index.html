@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl">
+  <title data-ice="title">Home | node-bandwidth</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="NodeJs Client library for Catapult API"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="node-bandwidth"><meta property="twitter:description" content="NodeJs Client library for Catapult API"></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/bandwidthcom/node-bandwidth.git"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  </ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><div data-ice="index" class="github-markdown"><h1 id="node-bandwidth">node-bandwidth</h1><p><a href="https://badge.fury.io/js/node-bandwidth"><img src="https://badge.fury.io/js/node-bandwidth.svg" alt="npm version"></a>
+<a href="https://travis-ci.org/bandwidthcom/node-bandwidth"><img src="https://travis-ci.org/bandwidthcom/node-bandwidth.svg?branch=master" alt="Build Status"></a>
+<a href="https://david-dm.org/bandwidthcom/node-bandwidth"><img src="https://david-dm.org/bandwidthcom/node-bandwidth.svg" alt="dependencies"></a>
+<a href="https://snyk.io/package/npm/node-bandwidth"><img src="https://snyk.io/package/npm/node-bandwidth/badge.svg" alt="Known Vulnerabilities"></a></p>
+<p>A Node.js client library for the <a href="http://bandwidth.com/products/application-platform?utm_medium=social&amp;utm_source=github&amp;utm_campaign=dtolb&amp;utm_content=_">Bandwidth Application Platform</a></p>
+<p>The current version is v2, released 5 August, 2016. Version 1.3.3 is available  <a href="https://github.com/bandwidthcom/node-bandwidth/tree/v1.3.3">here</a>.</p>
+<h2 id="-a-href--http---bwdemos-com-node-bandwidth-index-html--full-api-reference--a-"><a href="http://bwdemos.com/node-bandwidth/index.html">Full API Reference</a></h2><p>The Full API Reference is available either as an interactive site or as a single Markdown file:</p>
+<ul>
+<li><a href="http://bwdemos.com/node-bandwidth/index.html">Site</a>.</li>
+<li><a href="https://github.com/bandwidthcom/node-bandwidth/blob/master/docs/api.md">Single MD file</a></li>
+</ul>
+<h2 id="installing-the-sdk">Installing the SDK</h2><p><code>node-bandwidth</code> is available on NPM:</p>
+<pre><code><code class="source-code prettyprint">npm install --save node-bandwidth</code>
+</code></pre><h2 id="supported-versions">Supported Versions</h2><p><code>node-bandwidth</code> should work on all versions of node newer than <code>0.10.*</code>. However, due to the rapid development in the Node and npm environment, we can only provide <em>support</em> on <a href="https://github.com/nodejs/LTS">LTS versions of Node</a></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Version</th>
+<th style="text-align:left">Support Level</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">&lt;0.10.*</td>
+<td style="text-align:left">Unsupported</td>
+</tr>
+<tr>
+<td style="text-align:left">0.10.*</td>
+<td style="text-align:left">End-of-Life (2016-10-31)</td>
+</tr>
+<tr>
+<td style="text-align:left">0.12.*</td>
+<td style="text-align:left">End-of-Life (2016-10-31)</td>
+</tr>
+<tr>
+<td style="text-align:left">&gt;=4.0 &lt;4.2</td>
+<td style="text-align:left">Unsupported</td>
+</tr>
+<tr>
+<td style="text-align:left">&gt;=4.2 &lt;5.* (Node v4 argon LTS)</td>
+<td style="text-align:left">Supported</td>
+</tr>
+<tr>
+<td style="text-align:left">5.*</td>
+<td style="text-align:left">Unsupported</td>
+</tr>
+<tr>
+<td style="text-align:left"><em>6.9.4 (Node v6 Boron LTS)</em></td>
+<td style="text-align:left"><strong>Recommended</strong></td>
+</tr>
+<tr>
+<td style="text-align:left">7.*</td>
+<td style="text-align:left">Unsupported</td>
+</tr>
+</tbody>
+</table>
+<h2 id="client-initialization">Client initialization</h2><p>All interaction with the API is done through a <code>client</code> Object. The client constructor takes an Object containing configuration options. The following options are supported:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Field name</th>
+<th style="text-align:left">Description</th>
+<th style="text-align:left">Default value</th>
+<th style="text-align:left">Required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>userId</code></td>
+<td style="text-align:left">Your Bandwidth user ID</td>
+<td style="text-align:left"><code>undefined</code></td>
+<td style="text-align:left">Yes</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>apiToken</code></td>
+<td style="text-align:left">Your API token</td>
+<td style="text-align:left"><code>undefined</code></td>
+<td style="text-align:left">Yes</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>apiSecret</code></td>
+<td style="text-align:left">Your API secret</td>
+<td style="text-align:left"><code>undefined</code></td>
+<td style="text-align:left">Yes</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>baseUrl</code></td>
+<td style="text-align:left">The Bandwidth API URL</td>
+<td style="text-align:left"><code>https://api.catapult.inetwork.com</code></td>
+<td style="text-align:left">No</td>
+</tr>
+</tbody>
+</table>
+<p>To initialize the client object, provide your API credentials which can be found on your account page in <a href="https://catapult.inetwork.com/pages/catapult.jsf">the portal</a>.</p>
+<pre><code class="lang-javascript"><code class="source-code prettyprint">var Bandwidth = require(&quot;node-bandwidth&quot;);
+
+var client = new Bandwidth({
+    userId    : &quot;YOUR_USER_ID&quot;, // &lt;-- note, this is not the same as the username you used to login to the portal
+    apiToken  : &quot;YOUR_API_TOKEN&quot;,
+    apiSecret : &quot;YOUR_API_SECRET&quot;
+});</code>
+</code></pre>
+<p>Your <code>client</code> object is now ready to use the API.</p>
+<h2 id="callbacks-or-promises">Callbacks or Promises</h2><p>All functions of the client object take an optional Node.js style <code>(err, result)</code> callback, and also return a Promise. That way if you want to use Promises in your application, you don&apos;t have to wrap the SDK with a Promise library. You can simply do things like this:</p>
+<h3 id="promise-style">Promise style</h3><pre><code class="lang-javascript"><code class="source-code prettyprint">client.Message.send({
+    from : &quot;+12345678901&quot;, // This must be a Catapult number on your account
+    to   : &quot;+12345678902&quot;,
+    text : &quot;Hello world.&quot;
+})
+.then(function(message) {
+    console.log(&quot;Message sent with ID &quot; + message.id);
+})
+.catch(function(err) {
+    console.log(err.message);
+});</code>
+</code></pre>
+<p>If you&apos;re not into that kind of thing you can also do things the &quot;old fashioned&quot; callback way:</p>
+<h3 id="callback-style">Callback style</h3><pre><code class="lang-javascript"><code class="source-code prettyprint">client.Message.send({
+    from : &quot;+12345678901&quot;, // This must be a Catapult number on your account
+    to   : &quot;+12345678902&quot;,
+    text : &quot;Hello world.&quot;
+}, function(err, message) {
+    if (err) {
+        console.log(err);
+        return;
+    }
+    console.log(&quot;Message sent with ID &quot; + message.id);
+});</code>
+</code></pre>
+<h2 id="providing-feedback">Providing feedback</h2><p>For current discussions on 2.0 please see the <a href="https://github.com/bandwidthcom/node-bandwidth/labels/2.0">2.0 issues section on GitHub</a>. To start a new topic on 2.0, please open an issue and use the <code>2.0</code> tag. Your feedback is greatly appreciated!</p>
+</div>
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.0.1)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

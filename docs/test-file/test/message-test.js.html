@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">test/message-test.js | node-bandwidth</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="NodeJs Client library for Catapult API"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="node-bandwidth"><meta property="twitter:description" content="NodeJs Client library for Catapult API"></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/bandwidthcom/node-bandwidth.git"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  </ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">test/message-test.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">var nock = require(&quot;nock&quot;);
+var CatapultClient = require(&quot;../index&quot;);
+var baseUrl = &quot;https://api.catapult.inetwork.com&quot;;
+
+describe(&quot;Message API&quot;, function() {
+  var client;
+
+  var userId = &quot;fakeUserId&quot;;
+  var apiToken = &quot;fakeApiToken&quot;;
+  var apiSecret = &quot;fakeapiSecret&quot;;
+
+  var newTestMessage = {
+    from: &quot;+12345678901&quot;,
+    to: &quot;+12345678902&quot;,
+    text: &quot;Hello world.&quot;
+  };
+
+  var otherTestMessage = {
+    from: &quot;+12345678902&quot;,
+    text: &quot;Hello world.&quot;
+  };
+
+  var testMessage = {
+    id: &quot;fakeMessageId&quot;,
+    messageId: &quot;fakeMessageId&quot;,
+    from: &quot;+12345678901&quot;,
+    to: &quot;+12345678902&quot;,
+    text: &quot;Good morning, this is a test message&quot;,
+    time: &quot;2012-10-05T20:37:38.048Z&quot;,
+    direction: &quot;out&quot;,
+    state: &quot;sent&quot;,
+    media: []
+  };
+
+  var someOtherTestMessage = {
+    id: &quot;fakeMessageId2&quot;,
+    messageId: &quot;fakeMessageId2&quot;,
+    from: &quot;+12345678902&quot;,
+    to: &quot;+12345678901&quot;,
+    text: &quot;I received your test message&quot;,
+    time: &quot;2012-10-05T20:38:11.023Z&quot;,
+    direction: &quot;in&quot;,
+    state: &quot;received&quot;,
+    media: []
+  };
+
+  var messagesList = [testMessage, someOtherTestMessage];
+
+  var fromDateTime = &quot;2012-10-04&quot;;
+  var toDateTime = &quot;2012-10-06&quot;;
+
+  describe(&quot;global methods using single page response&quot;, function() {
+    before(function() {
+      client = new CatapultClient({
+        userId: userId,
+        apiToken: apiToken,
+        apiSecret: apiSecret
+      });
+      nock.disableNetConnect();
+
+      nock(&quot;https://api.catapult.inetwork.com&quot;)
+        .persist()
+        .post(&quot;/v1/users/&quot; + userId + &quot;/messages&quot;, newTestMessage)
+        .reply(
+          201,
+          {},
+          {
+            Location: &quot;/v1/users/&quot; + userId + &quot;/messages/fakeMessageId&quot;
+          }
+        )
+        .post(&quot;/v1/users/&quot; + userId + &quot;/messages&quot;, [
+          newTestMessage,
+          otherTestMessage
+        ])
+        .reply(202, [
+          {
+            result: &quot;accepted&quot;,
+            location:
+              &quot;https://api.catapult.inetwork.com/v1/users/&quot; +
+              userId +
+              &quot;/messages/fakeMessageId&quot;
+          },
+          {
+            result: &quot;error&quot;,
+            error: {
+              category: &quot;bad-request&quot;,
+              code: &quot;blank-property&quot;,
+              message:
+                &quot;The &apos;message&apos; resource property &apos;to&apos; must contain at least&quot; +
+                &quot; one non-whitespace character&quot;,
+              details: []
+            }
+          }
+        ])
+        .get(&quot;/v1/users/&quot; + userId + &quot;/messages/&quot; + testMessage.id)
+        .reply(200, testMessage)
+        .get(
+          &quot;/v1/users/&quot; +
+            userId +
+            &quot;/messages?fromDateTime=&quot; +
+            fromDateTime +
+            &quot;&amp;&quot; +
+            &quot;toDateTime=&quot; +
+            toDateTime
+        )
+        .reply(200, messagesList);
+    });
+
+    after(function() {
+      nock.cleanAll();
+      nock.enableNetConnect();
+    });
+
+    it(&quot;should send a message, promise style&quot;, function() {
+      return client.Message.send(newTestMessage).then(function(message) {
+        message.should.eql(newTestMessage);
+      });
+    });
+
+    it(&quot;should send a message, callback style&quot;, function(done) {
+      client.Message.send(newTestMessage, function(err, message) {
+        if (err) {
+          throw err;
+        }
+        message.should.eql(newTestMessage);
+        done();
+      });
+    });
+
+    it(&quot;should send multiple messages&quot;, function() {
+      return client.Message
+        .sendMultiple([newTestMessage, otherTestMessage])
+        .then(function(messages) {
+          messages[0].message.should.eql(newTestMessage);
+          messages[1].error.should.eql({
+            category: &quot;bad-request&quot;,
+            code: &quot;blank-property&quot;,
+            message:
+              &quot;The &apos;message&apos; resource property &apos;to&apos; must contain at &quot; +
+              &quot;least one non-whitespace character&quot;,
+            details: []
+          });
+        });
+    });
+
+    it(&quot;should get a message, promise style&quot;, function() {
+      return client.Message.get(testMessage.id).then(function(message) {
+        message.should.eql(testMessage);
+      });
+    });
+
+    it(&quot;should get a list of messages, promise style&quot;, function() {
+      return client.Message
+        .list({
+          fromDateTime: fromDateTime,
+          toDateTime: toDateTime
+        })
+        .then(function(messageResponse) {
+          var messages = messageResponse.messages;
+          messages.should.eql(messagesList);
+        });
+    });
+
+    it(&quot;should get a list of messages, callback style&quot;, function(done) {
+      client.Message.list(
+        {
+          fromDateTime: fromDateTime,
+          toDateTime: toDateTime
+        },
+        function(err, messageResponse) {
+          if (err) {
+            throw err;
+          }
+          var messages = messageResponse.messages;
+          messages.should.eql(messagesList);
+          done();
+        }
+      );
+    });
+  });
+
+  describe(&quot;list function with a multiple page response&quot;, function() {
+    before(function() {
+      nock.disableNetConnect();
+
+      nock(&quot;https://api.catapult.inetwork.com&quot;)
+        .persist()
+        .get(&quot;/v1/users/&quot; + userId + &quot;/messages&quot;)
+        .reply(200, messagesList, {
+          link:
+            &quot;&lt;https://api.catapult.inetwork.com&quot; +
+            &quot;/v1/users/&quot; +
+            userId +
+            &quot;/messages?&quot; +
+            &apos;sortKeyLT=1&gt;; rel=&quot;next&quot;&apos;
+        })
+        .get(&quot;/v1/users/&quot; + userId + &quot;/messages?sortKeyLT=1&quot;)
+        .reply(200, []);
+    });
+
+    after(function() {
+      nock.cleanAll();
+      nock.enableNetConnect();
+    });
+
+    it(&quot;should get the next page of messages (if it exists)&quot;, function() {
+      //Simulating a response which has 1 page of messages
+      return client.Message
+        .list()
+        .then(function(messageResponse) {
+          var messages = messageResponse.messages;
+
+          messages[0].should.eql(messagesList[0]);
+          messages[1].should.eql(messagesList[1]);
+
+          return messageResponse.getNextPage();
+        })
+        .then(function(otherMessageResponse) {
+          messages = otherMessageResponse.messages;
+
+          (messages[0] === undefined).should.be.true;
+
+          return otherMessageResponse.getNextPage();
+        })
+        .catch(function(err) {
+          err.should.eql(&quot;Next page does not exist.&quot;);
+        });
+    });
+  });
+
+  describe(&quot;list function with no messages available&quot;, function() {
+    before(function() {
+      nock.disableNetConnect();
+
+      nock(&quot;https://api.catapult.inetwork.com&quot;)
+        .persist()
+        .get(&quot;/v1/users/&quot; + userId + &quot;/messages&quot;)
+        .reply(200, []);
+    });
+
+    after(function() {
+      nock.cleanAll();
+      nock.enableNetConnect();
+    });
+
+    it(&quot;should not get the next page of messages&quot;, function() {
+      //Simulating a response which has 0 pages of messages
+      return client.Message
+        .list()
+        .then(function(messageResponse) {
+          var messages = messageResponse.messages;
+          (messages[0] === undefined).should.be.true;
+
+          return messageResponse.getNextPage();
+        })
+        .catch(function(err) {
+          err.should.eql(&quot;Next page does not exist.&quot;);
+        });
+    });
+  });
+});
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.0.1)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>
