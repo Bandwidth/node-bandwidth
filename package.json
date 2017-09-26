@@ -25,11 +25,13 @@
   },
   "homepage": "https://github.com/bandwidthcom/node-bandwidth",
   "dependencies": {
+    "axios": "^0.16.2",
     "bluebird": "^3.3.4",
     "lodash": "^4.13.1",
     "parse-link-header": "^0.4.1",
     "qs": "^6.1.0",
     "request": "^2.69.0",
+    "xml2js-es6-promise": "^1.1.1",
     "xmlbuilder": "^8.2.2"
   },
   "devDependencies": {
