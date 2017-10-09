@@ -84,6 +84,14 @@ describe("Bridge API", function () {
 			tag     : tag
 		};
 
+		var stopFilePlaybackPayload = {
+			fileUrl : ""
+		};
+
+		var stopSpeakingPayload = {
+			sentence : ""
+		};
+
 		before(function () {
 			client = new CatapultClient({
 				userId    : userId,
@@ -106,11 +114,15 @@ describe("Bridge API", function () {
 				.reply(200, bridgesList)
 				.post("/v1/users/" + userId + "/bridges/" + testBridge.id + "/audio", speakSentencePayload)
 				.reply(200)
+				.post("/v1/users/" + userId + "/bridges/" + testBridge.id + "/audio", stopSpeakingPayload)
+				.reply(200)
 				.post("/v1/users/" + userId + "/bridges/" + testBridge.id + "/audio", playAudioPayload)
 				.reply(200)
 				.post("/v1/users/" + userId + "/bridges/" + testBridge.id + "/audio", speakSentencePayloadWithTag)
 				.reply(200)
 				.post("/v1/users/" + userId + "/bridges/" + testBridge.id + "/audio", playAudioPayloadWithTag)
+				.reply(200)
+				.post("/v1/users/" + userId + "/bridges/" + testBridge.id + "/audio", stopFilePlaybackPayload)
 				.reply(200)
 				.post("/v1/users/" + userId + "/bridges/" + testBridge.id, changes)
 				.reply(200)
@@ -183,6 +195,14 @@ describe("Bridge API", function () {
 			return client.Bridge.speakSentence(testBridge.id, sampleSentence, done);
 		});
 
+		it("should stop a sentence from speaking, promise style", function () {
+			return client.Bridge.stopSpeaking(testBridge.id);
+		});
+
+		it("should stop a sentence from speaking, callback style", function (done) {
+			return client.Bridge.stopSpeaking(testBridge.id, done);
+		});
+
 		it("should play an audio file on sentence to the bridge, promise style", function () {
 			return client.Bridge.playAudioFile(testBridge.id, audioUrl);
 		});
@@ -197,6 +217,14 @@ describe("Bridge API", function () {
 
 		it("should play an audio with custom params to the bridge, callback style", function (done) {
 			return client.Bridge.playAudioAdvanced(testBridge.id, { fileUrl : audioUrl }, done);
+		});
+
+		it("should stop an audio file playback, promise style", function () {
+			return client.Bridge.stopAudioFilePlayback(testBridge.id);
+		});
+
+		it("should stop an audio file playback, callback style", function (done) {
+			return client.Bridge.stopAudioFilePlayback(testBridge.id, done);
 		});
 
 		it("should update the bridge, promise style", function () {

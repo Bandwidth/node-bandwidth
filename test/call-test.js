@@ -88,9 +88,17 @@ describe("Call API", function () {
 			sentence : sampleSentence
 		};
 
+		var stopSpeakingPayload = {
+			sentence : ""
+		};
+
 		var audioUrl = "http://somewhere/something.mp3";
 		var playAudioPayload = {
 			fileUrl : audioUrl
+		};
+
+		var stopFilePlaybackPayload = {
+			fileUrl : ""
 		};
 
 		var enableRecordingPayload = {
@@ -201,9 +209,13 @@ describe("Call API", function () {
 					})
 				.post("/v1/users/" + userId + "/calls/" + testCall.id + "/audio", speakSentencePayload)
 				.reply(200)
+				.post("/v1/users/" + userId + "/calls/" + testCall.id + "/audio", stopSpeakingPayload)
+				.reply(200)
 				.post("/v1/users/" + userId + "/calls/" + testCall.id + "/audio", playAudioPayload)
 				.reply(200)
 				.post("/v1/users/" + userId + "/calls/" + testCall.id, setRecordingMaxDurationPayload)
+				.reply(200)
+				.post("/v1/users/" + userId + "/calls/" + testCall.id + "/audio", stopFilePlaybackPayload)
 				.reply(200)
 				.post("/v1/users/" + userId + "/calls/" + testCall.id + "/gather", newTestGather)
 				.reply(201,
@@ -266,6 +278,14 @@ describe("Call API", function () {
 			return client.Call.speakSentence(testCall.id, sampleSentence, done);
 		});
 
+		it("should stop audio file playback, promise style", function () {
+			return client.Call.stopSpeaking(testCall.id);
+		});
+
+		it("should stop audio file playback, callback style", function (done) {
+			return client.Call.stopSpeaking(testCall.id, done);
+		});
+
 		it("should play an audio file on sentence to the call, promise style", function () {
 			return client.Call.playAudioFile(testCall.id, audioUrl);
 		});
@@ -280,6 +300,14 @@ describe("Call API", function () {
 
 		it("should play an audio with custom params to the call, callback style", function (done) {
 			return client.Call.playAudioAdvanced(testCall.id, { fileUrl : audioUrl }, done);
+		});
+
+		it("should stop audio file playback, promise style", function () {
+			return client.Call.stopAudioFilePlayback(testCall.id);
+		});
+
+		it("should stop audio file playback, callback style", function (done) {
+			return client.Call.stopAudioFilePlayback(testCall.id, done);
 		});
 
 		describe("Recording toggle", function () {

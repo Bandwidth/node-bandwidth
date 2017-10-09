@@ -19,6 +19,14 @@ gulp.task("jscs", function () {
 		.pipe(jscs());
 });
 
+gulp.task("styles", ["jshint", "jscs"])
+	.on("finish", function(){
+		console.log("Styles are super clean");
+	})
+	.on("error", function(){
+		console.log("Styles are most certainly not clean");
+	});
+
 gulp.task("test", function () {
 	return gulp.src("coverage", { read : false })
 	.pipe(clean())

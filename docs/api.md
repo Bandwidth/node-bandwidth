@@ -705,8 +705,10 @@ client.AvailableNumber.searchAndOrder("tollFree", {
     * [.list(params, callback)](#Bridge+list) ⇒ <code>[BridgeListResponse](#BridgeListResponse)</code>
     * [.update(bridgeId, params, [callback])](#Bridge+update) ⇒ <code>[BridgeResponse](#BridgeResponse)</code>
     * [.speakSentence(bridgeId, sentence, [callback])](#Bridge+speakSentence) ⇒ <code>Promise</code>
+    * [.stopSpeaking(bridgeId)](#Bridge+stopSpeaking) ⇒ <code>Promise</code>
     * [.playAudioFile(bridgeId, fileUrl, [callback])](#Bridge+playAudioFile) ⇒ <code>Promise</code>
     * [.playAudioAdvanced(bridgeId, params, [callback])](#Bridge+playAudioAdvanced) ⇒ <code>Promise</code>
+    * [.stopAudioFilePlayback(bridgeId)](#Bridge+stopAudioFilePlayback) ⇒ <code>Promise</code>
     * [.getCalls(bridgeId, callback)](#Bridge+getCalls) ⇒ <code>Promise</code>
 
 <a name="new_Bridge_new"></a>
@@ -908,6 +910,23 @@ client.Bridge.speakSentence("bridgeID", "Hello From Bandwidth").then(function (r
 //Callback
 client.Bridge.speakSentence("bridgeID", "Hello From Bandwidth", function (err, res) {});
 ```
+<a name="Bridge+stopSpeaking"></a>
+
+### bridge.stopSpeaking(bridgeId) ⇒ <code>Promise</code>
+This stops any file audio playback on the bridge
+
+**Kind**: instance method of <code>[Bridge](#Bridge)</code>  
+**Returns**: <code>Promise</code> - A promise of the operation  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| bridgeId | <code>String</code> | the Id of the bridge to stop speaking |
+
+**Example**  
+```js
+//Promise
+client.Bridge.stopSpeaking("bridgeId").then(function (res) {});
+```
 <a name="Bridge+playAudioFile"></a>
 
 ### bridge.playAudioFile(bridgeId, fileUrl, [callback]) ⇒ <code>Promise</code>
@@ -979,6 +998,23 @@ client.Bridge.playAudioAdvanced("bridgeId", options).then(function (res) {});
 
 //Callback
 client.Bridge.playAudioAdvanced("bridgeId", options, function (err,res) {});
+```
+<a name="Bridge+stopAudioFilePlayback"></a>
+
+### bridge.stopAudioFilePlayback(bridgeId) ⇒ <code>Promise</code>
+This stops any file audio playback on the bridge
+
+**Kind**: instance method of <code>[Bridge](#Bridge)</code>  
+**Returns**: <code>Promise</code> - A promise of the operation  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| bridgeId | <code>String</code> | the Id of the bridge to stop file playback |
+
+**Example**  
+```js
+//Promise
+client.Bridge.stopAudioFilePlayback("bridgeId").then(function (res) {});
 ```
 <a name="Bridge+getCalls"></a>
 
@@ -1056,7 +1092,9 @@ client.Bridge.getCalls('brg-65dhjrmbasiei',
     * [.hangup(callId, [callback])](#Call+hangup) ⇒ <code>Promise</code>
     * [.transfer(params, [callback])](#Call+transfer) ⇒ <code>[CallResponse](#CallResponse)</code>
     * [.speakSentence(callId, sentence, [callback])](#Call+speakSentence) ⇒ <code>Promise</code>
+    * [.stopSpeaking(callId)](#Call+stopSpeaking) ⇒ <code>Promise</code>
     * [.playAudioFile(callId, fileUrl, [callback])](#Call+playAudioFile) ⇒ <code>Promise</code>
+    * [.stopAudioFilePlayback(callId)](#Call+stopAudioFilePlayback) ⇒ <code>Promise</code>
     * [.playAudioAdvanced(callId, params, [callback])](#Call+playAudioAdvanced) ⇒ <code>Promise</code>
     * [.enableRecording(callId, [callback])](#Call+enableRecording) ⇒ <code>Promise</code>
     * [.disableRecording(callId, [callback])](#Call+disableRecording) ⇒ <code>Promise</code>
@@ -1310,6 +1348,23 @@ client.Call.speakSentence("callID", "Hello From Bandwidth").then(function (res) 
 //Callback
 client.Call.speakSentence("callID", "Hello From Bandwidth", function (err, res) {});
 ```
+<a name="Call+stopSpeaking"></a>
+
+### call.stopSpeaking(callId) ⇒ <code>Promise</code>
+This stops any speak sentence audio playback on the call
+
+**Kind**: instance method of <code>[Call](#Call)</code>  
+**Returns**: <code>Promise</code> - A promise for the call information  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| callId | <code>String</code> | The ID of the call to stop file playback |
+
+**Example**  
+```js
+//Stop Audio file on call
+client.Call.stopSpeaking("callId").then(function (res) {});
+```
 <a name="Call+playAudioFile"></a>
 
 ### call.playAudioFile(callId, fileUrl, [callback]) ⇒ <code>Promise</code>
@@ -1333,6 +1388,23 @@ client.Call.playAudioFile("callId", "http://myurl.com/file.mp3").then(function (
 
 //Callback
 client.Call.playAudioFile("callId", "http://myurl.com/file.wav", function (err, res) {});
+```
+<a name="Call+stopAudioFilePlayback"></a>
+
+### call.stopAudioFilePlayback(callId) ⇒ <code>Promise</code>
+This stops any stop file audio playback on the call
+
+**Kind**: instance method of <code>[Call](#Call)</code>  
+**Returns**: <code>Promise</code> - A promise for the call information  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| callId | <code>String</code> | The ID of the call to stop file playback |
+
+**Example**  
+```js
+//Stop Audio file on call
+client.Call.stopAudioFilePlayback("callId").then(function (res) {});
 ```
 <a name="Call+playAudioAdvanced"></a>
 
@@ -1714,8 +1786,10 @@ client.Call.sendDtmf(callId, "1", function (err) {});
     * [.update(conferenceId, params, [callback])](#Conference+update) ⇒ <code>Promise</code>
     * [.remove(conferenceId, [callback])](#Conference+remove) ⇒ <code>Promise</code>
     * [.speakSentence(conferenceId, sentence, [callback])](#Conference+speakSentence) ⇒ <code>Promise</code>
+    * [.stopSpeaking(conferenceId)](#Conference+stopSpeaking) ⇒ <code>Promise</code>
     * [.playAudioFile(conferenceId, fileUrl, [callback])](#Conference+playAudioFile) ⇒ <code>Promise</code>
     * [.playAudioAdvanced(conferenceId, params, [callback])](#Conference+playAudioAdvanced) ⇒ <code>Promise</code>
+    * [.stopAudioFilePlayback(conferenceId)](#Conference+stopAudioFilePlayback) ⇒ <code>Promise</code>
     * [.getMembers(conferenceId, callback)](#Conference+getMembers) ⇒ <code>Promise</code>
     * [.getMember(conferenceId, memberId, callback)](#Conference+getMember) ⇒ <code>Promise</code>
     * [.createMember(params, [callback])](#Conference+createMember) ⇒ <code>[ConferenceResponse](#ConferenceResponse)</code>
@@ -1746,6 +1820,7 @@ Create a new conference
 | [params.callbackHttpMethod] | <code>String</code> | <code>post</code> | Determine if the callback event should be sent via HTTP GET or HTTP POST. |
 | [params.callbackTimeout] | <code>String</code> |  | Determine how long should the platform wait for callbackUrl's response before timing out in milliseconds. |
 | [params.fallbackUrl] | <code>String</code> |  | Determine how long should the platform wait for callbackUrl's response before timing out in milliseconds. |
+| [params.profile] | <code>String</code> |  | Determines how DTMF is used. Values are: `interpret_digits`: the conference will handle DTMF with the default behavior, or `passthru_digits`: allows the application to receive DTMF events and use the `gather` API. |
 | [params.tag] | <code>String</code> |  | A string that will be included in the callback events of the conference. |
 | [callback] | <code>function</code> |  | Callback with the newly created conference |
 
@@ -1849,6 +1924,23 @@ client.Conference.speakSentence("conferenceID", "Hello From Bandwidth").then(fun
 //Callback
 client.Conference.speakSentence("conferenceID", "Hello From Bandwidth", function (err, res) {});
 ```
+<a name="Conference+stopSpeaking"></a>
+
+### conference.stopSpeaking(conferenceId) ⇒ <code>Promise</code>
+This stops any file audio playback on the conference
+
+**Kind**: instance method of <code>[Conference](#Conference)</code>  
+**Returns**: <code>Promise</code> - A promise of the operation  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| conferenceId | <code>String</code> | the Id of the conference to stop speaking |
+
+**Example**  
+```js
+//Promise
+client.Conference.stopSpeaking("conferenceId").then(function (res) {});
+```
 <a name="Conference+playAudioFile"></a>
 
 ### conference.playAudioFile(conferenceId, fileUrl, [callback]) ⇒ <code>Promise</code>
@@ -1920,6 +2012,23 @@ client.Conference.playAudioAdvanced("conferenceId", options).then(function (res)
 
 //Callback
 client.Conference.playAudioAdvanced("conferenceId", options, function (err,res) {});
+```
+<a name="Conference+stopAudioFilePlayback"></a>
+
+### conference.stopAudioFilePlayback(conferenceId) ⇒ <code>Promise</code>
+This stops any file audio playback on the conference
+
+**Kind**: instance method of <code>[Conference](#Conference)</code>  
+**Returns**: <code>Promise</code> - A promise of the operation  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| conferenceId | <code>String</code> | the Id of the conference to stop file playback |
+
+**Example**  
+```js
+//Promise
+client.Conference.stopAudioFilePlayback("conferenceId").then(function (res) {});
 ```
 <a name="Conference+getMembers"></a>
 
@@ -2157,6 +2266,7 @@ client.Conference.playAudioAdvanced("conferenceId", options, function (err,res) 
 | hold | <code>String</code> | If "true", all member can't hear or speak in the conference. If "false", all members can hear and speak in the conference (unless set at the member level). |
 | mute | <code>String</code> | If "true", all member can't speak in the conference. If "false", all members can speak in the conference (unless set at the member level). |
 | callbackUrl | <code>String</code> | The complete URL where the events related to the Conference will be sent to. |
+| profile | <code>String</code> | If "interpret_digits": the conference will handle DTMF with the default behavior or if "passthru_digits": allows the application to receive DTMF events and use the `gather` API. |
 | callbackHttpMethod | <code>String</code> | Determine if the callback event should be sent via HTTP GET or HTTP POST. |
 | callbackTimeout | <code>String</code> | Determine how long should the platform wait for callbackUrl's response before timing out in milliseconds. |
 | fallbackUrl | <code>String</code> | Determine how long should the platform wait for callbackUrl's response before timing out in milliseconds. |
@@ -2815,6 +2925,7 @@ client.Message.list()
 | messages | <code>[Array.&lt;MessageResponse&gt;](#MessageResponse)</code> | Array of messages |
 | getNextPage | <code>function</code> | Calls the next page function |
 | hasNextPage | <code>boolean</code> | True/False flag for next |
+| nextLink | <code>Object</code> | The values to attach to the next `get` request for messages. |
 
 <a name="ExtendedMessageResponse"></a>
 
