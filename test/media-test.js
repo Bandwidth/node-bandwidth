@@ -47,14 +47,16 @@ describe("Media API", function () {
 			});
 			nock.disableNetConnect();
 
-			nock("https://api.catapult.inetwork.com")
+			nock("https://api.catapult.inetwork.com", {reqheaders: {
+				"Content-Type": "application/octet-stream"
+			}})
 				.persist()
-				.matchHeader("Content-Type", "application/octet-stream")
 				.put("/v1/users/" + userId + "/media/" + mediaName1)
 				.reply(200);
-			nock("https://api.catapult.inetwork.com")
+			nock("https://api.catapult.inetwork.com", {reqheaders: {
+				"Content-Type": "text/plain"
+			}})
 				.persist()
-				.matchHeader("Content-Type", "text/plain")
 				.put("/v1/users/" + userId + "/media/" + mediaName2, mediaContent)
 				.reply(200);
 			nock("https://api.catapult.inetwork.com")
