@@ -49,16 +49,16 @@ describe("Media API", function () {
 			nock.disableNetConnect();
 
 			nock("https://api.catapult.inetwork.com", {
-				reqheaders: {
-					"Content-Type": "application/octet-stream"
+				reqheaders : {
+					"Content-Type" : "application/octet-stream"
 				}
 			})
 				.persist()
 				.put("/v1/users/" + userId + "/media/" + mediaName1)
 				.reply(200);
 			nock("https://api.catapult.inetwork.com", {
-				reqheaders: {
-					"Content-Type": "text/plain"
+				reqheaders : {
+					"Content-Type" : "text/plain"
 				}
 			})
 				.persist()
