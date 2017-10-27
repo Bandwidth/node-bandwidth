@@ -1,6 +1,6 @@
 {
   "name": "node-bandwidth",
-  "version": "2.3.2",
+  "version": "2.3.3",
   "description": "NodeJs Client library for Catapult API",
   "main": "index.js",
   "scripts": {
@@ -27,7 +27,7 @@
     "parse-link-header": "^0.4.1",
     "qs": "^6.1.0",
     "request": "^2.69.0",
-    "xmlbuilder": "^8.2.2"
+    "xml-js": "^1.5.1"
   },
   "devDependencies": {
     "cross-env": "2.0.0",
