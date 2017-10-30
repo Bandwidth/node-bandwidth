@@ -346,10 +346,265 @@ describe("Message v2 API", function () {
 				app.locationId.should.equal("locationId");
 				return Promise.resolve();
 			};
-			message.createMessagingApplication(auth, data).then(function(){
-				done();
-			}, done);
+			message.createMessagingApplication(auth, data, done);
 		});
 	});
+	describe("searchAndOrderNumbers()", function () {
+		describe("success", function () {
+			before(function () {
+				nock.disableNetConnect();
+				nock("https://dashboard.bandwidth.com")
+					.persist()
+					.post("/v1.0/api/accounts/id/orders",
+						"<Order><OrderType><Quantity>1</Quantity></OrderType><SiteId>sub</SiteId><PeerId>locationId</PeerId></Order>")
+					.reply(200, `<OrderResponse>
+					<Order>
+					  <OrderCreateDate>2017-09-18T17:36:57.274Z</OrderCreateDate>
+					  <PeerId>{{location}}</PeerId>
+					  <BackOrderRequested>false</BackOrderRequested>
+					  <id>OrderId</id>
+					  <AreaCodeSearchAndOrderType>
+						<AreaCode>910</AreaCode>
+						<Quantity>1</Quantity>
+					  </AreaCodeSearchAndOrderType>
+					  <PartialAllowed>true</PartialAllowed>
+					  <SiteId>{{subaccount}}</SiteId>
+					</Order>
+					<OrderStatus>RECEIVED</OrderStatus>
+				  </OrderResponse>`, {})
+				  .get("/v1.0/api/accounts/id/orders/OrderId")
+				  .reply(200, `<OrderResponse>
+				  <CompletedQuantity>1</CompletedQuantity>
+				  <CreatedByUser>lorem</CreatedByUser>
+				  <LastModifiedDate>2017-09-18T17:36:57.411Z</LastModifiedDate>
+				  <OrderCompleteDate>2017-09-18T17:36:57.410Z</OrderCompleteDate>
+				  <Order>
+					<OrderCreateDate>2017-09-18T17:36:57.274Z</OrderCreateDate>
+					<PeerId>{{location}}</PeerId>
+					<BackOrderRequested>false</BackOrderRequested>
+					<AreaCodeSearchAndOrderType>
+					  <AreaCode>910</AreaCode>
+					  <Quantity>1</Quantity>
+					</AreaCodeSearchAndOrderType>
+					<PartialAllowed>true</PartialAllowed>
+					<SiteId>{{subaccount}}</SiteId>
+				  </Order>
+				  <OrderStatus>COMPLETE</OrderStatus>
+				  <CompletedNumbers>
+					<TelephoneNumber>
+					  <FullNumber>9102398766</FullNumber>
+					</TelephoneNumber>
+					<TelephoneNumber>
+					  <FullNumber>9102398767</FullNumber>
+					</TelephoneNumber>
+				  </CompletedNumbers>
+				  <Summary>1 number ordered in (910)</Summary>
+				  <FailedQuantity>0</FailedQuantity>
+				</OrderResponse>`);
+			});
+			after(function () {
+				nock.cleanAll();
+				nock.enableNetConnect();
+			});
+			it("should order numbers and check order's status", function(done){
+				var auth = {
+					accountId       : "id",
+					userName        : "userName",
+					password        : "password",
+					subaccountId    : "sub"
+				};
+				var app = {
+					applicationId   : "applicationId",
+					locationId      : "locationId"
+				};
+				var query = {
+					quantity : 1,
+					toXml   : function () {
+						return {
+							"OrderType" : {
+								"Quantity" : {_text: '1'}
+							}
+						};
+					}
+				};
+				var message = new Message({
+					getUserAgentHeader: function () {
+						return "agent"
+					}
+				});
+				message.searchAndOrderNumbers(auth, app, query).then(function (numbers) {
+					numbers.should.containDeep([9102398766, 9102398767]);
+					done();
+				}, done);
+			});
 
+		});
+		describe("fail", function () {
+			before(function () {
+				nock.disableNetConnect();
+				nock("https://dashboard.bandwidth.com")
+					.persist()
+					.post("/v1.0/api/accounts/id/orders",
+						"<Order><OrderType><Quantity>1</Quantity></OrderType><SiteId>sub</SiteId><PeerId>locationId</PeerId></Order>")
+					.reply(200, `<OrderResponse>
+					<Order>
+					  <OrderCreateDate>2017-09-18T17:36:57.274Z</OrderCreateDate>
+					  <PeerId>{{location}}</PeerId>
+					  <BackOrderRequested>false</BackOrderRequested>
+					  <id>OrderId</id>
+					  <AreaCodeSearchAndOrderType>
+						<AreaCode>910</AreaCode>
+						<Quantity>1</Quantity>
+					  </AreaCodeSearchAndOrderType>
+					  <PartialAllowed>true</PartialAllowed>
+					  <SiteId>{{subaccount}}</SiteId>
+					</Order>
+					<OrderStatus>RECEIVED</OrderStatus>
+				  </OrderResponse>`, {})
+				  .get("/v1.0/api/accounts/id/orders/OrderId")
+				  .reply(200, `<OrderResponse>
+				  <CompletedQuantity>1</CompletedQuantity>
+				  <CreatedByUser>lorem</CreatedByUser>
+				  <LastModifiedDate>2017-09-18T17:36:57.411Z</LastModifiedDate>
+				  <OrderCompleteDate>2017-09-18T17:36:57.410Z</OrderCompleteDate>
+				  <Order>
+					<OrderCreateDate>2017-09-18T17:36:57.274Z</OrderCreateDate>
+					<PeerId>{{location}}</PeerId>
+					<BackOrderRequested>false</BackOrderRequested>
+					<AreaCodeSearchAndOrderType>
+					  <AreaCode>910</AreaCode>
+					  <Quantity>1</Quantity>
+					</AreaCodeSearchAndOrderType>
+					<PartialAllowed>true</PartialAllowed>
+					<SiteId>{{subaccount}}</SiteId>
+				  </Order>
+				  <OrderStatus>FAILED</OrderStatus>
+				  <CompletedNumbers/>>
+				  <FailedQuantity>1</FailedQuantity>
+				</OrderResponse>`);
+			});
+			after(function () {
+				nock.cleanAll();
+				nock.enableNetConnect();
+			});
+			it("should fail on ordering number", function(done){
+				var auth = {
+					accountId       : "id",
+					userName        : "userName",
+					password        : "password",
+					subaccountId    : "sub"
+				};
+				var app = {
+					applicationId   : "applicationId",
+					locationId      : "locationId"
+				};
+				var query = {
+					quantity : 1,
+					toXml   : function () {
+						return {
+							"OrderType" : {
+								"Quantity" : {_text: '1'}
+							}
+						};
+					}
+				};
+				var message = new Message({
+					getUserAgentHeader: function () {
+						return "agent"
+					}
+				});
+				message.searchAndOrderNumbers(auth, app, query, function (err) {
+					if (!err) {
+						return done("It should failed");
+					}
+					done();
+				});
+			});
+
+		});
+		describe("timeout", function () {
+			before(function () {
+				nock.disableNetConnect();
+				nock("https://dashboard.bandwidth.com")
+					.persist()
+					.post("/v1.0/api/accounts/id/orders",
+						"<Order><OrderType><Quantity>1</Quantity></OrderType><SiteId>sub</SiteId><PeerId>locationId</PeerId></Order>")
+					.reply(200, `<OrderResponse>
+					<Order>
+					  <OrderCreateDate>2017-09-18T17:36:57.274Z</OrderCreateDate>
+					  <PeerId>{{location}}</PeerId>
+					  <BackOrderRequested>false</BackOrderRequested>
+					  <id>OrderId</id>
+					  <AreaCodeSearchAndOrderType>
+						<AreaCode>910</AreaCode>
+						<Quantity>1</Quantity>
+					  </AreaCodeSearchAndOrderType>
+					  <PartialAllowed>true</PartialAllowed>
+					  <SiteId>{{subaccount}}</SiteId>
+					</Order>
+					<OrderStatus>RECEIVED</OrderStatus>
+				  </OrderResponse>`, {})
+				  .get("/v1.0/api/accounts/id/orders/OrderId")
+				  .reply(200, `<OrderResponse>
+				  <CompletedQuantity>1</CompletedQuantity>
+				  <CreatedByUser>lorem</CreatedByUser>
+				  <LastModifiedDate>2017-09-18T17:36:57.411Z</LastModifiedDate>
+				  <OrderCompleteDate>2017-09-18T17:36:57.410Z</OrderCompleteDate>
+				  <Order>
+					<OrderCreateDate>2017-09-18T17:36:57.274Z</OrderCreateDate>
+					<PeerId>{{location}}</PeerId>
+					<BackOrderRequested>false</BackOrderRequested>
+					<AreaCodeSearchAndOrderType>
+					  <AreaCode>910</AreaCode>
+					  <Quantity>1</Quantity>
+					</AreaCodeSearchAndOrderType>
+					<PartialAllowed>true</PartialAllowed>
+					<SiteId>{{subaccount}}</SiteId>
+				  </Order>
+				  <OrderStatus>WAIT</OrderStatus>
+				  <CompletedNumbers/>
+				  <FailedQuantity/>
+				</OrderResponse>`);
+			});
+			after(function () {
+				nock.cleanAll();
+				nock.enableNetConnect();
+			});
+			it("should fail on timeout", function(done){
+				var auth = {
+					accountId       : "id",
+					userName        : "userName",
+					password        : "password",
+					subaccountId    : "sub"
+				};
+				var app = {
+					applicationId   : "applicationId",
+					locationId      : "locationId"
+				};
+				var query = {
+					quantity : 1,
+					toXml   : function () {
+						return {
+							"OrderType" : {
+								"Quantity" : {_text: '1'}
+							}
+						};
+					},
+					timeout : 0.01
+				};
+				var message = new Message({
+					getUserAgentHeader: function () {
+						return "agent"
+					}
+				});
+				message.searchAndOrderNumbers(auth, app, query, function (err) {
+					if (!err) {
+						return done("It should failed");
+					}
+					done();
+				});
+			});
+
+		});
+	});
 });
