@@ -1,3 +1,4 @@
+var assert = require("assert");
 var td = require("testdouble");
 var Message = require("../lib/v2/message");
 
@@ -36,6 +37,26 @@ describe("Message v2 API", function () {
 				encoding           : undefined,
 				qs                 : undefined
 			});
+		});
+	});
+	describe("handleResponse()", function () {
+		it("should return parsed response", function () {
+			var message = new Message({});
+			var result = message.__handleResponse({
+				body: "<Test>test</Test>",
+				statusCode: 200
+			});
+			var body = result[0];
+			body["Test"]._text.should.equal("test");
+		});
+		it("should handle iris error 1", function () {
+			var message = new Message({});
+			assert.throws(function () {
+				message.__handleResponse({
+					body: "<Response><ErrorCode>Code</ErrorCode><Description>Description</Description></Response>",
+					statusCode: 200
+				})
+			}, "Code: Description");
 		});
 	});
 });
