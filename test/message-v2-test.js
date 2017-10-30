@@ -1,5 +1,6 @@
 var assert = require("assert");
 var td = require("testdouble");
+var nock = require("nock");
 var Message = require("../lib/v2/message");
 
 describe("Message v2 API", function () {
@@ -95,4 +96,260 @@ describe("Message v2 API", function () {
 			}, "Http code 400");
 		});
 	});
+	describe("makeIrisRequest()", function () {
+		before(function () {
+			nock.disableNetConnect();
+			nock("https://dashboard.bandwidth.com")
+				.persist()
+				.get("/v1.0/api/accounts/id/test")
+				.reply(200, "<Test>test</Test>", {})
+		});
+
+		after(function () {
+			nock.cleanAll();
+			nock.enableNetConnect();
+		});
+		it("should make a request", function (done) {
+			var message = new Message({
+				getUserAgentHeader: function () {
+					return "agent"
+				}
+			});
+			message.__makeIrisRequest({
+				auth          : {
+					accountId : "id",
+					userName  :  "userName",
+					password  : "password"
+				},
+				path          : "test"
+			}).then(function(result){
+				result[0]["Test"]._text.should.equal("test");
+				done();
+			}, done);
+		});
+	});
+	describe("createApplication()", function () {
+		before(function () {
+			nock.disableNetConnect();
+			nock("https://dashboard.bandwidth.com")
+				.persist()
+				.post("/v1.0/api/accounts/id/applications", "<Application><AppName>App1</AppName><CallbackUrl>url</CallbackUrl><CallBackCreds/></Application>")
+				.reply(200, `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+				<ApplicationProvisioningResponse>
+				  <Application>
+					<ApplicationId>ApplicationId</ApplicationId>
+					<ServiceType>Messaging-V2</ServiceType>
+					<AppName>Demo Server</AppName>
+					<CallbackUrl>https://requestb.in/1m009f61</CallbackUrl>
+					<CallbackCreds />
+				  </Application>
+				</ApplicationProvisioningResponse>`, {});
+		});
+
+		after(function () {
+			nock.cleanAll();
+			nock.enableNetConnect();
+		});
+		it("should make a request", function (done) {
+			var message = new Message({
+				getUserAgentHeader: function () {
+					return "agent"
+				}
+			});
+			message.__createApplication({
+				accountId   : "id",
+				userName    :  "userName",
+				password    : "password"
+			}, {
+				name        : "App1",
+				callbackUrl : "url"
+			}).then(function(id){
+				id.should.equal("ApplicationId");
+				done();
+			}, done);
+		});
+	});
+	describe("createLocation()", function () {
+		before(function () {
+			nock.disableNetConnect();
+			nock("https://dashboard.bandwidth.com")
+				.persist()
+				.post("/v1.0/api/accounts/id/sites/sub/sippeers", "<SipPeer><PeerName>Location1</PeerName><IsDefaultPeer>false</IsDefaultPeer></SipPeer>")
+				.reply(201, "", {"Location" : "http://host/LocationId"});
+		});
+
+		after(function () {
+			nock.cleanAll();
+			nock.enableNetConnect();
+		});
+		it("should make a request", function (done) {
+			var message = new Message({
+				getUserAgentHeader: function () {
+					return "agent"
+				}
+			});
+			message.__createLocation({
+				accountId    : "id",
+				userName     :  "userName",
+				password     : "password",
+				subaccountId : "sub"
+			}, {
+				locationName      : "Location1",
+				isDefaultLocation : false
+			}).then(function(id){
+				id.should.equal("LocationId");
+				done();
+			}, done);
+		});
+	});
+	describe("enableSms()", function () {
+		before(function () {
+			nock.disableNetConnect();
+			nock("https://dashboard.bandwidth.com")
+				.persist()
+				.post("/v1.0/api/accounts/id/sites/sub/sippeers/locationId/products/messaging/features/sms", "<SipPeerSmsFeature><SipPeerSmsFeatureSettings><TollFree>true</TollFree><ShortCode>false</ShortCode><Protocol>HTTP</Protocol><Zone1>true</Zone1><Zone2>false</Zone2><Zone3>false</Zone3><Zone4>false</Zone4><Zone5>false</Zone5></SipPeerSmsFeatureSettings><HttpSettings><ProxyPeerId>539692</ProxyPeerId></HttpSettings></SipPeerSmsFeature>")
+				.reply(200, "", {});
+		});
+
+		after(function () {
+			nock.cleanAll();
+			nock.enableNetConnect();
+		});
+		it("should make a request", function (done) {
+			var message = new Message({
+				getUserAgentHeader: function () {
+					return "agent"
+				}
+			});
+			message.__enableSms({
+				accountId       : "id",
+				userName        :  "userName",
+				password        : "password",
+				subaccountId    : "sub"
+			}, {
+				enabled: true,
+				tollFreeEnabled : true
+			}, {
+				locationId      : "locationId"
+			}).then(function(){
+				done();
+			}, done);
+		});
+	});
+	describe("enableMms()", function () {
+		before(function () {
+			nock.disableNetConnect();
+			nock("https://dashboard.bandwidth.com")
+				.persist()
+				.post("/v1.0/api/accounts/id/sites/sub/sippeers/locationId/products/messaging/features/mms",
+					"<MmsFeature><MmsSettings><protocol>HTTP</protocol></MmsSettings><Protocols><HTTP><HttpSettings><ProxyPeerId>539692</ProxyPeerId></HttpSettings></HTTP></Protocols></MmsFeature>")
+				.reply(200, "", {});
+		});
+
+		after(function () {
+			nock.cleanAll();
+			nock.enableNetConnect();
+		});
+		it("should make a request", function (done) {
+			var message = new Message({
+				getUserAgentHeader: function () {
+					return "agent"
+				}
+			});
+			message.__enableMms({
+				accountId       : "id",
+				userName        :  "userName",
+				password        : "password",
+				subaccountId    : "sub"
+			}, {
+				enabled         : true
+			}, {
+				locationId      : "locationId"
+			}).then(function(){
+				done();
+			}, done);
+		});
+	});
+	describe("assignApplicationToLocation()", function () {
+		before(function () {
+			nock.disableNetConnect();
+			nock("https://dashboard.bandwidth.com")
+				.persist()
+				.post("/v1.0/api/accounts/id/sites/sub/sippeers/locationId/products/messaging/applicationSettings",
+					"<ApplicationsSettings><HttpMessagingV2AppId>applicationId</HttpMessagingV2AppId></ApplicationsSettings>")
+				.reply(200, "", {});
+		});
+
+		after(function () {
+			nock.cleanAll();
+			nock.enableNetConnect();
+		});
+		it("should make a request", function (done) {
+			var message = new Message({
+				getUserAgentHeader: function () {
+					return "agent"
+				}
+			});
+			message.__assignApplicationToLocation({
+				accountId       : "id",
+				userName        :  "userName",
+				password        : "password",
+				subaccountId    : "sub"
+			}, {
+				locationId      : "locationId",
+				applicationId   : "applicationId"
+			}).then(function(){
+				done();
+			}, done);
+		});
+	});
+	describe("createMessagingApplication()", function () {
+		it("should create and configure dashboard application", function (done) {
+			var auth = {
+				accountId       : "id",
+				userName        :  "userName",
+				password        : "password",
+				subaccountId    : "sub"
+			};
+			var data = {
+				smsOptions : {},
+				mmsOptions : {}
+			};
+			var message = new Message({});
+			message.__createApplication = function (a, d) {
+				a.should.equal(auth);
+				d.should.equal(data);
+				return Promise.resolve("applcationId");
+			};
+			message.__createLocation = function (a, d) {
+				a.should.equal(auth);
+				d.should.equal(data);
+				return Promise.resolve("locationId");
+			};
+			message.__enableSms = function (a, opt, app) {
+				a.should.equal(auth);
+				opt.should.equal(data.smsOptions);
+				app.applicationId.should.equal("applcationId");
+				app.locationId.should.equal("locationId");
+				return Promise.resolve();
+			};
+			message.__enableMms = function (a, opt, app) {
+				a.should.equal(auth);
+				opt.should.equal(data.mmsOptions);
+				app.applicationId.should.equal("applcationId");
+				app.locationId.should.equal("locationId");
+				return Promise.resolve();
+			};
+			message.__assignApplicationToLocation = function (a, app) {
+				a.should.equal(auth);
+				app.applicationId.should.equal("applcationId");
+				app.locationId.should.equal("locationId");
+				return Promise.resolve();
+			};
+			message.createMessagingApplication(auth, data).then(function(){
+				done();
+			}, done);
+		});
+	});
+
 });
