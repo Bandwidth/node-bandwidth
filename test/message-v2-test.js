@@ -58,5 +58,41 @@ describe("Message v2 API", function () {
 				})
 			}, "Code: Description");
 		});
+		it("should handle iris error 2", function () {
+			var message = new Message({});
+			assert.throws(function () {
+				message.__handleResponse({
+					body: "<Response><Error><Code>Code</Code><Description>Description</Description></Error></Response>",
+					statusCode: 200
+				})
+			}, "Code: Description");
+		});
+		it("should handle iris error 3", function () {
+			var message = new Message({});
+			assert.throws(function () {
+				message.__handleResponse({
+					body: "<Response><Errors><Code>Code</Code><Description>Description</Description></Errors></Response>",
+					statusCode: 200
+				})
+			}, "Code: Description");
+		});
+		it("should handle iris error 4", function () {
+			var message = new Message({});
+			assert.throws(function () {
+				message.__handleResponse({
+					body: "<Response><resultCode>Code</resultCode><resultMessage>Description</resultMessage></Response>",
+					statusCode: 200
+				})
+			}, "Code: Description");
+		});
+		it("should handle iris undefined error", function () {
+			var message = new Message({});
+			assert.throws(function () {
+				message.__handleResponse({
+					body: "",
+					statusCode: 400
+				})
+			}, "Http code 400");
+		});
 	});
 });
