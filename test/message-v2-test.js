@@ -1,6 +1,7 @@
 var assert = require("assert");
 var td = require("testdouble");
 var nock = require("nock");
+var Client = require("../lib/client");
 var Message = require("../lib/v2/message");
 
 describe("Message v2 API", function () {
@@ -49,7 +50,7 @@ describe("Message v2 API", function () {
 			});
 			var body = result[0];
 			body["Test"]._text.should.equal("test");
-		});
+		})	;
 		it("should handle iris error 1", function () {
 			var message = new Message({});
 			assert.throws(function () {
@@ -605,6 +606,45 @@ describe("Message v2 API", function () {
 				});
 			});
 
+		});
+	});
+	describe("send()", function () {
+		var messageToSend = {from: "+12345678901", to: ["+12345678902"], text: "Hello", applicationId: "applicationId"};
+		before(function () {
+			nock.disableNetConnect();
+			nock("https://api.catapult.inetwork.com")
+			.persist()
+			.post("/v2/users/userId/messages", messageToSend)
+			.reply(201,
+				{
+					id        : "14762070468292kw2fuqty55yp2b2",
+					time      : "2016-09-14T18:20:16Z",
+					to        : [
+						"+12345678902",
+					],
+					from      : "+12345678901",
+					text      : "Hey, check this out!",
+					tag       : "test message",
+					owner     : "+12345678901",
+					direction : "out"
+				}, {});
+
+		});
+		after(function () {
+			nock.cleanAll();
+			nock.enableNetConnect();
+		});
+		it("should send a message()", function (done) {
+			var client = new Client({
+				userId    : "userId",
+				apiToken  : "apiToken",
+				apiSecret : "apiSecret"
+			});
+			var message = new Message(client);
+			message.send(messageToSend).then(function (result) {
+				result.id.should.equal("14762070468292kw2fuqty55yp2b2");
+				done();
+			}, done);
 		});
 	});
 });
