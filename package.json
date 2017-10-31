@@ -30,6 +30,7 @@
     "parse-link-header": "^1.0.1",
     "qs": "^6.5.1",
     "request": "^2.83.0",
+    "xml-js": "^1.5.1",
     "xmlbuilder": "^9.0.4"
   },
   "devDependencies": {
