@@ -61,6 +61,14 @@ describe("Conference API", function () {
 			tag     : tag
 		};
 
+		var stopFilePlaybackPayload = {
+			fileUrl : ""
+		};
+
+		var stopSpeakingPayload = {
+			sentence : ""
+		};
+
 		before(function () {
 			client = new CatapultClient({
 				userId    : userId,
@@ -87,7 +95,11 @@ describe("Conference API", function () {
 				.reply(200)
 				.post("/v1/users/" + userId + "/conferences/" + testConference.id + "/audio", speakSentencePayloadWithTag)
 				.reply(200)
+				.post("/v1/users/" + userId + "/conferences/" + testConference.id + "/audio", stopSpeakingPayload)
+				.reply(200)
 				.post("/v1/users/" + userId + "/conferences/" + testConference.id + "/audio", playAudioPayloadWithTag)
+				.reply(200)
+				.post("/v1/users/" + userId + "/conferences/" + testConference.id + "/audio", stopFilePlaybackPayload)
 				.reply(200)
 				.get("/v1/users/" + userId + "/conferences/" + testConference.id + "/members")
 				.reply(200, memberList)
@@ -146,12 +158,20 @@ describe("Conference API", function () {
 			return client.Conference.speakSentence(testConference.id, sampleSentence);
 		});
 
+		it("should stop a sentence from speaking, promise style", function () {
+			return client.Conference.stopSpeaking(testConference.id);
+		});
+
 		it("should play an audio file on sentence to the conference, promise style", function () {
 			return client.Conference.playAudioFile(testConference.id, audioUrl);
 		});
 
 		it("should play an audio with custom params to the conference, promise style", function () {
 			return client.Conference.playAudioAdvanced(testConference.id, { fileUrl : audioUrl });
+		});
+
+		it("should stop an audio file playback, promise style", function () {
+			return client.Conference.stopAudioFilePlayback(testConference.id);
 		});
 
 		it("should get a list of members, promise style", function () {

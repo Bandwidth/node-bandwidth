@@ -6,13 +6,10 @@
 
 A Node.js client library for the [Bandwidth Application Platform](http://bandwidth.com/products/application-platform?utm_medium=social&utm_source=github&utm_campaign=dtolb&utm_content=_)
 
-The current version is v2, released 5 August, 2016. Version 1.3.3 is available  [here](https://github.com/bandwidthcom/node-bandwidth/tree/v1.3.3).
-
-
-## [Full API Reference](http://bwdemos.com/node-bandwidth/index.html)
+## [Full API Reference](http://dev.bandwidth.com/node-bandwidth/index.html)
 The Full API Reference is available either as an interactive site or as a single Markdown file:
 
-* [Site](http://bwdemos.com/node-bandwidth/index.html).
+* [Site](http://dev.bandwidth.com/node-bandwidth/index.html).
 * [Single MD file](https://github.com/bandwidthcom/node-bandwidth/blob/master/docs/api.md)
 
 
@@ -25,16 +22,17 @@ The Full API Reference is available either as an interactive site or as a single
 ## Supported Versions
 `node-bandwidth` should work on all versions of node newer than `0.10.*`. However, due to the rapid development in the Node and npm environment, we can only provide _support_ on [LTS versions of Node](https://github.com/nodejs/LTS)
 
-| Version                        | Support Level   |
-|:-------------------------------|:----------------|
-| <0.10.*                        | Unsupported     |
-| 0.10.*                         | End-of-Life (2016-10-31) |
-| 0.12.*                         | End-of-Life (2016-10-31) |
-| >=4.0 <4.2                     | Unsupported     |
-| >=4.2 <5.* (Node v4 argon LTS) | Supported       |
-| 5.*                            | Unsupported     |
-| _6.9.4 (Node v6 Boron LTS)_    | **Recommended** |
-| 7.*                            | Unsupported     |
+| Version                        | Support Level                   |
+|:-------------------------------|:--------------------------------|
+| <0.10.*                        | Unsupported                     |
+| 0.10.*                         | End-of-Life (2016-10-31)        |
+| 0.12.*                         | End-of-Life (2016-10-31)        |
+| >=4.0 <4.2                     | Unsupported                     |
+| >=4.2 <5.* (Node v4 argon LTS) | Supported - **Ends April 2018** |
+| 5.*                            | Unsupported                     |
+| _6.9.4 (Node v6 Boron LTS)_    | **Recommended**                 |
+| 7.*                            | Unsupported                     |
+| 8.*                            | Supported                       |
 
 ## Client initialization
 

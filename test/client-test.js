@@ -1,5 +1,7 @@
 var nock = require("nock");
 var Client = require("../lib/client");
+var RateLimitError = require("../lib/RateLimitError");
+var UnexpectedResponseError = require("../lib/unexpectedResponseError");
 
 var baseUrl = "https://api.catapult.inetwork.com";
 
@@ -144,6 +146,30 @@ describe("Client", function () {
 
 	describe("in error cases", function () {
 		var client;
+		var limitReset = 1501782812222;
+
+		var rateLimitBody = {
+			"category" : "too-many-requests",
+			"code"     : "rate-limit-reached",
+			"details"  : [
+				{
+					"name"  : "requestPath",
+					"value" : "availableNumbers/local"
+				},
+				{
+					"name"  : "remoteAddress",
+					"value" : "107.197.154.30"
+				},
+				{
+					"name"  : "rateLimitResetTime",
+					"value" : "1501782812222"
+				},
+				{
+					"name"  : "requestMethod",
+					"value" : "GET"
+				}
+			]
+		};
 
 		before(function () {
 			client = new Client({
@@ -158,6 +184,10 @@ describe("Client", function () {
 				.reply(401, { message : "Something bad happened..." })
 				.get("/v1/users/fakeUserId/unknown")
 				.reply(404)
+				.get("/v1/users/fakeUserId/RateLimit")
+				.reply(429, rateLimitBody, { "X-RateLimit-Reset" : limitReset })
+				.get("/v1/users/fakeUserId/RateLimitError")
+				.reply(429, rateLimitBody)
 				.get("/v1/users/fakeUserId/unknown2")
 				.reply(404, {});
 		});
@@ -196,6 +226,34 @@ describe("Client", function () {
 			}).catch(function (err) {
 				err.statusCode.should.equal(404);
 				err.message.should.equal("");
+			});
+		});
+
+		it("should return RateLimit Error on 429", function () {
+			return client.makeRequest({
+				path : "RateLimit"
+			})
+			.then(function (res) {
+				throw new Error("It should have been an exception");
+			})
+			.catch(function (err) {
+				err.statusCode.should.equal(429);
+				err.limitReset.should.equal(limitReset);
+				err.message.should.deepEqual(rateLimitBody);
+				err.should.be.instanceOf(RateLimitError);
+			});
+		});
+
+		it("should return UnexpectedResponseError Error on 429 when X-RateLimit-Reset is not present", function () {
+			return client.makeRequest({
+				path : "RateLimitError"
+			})
+			.then(function (res) {
+				throw new Error("It should have been an exception");
+			})
+			.catch(function (err) {
+				err.statusCode.should.equal(429);
+				err.should.be.instanceOf(UnexpectedResponseError);
 			});
 		});
 	});

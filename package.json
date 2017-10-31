@@ -1,6 +1,6 @@
 {
   "name": "node-bandwidth",
-  "version": "2.3.3",
+  "version": "2.4.2",
   "description": "NodeJs Client library for Catapult API",
   "main": "index.js",
   "scripts": {
@@ -13,7 +13,10 @@
   },
   "keywords": [
     "bandwidth",
-    "catapult"
+    "catapult",
+    "cpaas",
+    "voice",
+    "messaging"
   ],
   "author": "bandwidth",
   "license": "MIT",
@@ -22,12 +25,12 @@
   },
   "homepage": "https://github.com/bandwidthcom/node-bandwidth",
   "dependencies": {
-    "bluebird": "^3.3.4",
-    "lodash": "^4.13.1",
-    "parse-link-header": "^0.4.1",
-    "qs": "^6.1.0",
-    "request": "^2.69.0",
-    "xml-js": "^1.5.1"
+    "bluebird": "^3.5.1",
+    "lodash": "^4.17.4",
+    "parse-link-header": "^1.0.1",
+    "qs": "^6.5.1",
+    "request": "^2.83.0",
+    "xmlbuilder": "^9.0.4"
   },
   "devDependencies": {
     "cross-env": "2.0.0",
@@ -43,10 +46,9 @@
     "jsdoc": "^3.4.0",
     "jshint-stylish": "^2.1.0",
     "minami": "^1.1.1",
-    "mocha": "^2.5.3",
+    "mocha": "^3.5.0",
     "nock": "^7.5.0",
-    "should": "^4.3.0",
-    "sinon": "1.17.4",
-    "testdouble": "^3.2.6"
+    "should": "^11.2.1",
+    "sinon": "1.17.4"
   }
 }

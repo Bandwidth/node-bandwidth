@@ -63,3 +63,5 @@ runTestsDebug.sh
 .mimosa/require/*
 logfile
 .vscode
+
+.nvmrc
