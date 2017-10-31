@@ -94,6 +94,44 @@ client.Message.send({
 	console.log("Message sent with ID " + message.id);
 });
 ```
+
+## Using Messaging V2 API
+
+Both callback and promise styles are supported
+
+```javascript
+// First you should create and application on Bandwidth Dashboard
+var dashboardAuth = {
+	accountId    : "accountId",
+	userName     : "userName",
+	password     : "password",
+	subaccountId : "subaccountId"
+};
+
+client.v2.Message.createMessagingApplication(dashboardAuth, {
+    name: "My Messaging App",
+    callbackUrl: "http://my-callback",
+    locationName: "My Location",
+    smsOptions: {
+        enabled: true,
+        tollFreeEnabled: true
+    },
+    mmsOptions: {
+        enabled: true
+    }
+}).then(function (application) {
+	// application.applicationId contains id of created dashboard application
+	// application.locationId contains id of location
+	
+	// Now you should reserve 1 ore more numbers on  Bandwidth Dashboard
+	return client.v2.Message.searchAndOrderNumbers(dashboardAuth, application, new client.AreaCodeSearchAndOrderNumbersQuery({areaCode: "910", quantity: 1}))
+		.then(function (numbers) {
+			// Now you can send messages using these numbers
+			return client.v2.Message.send({from: numbers[0], to: ["+12345678901", "+12345678902"], text: "Hello", applicationId: application.applicationId});
+		});
+});
+```
+
 ## Providing feedback
 
 For current discussions on 2.0 please see the [2.0 issues section on GitHub](https://github.com/bandwidthcom/node-bandwidth/labels/2.0). To start a new topic on 2.0, please open an issue and use the `2.0` tag. Your feedback is greatly appreciated!
