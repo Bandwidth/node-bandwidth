@@ -1,5 +1,4 @@
 var assert = require("assert");
-var td = require("testdouble");
 var nock = require("nock");
 var Client = require("../lib/client");
 var Message = require("../lib/v2/message");
