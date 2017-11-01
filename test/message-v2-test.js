@@ -2,6 +2,7 @@ var assert = require("assert");
 var nock = require("nock");
 var Client = require("../lib/client");
 var Message = require("../lib/v2/message");
+var templates = require("./templates.json");
 
 // jscs:disable disallowDanglingUnderscores
 
@@ -58,7 +59,7 @@ describe("Message v2 API", function () {
 			var message = new Message({});
 			assert.throws(function () {
 				message._handleResponse({
-					body       : "<Response><ErrorCode>Code</ErrorCode><Description>Description</Description></Response>",
+					body       : templates.irisError1,
 					statusCode : 200
 				});
 			}, "Code: Description");
@@ -67,7 +68,7 @@ describe("Message v2 API", function () {
 			var message = new Message({});
 			assert.throws(function () {
 				message._handleResponse({
-					body       : "<Response><Error><Code>Code</Code><Description>Description</Description></Error></Response>",
+					body       : templates.irisError2,
 					statusCode : 200
 				});
 			}, "Code: Description");
@@ -76,7 +77,7 @@ describe("Message v2 API", function () {
 			var message = new Message({});
 			assert.throws(function () {
 				message._handleResponse({
-					body       : "<Response><Errors><Code>Code</Code><Description>Description</Description></Errors></Response>",
+					body       : templates.irisError3,
 					statusCode : 200
 				});
 			}, "Code: Description");
@@ -85,7 +86,7 @@ describe("Message v2 API", function () {
 			var message = new Message({});
 			assert.throws(function () {
 				message._handleResponse({
-					body       : "<Response><resultCode>Code</resultCode><resultMessage>Description</resultMessage></Response>",
+					body       : templates.irisError4,
 					statusCode : 200
 				});
 			}, "Code: Description");
@@ -137,18 +138,8 @@ describe("Message v2 API", function () {
 			nock.disableNetConnect();
 			nock("https://dashboard.bandwidth.com")
 				.persist()
-				.post("/v1.0/api/accounts/id/applications",
-					"<Application><AppName>App1</AppName><CallbackUrl>url</CallbackUrl><CallBackCreds/></Application>")
-				.reply(200, "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" +
-				"<ApplicationProvisioningResponse>" +
-				"  <Application>" +
-				"	<ApplicationId>ApplicationId</ApplicationId>" +
-				"	<ServiceType>Messaging-V2</ServiceType>" +
-				"	<AppName>Demo Server</AppName>" +
-				"	<CallbackUrl>https://requestb.in/1m009f61</CallbackUrl>" +
-				"	<CallbackCreds />" +
-				"  </Application>" +
-				"</ApplicationProvisioningResponse>", {});
+				.post("/v1.0/api/accounts/id/applications", templates.createApplicationRequest)
+				.reply(200, templates.createApplicationResponse, {});
 		});
 
 		after(function () {
@@ -179,8 +170,7 @@ describe("Message v2 API", function () {
 			nock.disableNetConnect();
 			nock("https://dashboard.bandwidth.com")
 				.persist()
-				.post("/v1.0/api/accounts/id/sites/sub/sippeers",
-					"<SipPeer><PeerName>Location1</PeerName><IsDefaultPeer>false</IsDefaultPeer></SipPeer>")
+				.post("/v1.0/api/accounts/id/sites/sub/sippeers", templates.createLocationRequest)
 				.reply(201, "", { "Location" : "http://host/LocationId" });
 		});
 
@@ -214,11 +204,7 @@ describe("Message v2 API", function () {
 			nock("https://dashboard.bandwidth.com")
 				.persist()
 				.post("/v1.0/api/accounts/id/sites/sub/sippeers/locationId/products/messaging/features/sms",
-					"<SipPeerSmsFeature><SipPeerSmsFeatureSettings><TollFree>true</TollFree><ShortCode>false</ShortCode>" +
-					"<Protocol>HTTP</Protocol><Zone1>true</Zone1><Zone2>false</Zone2><Zone3>false</Zone3>" +
-					"<Zone4>false</Zone4><Zone5>false</Zone5>" +
-					"</SipPeerSmsFeatureSettings><HttpSettings><ProxyPeerId>539692</ProxyPeerId>" +
-					"</HttpSettings></SipPeerSmsFeature>")
+					templates.enableSmsRequest)
 				.reply(200, "", {});
 		});
 
@@ -253,8 +239,7 @@ describe("Message v2 API", function () {
 			nock("https://dashboard.bandwidth.com")
 				.persist()
 				.post("/v1.0/api/accounts/id/sites/sub/sippeers/locationId/products/messaging/features/mms",
-					"<MmsFeature><MmsSettings><protocol>HTTP</protocol></MmsSettings><Protocols><HTTP><HttpSettings>" +
-					"<ProxyPeerId>539692</ProxyPeerId></HttpSettings></HTTP></Protocols></MmsFeature>")
+					templates.enableMmsRequest)
 				.reply(200, "", {});
 		});
 
@@ -288,7 +273,7 @@ describe("Message v2 API", function () {
 			nock("https://dashboard.bandwidth.com")
 				.persist()
 				.post("/v1.0/api/accounts/id/sites/sub/sippeers/locationId/products/messaging/applicationSettings",
-					"<ApplicationsSettings><HttpMessagingV2AppId>applicationId</HttpMessagingV2AppId></ApplicationsSettings>")
+					templates.assignApplicationToLocationRequest)
 				.reply(200, "", {});
 		});
 
@@ -368,51 +353,10 @@ describe("Message v2 API", function () {
 				nock("https://dashboard.bandwidth.com")
 					.persist()
 					.post("/v1.0/api/accounts/id/orders",
-						"<Order><OrderType><Quantity>1</Quantity></OrderType><SiteId>sub</SiteId><PeerId>locationId</PeerId></Order>")
-					.reply(200, "<OrderResponse>" +
-					"<Order>" +
-					"  <OrderCreateDate>2017-09-18T17:36:57.274Z</OrderCreateDate>" +
-					"  <PeerId>{{location}}</PeerId>" +
-					"  <BackOrderRequested>false</BackOrderRequested>" +
-					"  <id>OrderId</id>" +
-					"  <AreaCodeSearchAndOrderType>" +
-					"	<AreaCode>910</AreaCode>" +
-					"	<Quantity>1</Quantity>" +
-					"  </AreaCodeSearchAndOrderType>" +
-					"  <PartialAllowed>true</PartialAllowed>" +
-					"  <SiteId>{{subaccount}}</SiteId>" +
-					"</Order>" +
-					"<OrderStatus>RECEIVED</OrderStatus>" +
-					"</OrderResponse>", {})
+						templates.createOrderRequest)
+					.reply(200, templates.createOrderResponse, {})
 				.get("/v1.0/api/accounts/id/orders/OrderId")
-				.reply(200, "<OrderResponse>" +
-				"<CompletedQuantity>1</CompletedQuantity>" +
-				"<CreatedByUser>lorem</CreatedByUser>" +
-				"<LastModifiedDate>2017-09-18T17:36:57.411Z</LastModifiedDate>" +
-				"<OrderCompleteDate>2017-09-18T17:36:57.410Z</OrderCompleteDate>" +
-				"<Order>" +
-				"	<OrderCreateDate>2017-09-18T17:36:57.274Z</OrderCreateDate>" +
-				"	<PeerId>{{location}}</PeerId>" +
-				"	<BackOrderRequested>false</BackOrderRequested>" +
-				"	<AreaCodeSearchAndOrderType>" +
-				"	<AreaCode>910</AreaCode>" +
-				"	<Quantity>1</Quantity>" +
-				"	</AreaCodeSearchAndOrderType>" +
-				"	<PartialAllowed>true</PartialAllowed>" +
-				"	<SiteId>{{subaccount}}</SiteId>" +
-				"</Order>" +
-				"<OrderStatus>COMPLETE</OrderStatus>" +
-				"<CompletedNumbers>" +
-				"	<TelephoneNumber>" +
-				"	<FullNumber>9102398766</FullNumber>" +
-				"	</TelephoneNumber>" +
-				"	<TelephoneNumber>" +
-				"	<FullNumber>9102398767</FullNumber>" +
-				"	</TelephoneNumber>" +
-				"</CompletedNumbers>" +
-				"<Summary>1 number ordered in (910)</Summary>" +
-				"<FailedQuantity>0</FailedQuantity>" +
-				"</OrderResponse>");
+				.reply(200, templates.orderResponseSuccess);
 			});
 			after(function () {
 				nock.cleanAll();
@@ -457,43 +401,10 @@ describe("Message v2 API", function () {
 				nock("https://dashboard.bandwidth.com")
 					.persist()
 					.post("/v1.0/api/accounts/id/orders",
-						"<Order><OrderType><Quantity>1</Quantity></OrderType><SiteId>sub</SiteId><PeerId>locationId</PeerId></Order>")
-					.reply(200, "<OrderResponse>" +
-					"<Order>" +
-					"  <OrderCreateDate>2017-09-18T17:36:57.274Z</OrderCreateDate>" +
-					" <PeerId>{{location}}</PeerId>" +
-					" <BackOrderRequested>false</BackOrderRequested>" +
-					" <id>OrderId</id>" +
-					" <AreaCodeSearchAndOrderType>" +
-					"	<AreaCode>910</AreaCode>" +
-					"	<Quantity>1</Quantity>" +
-					" </AreaCodeSearchAndOrderType>" +
-					" <PartialAllowed>true</PartialAllowed>" +
-					" <SiteId>{{subaccount}}</SiteId>" +
-					"</Order>" +
-					"<OrderStatus>RECEIVED</OrderStatus>" +
-					"</OrderResponse>", {})
+						templates.createOrderRequest)
+					.reply(200, templates.createOrderResponse, {})
 				.get("/v1.0/api/accounts/id/orders/OrderId")
-				.reply(200, "<OrderResponse>" +
-				"<CompletedQuantity>1</CompletedQuantity>" +
-				"<CreatedByUser>lorem</CreatedByUser>" +
-				"<LastModifiedDate>2017-09-18T17:36:57.411Z</LastModifiedDate>" +
-				"<OrderCompleteDate>2017-09-18T17:36:57.410Z</OrderCompleteDate>" +
-				"<Order>" +
-				"<OrderCreateDate>2017-09-18T17:36:57.274Z</OrderCreateDate>" +
-				"<PeerId>{{location}}</PeerId>" +
-				"<BackOrderRequested>false</BackOrderRequested>" +
-				"<AreaCodeSearchAndOrderType>" +
-				"  <AreaCode>910</AreaCode>" +
-				"  <Quantity>1</Quantity>" +
-				"</AreaCodeSearchAndOrderType>" +
-				"<PartialAllowed>true</PartialAllowed>" +
-				"<SiteId>{{subaccount}}</SiteId>" +
-				"</Order>" +
-				"<OrderStatus>FAILED</OrderStatus>" +
-				"<CompletedNumbers/>" +
-				"<FailedQuantity>1</FailedQuantity>" +
-				"</OrderResponse>");
+				.reply(200, templates.orderResponseFail);
 			});
 			after(function () {
 				nock.cleanAll();
@@ -540,43 +451,10 @@ describe("Message v2 API", function () {
 				nock("https://dashboard.bandwidth.com")
 					.persist()
 					.post("/v1.0/api/accounts/id/orders",
-						"<Order><OrderType><Quantity>1</Quantity></OrderType><SiteId>sub</SiteId><PeerId>locationId</PeerId></Order>")
-					.reply(200, "<OrderResponse>" +
-					"<Order>" +
-					" <OrderCreateDate>2017-09-18T17:36:57.274Z</OrderCreateDate>" +
-					" <PeerId>{{location}}</PeerId>" +
-					" <BackOrderRequested>false</BackOrderRequested>" +
-					" <id>OrderId</id>" +
-					" <AreaCodeSearchAndOrderType>" +
-					"	<AreaCode>910</AreaCode>" +
-					"	<Quantity>1</Quantity>" +
-					" </AreaCodeSearchAndOrderType>" +
-					" <PartialAllowed>true</PartialAllowed>" +
-					" <SiteId>{{subaccount}}</SiteId>" +
-					"</Order>" +
-					"<OrderStatus>RECEIVED</OrderStatus>" +
-					"</OrderResponse>", {})
+						templates.createOrderRequest)
+					.reply(200, templates.createOrderResponse, {})
 				.get("/v1.0/api/accounts/id/orders/OrderId")
-				.reply(200, "<OrderResponse>" +
-				"<CompletedQuantity>1</CompletedQuantity>" +
-				"<CreatedByUser>lorem</CreatedByUser>" +
-				"<LastModifiedDate>2017-09-18T17:36:57.411Z</LastModifiedDate>" +
-				"<OrderCompleteDate>2017-09-18T17:36:57.410Z</OrderCompleteDate>" +
-				"<Order>" +
-				"<OrderCreateDate>2017-09-18T17:36:57.274Z</OrderCreateDate>" +
-				"<PeerId>{{location}}</PeerId>" +
-				"<BackOrderRequested>false</BackOrderRequested>" +
-				"<AreaCodeSearchAndOrderType>" +
-				"  <AreaCode>910</AreaCode>" +
-				"  <Quantity>1</Quantity>" +
-				"</AreaCodeSearchAndOrderType>" +
-				"<PartialAllowed>true</PartialAllowed>" +
-				"<SiteId>{{subaccount}}</SiteId>" +
-				"</Order>" +
-				"<OrderStatus>WAIT</OrderStatus>" +
-				"<CompletedNumbers/>" +
-				"<FailedQuantity/>" +
-				"</OrderResponse>");
+				.reply(200, templates.orderResponseWait);
 			});
 			after(function () {
 				nock.cleanAll();
