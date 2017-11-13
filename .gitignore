@@ -64,3 +64,4 @@ runTestsDebug.sh
 logfile
 
 .nvmrc
+.vscode

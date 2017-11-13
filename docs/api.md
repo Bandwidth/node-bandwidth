@@ -733,27 +733,7 @@ Create a new bridge
 
 **Example**  
 ```js
-//Promise
-client.Bridge.create({
-	bridgeAudio: true,
-	callIds: ['c-qbs5kwrsyx6wsdi', 'c-zan4g74pprsq']
-})
-.then(function (response) {
-	console.log(response);
-});
-
-//Callback
-client.Bridge.create({
-	bridgeAudio: true,
-	callIds: ['c-qbsx6wsdi', 'c-zan4g7prsq']
-}, function (err, response) {
-		if(err) {
-			console.log(err);
-		}
-		else {
-			console.log(response);
-		}
-	});
+//Promiseclient.Bridge.create({	bridgeAudio: true,	callIds: ['c-qbs5kwrsyx6wsdi', 'c-zan4g74pprsq']}).then(function (response) {	console.log(response);});//Callbackclient.Bridge.create({	bridgeAudio: true,	callIds: ['c-qbsx6wsdi', 'c-zan4g7prsq']}, function (err, response) {		if(err) {			console.log(err);		}		else {			console.log(response);		}	});
 ```
 <a name="Bridge+get"></a>
 
@@ -770,22 +750,7 @@ Gets information about a bridge.
 
 **Example**  
 ```js
-//Promise
-client.Bridge.get('brg-65dhjwrmbasiei')
-.then(function (response) {
-	console.log(response);
-});
-
-//Callback
-client.Bridge.get('brg-65dhmbasiei',
-	function (err, response) {
-		if(err) {
-			console.log(err);
-		}
-		else {
-			console.log(response);
-		}
-	});
+//Promiseclient.Bridge.get('brg-65dhjwrmbasiei').then(function (response) {	console.log(response);});//Callbackclient.Bridge.get('brg-65dhmbasiei',	function (err, response) {		if(err) {			console.log(err);		}		else {			console.log(response);		}	});
 ```
 <a name="Bridge+list"></a>
 
@@ -803,19 +768,7 @@ Gets a list of bridges.
 
 **Example**  
 ```js
-client.Bridge.list()
-.then(function (response) {
-	console.log(response.bridges);
-	if(response.hasNextPage) {
-		return response.getNextPage();
-	}
-	else {
-		return {bridges: []};
-	}
-})
-.then(function(response) {
-	console.log(response.bridges);
-});
+client.Bridge.list().then(function (response) {	console.log(response.bridges);	if(response.hasNextPage) {		return response.getNextPage();	}	else {		return {bridges: []};	}}).then(function(response) {	console.log(response.bridges);});
 ```
 <a name="Bridge+update"></a>
 
@@ -835,56 +788,15 @@ Update the bridge
 
 **Example**  
 ```js
-//Promise
-client.Bridge.update('brg-65dasiei', {
-	bridgeAudio: false
-})
-.then(function (response) {
-	console.log(response);
-});
-
-//Callback
-client.Bridge.update('brg-65dhjbanasiei', {
-	bridgeAudio: false
-}, function (err, response) {
-		if(err) {
-			console.log(err);
-		}
-		else {
-			console.log(response);
-		}
-	});
+//Promiseclient.Bridge.update('brg-65dasiei', {	bridgeAudio: false}).then(function (response) {	console.log(response);});//Callbackclient.Bridge.update('brg-65dhjbanasiei', {	bridgeAudio: false}, function (err, response) {		if(err) {			console.log(err);		}		else {			console.log(response);		}	});
 ```
 **Example**  
 ```js
-// end bridge
-var bridgeOptions = {
-	callIds: []
-};
-
-client.Bridge.update("{bridgeId}", bridgeOptions)
-.then(function () {
-	// continue
-});
+// end bridgevar bridgeOptions = {	callIds: []};client.Bridge.update("{bridgeId}", bridgeOptions).then(function () {	// continue});
 ```
 **Example**  
 ```js
-// Add two calls to bridge then remove one
-var bridgeOptions = {
-	bridgeAudio : true,
-	callIds: ["{callId1}","{callId2}"]
-};
-
-client.Bridge.update("{bridgeId}", bridgeOptions)
-.then(function () {
-	var callIdsToRemainInBridge = {
-		callIds: ["{callId1"]
-	};
-	return client.Bridge.update("{bridgeId}", callIdsToRemainInBridge)
-})
-.then(function () {
-	//continue
-});
+// Add two calls to bridge then remove onevar bridgeOptions = {	bridgeAudio : true,	callIds: ["{callId1}","{callId2}"]};client.Bridge.update("{bridgeId}", bridgeOptions).then(function () {	var callIdsToRemainInBridge = {		callIds: ["{callId1"]	};	return client.Bridge.update("{bridgeId}", callIdsToRemainInBridge)}).then(function () {	//continue});
 ```
 <a name="Bridge+speakSentence"></a>
 
@@ -902,13 +814,7 @@ Speak sentence to the bridge using default values
 
 **Example**  
 ```js
-//Speak sentence in a bridge
-
-//Promise
-client.Bridge.speakSentence("bridgeID", "Hello From Bandwidth").then(function (res) {});
-
-//Callback
-client.Bridge.speakSentence("bridgeID", "Hello From Bandwidth", function (err, res) {});
+//Speak sentence in a bridge//Promiseclient.Bridge.speakSentence("bridgeID", "Hello From Bandwidth").then(function (res) {});//Callbackclient.Bridge.speakSentence("bridgeID", "Hello From Bandwidth", function (err, res) {});
 ```
 <a name="Bridge+stopSpeaking"></a>
 
@@ -924,8 +830,7 @@ This stops any file audio playback on the bridge
 
 **Example**  
 ```js
-//Promise
-client.Bridge.stopSpeaking("bridgeId").then(function (res) {});
+//Promiseclient.Bridge.stopSpeaking("bridgeId").then(function (res) {});
 ```
 <a name="Bridge+playAudioFile"></a>
 
@@ -943,13 +848,7 @@ Play audio url to the bridge
 
 **Example**  
 ```js
-//Play Audio file on bridge
-
-//Promise
-client.Bridge.playAudioFile("bridgeID", "http://myurl.com/file.mp3").then(function (res) {});
-
-//Callback
-client.Bridge.playAudioFile("bridgeID", "http://myurl.com/file.wav", function (err, res) {});
+//Play Audio file on bridge//Promiseclient.Bridge.playAudioFile("bridgeID", "http://myurl.com/file.mp3").then(function (res) {});//Callbackclient.Bridge.playAudioFile("bridgeID", "http://myurl.com/file.wav", function (err, res) {});
 ```
 <a name="Bridge+playAudioAdvanced"></a>
 
@@ -973,31 +872,11 @@ Play audio file or speak sentence in bridge
 
 **Example**  
 ```js
-//Play Audio File on loop
-var options = {
-	fileUrl     : "http://myurl.com/file.mp3",
-	loopEnabled : true
-}
-//Promise
-client.Bridge.playAudioAdvanced("bridgeId", options).then(function (res) {});
-
-//Callback
-client.Bridge.playAudioAdvanced("bridgeId", options, function (err,res) {});
+//Play Audio File on loopvar options = {	fileUrl     : "http://myurl.com/file.mp3",	loopEnabled : true}//Promiseclient.Bridge.playAudioAdvanced("bridgeId", options).then(function (res) {});//Callbackclient.Bridge.playAudioAdvanced("bridgeId", options, function (err,res) {});
 ```
 **Example**  
 ```js
-//Speak sentence with options
-var options = {
-	sentence : "hola de Bandwidth",
-	gender   : "male",
-	locale   : "es",
-	voice    : "Jorge"
-}
-//Promise
-client.Bridge.playAudioAdvanced("bridgeId", options).then(function (res) {});
-
-//Callback
-client.Bridge.playAudioAdvanced("bridgeId", options, function (err,res) {});
+//Speak sentence with optionsvar options = {	sentence : "hola de Bandwidth",	gender   : "male",	locale   : "es",	voice    : "Jorge"}//Promiseclient.Bridge.playAudioAdvanced("bridgeId", options).then(function (res) {});//Callbackclient.Bridge.playAudioAdvanced("bridgeId", options, function (err,res) {});
 ```
 <a name="Bridge+stopAudioFilePlayback"></a>
 
@@ -1013,8 +892,7 @@ This stops any file audio playback on the bridge
 
 **Example**  
 ```js
-//Promise
-client.Bridge.stopAudioFilePlayback("bridgeId").then(function (res) {});
+//Promiseclient.Bridge.stopAudioFilePlayback("bridgeId").then(function (res) {});
 ```
 <a name="Bridge+getCalls"></a>
 
@@ -1031,22 +909,7 @@ Gets information about a bridge.
 
 **Example**  
 ```js
-//Promise
-client.Bridge.getCalls('brg-65dhjbiei')
-.then(function (response) {
-	console.log(response);
-});
-
-//Callback
-client.Bridge.getCalls('brg-65dhjrmbasiei',
-	function (err, response) {
-		if(err) {
-			console.log(err);
-		}
-		else {
-			console.log(response);
-		}
-	});
+//Promiseclient.Bridge.getCalls('brg-65dhjbiei').then(function (response) {	console.log(response);});//Callbackclient.Bridge.getCalls('brg-65dhjrmbasiei',	function (err, response) {		if(err) {			console.log(err);		}		else {			console.log(response);		}	});
 ```
 <a name="BridgeListResponse"></a>
 
@@ -1194,17 +1057,7 @@ Update properties of an active phone call.
 
 **Example**  
 ```js
-//Start recording a mp3 and update the callback url
-var payLoad = {
-	recordingEnabled: "true",
-	recordingFileFormat = "mp3",
-	callbackUrl: "http://yourUrl.com/callbacks/callrecording"
-};
-
-client.call.update("callId", payload)
-.then(function () {
-	// keep on keeping on here;
-});
+//Start recording a mp3 and update the callback urlvar payLoad = {	recordingEnabled: "true",	recordingFileFormat = "mp3",	callbackUrl: "http://yourUrl.com/callbacks/callrecording"};client.call.update("callId", payload).then(function () {	// keep on keeping on here;});
 ```
 <a name="Call+answer"></a>
 
@@ -1221,11 +1074,7 @@ Answer an incoming call
 
 **Example**  
 ```js
-//Promise
-client.Call.answer("callID").then(function () {});
-
-//Callback
-client.Call.answer("callID", function (err) {});
+//Promiseclient.Call.answer("callID").then(function () {});//Callbackclient.Call.answer("callID", function (err) {});
 ```
 <a name="Call+reject"></a>
 
@@ -1242,11 +1091,7 @@ Reject an incoming call
 
 **Example**  
 ```js
-//Promise
-client.Call.reject("callID").then(function () {});
-
-//Callback
-client.Call.reject("callID", function (err) {});
+//Promiseclient.Call.reject("callID").then(function () {});//Callbackclient.Call.reject("callID", function (err) {});
 ```
 <a name="Call+hangup"></a>
 
@@ -1263,11 +1108,7 @@ Complete active call
 
 **Example**  
 ```js
-//Promise
-client.Call.hangup("callID").then(function () {});
-
-//Callback
-client.Call.hangup("callID", function (err) {});
+//Promiseclient.Call.hangup("callID").then(function () {});//Callbackclient.Call.hangup("callID", function (err) {});
 ```
 <a name="Call+transfer"></a>
 
@@ -1292,37 +1133,11 @@ Transfer a call
 
 **Example**  
 ```js
-//Transfer call
-var speakSentence = {
-	transferTo       : "+15555555555",
-	transferCallerId : "private",
-	whisperAudio     : {
-		sentence : "You have an incoming call",
-		gender   : "female",
-		voice    : "julie",
-		locale   : "en"
-	}
-};
-
-//Using Promises
-client.Call.transfer("callId", speakSentence).then(function (res) {});
-
-var playAudio = {
-	fileUrl     : "http://mysite.com/file.wav",
-	loopEnabled : true
-}
-//Using callbacks
-client.Call.transfer("callId", playAudio, function (err, res) {});
+//Transfer callvar speakSentence = {	transferTo       : "+15555555555",	transferCallerId : "private",	whisperAudio     : {		sentence : "You have an incoming call",		gender   : "female",		voice    : "julie",		locale   : "en"	}};//Using Promisesclient.Call.transfer("callId", speakSentence).then(function (res) {});var playAudio = {	fileUrl     : "http://mysite.com/file.wav",	loopEnabled : true}//Using callbacksclient.Call.transfer("callId", playAudio, function (err, res) {});
 ```
 **Example**  
 ```js
-//Example: Transfer a call using the caller Id of the party being transferred
-var transferPayload = {
-	transferTo       : "+18382947878",
-};
-
-//Using Promises
-client.Call.transfer("callId", transferPayload).then(function (res) {});
+//Example: Transfer a call using the caller Id of the party being transferredvar transferPayload = {	transferTo       : "+18382947878",};//Using Promisesclient.Call.transfer("callId", transferPayload).then(function (res) {});
 ```
 <a name="Call+speakSentence"></a>
 
@@ -1340,13 +1155,7 @@ Speak sentence to the call using default values
 
 **Example**  
 ```js
-//Speak sentence in a call
-
-//Promise
-client.Call.speakSentence("callID", "Hello From Bandwidth").then(function (res) {});
-
-//Callback
-client.Call.speakSentence("callID", "Hello From Bandwidth", function (err, res) {});
+//Speak sentence in a call//Promiseclient.Call.speakSentence("callID", "Hello From Bandwidth").then(function (res) {});//Callbackclient.Call.speakSentence("callID", "Hello From Bandwidth", function (err, res) {});
 ```
 <a name="Call+stopSpeaking"></a>
 
@@ -1362,8 +1171,7 @@ This stops any speak sentence audio playback on the call
 
 **Example**  
 ```js
-//Stop Audio file on call
-client.Call.stopSpeaking("callId").then(function (res) {});
+//Stop Audio file on callclient.Call.stopSpeaking("callId").then(function (res) {});
 ```
 <a name="Call+playAudioFile"></a>
 
@@ -1381,13 +1189,7 @@ Play audio url to the call
 
 **Example**  
 ```js
-//Play Audio file on call
-
-//Promise
-client.Call.playAudioFile("callId", "http://myurl.com/file.mp3").then(function (res) {});
-
-//Callback
-client.Call.playAudioFile("callId", "http://myurl.com/file.wav", function (err, res) {});
+//Play Audio file on call//Promiseclient.Call.playAudioFile("callId", "http://myurl.com/file.mp3").then(function (res) {});//Callbackclient.Call.playAudioFile("callId", "http://myurl.com/file.wav", function (err, res) {});
 ```
 <a name="Call+stopAudioFilePlayback"></a>
 
@@ -1403,8 +1205,7 @@ This stops any stop file audio playback on the call
 
 **Example**  
 ```js
-//Stop Audio file on call
-client.Call.stopAudioFilePlayback("callId").then(function (res) {});
+//Stop Audio file on callclient.Call.stopAudioFilePlayback("callId").then(function (res) {});
 ```
 <a name="Call+playAudioAdvanced"></a>
 
@@ -1428,31 +1229,11 @@ Play audio file or speak sentence in call
 
 **Example**  
 ```js
-//Play Audio File on loop
-var options = {
-	fileUrl     : "http://myurl.com/file.mp3",
-	loopEnabled : true
-}
-//Promise
-client.Call.playAudioAdvanced("callId", options).then(function (res) {});
-
-//Callback
-client.Call.playAudioAdvanced("callId", options, function (err,res) {});
+//Play Audio File on loopvar options = {	fileUrl     : "http://myurl.com/file.mp3",	loopEnabled : true}//Promiseclient.Call.playAudioAdvanced("callId", options).then(function (res) {});//Callbackclient.Call.playAudioAdvanced("callId", options, function (err,res) {});
 ```
 **Example**  
 ```js
-//Speak sentence with options
-var options = {
-	sentence : "hola de Bandwidth",
-	gender   : "male",
-	locale   : "es",
-	voice    : "Jorge"
-}
-//Promise
-client.Call.playAudioAdvanced("callId", options).then(function (res) {});
-
-//Callback
-client.Call.playAudioAdvanced("callId", options, function (err,res) {});
+//Speak sentence with optionsvar options = {	sentence : "hola de Bandwidth",	gender   : "male",	locale   : "es",	voice    : "Jorge"}//Promiseclient.Call.playAudioAdvanced("callId", options).then(function (res) {});//Callbackclient.Call.playAudioAdvanced("callId", options, function (err,res) {});
 ```
 <a name="Call+enableRecording"></a>
 
@@ -1469,13 +1250,7 @@ Turns on call recording for the active call
 
 **Example**  
 ```js
-//Turn on recording
-
-//Promise
-client.Call.enableRecording("callId").then(function (res) {});
-
-//Callback
-client.Call.enableRecording("callId", function (err, res) {});
+//Turn on recording//Promiseclient.Call.enableRecording("callId").then(function (res) {});//Callbackclient.Call.enableRecording("callId", function (err, res) {});
 ```
 <a name="Call+disableRecording"></a>
 
@@ -1492,13 +1267,7 @@ Turns off call recording for the active call
 
 **Example**  
 ```js
-//Turn off recording
-
-//Promise
-client.Call.disableRecording("callId").then(function (res) {});
-
-//Callback
-client.Call.disableRecording("callId", function (err, res) {});
+//Turn off recording//Promiseclient.Call.disableRecording("callId").then(function (res) {});//Callbackclient.Call.disableRecording("callId", function (err, res) {});
 ```
 <a name="Call+createGather"></a>
 
@@ -1526,26 +1295,7 @@ Collects a series of DTMF digits from a phone call with an optional prompt.
 
 **Example**  
 ```js
-//Create Gather
-//The gather ends if either 0, #, or * is detected
-var options = {
-	maxDigits         : 30,
-	interDigitTimeout : "30",
-	terminatingDigits : "0#*",
-	prompt            : {
-		sentence    : "Please enter your account number and press pound",
-		gender      : "male",
-		voice       : "Simon",
-		locale      : "en_UK",
-		loopEnabled : true,
-		bargeable   : true
-	}
-};
-//Promise
-client.Call.createGather("callId", options).then(function(res) {});
-
-//Callback
-client.Call.createGather("callId", options, function(err, res) {});
+//Create Gather//The gather ends if either 0, #, or * is detectedvar options = {	maxDigits         : 30,	interDigitTimeout : "30",	terminatingDigits : "0#*",	prompt            : {		sentence    : "Please enter your account number and press pound",		gender      : "male",		voice       : "Simon",		locale      : "en_UK",		loopEnabled : true,		bargeable   : true	}};//Promiseclient.Call.createGather("callId", options).then(function(res) {});//Callbackclient.Call.createGather("callId", options, function(err, res) {});
 ```
 <a name="Call+getGather"></a>
 
@@ -1590,10 +1340,7 @@ Get events for the call.
 
 **Example**  
 ```js
-// Promise
-client.Call.getEvents(callId).then(function (events) {});
-// Callback
-client.Call.getEvents(callId, function (err, events) {});
+// Promiseclient.Call.getEvents(callId).then(function (events) {});// Callbackclient.Call.getEvents(callId, function (err, events) {});
 ```
 <a name="Call+getEvent"></a>
 
@@ -1611,10 +1358,7 @@ Get a single event for the call.
 
 **Example**  
 ```js
-// Promise
-client.Call.getEvent(callId, evenId).then(function (callEvent) {});
-// Callback
-client.Call.getEvent(callId, eventId, function (err, callEvent) {});
+// Promiseclient.Call.getEvent(callId, evenId).then(function (callEvent) {});// Callbackclient.Call.getEvent(callId, eventId, function (err, callEvent) {});
 ```
 <a name="Call+getRecordings"></a>
 
@@ -1631,10 +1375,7 @@ Get recordings for the call.
 
 **Example**  
 ```js
-// Promise
-client.Call.getRecordings(callId).then(function (list) {});
-// Callback
-client.Call.getRecordings(callId, function (err, list) {});
+// Promiseclient.Call.getRecordings(callId).then(function (list) {});// Callbackclient.Call.getRecordings(callId, function (err, list) {});
 ```
 <a name="Call+getTranscriptions"></a>
 
@@ -1651,10 +1392,7 @@ Get transcriptions for the call.
 
 **Example**  
 ```js
-// Promise
-client.Call.getTranscriptions(callId).then(function (list) {});
-// Callback
-client.Call.getTranscriptions(callId, function (err, list) {});
+// Promiseclient.Call.getTranscriptions(callId).then(function (list) {});// Callbackclient.Call.getTranscriptions(callId, function (err, list) {});
 ```
 <a name="Call+sendDtmf"></a>
 
@@ -1672,10 +1410,7 @@ Send DTMF (phone keypad digit presses).
 
 **Example**  
 ```js
-// Promise
-client.Call.sendDtmf(callId, "1").then(function () {});
-// Callback
-client.Call.sendDtmf(callId, "1", function (err) {});
+// Promiseclient.Call.sendDtmf(callId, "1").then(function () {});// Callbackclient.Call.sendDtmf(callId, "1", function (err) {});
 ```
 <a name="CallResponse"></a>
 
@@ -1826,10 +1561,7 @@ Create a new conference
 
 **Example**  
 ```js
-// Promise
-client.Conference.create({from: "+1234567890"}).then(function(conference){});
-// Callback
-client.Conference.create({from: "+1234567890"}, function(err, conference){});
+// Promiseclient.Conference.create({from: "+1234567890"}).then(function(conference){});// Callbackclient.Conference.create({from: "+1234567890"}, function(err, conference){});
 ```
 <a name="Conference+get"></a>
 
@@ -1846,10 +1578,7 @@ Gets information about a conference.
 
 **Example**  
 ```js
-// Promise
-client.Conference.get("conferenceId").then(function(conference){});
-// Callback
-client.Conference.get("conferenceId", function(err, conference){});
+// Promiseclient.Conference.get("conferenceId").then(function(conference){});// Callbackclient.Conference.get("conferenceId", function(err, conference){});
 ```
 <a name="Conference+update"></a>
 
@@ -1875,10 +1604,7 @@ Update the conference
 
 **Example**  
 ```js
-// Promise
-client.Conference.update("conferenceID", {mute: "true"}).then(function(){});
-// Callback
-client.Conference.update("conferenceID", {mute: "true"}, function(err){});
+// Promiseclient.Conference.update("conferenceID", {mute: "true"}).then(function(){});// Callbackclient.Conference.update("conferenceID", {mute: "true"}, function(err){});
 ```
 <a name="Conference+remove"></a>
 
@@ -1895,10 +1621,7 @@ Remove the conference
 
 **Example**  
 ```js
-// Promise
-client.Conference.remove("conferenceID").then(function(){});
-// Callback
-client.Conference.remove("conferenceID", function(err){});
+// Promiseclient.Conference.remove("conferenceID").then(function(){});// Callbackclient.Conference.remove("conferenceID", function(err){});
 ```
 <a name="Conference+speakSentence"></a>
 
@@ -1916,13 +1639,7 @@ Speak sentence to the conference using default values
 
 **Example**  
 ```js
-//Speak sentence in a conference
-
-//Promise
-client.Conference.speakSentence("conferenceID", "Hello From Bandwidth").then(function (res) {});
-
-//Callback
-client.Conference.speakSentence("conferenceID", "Hello From Bandwidth", function (err, res) {});
+//Speak sentence in a conference//Promiseclient.Conference.speakSentence("conferenceID", "Hello From Bandwidth").then(function (res) {});//Callbackclient.Conference.speakSentence("conferenceID", "Hello From Bandwidth", function (err, res) {});
 ```
 <a name="Conference+stopSpeaking"></a>
 
@@ -1938,8 +1655,7 @@ This stops any file audio playback on the conference
 
 **Example**  
 ```js
-//Promise
-client.Conference.stopSpeaking("conferenceId").then(function (res) {});
+//Promiseclient.Conference.stopSpeaking("conferenceId").then(function (res) {});
 ```
 <a name="Conference+playAudioFile"></a>
 
@@ -1957,13 +1673,7 @@ Play audio url to the conference
 
 **Example**  
 ```js
-//Play Audio file on conference
-
-//Promise
-client.Conference.playAudioFile("conferenceID", "http://myurl.com/file.mp3").then(function (res) {});
-
-//Callback
-client.Conference.playAudioFile("conferenceID", "http://myurl.com/file.wav", function (err, res) {});
+//Play Audio file on conference//Promiseclient.Conference.playAudioFile("conferenceID", "http://myurl.com/file.mp3").then(function (res) {});//Callbackclient.Conference.playAudioFile("conferenceID", "http://myurl.com/file.wav", function (err, res) {});
 ```
 <a name="Conference+playAudioAdvanced"></a>
 
@@ -1987,31 +1697,11 @@ Play audio file or speak sentence in conference
 
 **Example**  
 ```js
-//Play Audio File on loop
-var options = {
-	fileUrl     : "http://myurl.com/file.mp3",
-	loopEnabled : true
-}
-//Promise
-client.Conference.playAudioAdvanced("conferenceId", options).then(function (res) {});
-
-//Callback
-client.Conference.playAudioAdvanced("conferenceId", options, function (err,res) {});
+//Play Audio File on loopvar options = {	fileUrl     : "http://myurl.com/file.mp3",	loopEnabled : true}//Promiseclient.Conference.playAudioAdvanced("conferenceId", options).then(function (res) {});//Callbackclient.Conference.playAudioAdvanced("conferenceId", options, function (err,res) {});
 ```
 **Example**  
 ```js
-//Speak sentence with options
-var options = {
-	sentence : "hola de Bandwidth",
-	gender   : "male",
-	locale   : "es",
-	voice    : "Jorge"
-}
-//Promise
-client.Conference.playAudioAdvanced("conferenceId", options).then(function (res) {});
-
-//Callback
-client.Conference.playAudioAdvanced("conferenceId", options, function (err,res) {});
+//Speak sentence with optionsvar options = {	sentence : "hola de Bandwidth",	gender   : "male",	locale   : "es",	voice    : "Jorge"}//Promiseclient.Conference.playAudioAdvanced("conferenceId", options).then(function (res) {});//Callbackclient.Conference.playAudioAdvanced("conferenceId", options, function (err,res) {});
 ```
 <a name="Conference+stopAudioFilePlayback"></a>
 
@@ -2027,8 +1717,7 @@ This stops any file audio playback on the conference
 
 **Example**  
 ```js
-//Promise
-client.Conference.stopAudioFilePlayback("conferenceId").then(function (res) {});
+//Promiseclient.Conference.stopAudioFilePlayback("conferenceId").then(function (res) {});
 ```
 <a name="Conference+getMembers"></a>
 
@@ -2045,10 +1734,7 @@ Gets information about a conference members.
 
 **Example**  
 ```js
-// Promise
-client.Conference.getMembers("conferenceId").then(function(members){});
-// Callback
-client.Conference.getMembers("conferenceId", function(err, members){});
+// Promiseclient.Conference.getMembers("conferenceId").then(function(members){});// Callbackclient.Conference.getMembers("conferenceId", function(err, members){});
 ```
 <a name="Conference+getMember"></a>
 
@@ -2066,10 +1752,7 @@ Gets information about a single conference member.
 
 **Example**  
 ```js
-// Promise
-client.Conference.getMember("conferenceId", "memberId").then(function(member){});
-// Callback
-client.Conference.getMember("conferenceId", "memberId", function(err, member){});
+// Promiseclient.Conference.getMember("conferenceId", "memberId").then(function(member){});// Callbackclient.Conference.getMember("conferenceId", "memberId", function(err, member){});
 ```
 <a name="Conference+createMember"></a>
 
@@ -2091,10 +1774,7 @@ Add members to a conference.
 
 **Example**  
 ```js
-// Promise
-client.Conference.createMember("conferenceId", {callId: "callID"}).then(function(member){});
-// Callback
-client.Conference.createMember("conferenceId", {callId: "callID"}, function(err, member){});
+// Promiseclient.Conference.createMember("conferenceId", {callId: "callID"}).then(function(member){});// Callbackclient.Conference.createMember("conferenceId", {callId: "callID"}, function(err, member){});
 ```
 <a name="Conference+updateMember"></a>
 
@@ -2117,10 +1797,7 @@ Update the conference member
 
 **Example**  
 ```js
-// Promise
-client.Conference.updateMember("conferenceID", "memberId", {mute: "true"}).then(function(){});
-// Callback
-client.Conference.updateMember("conferenceID", "memberId", {mute: "true"}, function(err){});
+// Promiseclient.Conference.updateMember("conferenceID", "memberId", {mute: "true"}).then(function(){});// Callbackclient.Conference.updateMember("conferenceID", "memberId", {mute: "true"}, function(err){});
 ```
 <a name="Conference+removeMember"></a>
 
@@ -2138,10 +1815,7 @@ Remove the conference member
 
 **Example**  
 ```js
-// Promise
-client.Conference.removeMember("conferenceID", "memberId").then(function(){});
-// Callback
-client.Conference.removeMember("conferenceID", "memberId", function(err){});
+// Promiseclient.Conference.removeMember("conferenceID", "memberId").then(function(){});// Callbackclient.Conference.removeMember("conferenceID", "memberId", function(err){});
 ```
 <a name="Conference+speakSentenceToMember"></a>
 
@@ -2160,15 +1834,7 @@ Speak sentence to the conference member using default values
 
 **Example**  
 ```js
-//Speak sentence
-
-//Promise
-client.Conference.speakSentenceToMember("conferenceID", "memberID", Hello From Bandwidth")
-  .then(function (res) {});
-
-//Callback
-client.Conference.speakSentenceToMember("conferenceID", "memberID", "Hello From Bandwidth",
-  function (err, res) {});
+//Speak sentence//Promiseclient.Conference.speakSentenceToMember("conferenceID", "memberID", Hello From Bandwidth")  .then(function (res) {});//Callbackclient.Conference.speakSentenceToMember("conferenceID", "memberID", "Hello From Bandwidth",  function (err, res) {});
 ```
 <a name="Conference+playAudioFileToMember"></a>
 
@@ -2187,15 +1853,7 @@ Play audio url to the conference member
 
 **Example**  
 ```js
-//Play Audio file
-
-//Promise
-client.Conference.playAudioFileToMember("conferenceID", "memberId", http://myurl.com/file.mp3")
-  .then(function (res) {});
-
-//Callback
-client.Conference.playAudioFileToMember("conferenceID", "memberId", http://myurl.com/file.wav",
-   function (err, res) {});
+//Play Audio file//Promiseclient.Conference.playAudioFileToMember("conferenceID", "memberId", http://myurl.com/file.mp3")  .then(function (res) {});//Callbackclient.Conference.playAudioFileToMember("conferenceID", "memberId", http://myurl.com/file.wav",   function (err, res) {});
 ```
 <a name="Conference+playAudioAdvancedToMember"></a>
 
@@ -2220,34 +1878,11 @@ Play audio file or speak sentence to the conference member
 
 **Example**  
 ```js
-//Play Audio File on loop
-var options = {
-	fileUrl     : "http://myurl.com/file.mp3",
-	loopEnabled : true
-}
-//Promise
-client.Conference.playAudioAdvancedToMember("conferenceId", "memberId", options)
- .then(function (res) {});
-
-//Callback
-client.Conference.playAudioAdvancedToMember("conferenceId", "memberId", options,
-  function (err,res) {});
+//Play Audio File on loopvar options = {	fileUrl     : "http://myurl.com/file.mp3",	loopEnabled : true}//Promiseclient.Conference.playAudioAdvancedToMember("conferenceId", "memberId", options) .then(function (res) {});//Callbackclient.Conference.playAudioAdvancedToMember("conferenceId", "memberId", options,  function (err,res) {});
 ```
 **Example**  
 ```js
-//Speak sentence with options
-var options = {
-	sentence : "hola de Bandwidth",
-	gender   : "male",
-	locale   : "es",
-	voice    : "Jorge"
-}
-//Promise
-client.Conference.playAudioAdvancedToMember("conferenceId", "memberId", options)
-  .then(function (res) {});
-
-//Callback
-client.Conference.playAudioAdvanced("conferenceId", options, function (err,res) {});
+//Speak sentence with optionsvar options = {	sentence : "hola de Bandwidth",	gender   : "male",	locale   : "es",	voice    : "Jorge"}//Promiseclient.Conference.playAudioAdvancedToMember("conferenceId", "memberId", options)  .then(function (res) {});//Callbackclient.Conference.playAudioAdvanced("conferenceId", options, function (err,res) {});
 ```
 <a name="ConferenceResponse"></a>
 
@@ -2765,26 +2400,12 @@ Send a new SMS or MMS message
 
 **Example**  
 ```js
-client.Message.send({
-  from : "+19195551212",
-  to   : "+19195551213",
-  text : "Thank you for susbcribing to Unicorn Enterprises!"
-})
-.then(function(message){
-  console.log(message);
-});
-//{
-//  from : "+19195551212",
-//  to   : "+19195551213",
-//  text : "Thank you for susbcribing to Unicorn Enterprises!",
-//  id   : "..."
-//}
+client.Message.send({  from : "+19195551212",  to   : "+19195551213",  text : "Thank you for susbcribing to Unicorn Enterprises!"}).then(function(message){  console.log(message);});//{//  from : "+19195551212",//  to   : "+19195551213",//  text : "Thank you for susbcribing to Unicorn Enterprises!",//  id   : "..."//}
 ```
 <a name="Message+sendMultiple"></a>
 
 ### message.sendMultiple(params, [callback]) ⇒ <code>[ExtendedMessageResponse](#ExtendedMessageResponse)</code>
-Send multiple SMS or MMS messages with one API call.
-This is much more performant than calling `send` multiple times.
+Send multiple SMS or MMS messages with one API call.This is much more performant than calling `send` multiple times.
 
 **Kind**: instance method of <code>[Message](#Message)</code>  
 **Returns**: <code>[ExtendedMessageResponse](#ExtendedMessageResponse)</code> - A promise for the array of ExtendedMessageResponses  
@@ -2805,49 +2426,7 @@ This is much more performant than calling `send` multiple times.
 
 **Example**  
 ```js
-client.Message.sendMultiple({
-  from : "+19195551211",
-  to   : "+19195551213",
-  text : "Thank you for susbcribing to Unicorn Enterprises!"
-}, {
-  from : "+19195151212",
-  to   : "+19195551214",
-  text : "Thank you for susbcribing to Unicorn Enterprises!"
-})
-.then(function(messages){
-  console.log(messages);
-});
-//[{
-//  result : "failed",
-//  error: {
-//    category : "authorization",
-//    code     : "number-access-denied",
-//    message  : "User ... does not have permission to use number +19195551211",
-//    details  : [
-//      {
-//        name  : "userId",
-//        value : "..."
-//      },
-//      {
-//        name  : "number",
-//        value : "+19195551211"
-//      }
-//    ],
-//  },
-//  message : {
-//    from : "+19195551211",
-//    to   : "+19195551213",
-//    text : "Thank you for susbcribing to Unicorn Enterprises!"
-//  }
-//},{
-//  result  : "accepted",
-//  message : {
-//    from : "+19195551212",
-//    to   : "+19195551214",
-//    text : "Thank you for susbcribing to Unicorn Enterprises!",
-//    id   : "..."
-//  }
-//}]
+client.Message.sendMultiple({  from : "+19195551211",  to   : "+19195551213",  text : "Thank you for susbcribing to Unicorn Enterprises!"}, {  from : "+19195151212",  to   : "+19195551214",  text : "Thank you for susbcribing to Unicorn Enterprises!"}).then(function(messages){  console.log(messages);});//[{//  result : "failed",//  error: {//    category : "authorization",//    code     : "number-access-denied",//    message  : "User ... does not have permission to use number +19195551211",//    details  : [//      {//        name  : "userId",//        value : "..."//      },//      {//        name  : "number",//        value : "+19195551211"//      }//    ],//  },//  message : {//    from : "+19195551211",//    to   : "+19195551213",//    text : "Thank you for susbcribing to Unicorn Enterprises!"//  }//},{//  result  : "accepted",//  message : {//    from : "+19195551212",//    to   : "+19195551214",//    text : "Thank you for susbcribing to Unicorn Enterprises!",//    id   : "..."//  }//}]
 ```
 <a name="Message+get"></a>
 
@@ -2886,33 +2465,7 @@ Gets a list of messages
 
 **Example**  
 ```js
-//Download the node sdk from ap.bandwidth.com/docs/helper-libraries/node-js
-//API credentials which can be found on your account page at https://catapult.inetwork.com/pages/login.jsf
-var userId = 'u-userid';  //{user_id}
-var token = 't-token'; //{token}
-var secret = 'secret'; //{secret}
-
-var Bandwidth = require('node-bandwidth');
-
-var client = new Bandwidth({
-	userId: userId,
-	apiToken: token,
-	apiSecret: secret
-});
-
-client.Message.list()
-.then(function (response) {
-	console.log(response.messages);
-	if(response.hasNextPage) {
-		return response.getNextPage();
-	}
-	else {
-		return {messages: []};
-	}
-})
-.then(function(response) {
-	console.log(response.messages);
-});
+//Download the node sdk from ap.bandwidth.com/docs/helper-libraries/node-js//API credentials which can be found on your account page at https://catapult.inetwork.com/pages/login.jsfvar userId = 'u-userid';  //{user_id}var token = 't-token'; //{token}var secret = 'secret'; //{secret}var Bandwidth = require('node-bandwidth');var client = new Bandwidth({	userId: userId,	apiToken: token,	apiSecret: secret});client.Message.list().then(function (response) {	console.log(response.messages);	if(response.hasNextPage) {		return response.getNextPage();	}	else {		return {messages: []};	}}).then(function(response) {	console.log(response.messages);});
 ```
 <a name="MessageListResponse"></a>
 
@@ -3419,7 +2972,7 @@ myApp = myApp.toString();
 <a name="BXMLResponse+call"></a>
 
 ### bxmlResponse.call(params, [callback]) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
-Create a new call to another phone number.
+OBSOLETE: Create a new call to another phone number.
 
 **Kind**: instance method of <code>[BXMLResponse](#BXMLResponse)</code>  
 **Returns**: <code>[BXMLResponse](#BXMLResponse)</code> - this, for chaining  
@@ -3450,7 +3003,7 @@ myApp = myApp.toString();
 <a name="BXMLResponse+conference"></a>
 
 ### bxmlResponse.conference(params) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
-Create a new conference call.
+OBSOLETE: Create a new conference call.
 
 **Kind**: instance method of <code>[BXMLResponse](#BXMLResponse)</code>  
 **Returns**: <code>[BXMLResponse](#BXMLResponse)</code> - this, for chaining.  
@@ -3528,8 +3081,8 @@ Records the call. At end of call, a call recording event is sent to the callback
 | [params.requestUrl] | <code>string</code> |  | URL to send event and request new BXML. |
 | [params.requestUrlTimeout] | <code>number</code> |  | Timeout, in ms, to wait for requestUrl response. |
 | [params.fileFormat] | <code>string</code> |  | The format in which to save the recording - mp3 or wav. |
-| [params.terminatingDigits] | <code>string</code> |  | One or more digits that will finish the recording. |
-| [params.maxDuration] | <code>number</code> | <code>300</code> | Time, in seconds, for max duration. Up to 3600 sec (1hr) |
+| [params.terminatingDigits] | <code>string</code> |  | OBSOLETE: One or more digits that will finish the recording. |
+| [params.maxDuration] | <code>number</code> | <code>300</code> | OBSOLETE: Time, in seconds, for max duration. Up to 3600 sec (1hr) |
 | [params.transcribe] | <code>boolean</code> | <code>false</code> | Boolean to indicate transcription of the recording. |
 | [params.transcribeCallbackUrl] | <code>string</code> |  | URL to send transcribed event. |
 
@@ -3562,7 +3115,7 @@ Redirects the current execution to run XML at another URL.
 <a name="BXMLResponse+sendMessage"></a>
 
 ### bxmlResponse.sendMessage(message, params) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
-Sends a text message.
+OBSOLETE: Sends a text message.
 
 **Kind**: instance method of <code>[BXMLResponse](#BXMLResponse)</code>  
 **Returns**: <code>[BXMLResponse](#BXMLResponse)</code> - this, for chaining.  
