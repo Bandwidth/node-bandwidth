@@ -62,6 +62,7 @@ Thumbs.db
 runTestsDebug.sh
 .mimosa/require/*
 logfile
+.vscode
 
 .nvmrc
 .vscode
