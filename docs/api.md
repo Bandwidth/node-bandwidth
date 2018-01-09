@@ -629,6 +629,7 @@ Search for available local or tollFree numbers and order them
 | [params.zip] | <code>String</code> | A 5-digit US ZIP code (only for local numbers) |
 | [params.areaCode] | <code>String</code> | A 3-digit telephone area code (only for local numbers) |
 | [params.localNumber] | <code>String</code> | First digits of a telephone number inside an area code for filtering the results (only for local numbers) |
+| [params.pattern] | <code>String</code> | A number pattern that may include letters, digits, and the following wildcard characters: ? - matches any single digit, * - matches zero or more digits |
 | [params.inLocalCallingArea] | <code>String</code> | Boolean value to indicate that the search for available numbers must consider overlayed areas. Only applied for localNumber searching. (only for local numbers) |
 | [params.quantity] | <code>String</code> | The maximum number of numbers to return (default 10, maximum 5000) |
 | callback | <code>function</code> | A callback with the list of ordered numbers |
@@ -3419,7 +3420,7 @@ myApp = myApp.toString();
 <a name="BXMLResponse+call"></a>
 
 ### bxmlResponse.call(params, [callback]) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
-Create a new call to another phone number.
+OBSOLETE: Create a new call to another phone number.
 
 **Kind**: instance method of <code>[BXMLResponse](#BXMLResponse)</code>  
 **Returns**: <code>[BXMLResponse](#BXMLResponse)</code> - this, for chaining  
@@ -3450,7 +3451,7 @@ myApp = myApp.toString();
 <a name="BXMLResponse+conference"></a>
 
 ### bxmlResponse.conference(params) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
-Create a new conference call.
+OBSOLETE: Create a new conference call.
 
 **Kind**: instance method of <code>[BXMLResponse](#BXMLResponse)</code>  
 **Returns**: <code>[BXMLResponse](#BXMLResponse)</code> - this, for chaining.  
@@ -3528,8 +3529,8 @@ Records the call. At end of call, a call recording event is sent to the callback
 | [params.requestUrl] | <code>string</code> |  | URL to send event and request new BXML. |
 | [params.requestUrlTimeout] | <code>number</code> |  | Timeout, in ms, to wait for requestUrl response. |
 | [params.fileFormat] | <code>string</code> |  | The format in which to save the recording - mp3 or wav. |
-| [params.terminatingDigits] | <code>string</code> |  | One or more digits that will finish the recording. |
-| [params.maxDuration] | <code>number</code> | <code>300</code> | Time, in seconds, for max duration. Up to 3600 sec (1hr) |
+| [params.terminatingDigits] | <code>string</code> |  | OBSOLETE: One or more digits that will finish the recording. |
+| [params.maxDuration] | <code>number</code> | <code>300</code> | OBSOLETE: Time, in seconds, for max duration. Up to 3600 sec (1hr) |
 | [params.transcribe] | <code>boolean</code> | <code>false</code> | Boolean to indicate transcription of the recording. |
 | [params.transcribeCallbackUrl] | <code>string</code> |  | URL to send transcribed event. |
 
@@ -3562,7 +3563,7 @@ Redirects the current execution to run XML at another URL.
 <a name="BXMLResponse+sendMessage"></a>
 
 ### bxmlResponse.sendMessage(message, params) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
-Sends a text message.
+OBSOLETE: Sends a text message.
 
 **Kind**: instance method of <code>[BXMLResponse](#BXMLResponse)</code>  
 **Returns**: <code>[BXMLResponse](#BXMLResponse)</code> - this, for chaining.  
