@@ -13,7 +13,8 @@
 		"build:browser-amd": "tsc -m amd --outFile dist/node-bandwidth.amd.js",
 		"build:browser-system":
 			"tsc -m system --outFile dist/node-bandwidth.system.js",
-		"build:browser-commonjs": "tsc -m commonjs --outDir dist/commonjs",
+		"build:browser-commonjs":
+			"tsc -m commonjs --outDir dist/node-bandwidth.commonjs",
 		"build": "xo && npm-run-all --parallel build:*"
 	},
 	"main": "dist/index.js",
