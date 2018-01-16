@@ -2,11 +2,16 @@
   "name": "node-bandwidth",
   "version": "3.0.0-alpha.1",
   "description": "NodeJS Client library for Bandwidth API",
+  "engines": {
+    "node": ">=8.9"
+  },
   "scripts": {
     "precommit": "pretty-quick --staged && xo --fix",
     "test": "ava",
     "lint": "xo",
     "build:node": "babel lib -d dist",
+    "build:browser":
+      "babel lib --out-file dist/node-bandwidth.js --source-maps",
     "build": "npm-run-all --parallel build:*"
   },
   "main": "dist/index.js",
