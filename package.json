@@ -1,0 +1,63 @@
+{
+  "name": "node-bandwidth",
+  "version": "3.0.0-alpha.1",
+  "description": "NodeJS Client library for Bandwidth API",
+  "scripts": {
+    "precommit": "pretty-quick --staged && xo --fix",
+    "test": "ava",
+    "lint": "xo",
+    "build:node": "babel lib -d dist",
+    "build": "npm-run-all --parallel build:*"
+  },
+  "main": "dist/index.js",
+  "browser": "dist/node-bandwidth.js",
+  "types": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Bandwidth/node-bandwidth.git"
+  },
+  "keywords": ["bandwidth", "catapult", "cpaas", "voice", "messaging"],
+  "author": "bandwidth",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Bandwidth/node-bandwidth/issues"
+  },
+  "homepage": "https://github.com/Bandwidth/node-bandwidth",
+  "devDependencies": {
+    "ava": "^0.24.0",
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "eslint-plugin-prettier": "^2.5.0",
+    "husky": "^0.14.3",
+    "npm-run-all": "^4.1.2",
+    "prettier": "^1.10.2",
+    "pretty-quick": "^1.2.1",
+    "xo": "^0.18.2"
+  },
+  "dependencies": {
+    "axios": "^0.17.1"
+  },
+  "xo": {
+    "plugins": ["prettier"],
+    "rules": {
+      "prettier/prettier": "error"
+    }
+  },
+  "babel": {
+    "presets": [
+      [
+        "env",
+        {
+          "targets": {
+            "browsers": ["last 2 versions"],
+            "node": "current"
+          }
+        }
+      ]
+    ]
+  },
+  "prettier": {
+    "singleQuote": true,
+    "bracketSpacing": false
+  }
+}
