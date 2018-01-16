@@ -9,12 +9,9 @@
     "precommit": "pretty-quick --staged && xo --fix",
     "test": "ava",
     "lint": "xo",
-    "build:node": "babel lib -d dist",
-    "build:browser":
-      "babel lib --out-file dist/node-bandwidth.js --source-maps",
-    "build": "npm-run-all --parallel build:*"
+    "build": ""
   },
-  "main": "dist/index.js",
+  "main": "lib/index.js",
   "browser": "dist/node-bandwidth.js",
   "types": "dist/index.d.ts",
   "repository": {
@@ -30,8 +27,6 @@
   "homepage": "https://github.com/Bandwidth/node-bandwidth",
   "devDependencies": {
     "ava": "^0.24.0",
-    "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
     "eslint-plugin-prettier": "^2.5.0",
     "husky": "^0.14.3",
     "npm-run-all": "^4.1.2",
@@ -47,19 +42,6 @@
     "rules": {
       "prettier/prettier": "error"
     }
-  },
-  "babel": {
-    "presets": [
-      [
-        "env",
-        {
-          "targets": {
-            "browsers": ["last 2 versions"],
-            "node": "current"
-          }
-        }
-      ]
-    ]
   },
   "prettier": {
     "singleQuote": true,
