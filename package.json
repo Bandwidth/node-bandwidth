@@ -11,7 +11,7 @@
 		"lint": "xo",
 		"build:node": "tsc -t es2017 -m commonjs",
 		"build:browser-amd":
-			"tsc -m amd --outFile dist/node-bandwidth.amd.js && node tools/prepare-global-browser-script.js",
+			"tsc -m amd --outFile dist/node-bandwidth.amd.js && node tools/prepare-global-browser-script.js && uglifyjs dist/node-bandwidth.js -c -m -o dist/node-bandwidth.min.js",
 		"build:browser-system":
 			"tsc -m system --outFile dist/node-bandwidth.system.js",
 		"build:browser-commonjs":
@@ -41,6 +41,7 @@
 		"prettier": "^1.10.2",
 		"pretty-quick": "^1.2.1",
 		"typescript": "^2.6.2",
+		"uglify-js": "^3.3.7",
 		"xo": "^0.18.2"
 	},
 	"dependencies": {
