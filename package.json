@@ -15,7 +15,8 @@
 			"tsc -m system --outFile dist/node-bandwidth.system.js",
 		"build:browser-commonjs":
 			"tsc -m commonjs --outDir dist/node-bandwidth.commonjs",
-		"build": "xo && npm-run-all --parallel build:*"
+		"build":
+			"xo && node tools/prepare-api-data.js && npm-run-all --parallel build:*"
 	},
 	"main": "dist/index.js",
 	"browser": "dist/commonjs/index.js",
