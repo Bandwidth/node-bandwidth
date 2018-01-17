@@ -10,7 +10,8 @@
 		"test": "ava",
 		"lint": "xo",
 		"build:node": "tsc -t es2017 -m commonjs",
-		"build:browser-amd": "tsc -m amd --outFile dist/node-bandwidth.amd.js",
+		"build:browser-amd":
+			"tsc -m amd --outFile dist/node-bandwidth.amd.js && node tools/prepare-global-browser-script.js",
 		"build:browser-system":
 			"tsc -m system --outFile dist/node-bandwidth.system.js",
 		"build:browser-commonjs":
