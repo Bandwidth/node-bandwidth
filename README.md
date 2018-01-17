@@ -1,7 +1,7 @@
 # node-bandwidth
 [![npm version](https://badge.fury.io/js/node-bandwidth.svg)](https://badge.fury.io/js/node-bandwidth)
-[![Build Status](https://travis-ci.org/bandwidthcom/node-bandwidth.svg?branch=master)](https://travis-ci.org/bandwidthcom/node-bandwidth)
-[![dependencies](https://david-dm.org/bandwidthcom/node-bandwidth.svg)](https://david-dm.org/bandwidthcom/node-bandwidth)
+[![Build Status](https://travis-ci.org/bandwidthcom/node-bandwidth.svg?branch=master)](https://travis-ci.org/bandwidth/node-bandwidth)
+[![dependencies](https://david-dm.org/bandwidthcom/node-bandwidth.svg)](https://david-dm.org/bandwidth/node-bandwidth)
 [![Known Vulnerabilities](https://snyk.io/package/npm/node-bandwidth/badge.svg)](https://snyk.io/package/npm/node-bandwidth)
 
 A Node.js client library for the [Bandwidth Application Platform](http://bandwidth.com/products/application-platform?utm_medium=social&utm_source=github&utm_campaign=dtolb&utm_content=_)
@@ -10,7 +10,7 @@ A Node.js client library for the [Bandwidth Application Platform](http://bandwid
 The Full API Reference is available either as an interactive site or as a single Markdown file:
 
 * [Site](http://dev.bandwidth.com/node-bandwidth/index.html).
-* [Single MD file](https://github.com/bandwidthcom/node-bandwidth/blob/master/docs/api.md)
+* [Single MD file](https://github.com/bandwidth/node-bandwidth/blob/master/docs/api.md)
 
 
 ## Installing the SDK
@@ -132,4 +132,4 @@ client.v2.Message.createMessagingApplication(dashboardAuth, {
 
 ## Providing feedback
 
-For current discussions on 2.0 please see the [2.0 issues section on GitHub](https://github.com/bandwidthcom/node-bandwidth/labels/2.0). To start a new topic on 2.0, please open an issue and use the `2.0` tag. Your feedback is greatly appreciated!
+For current discussions on 2.0 please see the [2.0 issues section on GitHub](https://github.com/bandwidth/node-bandwidth/labels/2.0). To start a new topic on 2.0, please open an issue and use the `2.0` tag. Your feedback is greatly appreciated!
