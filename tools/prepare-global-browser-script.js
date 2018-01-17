@@ -42,7 +42,7 @@ async function main() {
 			}
 			return window[name];
 		};
-		window.BandwidthApi =  require('index', {}).default;
+		window.bandwidth =  require('index', {}).default;
 	}
 
 })(function(define){
