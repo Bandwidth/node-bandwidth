@@ -5,10 +5,13 @@
 	"engines": {
 		"node": ">=8.9"
 	},
+	"files": ["dist/**/*", "lib/**/*", "*.json", "LICENSE"],
 	"scripts": {
-		"precommit": "pretty-quick --staged && xo --fix",
+		"precommit": "npm run format",
 		"test": "ava",
 		"lint": "xo",
+		"format": "pretty-quick --staged && xo --fix",
+		"prepare-api-data": "node tools/prepare-api-data.js",
 		"build:node": "tsc -t es2017 -m commonjs",
 		"build:browser-amd":
 			"tsc -m amd --outFile dist/node-bandwidth.amd.js && node tools/prepare-global-browser-script.js && uglifyjs dist/node-bandwidth.js -c -m -o dist/node-bandwidth.min.js",
@@ -17,7 +20,9 @@
 		"build:browser-commonjs":
 			"tsc -m commonjs --outDir dist/node-bandwidth.commonjs",
 		"build":
-			"xo && node tools/prepare-api-data.js && npm-run-all --parallel build:*"
+			"npm run lint && npm run prepare-api-data && npm-run-all --parallel build:*",
+		"install": "npm run prepare-api-data",
+		"prepack": "npm run build"
 	},
 	"main": "dist/index.js",
 	"browser": "dist/commonjs/index.js",
