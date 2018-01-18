@@ -11,6 +11,8 @@ info:
 tags:
   - name: Account
     description: The Account API allows you to retrieve your current balance, transaction list, account type and all elements related to your platform account.
+  - name: Applications
+    description: Applications allow you to receive incoming call and messaging events. Each application can contain unlimited phone numbers and at least one call back URL for both calls and messages.
 paths:
   /v1/users/{userId}/account:
     get:
@@ -59,21 +61,22 @@ paths:
             $ref: '#/components/schemas/AccountTransactionType'
         - name: page
           in: query
-          description: Limit the number of transactions that will be returned
+          description: Used for pagination to indicate the page requested for querying a list of transactions.
           schema:
             type: number
             format: int32
             default: 0
         - name: size
           in: query
-          description: Limit the number of transactions that will be returned
+          description: Used for pagination to indicate the size of each page requested for querying a list of transactions. 
           schema:
             type: number
             format: int32
             default: 25
+            maximum: 1000
         - name: number
           in: query
-          description: Limit the number of transactions that will be returned
+          description: Return only transactions that are from the specified number.
           schema:
             type: string
       responses:
@@ -85,6 +88,38 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/AccountTransaction'
+  /v1/users/{userId}/applications:
+    get:
+      tags:
+        - Applications
+      summary: Get a list of your applications.
+      operationId: list
+      description: Get a list of your applications.
+      parameters:
+        - name: page
+          in: query
+          description: Used for pagination to indicate the page requested for querying a list of applications.
+          schema:
+            type: number
+            format: int32
+            default: 0
+        - name: size
+          in: query
+          description: Used for pagination to indicate the size of each page requested for querying a list of applications.
+          schema:
+            type: number
+            format: int32
+            default: 25
+            maximum: 1000
+      responses:
+        '200':
+          description: list of user's applications
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Application'
 components:
   schemas:
     Account:
@@ -92,9 +127,11 @@ components:
       properties:
         balance:
           type: string
+          description: Your account balance in dollars, as a string; the currency symbol is not included.
           example: '538.37250'
         accountType:
           type: string
+          description: The type of account configured for your user.
           enum: 
             - pre-pay
             - post-pay
@@ -104,18 +141,23 @@ components:
       properties:
         id:
           type: string
+          description: The unique identifier for the transaction.
         time:
           type: string
           format: date-time
+          description: The time the transaction was processed.
         amount:
           type: string
           example: '0.1'
+          description: The transaction amount in dollars, as a string; the currency symbol is not included.
         type:
           $ref: '#/components/schemas/AccountTransactionType'
         units:
           type: string
+          description: The number of product units the transaction charged or credited.
         productType:
           type: string
+          description: The product the transaction was related to (not all transactions are related to a product).
           enum:
             - local-number-per-month
             - toll-free-number-per-month
@@ -131,6 +173,7 @@ components:
             - cnam-search
         number:
           type: string
+          description: The phone number the transaction was related to (not all transactions are related to a phone number).
     AccountTransactionType:
       type: string
       enum:
@@ -138,3 +181,41 @@ components:
         - payment
         - credit
         - auto-recharge
+      description: The type of transaction
+    Application:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the application
+        name:
+          type: string
+          description: A name you choose for this application.
+        incomingCallUrl:
+          type: string
+          description: A URL where call events will be sent for an inbound call. This is the endpoint where the Application Platform will send all call events. Either incomingCallUrl or incomingMessageUrl is required.
+        incomingCallUrlCallbackTimeout:
+          type: number
+          description: Determine how long should the platform wait for incomingCallUrl's response before timing out in milliseconds.
+        incomingCallFallbackUrl:
+          type: string
+          description: TThe URL used to send the callback event if the request to incomingCallUrl fails.
+        incomingMessageUrl:
+          type: string
+          description: The unique identifier for the application
+        incomingMessageUrlCallbackTimeout:
+          type: number
+          description: The unique identifier for the application
+        incomingMessageFallbackUrl:
+          type: string
+          description: The unique identifier for the application
+        callbackHttpMethod:  
+          type: string
+          description: 'Determine if the callback event should be sent via HTTP GET or HTTP POST. Values are "get" or "post", default: "post".'
+          enum:
+            - post
+            - get
+          default: post
+        autoAnswer:
+          type: boolean
+          description: The unique identifier for the application
