@@ -8,5 +8,33 @@ info:
   license:
     name: MIT
     url: 'https://opensource.org/licenses/MIT'
-tags:
 paths:
+  /v1/users/{userId}/account:
+    get:
+      summary: Get information about user account.
+      operationId: list
+      description: Get information about user account.
+      responses:
+        '200':
+          description: information about user account
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+components:
+  schemas:
+    Account:
+      type: object
+      required:
+        - balance
+        - accountType
+      properties:
+        balance:
+          type: string
+          example: '538.37250'
+        accountType:
+          type: string
+          enum: 
+            - pre-pay
+            - post-pay
+          example: pre-pay
