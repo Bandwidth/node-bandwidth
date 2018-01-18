@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   description: Bandwidth API specification
-  version: "3.0.0-alpha.1"
+  version: '3.0.0-alpha.1'
   title: Bandwidth API
   contact:
     email: openapi@bandwidth.com
