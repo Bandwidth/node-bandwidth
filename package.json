@@ -7,7 +7,7 @@
 	},
 	"files": ["dist/**/*", "lib/**/*", "*.json", "LICENSE"],
 	"scripts": {
-		"precommit": "npm run format",
+		"pre-commit": "npm run format",
 		"test": "ava",
 		"lint": "xo",
 		"format": "pretty-quick --staged && xo --fix",
@@ -42,6 +42,7 @@
 		"ava": "^0.24.0",
 		"eslint-plugin-prettier": "^2.5.0",
 		"husky": "^0.14.3",
+		"js-yaml": "^3.10.0",
 		"npm-run-all": "^4.1.2",
 		"prettier": "^1.10.2",
 		"pretty-quick": "^1.2.1",

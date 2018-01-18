@@ -1,18 +1,22 @@
 const fs = require('fs');
 const util = require('util');
-const openapi = require('../openapi.json');
+const yaml = require('js-yaml');
 const pack = require('../package.json');
 
 const writeFile = util.promisify(fs.writeFile);
+const readFile = util.promisify(fs.readFile);
 
 async function main() {
+	const openApiText = await readFile('openapi.yml', 'utf-8');
+	const openapi = yaml.safeLoad(openApiText);
 	const apiData = {
 		name: pack.name,
-		version: pack.version || openapi.version
+		version: pack.version || openapi.info.version
 	};
 	await writeFile(
 		'./lib/api-data.js',
-		`export default ${JSON.stringify(apiData, null, 2)};`,
+		`// Generated automatically. Don't edit this file.
+export default ${JSON.stringify(apiData, null, 2)};`,
 		'utf-8'
 	);
 }

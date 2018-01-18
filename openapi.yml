@@ -1,0 +1,12 @@
+openapi: 3.0.0
+info:
+  description: NodeJS Client library for Bandwidth API
+  version: "3.0.0-alpha.1"
+  title: Bandwidth API
+  contact:
+    email: openapi@bandwidth.com
+  license:
+    name: MIT
+    url: 'https://opensource.org/licenses/MIT'
+tags:
+paths:
