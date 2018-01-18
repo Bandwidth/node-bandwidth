@@ -12,7 +12,7 @@ paths:
   /v1/users/{userId}/account:
     get:
       summary: Get information about user account.
-      operationId: list
+      operationId: get
       description: Get information about user account.
       responses:
         '200':
@@ -21,13 +21,67 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Account'
+  /v1/users/{userId}/account/transactions:
+    get:
+      summary: Get the transactions from the user's account.
+      operationId: getTransactions
+      description: Get the transactions from the user's account.
+      parameters:
+        - name: maxItems
+          in: query
+          description: Limit the number of transactions that will be returned
+          schema:
+            type: number
+            format: int32
+        - name: toDate
+          in: query
+          description: Return only transactions that are newer than the parameter
+          schema:
+            type: string
+            format: date-time
+        - name: fromDate
+          in: query
+          description: Return only transactions that are older than the parameter
+          schema:
+            type: string
+            format: date-time
+        - name: type
+          in: query
+          description: Return only transactions that are this type.
+          schema:
+            $ref: '#/components/schemas/AccountTransactionType'
+        - name: page
+          in: query
+          description: Limit the number of transactions that will be returned
+          schema:
+            type: number
+            format: int32
+            default: 0
+        - name: size
+          in: query
+          description: Limit the number of transactions that will be returned
+          schema:
+            type: number
+            format: int32
+            default: 25
+        - name: number
+          in: query
+          description: Limit the number of transactions that will be returned
+          schema:
+            type: string
+      responses:
+        '200':
+          description: information about user's account transactions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AccountTransaction'
 components:
   schemas:
     Account:
       type: object
-      required:
-        - balance
-        - accountType
       properties:
         balance:
           type: string
@@ -38,3 +92,41 @@ components:
             - pre-pay
             - post-pay
           example: pre-pay
+    AccountTransaction:
+      type: object
+      properties:
+        id:
+          type: string
+        time:
+          type: string
+          format: date-time
+        amount:
+          type: string
+        type:
+          $ref: '#/components/schemas/AccountTransactionType'
+        units:
+          type: string
+        productType:
+          type: string
+          enum:
+            - local-number-per-month
+            - toll-free-number-per-month
+            - sms-in
+            - sms-out
+            - mms-in
+            - mms-out
+            - call-in
+            - call-out
+            - sip-call-in
+            - sip-call-out
+            - transcription
+            - cnam-search
+        number:
+          type: string
+    AccountTransactionType:
+      type: string
+      enum:
+        - charge
+        - payment
+        - credit
+        - auto-recharge
