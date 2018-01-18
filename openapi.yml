@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  description: NodeJS Client library for Bandwidth API
+  description: Bandwidth API specification
   version: "3.0.0-alpha.1"
   title: Bandwidth API
   contact:
@@ -8,9 +8,14 @@ info:
   license:
     name: MIT
     url: 'https://opensource.org/licenses/MIT'
+tags:
+  - name: Account
+    description: The Account API allows you to retrieve your current balance, transaction list, account type and all elements related to your platform account.
 paths:
   /v1/users/{userId}/account:
     get:
+      tags:
+        - Account
       summary: Get information about user account.
       operationId: get
       description: Get information about user account.
@@ -23,6 +28,8 @@ paths:
                 $ref: '#/components/schemas/Account'
   /v1/users/{userId}/account/transactions:
     get:
+      tags:
+        - Account
       summary: Get the transactions from the user's account.
       operationId: getTransactions
       description: Get the transactions from the user's account.
