@@ -52,7 +52,8 @@
 		"xo": "^0.18.2"
 	},
 	"dependencies": {
-		"axios": "^0.17.1"
+		"axios": "^0.17.1",
+		"joi": "^13.1.0"
 	},
 	"xo": {
 		"plugins": ["prettier"],

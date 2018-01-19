@@ -16,7 +16,7 @@ function prepareApiMethodData(method, path, data) {
 	const contentType = Object.keys(requestBody)[0];
 	const body = (requestBody[contentType] || {}).schema || {};
 	return {
-		method,
+		method: method.toUpperCase(),
 		path,
 		query,
 		body,
@@ -129,7 +129,7 @@ async function main() {
 	await writeFile(
 		'./lib/api-data.js',
 		`// Generated automatically. Don't edit this file.
-import Joi from {joi};
+import * as Joi from 'joi';
 
 export default {
 	name: '${pack.name}',
