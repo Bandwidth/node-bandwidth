@@ -12,7 +12,7 @@ tags:
   - name: Account
     description: The Account API allows you to retrieve your current balance, transaction list, account type and all elements related to your platform account.
   - name: Applications
-    description: Applications allow you to receive incoming call and messaging events. Each application can contain unlimited phone numbers and at least one call back URL for both calls and messages.
+    description: Applications allow you to receive incoming call and messaging events.
 paths:
   /v1/users/{userId}/account:
     get:
@@ -131,7 +131,40 @@ paths:
       responses:
         '201':
           $ref: '#/components/responses/Created'
-
+  /v1/users/{userId}/applications/{id}:
+    get:
+      tags:
+        - Applications
+      summary: Gets information about one of your applications.
+      operationId: get
+      description: Gets information about one of your applications. No query parameters are supported.
+      responses:
+        '200':
+          description: Application's data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Application'
+    post:
+      tags:
+        - Applications
+      summary: Makes changes to an application.
+      operationId: update
+      description: Makes changes to an application. 
+      requestBody:
+        $ref: '#/components/requestBodies/CreateApplicationData'
+      responses:
+        '200':
+          $ref: '#/components/responses/Empty'
+    delete:
+      tags:
+        - Applications
+      summary: Permanently deletes an application.
+      operationId: delete
+      description: Permanently deletes an application. 
+      responses:
+        '200':
+          $ref: '#/components/responses/Empty'      
 components:
   schemas:
     Account:
@@ -282,3 +315,5 @@ components:
         Location: 
           schema:
             type: string
+    Empty:
+      description: Done
