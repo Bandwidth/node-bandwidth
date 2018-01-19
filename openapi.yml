@@ -40,7 +40,7 @@ paths:
           in: query
           description: Limit the number of transactions that will be returned
           schema:
-            type: number
+            type: integer
             format: int32
         - name: toDate
           in: query
@@ -63,14 +63,14 @@ paths:
           in: query
           description: Used for pagination to indicate the page requested for querying a list of transactions.
           schema:
-            type: number
+            type: integer
             format: int32
             default: 0
         - name: size
           in: query
           description: Used for pagination to indicate the size of each page requested for querying a list of transactions. 
           schema:
-            type: number
+            type: integer
             format: int32
             default: 25
             maximum: 1000
@@ -100,14 +100,14 @@ paths:
           in: query
           description: Used for pagination to indicate the page requested for querying a list of applications.
           schema:
-            type: number
+            type: integer
             format: int32
             default: 0
         - name: size
           in: query
           description: Used for pagination to indicate the size of each page requested for querying a list of applications.
           schema:
-            type: number
+            type: integer
             format: int32
             default: 25
             maximum: 1000
@@ -240,7 +240,7 @@ components:
           type: string
           description: A URL where call events will be sent for an inbound call. This is the endpoint where the Application Platform will send all call events. Either incomingCallUrl or incomingMessageUrl is required.
         incomingCallUrlCallbackTimeout:
-          type: number
+          type: integer
           description: Determine how long should the platform wait for incomingCallUrl's response before timing out in milliseconds.
         incomingCallFallbackUrl:
           type: string
@@ -249,7 +249,7 @@ components:
           type: string
           description: The unique identifier for the application
         incomingMessageUrlCallbackTimeout:
-          type: number
+          type: integer
           description: The unique identifier for the application
         incomingMessageFallbackUrl:
           type: string
@@ -280,7 +280,7 @@ components:
                 type: string
                 description: A URL where call events will be sent for an inbound call. This is the endpoint where the Application Platform will send all call events. Either incomingCallUrl or incomingMessageUrl is required.
               incomingCallUrlCallbackTimeout:
-                type: number
+                type: integer
                 description: Determine how long should the platform wait for incomingCallUrl's response before timing out in milliseconds.
                 default: 10000
               incomingCallFallbackUrl:
@@ -290,7 +290,7 @@ components:
                 type: string
                 description: The unique identifier for the application
               incomingMessageUrlCallbackTimeout:
-                type: number
+                type: integer
                 description: The unique identifier for the application
                 default: 10000
               incomingMessageFallbackUrl:
