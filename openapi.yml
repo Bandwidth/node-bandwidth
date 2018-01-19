@@ -120,6 +120,18 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Application'
+    post:
+      tags:
+        - Applications
+      summary: Creates an application that can handle calls and messages for one of your phone number.
+      operationId: create
+      description: Creates an application that can handle calls and messages for one of your phone number. Many phone numbers can share an application. For more information on how to integrate voice and messaging in your application, visit the [FAQ](http://dev.bandwidth.com/faq/#general)
+      requestBody:
+        $ref: '#/components/requestBodies/CreateApplicationData'
+      responses:
+        '201':
+          $ref: '#/components/responses/Created'
+
 components:
   schemas:
     Account:
@@ -199,7 +211,7 @@ components:
           description: Determine how long should the platform wait for incomingCallUrl's response before timing out in milliseconds.
         incomingCallFallbackUrl:
           type: string
-          description: TThe URL used to send the callback event if the request to incomingCallUrl fails.
+          description: The URL used to send the callback event if the request to incomingCallUrl fails.
         incomingMessageUrl:
           type: string
           description: The unique identifier for the application
@@ -218,4 +230,55 @@ components:
           default: post
         autoAnswer:
           type: boolean
-          description: The unique identifier for the application
+          description: Determines whether or not an incoming call should be automatically answered.
+  requestBodies:
+    CreateApplicationData:
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - name
+            properties:
+              name:
+                type: string
+                description: A name you choose for this application.
+              incomingCallUrl:
+                type: string
+                description: A URL where call events will be sent for an inbound call. This is the endpoint where the Application Platform will send all call events. Either incomingCallUrl or incomingMessageUrl is required.
+              incomingCallUrlCallbackTimeout:
+                type: number
+                description: Determine how long should the platform wait for incomingCallUrl's response before timing out in milliseconds.
+                default: 10000
+              incomingCallFallbackUrl:
+                type: string
+                description: The URL used to send the callback event if the request to incomingCallUrl fails.
+              incomingMessageUrl:
+                type: string
+                description: The unique identifier for the application
+              incomingMessageUrlCallbackTimeout:
+                type: number
+                description: The unique identifier for the application
+                default: 10000
+              incomingMessageFallbackUrl:
+                type: string
+                description: The unique identifier for the application
+              callbackHttpMethod:  
+                type: string
+                description: 'Determine if the callback event should be sent via HTTP GET or HTTP POST. Values are "get" or "post", default: "post".'
+                enum:
+                  - post
+                  - get
+                default: post
+              autoAnswer:
+                type: boolean
+                default: true
+                description: Determines whether or not an incoming call should be automatically answered.
+
+  responses:
+    Created:
+      description: Created
+      headers:
+        Location: 
+          schema:
+            type: string
