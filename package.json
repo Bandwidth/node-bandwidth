@@ -25,7 +25,11 @@
 		"prepack": "npm run build"
 	},
 	"main": "dist/index.js",
-	"browser": "dist/commonjs/index.js",
+	"browser": {
+		"dist/index.js": "dist/commonjs/index.js",
+		"index.js": "dist/commonjs/index.js",
+		"joi": "joi-browser"
+	},
 	"types": "dist/index.d.ts",
 	"repository": {
 		"type": "git",
