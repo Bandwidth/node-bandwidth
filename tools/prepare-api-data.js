@@ -103,6 +103,11 @@ function printValidator(schema, required) {
 	return code;
 }
 
+function printBodyKeys(schema) {
+	const keys = Object.keys(schema.properties || {});
+	return `new Set([${keys.map(k => `'${k}'`).join(', ')}])`;
+}
+
 function printApiMethod(name, data) {
 	return `\t\t\t${name}: {
 		\t\tmethod: '${data.method}',
@@ -111,6 +116,7 @@ function printApiMethod(name, data) {
 	}${data.lazyList ? `\n\t\t\t\tlazyList: ${data.lazyList},` : ''}
 		\t\tquery: ${printValidator(data.query)},
 		\t\tbody: ${printValidator(data.body)},
+		\t\tbodyKeys: ${printBodyKeys(data.body)}
 	\t\t}`;
 }
 

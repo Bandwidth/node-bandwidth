@@ -21,6 +21,7 @@
 			"tsc -m commonjs --outDir dist/node-bandwidth.commonjs",
 		"build":
 			"npm run lint && npm run prepare-api-data && npm-run-all --parallel build:*",
+		"watch": "tsc -t es2017 -m commonjs -w",
 		"install": "npm run prepare-api-data",
 		"prepack": "npm run build"
 	},
@@ -48,9 +49,11 @@
 		"husky": "^0.14.3",
 		"js-yaml": "^3.10.0",
 		"json-refs": "^3.0.3",
+		"nock": "^9.1.6",
 		"npm-run-all": "^4.1.2",
 		"prettier": "^1.10.2",
 		"pretty-quick": "^1.2.1",
+		"testdouble": "^3.3.3",
 		"typescript": "^2.6.2",
 		"uglify-js": "^3.3.7",
 		"xo": "^0.18.2"
