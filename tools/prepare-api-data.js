@@ -20,10 +20,7 @@ function prepareApiMethodData(method, path, data) {
 		path,
 		query,
 		body,
-		contentType,
-		lazyList: Boolean(
-			method === 'get' && query.properties.page && query.properties.size
-		)
+		contentType
 	};
 }
 function prepareApiData(openapi) {
@@ -113,7 +110,7 @@ function printApiMethod(name, data) {
 		\t\tmethod: '${data.method}',
 		\t\tpath: '${data.path}',${
 		data.contentType ? `\n\t\t\t\tcontentType: '${data.contentType}',` : ''
-	}${data.lazyList ? `\n\t\t\t\tlazyList: ${data.lazyList},` : ''}
+	}
 		\t\tquery: ${printValidator(data.query)},
 		\t\tbody: ${printValidator(data.body)},
 		\t\tbodyKeys: ${printBodyKeys(data.body)}
