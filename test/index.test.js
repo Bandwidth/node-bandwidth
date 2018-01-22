@@ -64,7 +64,6 @@ test('getBandwidthApi() should return return api instance', t => {
 	const api = getBandwidthApi({apiToken: 'token', apiSecret: 'secret'});
 	t.is(api.options.apiToken, 'token');
 	t.is(api.options.apiSecret, 'secret');
-	t.truthy(api.axios);
 });
 
 test('BandwidthApi should provide access to api objects', t => {
