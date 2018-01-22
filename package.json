@@ -7,7 +7,7 @@
 	},
 	"files": ["dist/**/*", "lib/**/*", "*.json", "LICENSE"],
 	"scripts": {
-		"precommit": "npm run format",
+		"precommit1": "npm run format",
 		"test": "ava",
 		"lint": "xo",
 		"format": "pretty-quick --staged && xo --fix",
