@@ -64,6 +64,9 @@
 	},
 	"xo": {
 		"plugins": ["prettier"],
+		"igrores": [
+			"lib/lazy-iterator.js"
+		],
 		"rules": {
 			"prettier/prettier": "error"
 		}
