@@ -8,7 +8,7 @@
 	"files": ["dist/**/*", "lib/**/*", "*.json", "LICENSE"],
 	"scripts": {
 		"precommit": "npm run format",
-		"test": "ava",
+		"test": "node --harmony node_modules/ava/cli.js",
 		"lint": "xo",
 		"format": "pretty-quick --staged && xo --fix",
 		"prepare-api-data": "node tools/prepare-api-data.js",
@@ -19,8 +19,7 @@
 			"tsc -m system --outFile dist/node-bandwidth.system.js",
 		"build:browser-commonjs":
 			"tsc -m commonjs --outDir dist/node-bandwidth.commonjs",
-		"build":
-			"npm run lint && npm run prepare-api-data && npm-run-all --parallel build:*",
+		"build": "npm run prepare-api-data && npm-run-all --parallel build:*",
 		"watch": "tsc -t es2017 -m commonjs -w",
 		"install": "npm run prepare-api-data",
 		"prepack": "npm run build"
@@ -45,6 +44,8 @@
 	"homepage": "https://github.com/Bandwidth/node-bandwidth",
 	"devDependencies": {
 		"ava": "^0.24.0",
+		"babel-preset-es2017": "^6.24.1",
+		"babel-preset-stage-3": "^6.24.1",
 		"eslint-plugin-prettier": "^2.5.0",
 		"husky": "^0.14.3",
 		"js-yaml": "^3.10.0",
@@ -64,7 +65,7 @@
 	},
 	"xo": {
 		"plugins": ["prettier"],
-		"ignores": ["lib/lazy-iterator.js"],
+		"ignores": ["lib/lazy-iterator.js", "test/lazy-iterator.test.js"],
 		"rules": {
 			"prettier/prettier": "error"
 		}
@@ -73,5 +74,10 @@
 		"singleQuote": true,
 		"bracketSpacing": false,
 		"useTabs": true
+	},
+	"ava": {
+		"babel": {
+			"presets": ["@ava/transform-test-files", "@ava/stage-4", "stage-3"]
+		}
 	}
 }

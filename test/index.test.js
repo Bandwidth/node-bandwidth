@@ -36,6 +36,13 @@ const apiData = {
 				query: Joi.any(),
 				body: Joi.any(),
 				bodyKeys: new Set([])
+			},
+			lazyList: {
+				method: 'GET',
+				path: '/lazy-list',
+				query: Joi.any(),
+				body: Joi.any(),
+				bodyKeys: new Set([])
 			}
 		}
 	}
@@ -53,7 +60,11 @@ nock('http://fakeserver')
 	.get('/error')
 	.reply(400, '')
 	.get('/test2?param1=param1&param2=100')
-	.reply(200, {result: true});
+	.reply(200, {result: true})
+	.get('/lazy-list')
+	.reply(200, [{id: '1'}, {id: '2'}], {
+		Link: `<http://fakeserver/lazy-list?size=25&page=0>; rel="first",<http://fakeserver/lazy-list?size=25&page=1>; rel="next",<http://fakeserver/lazy-list?size=25&page=1>; rel="last"`
+	});
 
 test('It should return factory function', t => {
 	t.true(util.isFunction(getBandwidthApi));
@@ -118,4 +129,14 @@ test('Action of BandwidthApi should handle query params', async t => {
 	});
 	const data = await api.Test.action2({param1: 'param1', param2: 100});
 	t.deepEqual(data, {result: true});
+});
+
+test('BandwidthApi should handle lazy list actions', async t => {
+	const api = getBandwidthApi({
+		baseUrl: 'http://fakeserver',
+		apiToken: 'token',
+		apiSecret: 'secret'
+	});
+	const generator = await api.Test.lazyList();
+	t.true(util.isFunction(generator.next));
 });
