@@ -1,6 +1,7 @@
 const fs = require('fs');
 const util = require('util');
 const yaml = require('js-yaml');
+const _ = require('lodash');
 const {resolveRefs} = require('json-refs');
 const pack = require('../package.json');
 
@@ -49,7 +50,7 @@ function printValidator(schema, required) {
 			code = `Joi.object().keys({${Object.keys(schema.properties)
 				.map(
 					p =>
-						`${p}: ${printValidator(
+						`${_.camelCase(p)}: ${printValidator(
 							schema.properties[p],
 							(schema.required || []).indexOf(p) >= 0
 						)}`
@@ -102,11 +103,11 @@ function printValidator(schema, required) {
 
 function printBodyKeys(schema) {
 	const keys = Object.keys(schema.properties || {});
-	return `new Set([${keys.map(k => `'${k}'`).join(', ')}])`;
+	return `new Set([${keys.map(k => `'${_.camelCase(k)}'`).join(', ')}])`;
 }
 
 function printApiMethod(name, data) {
-	return `\t\t\t${name}: {
+	return `\t\t\t${_.camelCase(name)}: {
 		\t\tmethod: '${data.method}',
 		\t\tpath: '${data.path}',${
 		data.contentType ? `\n\t\t\t\tcontentType: '${data.contentType}',` : ''
@@ -118,7 +119,7 @@ function printApiMethod(name, data) {
 }
 
 function printApiObject(name, data) {
-	return `\t\t${name}: {
+	return `\t\t${_.upperFirst(name)}: {
 ${Object.keys(data)
 		.map(m => printApiMethod(m, data[m]))
 		.join(',\n')}
