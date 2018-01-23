@@ -8,9 +8,9 @@
 	"files": ["dist/**/*", "lib/**/*", "*.json", "LICENSE"],
 	"scripts": {
 		"precommit": "npm run format",
-		"test": "npm run build:node && node --harmony node_modules/ava/cli.js",
+		"test": "node --harmony node_modules/ava/cli.js",
 		"test:coverage": "nyc npm test",
-		"test:ci": "npm run lint && npm run test:coverage",
+		"test:ci": "npm run build:node && npm run lint && npm run test:coverage",
 		"lint": "xo",
 		"format": "pretty-quick --staged && xo --fix",
 		"prepare-api-data": "node tools/prepare-api-data.js",
