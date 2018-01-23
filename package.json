@@ -7,7 +7,7 @@
 	},
 	"files": ["dist/**/*", "lib/**/*", "*.json", "LICENSE"],
 	"scripts": {
-		"precommit1": "npm run format",
+		"precommit": "npm run format",
 		"test": "ava",
 		"lint": "xo",
 		"format": "pretty-quick --staged && xo --fix",
@@ -64,9 +64,7 @@
 	},
 	"xo": {
 		"plugins": ["prettier"],
-		"igrores": [
-			"lib/lazy-iterator.js"
-		],
+		"ignores": ["lib/lazy-iterator.js"],
 		"rules": {
 			"prettier/prettier": "error"
 		}
