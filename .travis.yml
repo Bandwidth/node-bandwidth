@@ -2,7 +2,7 @@ language: node_js
 node_js:
 - '9'
 - '8.9'
-script: npm test:ci
+script: npm run test:ci
 after_success: bash ./deploy.sh
 env:
   global:
