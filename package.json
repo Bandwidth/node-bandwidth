@@ -3,7 +3,7 @@
 	"version": "3.0.0-alpha.1",
 	"description": "NodeJS Client library for Bandwidth API",
 	"engines": {
-		"node": ">=8.9"
+		"node": ">=9.0"
 	},
 	"files": ["dist/**/*", "lib/**/*", "*.json", "LICENSE"],
 	"scripts": {
