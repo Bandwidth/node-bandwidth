@@ -66,5 +66,6 @@ logfile
 
 .nvmrc
 .vscode
+.nyc_output
 
 /lib/api-data.js

@@ -8,7 +8,9 @@
 	"files": ["dist/**/*", "lib/**/*", "*.json", "LICENSE"],
 	"scripts": {
 		"precommit": "npm run format",
-		"test": "node --harmony node_modules/ava/cli.js",
+		"test": "npm run build:node && node --harmony node_modules/ava/cli.js",
+		"test:coverage": "nyc npm test",
+		"test:ci": "npm run lint && npm run test:coverage",
 		"lint": "xo",
 		"format": "pretty-quick --staged && xo --fix",
 		"prepare-api-data": "node tools/prepare-api-data.js",
@@ -52,6 +54,7 @@
 		"json-refs": "^3.0.3",
 		"nock": "^9.1.6",
 		"npm-run-all": "^4.1.2",
+		"nyc": "^11.4.1",
 		"prettier": "^1.10.2",
 		"pretty-quick": "^1.2.1",
 		"testdouble": "^3.3.3",
@@ -79,5 +82,8 @@
 		"babel": {
 			"presets": ["@ava/transform-test-files", "@ava/stage-4", "stage-3"]
 		}
+	},
+	"nyc": {
+		"exclude": ["tools", "test"]
 	}
 }
