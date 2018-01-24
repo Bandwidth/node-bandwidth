@@ -4,44 +4,10 @@ const yaml = require('js-yaml');
 const _ = require('lodash');
 const {resolveRefs} = require('json-refs');
 const pack = require('../package.json');
+const prepareApiData = require('./prepare');
 
 const writeFile = util.promisify(fs.writeFile);
 const readFile = util.promisify(fs.readFile);
-
-function prepareApiMethodData(method, path, data) {
-	const query = {type: 'object', properties: {}};
-	(data.parameters || []).filter(p => p.in === 'query').forEach(p => {
-		query.properties[p.name] = p.schema;
-	});
-	const requestBody = (data.requestBody || {}).content || {};
-	const contentType = Object.keys(requestBody)[0];
-	const body = (requestBody[contentType] || {}).schema || {};
-	return {
-		method: method.toUpperCase(),
-		path,
-		query,
-		body,
-		contentType
-	};
-}
-function prepareApiData(openapi) {
-	const apiData = {};
-	Object.keys(openapi.paths).forEach(path => {
-		const methods = openapi.paths[path];
-		Object.keys(methods).forEach(method => {
-			const data = methods[method];
-			data.tags.forEach(tag => {
-				apiData[tag] = apiData[tag] || {};
-				apiData[tag][data.operationId] = prepareApiMethodData(
-					method,
-					path,
-					data
-				);
-			});
-		});
-	});
-	return apiData;
-}
 
 function printValidator(schema, required) {
 	let code = '';
@@ -107,6 +73,9 @@ function printBodyKeys(schema) {
 }
 
 function printApiMethod(name, data) {
+	if (name.startsWith('_')) {
+		return '';
+	}
 	return `\t\t\t${_.camelCase(name)}: {
 		\t\tmethod: '${data.method}',
 		\t\tpath: '${data.path}',${
