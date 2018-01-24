@@ -1,7 +1,7 @@
 import util from 'util';
 import test from 'ava';
 import td from 'testdouble';
-import * as Joi from 'joi';
+import Joi from 'joi';
 import nock from 'nock';
 
 const apiData = {
