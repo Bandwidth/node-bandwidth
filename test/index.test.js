@@ -120,8 +120,8 @@ test('Action of BandwidthApi should make http request and return promise', async
 	});
 	const promise = api.Test.action({test: 'test'});
 	t.true(util.isFunction(promise.then));
-	const d = await promise;
-	t.is(d.id, 'id');
+	const id = await promise;
+	t.is(id, 'id');
 });
 
 test('Action of BandwidthApi should make http request and return promise (withou location header)', async t => {

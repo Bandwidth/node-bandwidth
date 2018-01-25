@@ -102,7 +102,7 @@ async function main() {
 	await writeFile(
 		'./lib/api-data.js',
 		`// Generated automatically. Don't edit this file.
-import Joi from 'joi';
+import * as Joi from 'joi';
 
 export default {
 	name: '${pack.name}',
