@@ -10,11 +10,61 @@ const readFile = util.promisify(fs.readFile);
 
 const types = [];
 
+function findEmbededTypes(prefix, schema) {
+	if (schema.type === 'object') {
+		Object.keys(schema.properties).forEach(k =>
+			findEmbededTypes(`${prefix}${_.upperFirst(k)}`, schema.properties[k])
+		);
+		types.push({type: prefix, schema});
+	}
+}
+
+function printProperties(prefix, properties) {
+	return Object.keys(properties)
+		.map(k => {
+			const schema = properties[k];
+			let text = `\t// ${schema.description || _.upperFirst(k)}\n`;
+			switch (schema.type) {
+				case 'object':
+					text += `\t${k}: ${prefix}${_.upperFirst(k)}`;
+					break;
+				case 'integer':
+				case 'number':
+					text += `\t${k}: number`;
+					break;
+				case 'boolean':
+					text += `\t${k}: boolean`;
+					break;
+				case 'string':
+					if ((schema.enum || []).length > 0) {
+						text += `\t${k}: ${schema.enum.map(e => `'${e}'`).join(' | ')}`;
+					} else {
+						text += `\t${k}: string`;
+						if ((schema.format || '').startsWith('date')) {
+							text += ' | Date';
+						}
+					}
+					break;
+				default:
+					text += `\t${k}: any`;
+					break;
+			}
+			text += ';';
+			return text;
+		})
+		.join('\n\n');
+}
+
 function printTypes() {
+	types.forEach(({type, schema}) => {
+		Object.keys(schema.properties).forEach(k => {
+			findEmbededTypes(`${type}${_.upperFirst(k)}`, schema.properties[k]);
+		});
+	});
 	return types
 		.map(
-			({type}) => `interface ${type} {
-
+			({type, schema}) => `interface ${type} {
+${printProperties(type, schema.properties)}
 }`
 		)
 		.join('\n\n');
@@ -46,7 +96,9 @@ function getOutputTypes(prefix, data, {properties}) {
 			schema = schema.items;
 			isArray = true;
 		}
-		const typeName = `${prefix}${r.status}`;
+		const typeName = `${prefix}${r.status === '200' ? '' : r.status}${
+			isArray ? 'Item' : ''
+		}`;
 		outputTypes.push(`${typeName}${isArray ? '[]' : ''}`);
 		types.push({type: typeName, schema});
 	});
@@ -56,7 +108,7 @@ function getOutputTypes(prefix, data, {properties}) {
 			properties.size &&
 			data._responses.filter(r => r.status === '200' && r.schema)[0]
 		) {
-			outputTypes.push(`AsyncIterator<${prefix}200>`);
+			outputTypes.push(`AsyncIterator<${prefix}>`);
 		}
 		return outputTypes.join(' | ');
 	}
