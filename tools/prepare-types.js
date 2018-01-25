@@ -63,7 +63,7 @@ function printTypes() {
 	});
 	return types
 		.map(
-			({type, schema}) => `interface ${type} {
+			({type, schema}) => `export interface ${type} {
 ${printProperties(type, schema.properties)}
 }`
 		)
@@ -102,6 +102,13 @@ function getOutputTypes(prefix, data, {properties}) {
 		outputTypes.push(`${typeName}${isArray ? '[]' : ''}`);
 		types.push({type: typeName, schema});
 	});
+	if (
+		data._responses.filter(
+			r => r.status === '201' && r.headers && r.headers.Location
+		)[0]
+	) {
+		return 'string'; // Id of created object
+	}
 	if (outputTypes.length > 0) {
 		if (
 			properties.page &&
@@ -148,7 +155,7 @@ function printApiMethod(apiName, name, data) {
 
 function printApiTypes(name, data) {
 	name = _.upperFirst(name);
-	return `interface ${name} {
+	return `export interface ${name} {
 ${Object.keys(data)
 		.filter(m => !m.startsWith('_'))
 		.map(m => printApiMethod(name, m, data[m]))
@@ -163,7 +170,8 @@ async function main() {
 	);
 	await writeFile(
 		'./dist/index.d.ts',
-		`${Object.keys(apiData)
+		`/// <reference path="axios/index.d.ts" />
+${Object.keys(apiData)
 			.map(o => printApiTypes(o, apiData[o]))
 			.join('\n\n')}
 
@@ -186,22 +194,42 @@ export interface BandwidthApiOptions {
 	apiSecret: string;
 }
 
-export declare class UnexpectedResponseError {
-	constructor(message: string, status: number);
+export interface UnexpectedResponseError {
+	// Error message
 	message: string;
+
+	// Http status code
 	status: number;
 }
 
-export declare class RateLimitError extends UnexpectedResponseError {
-	constructor(message: string, status: number, limitReset: string);
+export interface RateLimitError {
+	// Error message
 	message: string;
+
+	// Http status code
 	status: number;
+
+	// Value of header X-RateLimit-Reset
 	limitReset: string;
 }
 
-export default interface GetBandwidthApi {
-	(options: BandwidthApiOptions): BandwidthApi;
+export interface UnexpectedResponseErrorStatic {
+	new (message: string, status: number): UnexpectedResponseError;
 }
+
+export interface RateLimitErrorStatic {
+	new (message: string, status: number, limitReset: string): RateLimitError;
+}
+
+export interface GetBandwidthApiStatic {
+	(options: BandwidthApiOptions): BandwidthApi;
+	UnexpectedResponseError: UnexpectedResponseErrorStatic;
+	RateLimitError: RateLimitErrorStatic;
+}
+
+declare const getBandwidthApi: GetBandwidthApiStatic;
+
+export default getBandwidthApi;
 `,
 		'utf-8'
 	);

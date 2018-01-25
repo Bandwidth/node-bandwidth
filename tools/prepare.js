@@ -44,7 +44,8 @@ function prepareApiData(openapi) {
 					return {
 						status,
 						description: response.description,
-						schema: getFirstSchema(response.content)
+						schema: getFirstSchema(response.content),
+						headers: response.headers
 					};
 				});
 			});
