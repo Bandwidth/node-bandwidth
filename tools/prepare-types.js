@@ -115,7 +115,7 @@ function getOutputTypes(prefix, data, {properties}) {
 			properties.size &&
 			data._responses.filter(r => r.status === '200' && r.schema)[0]
 		) {
-			outputTypes.push(`AsyncIterator<${prefix}>`);
+			outputTypes.push(`AsyncIterator<${prefix}Item>`);
 		}
 		return outputTypes.join(' | ');
 	}
@@ -170,7 +170,9 @@ async function main() {
 	);
 	await writeFile(
 		'./dist/index.d.ts',
-		`/// <reference path="axios/index.d.ts" />
+		`/// <reference types="@types/async" />
+/// <reference types="axios" />
+import {CancelToken} from 'axios';
 ${Object.keys(apiData)
 			.map(o => printApiTypes(o, apiData[o]))
 			.join('\n\n')}
