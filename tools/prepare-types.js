@@ -26,7 +26,7 @@ function printProperties(prefix, properties) {
 	return Object.keys(properties)
 		.map(k => {
 			const schema = properties[k];
-			let text = `\t// ${schema.description || _.upperFirst(k)}\n`;
+			let text = ``;
 			switch (schema.type) {
 				case 'object':
 					text += `\t${k}: ${prefix}${_.upperFirst(k)}`;
@@ -55,7 +55,7 @@ function printProperties(prefix, properties) {
 			text += ';';
 			return text;
 		})
-		.join('\n\n');
+		.join('\n');
 }
 
 function printTypes() {
@@ -72,12 +72,12 @@ function printTypes() {
 ${printProperties(type, schema.properties)}
 }`
 		)
-		.join('\n\n');
+		.join('\n');
 }
 
-function printApiName(name, data) {
+function printApiName(name) {
 	name = _.upperFirst(name);
-	return `\t// ${data._description}\n\t${name}: ${name}`;
+	return `\t${name}: ${name}`;
 }
 
 function extractParamsFromPath(path) {
@@ -172,9 +172,7 @@ function printApiMethod(apiName, name, data) {
 		types.push({type: typeName, schema: params});
 		paramsDesclaration = `options${optional ? '?' : ''}: ${typeName}, `;
 	}
-	return `\t// ${
-		data._description
-	}\n\t${name}(${paramsDesclaration}cancelToken?: CancelToken): Promise<${getOutputTypes(
+	return `\t${name}(${paramsDesclaration}cancelToken?: CancelToken): Promise<${getOutputTypes(
 		`${_.upperFirst(apiName)}${_.upperFirst(name)}`,
 		data,
 		params
@@ -187,7 +185,7 @@ function printApiTypes(name, data) {
 ${Object.keys(data)
 		.filter(m => !m.startsWith('_'))
 		.map(m => printApiMethod(name, m, data[m]))
-		.join('\n\n')}
+		.join('\n')}
 }`;
 }
 
@@ -210,36 +208,23 @@ ${printTypes()}
 export interface BandwidthApi {
 ${Object.keys(apiData)
 			.map(o => printApiName(o, apiData[o]))
-			.join(',\n\n')}
+			.join(',\n')}
 }
 
 export interface BandwidthApiOptions {
-	// User Id
 	userId: string;
-
-	// Api Token
 	apiToken: string;
-
-	// Api Secret
 	apiSecret: string;
 }
 
 export interface UnexpectedResponseError {
-	// Error message
 	message: string;
-
-	// Http status code
 	status: number;
 }
 
 export interface RateLimitError {
-	// Error message
 	message: string;
-
-	// Http status code
 	status: number;
-
-	// Value of header X-RateLimit-Reset
 	limitReset: string;
 }
 
