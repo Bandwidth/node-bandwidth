@@ -20,6 +20,9 @@ function findEmbededTypes(prefix, schema) {
 }
 
 function printProperties(prefix, properties) {
+	if (!properties) {
+		return '';
+	}
 	return Object.keys(properties)
 		.map(k => {
 			const schema = properties[k];
@@ -56,11 +59,13 @@ function printProperties(prefix, properties) {
 }
 
 function printTypes() {
-	types.forEach(({type, schema}) => {
-		Object.keys(schema.properties).forEach(k => {
-			findEmbededTypes(`${type}${_.upperFirst(k)}`, schema.properties[k]);
+	types
+		.filter(({schema}) => schema.type === 'object')
+		.forEach(({type, schema}) => {
+			Object.keys(schema.properties).forEach(k => {
+				findEmbededTypes(`${type}${_.upperFirst(k)}`, schema.properties[k]);
+			});
 		});
-	});
 	return types
 		.map(
 			({type, schema}) => `export interface ${type} {
@@ -100,6 +105,15 @@ function getOutputTypes(prefix, data, {properties}) {
 			isArray ? 'Item' : ''
 		}`;
 		outputTypes.push(`${typeName}${isArray ? '[]' : ''}`);
+		if (schema.type === 'string' && schema.format === 'binary') {
+			schema = {
+				type: 'object',
+				properties: {
+					content: {type: 'any'},
+					contentType: {type: 'string'}
+				}
+			};
+		}
 		types.push({type: typeName, schema});
 	});
 	if (
@@ -134,6 +148,10 @@ function printApiMethod(apiName, name, data) {
 		)
 	};
 	name = _.camelCase(name);
+	if (name === 'upload') {
+		params.properties.content = {type: 'any'};
+		params.properties.contentType = {type: 'string'};
+	}
 	const typeName = `${_.upperFirst(apiName)}${_.upperFirst(name)}Options`;
 	const hasParams = Object.keys(params.properties).length > 0;
 	const optional =
