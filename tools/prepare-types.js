@@ -49,7 +49,7 @@ function printProperties(prefix, properties) {
 					}
 					break;
 				default:
-					text += `\t${k}: any`;
+					text += `\t${k}: ${schema.type}`;
 					break;
 			}
 			text += ';';
@@ -163,7 +163,9 @@ function printApiMethod(apiName, name, data) {
 			return schema.type === 'string' && schema.format === 'binary';
 		}).length > 0;
 	if (binaryResponse && params.properties) {
-		params.properties.responseType = {type: 'string'};
+		params.properties.responseType = {
+			type: `'arraybuffer' | 'blob' | 'document' | 'json' | 'text' | 'stream'`
+		};
 	}
 	let paramsDesclaration = '';
 	if (hasParams) {
