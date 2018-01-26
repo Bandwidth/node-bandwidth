@@ -13,6 +13,8 @@ tags:
     description: The Account API allows you to retrieve your current balance, transaction list, account type and all elements related to your platform account.
   - name: Applications
     description: Applications allow you to receive incoming call and messaging events.
+  - name: Media
+    description: The Media resource lets you upload your media files to Bandwidth API servers so they can be used in applications without requiring a separate hosting provider.
 paths:
   /v1/users/{userId}/account:
     get:
@@ -164,7 +166,68 @@ paths:
       description: Permanently deletes an application. 
       responses:
         '200':
-          $ref: '#/components/responses/Empty'      
+          $ref: '#/components/responses/Empty'  
+  /v1/users/{userId}/media:
+    get:
+      tags:
+        - Media
+      summary: Gets a list of your media files. 
+      operationId: list
+      description: Gets a list of your media files. No query parameters are supported.
+      responses:
+        '200':
+          description: list of media files data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Media'
+  /v1/users/{userId}/media/{mediaName}:
+    get:
+      tags:
+          - Media
+      summary: Downloads a media file you previously uploaded. 
+      operationId: download
+      description: Downloads a media file you previously uploaded.
+      responses:
+        '200':
+          description: Content of file
+          content:
+            default:
+              schema:
+                type: string
+                format: binary
+    put:
+      tags:
+          - Media
+      summary: Uploads a file the normal HTTP way. 
+      operationId: upload
+      description: Uploads a file the normal HTTP way. You may add headers to the request in order to provide some control to your media-file.
+      parameters:
+        - name: contentType
+          in: header
+          description: The media type of the entity-body.
+          schema:
+            type: string
+        - name: cacheControl
+          in: header
+          description: The media type of the entity-body.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+    delete:
+      tags:
+          - Media
+      summary: Deletes a media file from Bandwidth API server. 
+      operationId: delete
+      description: Deletes a media file from Bandwidth API server.
+      responses:
+        '200':
+          description: Success
+      
 components:
   schemas:
     Account:
@@ -264,6 +327,18 @@ components:
         autoAnswer:
           type: boolean
           description: Determines whether or not an incoming call should be automatically answered.
+    Media:
+      type: object
+      properties:
+        mediaName:
+          type: string
+          description: The mediaName is the unique name of the media
+        contentLength:
+          type: integer
+          description: Size of the media in Bytes
+        content:
+          type: string
+          description: URL to use to GET the specific media file.
   requestBodies:
     CreateApplicationData:
       content:

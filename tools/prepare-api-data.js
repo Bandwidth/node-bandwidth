@@ -76,11 +76,16 @@ function printApiMethod(name, data) {
 	if (name.startsWith('_')) {
 		return '';
 	}
+	const binaryResponse =
+		data._responses.filter(r => {
+			const schema = r.schema || {};
+			return schema.type === 'string' && schema.format === 'binary';
+		}).length > 0;
 	return `\t\t\t${_.camelCase(name)}: {
 		\t\tmethod: '${data.method}',
 		\t\tpath: '${data.path}',${
 		data.contentType ? `\n\t\t\t\tcontentType: '${data.contentType}',` : ''
-	}
+	}${binaryResponse ? `\n\t\t\t\tbinaryResponse: ${binaryResponse},` : ''}
 		\t\tquery: ${printValidator(data.query)},
 		\t\tbody: ${printValidator(data.body)},
 		\t\tbodyKeys: ${printBodyKeys(data.body)}
