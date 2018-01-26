@@ -50,6 +50,36 @@ const apiData = {
 				query: Joi.any(),
 				body: Joi.any(),
 				bodyKeys: new Set([])
+			},
+			download: {
+				method: 'GET',
+				path: '/download',
+				binaryResponse: true,
+				query: Joi.any(),
+				body: Joi.any(),
+				bodyKeys: new Set([])
+			},
+			download2: {
+				method: 'GET',
+				path: '/download2',
+				binaryResponse: true,
+				query: Joi.any(),
+				body: Joi.any(),
+				bodyKeys: new Set([])
+			},
+			upload: {
+				method: 'POST',
+				path: '/upload',
+				query: Joi.any(),
+				body: Joi.any(),
+				bodyKeys: new Set([])
+			},
+			upload2: {
+				method: 'POST',
+				path: '/upload2',
+				query: Joi.any(),
+				body: Joi.any(),
+				bodyKeys: new Set([])
 			}
 		}
 	}
@@ -73,7 +103,17 @@ nock('http://fakeserver')
 	.get('/lazy-list')
 	.reply(200, [{id: '1'}, {id: '2'}], {
 		Link: `<http://fakeserver/lazy-list?size=25&page=0>; rel="first",<http://fakeserver/lazy-list?size=25&page=1>; rel="next",<http://fakeserver/lazy-list?size=25&page=1>; rel="last"`
-	});
+	})
+	.get('/download')
+	.reply(200, '123', {'Content-Type': 'text/plain'})
+	.get('/download2')
+	.reply(200, '1234', {'Content-Type': 'text/plain'})
+	.post('/upload', '123', {
+		reqheaders: {'Content-Type': 'application/octet-stream'}
+	})
+	.reply(200)
+	.post('/upload2', '1234', {reqheaders: {'Content-Type': 'text/plain'}})
+	.reply(200);
 
 test('It should return factory function', t => {
 	t.true(util.isFunction(getBandwidthApi));
@@ -124,7 +164,7 @@ test('Action of BandwidthApi should make http request and return promise', async
 	t.is(id, 'id');
 });
 
-test('Action of BandwidthApi should make http request and return promise (withou location header)', async t => {
+test('Action of BandwidthApi should make http request and return promise (without location header)', async t => {
 	const api = getBandwidthApi({
 		baseUrl: 'http://fakeserver',
 		apiToken: 'token',
@@ -172,6 +212,48 @@ test('BandwidthApi should handle lazy list actions', async t => {
 	});
 	const generator = await api.Test.lazyList();
 	t.true(util.isFunction(generator.next));
+});
+
+test('BandwidthApi should handle download of file', async t => {
+	const api = getBandwidthApi({
+		baseUrl: 'http://fakeserver',
+		apiToken: 'token',
+		apiSecret: 'secret'
+	});
+	const result = await api.Test.download();
+	t.is(result.contentType, 'text/plain');
+	t.is(result.content.toString(), '123');
+});
+
+test('BandwidthApi should handle download of file (with specific responseType)', async t => {
+	const api = getBandwidthApi({
+		baseUrl: 'http://fakeserver',
+		apiToken: 'token',
+		apiSecret: 'secret'
+	});
+	const result = await api.Test.download2({responseType: 'stream'});
+	t.is(result.contentType, 'text/plain');
+	t.true(util.isFunction(result.content.pipe));
+});
+
+test('BandwidthApi should handle upload of files', async t => {
+	const api = getBandwidthApi({
+		baseUrl: 'http://fakeserver',
+		apiToken: 'token',
+		apiSecret: 'secret'
+	});
+	await api.Test.upload({content: '123'});
+	t.pass();
+});
+
+test('BandwidthApi should handle upload of files (with contentType)', async t => {
+	const api = getBandwidthApi({
+		baseUrl: 'http://fakeserver',
+		apiToken: 'token',
+		apiSecret: 'secret'
+	});
+	await api.Test.upload2({content: '1234', contentType: 'text/plain'});
+	t.pass();
 });
 
 test('BandwidthApi should thow an error on network connection issue', async t => {
