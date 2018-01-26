@@ -157,6 +157,14 @@ function printApiMethod(apiName, name, data) {
 	const optional =
 		(data.body.required || []).length === 0 &&
 		Object.keys(paramsFromPath).length === 0;
+	const binaryResponse =
+		data._responses.filter(r => {
+			const schema = r.schema || {};
+			return schema.type === 'string' && schema.format === 'binary';
+		}).length > 0;
+	if (binaryResponse && params.properties) {
+		params.properties.responseType = {type: 'string'};
+	}
 	let paramsDesclaration = '';
 	if (hasParams) {
 		types.push({type: typeName, schema: params});
