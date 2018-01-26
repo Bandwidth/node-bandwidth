@@ -80,6 +80,13 @@ const apiData = {
 				query: Joi.any(),
 				body: Joi.any(),
 				bodyKeys: new Set([])
+			},
+			pathParam: {
+				method: 'GET',
+				path: '/{userId}/pathParam/{id}/test',
+				query: Joi.any(),
+				body: Joi.any(),
+				bodyKeys: new Set([])
 			}
 		}
 	}
@@ -113,6 +120,8 @@ nock('http://fakeserver')
 	})
 	.reply(200)
 	.post('/upload2', '1234', {reqheaders: {'Content-Type': 'text/plain'}})
+	.reply(200)
+	.get('/userId1/pathParam/id1/test')
 	.reply(200);
 
 test('It should return factory function', t => {
@@ -253,6 +262,17 @@ test('BandwidthApi should handle upload of files (with contentType)', async t =>
 		apiSecret: 'secret'
 	});
 	await api.Test.upload2({content: '1234', contentType: 'text/plain'});
+	t.pass();
+});
+
+test('BandwidthApi should handle parameters in path', async t => {
+	const api = getBandwidthApi({
+		baseUrl: 'http://fakeserver',
+		userId: 'userId1',
+		apiToken: 'token',
+		apiSecret: 'secret'
+	});
+	await api.Test.pathParam({id: 'id1'});
 	t.pass();
 });
 
