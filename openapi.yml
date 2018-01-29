@@ -17,6 +17,8 @@ tags:
     description: The Available Numbers resource lets you search for numbers that are available for use with your application.
   - name: Bridges
     description: The Bridges resource allows you to bridge two calls together allowing for two way audio between them.
+  - name: Calls
+    description: The Calls resource lets you make phone calls and view information about previous inbound and outbound calls.
   - name: Media
     description: The Media resource lets you upload your media files to Bandwidth API servers so they can be used in applications without requiring a separate hosting provider.
 paths:
@@ -495,6 +497,218 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Call'
+  /v1/users/{userId}/calls:
+    get:
+      tags:
+        - Calls
+      summary: Get a list of your calls.
+      operationId: list
+      description: Gets a list of active and historic calls you made or received.
+      parameters:
+        - name: bridgeId
+          in: query
+          description: The id of the bridge for querying a list of calls history 
+          schema:
+            type: string
+        - name: conferenceId
+          in: query
+          description: The id of the conference for querying a list of calls history 
+          schema:
+            type: string
+        - name: from
+          in: query
+          description: The number to filter calls that came from (must be either an E.164 formatted number, like +19195551212, or a valid SIP URI, like sip:someone@somewhere.com). 
+          schema:
+            type: string
+        - name: to
+          in: query
+          description: The number to filter calls that was called to (must be either an E.164 formatted number, like +19195551212, or a valid SIP URI, like sip:someone@somewhere.com). 
+          schema:
+            type: string
+        - name: sortOrder
+          in: query
+          description: How to sort the calls. 
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+            default: desc
+        - name: page
+          in: query
+          description: Used for pagination to indicate the page requested for querying a list of calls.
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: size
+          in: query
+          description: Used for pagination to indicate the size of each page requested for querying a list of calls.
+          schema:
+            type: integer
+            format: int32
+            default: 25
+            maximum: 1000
+      responses:
+        '200':
+          description: list of user's calls
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Call'
+    post:
+      tags:
+        - Calls
+      summary: Create a new call.
+      operationId: create
+      description: Create a new call.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateCallData'
+      responses:
+        '201':
+          $ref: '#/components/responses/Created'
+  /v1/users/{userId}/calls/{id}:
+    get:
+      tags:
+        - Calls
+      summary: Gets information about an active or completed call.
+      operationId: get
+      description: Gets information about an active or completed call.
+      responses:
+        '200':
+          description: Call's data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Call'
+    post:
+      tags:
+        - Calls
+      summary: Update properties of an active phone call.
+      operationId: update
+      description: Update properties of an active phone call.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateCallData'
+      responses:
+        '200':
+          $ref: '#/components/responses/Empty'
+        '201':
+          $ref: '#/components/responses/Created'  
+  /v1/users/{userId}/calls/{id}/audio:
+    post:
+      tags:
+        - Calls
+      summary: Play an audio file or speak a sentence in a call.
+      operationId: playAudio
+      description: Play an audio file or speak a sentence in a call.
+      requestBody:
+        $ref: '#/components/requestBodies/PlayAudioData'
+      responses:
+        '200':
+          $ref: '#/components/responses/Empty'
+  /v1/users/{userId}/calls/{id}/dtmf:
+    post:
+      tags:
+        - Calls
+      summary: Send DTMF (phone keypad digit presses).
+      operationId: sendDtmf
+      description: Send DTMF (phone keypad digit presses).
+      requestBody:
+        $ref: '#/components/requestBodies/DtmfData'
+      responses:
+        '200':
+          $ref: '#/components/responses/Empty'
+  /v1/users/{userId}/calls/{id}/events:
+    get:
+      tags:
+        - Calls
+      summary: Gets the events that occurred during the call. 
+      operationId: getEvents
+      description: Gets the events that occurred during the call. 
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CallEvent'
+  /v1/users/{userId}/calls/{id}/events/{eventId}:
+    get:
+      tags:
+        - Calls
+      summary: Gets information about one call event.  
+      operationId: getEvent
+      description: Gets information about one call event.  
+      responses:
+        '200':
+          $ref: '#/components/schemas/CallEvent'
+  /v1/users/{userId}/calls/{id}/recordings:
+    get:
+      tags:
+        - Calls
+      summary: Retrieve all recordings related to the call. 
+      operationId: getRecordings
+      description: Retrieve all recordings related to the call. 
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Recording'
+  /v1/users/{userId}/calls/{id}/transcriptions:
+    get:
+      tags:
+        - Calls
+      summary: Retrieve all transcriptions related to the call. 
+      operationId: getTranscriptions
+      description: Retrieve all transcriptions related to the call. 
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Transcription'
+  /v1/users/{userId}/calls/{id}/gather:
+    post:
+      tags:
+        - Calls
+      summary: Collects a series of DTMF digits from a phone call with an optional prompt.
+      operationId: createGather
+      description: Collects a series of DTMF digits from a phone call with an optional prompt. This request returns immediately. When gather finishes, an event with the results will be posted to the callback URL. 
+      requestBody:
+        $ref: '#/components/requestBodies/CreateGatherData'
+      responses:
+        '201':
+          $ref: '#/components/responses/Created' 
+  /v1/users/{userId}/calls/{id}/gather/{gatherId}:
+    get:
+      tags:
+        - Calls
+      summary: Get the gather DTMF parameters and results.
+      operationId: getGather
+      description: Get the gather DTMF parameters and results.
+      responses:
+        '200':
+          $ref: '#/components/responses/Gather' 
+    post:
+      tags:
+        - Calls
+      summary: Update the gather.
+      operationId: updateGather
+      description: Update the gather. 
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateGatherData'
+      responses:
+        '200':
+          $ref: '#/components/responses/Empty' 
+
 components:
   schemas:
     Account:
@@ -694,6 +908,116 @@ components:
         id:
           type: string
           description: The unique ID of the call.
+        direction:
+          type: string
+          description: Call direction
+          enum:
+            - in
+            - out
+        from:
+          type: string
+          description: The phone number or SIP address that made the call. Phone numbers are in E.164 format (e.g. +15555555555) -or- SIP addresses (e.g. identify@domain.com).
+        to:
+          type: string
+          description: The phone number or SIP address that received the call. Phone numbers are in E.164 format (e.g. +15555555555) -or- SIP addresses (e.g. identify@domain.com).
+        callTimeout:
+          type: number
+          description: Determine how long should the platform wait for call answer before timing out in seconds.
+        state:
+          type: string
+          description: The call state
+          enum:
+            - rejected
+            - active
+            - completed
+            - transferring
+        startTime:
+          type: string
+          format: date-time
+          description: Date when the call was created
+        activeTime:
+          type: string
+          format: date-time
+          description: Date when the call was answered
+        endTime:
+          type: string
+          format: date-time    
+          description: Date when the call ended
+        callbackTimeout:
+          type: number
+          description: Determine how long should the platform wait for callbackUrl’s response before timing out in milliseconds. 
+        callbackUrl:
+          type: string
+          description: The server URL where the call events related to the call will be sent.
+        callbackHttpMethod:  
+          type: string
+          enum:
+            - GET
+            - POST
+          description: Determine if the callback event should be sent via HTTP GET or HTTP POST
+        fallbackUrl:
+          type: string
+          description: he full server URL used to send the callback event if the request to callbackUrl fails.
+        chargeableDuration:
+          type: number
+          description: The number of seconds the call will be billed for.
+        recordingEnabled:
+          type: boolean
+          description: Indicates if the call was recorded. 
+        recordingFileFormat:
+          type: string
+          description: The file format of the recorded call.
+          enum:
+            - wav
+            - mp3
+          default: wav
+        transcriptionEnabled:
+          type: boolean
+          description: Whether all the recordings for this call was automatically transcribed.
+        bridgeId:
+          type: string
+          description: The id of the bridge where the call will be added.
+        conferenceId:
+          type: string
+          description: Id of the conference where the call will be added. This property is required if you want to add this call to a conference.
+        tag:
+          type: string
+          description: Any string, it will be included in the callback events of the call.
+        sipHeaders:
+          type: object
+            additionalProperties:
+              type: string   
+          description: Map of Sip headers prefixed by "X-". Up to 5 headers can be sent per call. Max length for header and value is 256 characters.
+    CallEvent:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The call event id.
+        name:
+          type: string
+          description: The name of the event.
+        time:
+          type: string
+          format: date-time
+          description: The time the event occurred.
+        data:
+          type: object
+          description: Data about event
+     Recording:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The recording id.
+     Transcription:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The transcription id.
+
+
   requestBodies:
     CreateApplicationData:
       content:
@@ -752,6 +1076,125 @@ components:
                 type: string
                 default: 'true'
                 description: Enable/Disable two way audio path.
+    CreateCallData:
+      content:
+        application/json:
+          schema:
+            type: object
+             required:
+              - from
+              - to
+            properties:
+              from:
+                type: string
+                description: The phone number or SIP address that made the call. Phone numbers are in E.164 format (e.g. +15555555555) -or- SIP addresses (e.g. identify@domain.com).
+              to:
+                type: string
+                description: The phone number or SIP address that received the call. Phone numbers are in E.164 format (e.g. +15555555555) -or- SIP addresses (e.g. identify@domain.com).
+              callTimeout:
+                type: number
+                description: Determine how long should the platform wait for call answer before timing out in seconds.
+              callbackTimeout:
+                type: number
+                description: Determine how long should the platform wait for callbackUrl’s response before timing out in milliseconds. 
+              callbackUrl:
+                type: string
+                description: The server URL where the call events related to the call will be sent.
+              callbackHttpMethod:  
+                type: string
+                enum:
+                  - GET
+                  - POST
+                description: Determine if the callback event should be sent via HTTP GET or HTTP POST
+              fallbackUrl:
+                type: string
+                description: he full server URL used to send the callback event if the request to callbackUrl fails.
+              bridgeId:
+                type: string
+                description: The id of the bridge where the call will be added.
+              conferenceId:
+                type: string
+                description: Id of the conference where the call will be added. This property is required if you want to add this call to a conference.
+              recordingEnabled:
+                type: boolean
+                description: Indicates if the call was recorded. 
+              recordingFileFormat:
+                type: string
+                description: The file format of the recorded call.
+                enum:
+                  - wav
+                  - mp3
+                default: wav
+              recordingMaxDuration:
+                type: number
+                desciption: Indicates the maximum duration of call recording in seconds.
+                default: 60  
+              transcriptionEnabled:
+                type: boolean
+                description: Whether all the recordings for this call was automatically transcribed.
+              tag:
+                type: string
+                description: Any string, it will be included in the callback events of the call.
+              sipHeaders:
+                type: object
+                  additionalProperties:
+                    type: string   
+                description: Map of Sip headers prefixed by "X-". Up to 5 headers can be sent per call. Max length for header and value is 256 characters.
+    UpdateCallData:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              state:
+                type: string
+                description: The call state
+                enum:
+                  - rejected
+                  - active
+                  - completed
+                  - transferring
+              callTimeout:
+                type: number
+                description: Determine how long should the platform wait for call answer before timing out in seconds.
+              callbackTimeout:
+                type: number
+                description: Determine how long should the platform wait for callbackUrl’s response before timing out in milliseconds. 
+              callbackUrl:
+                type: string
+                description: The server URL where the call events related to the call will be sent.
+              callbackHttpMethod:  
+                type: string
+                enum:
+                  - GET
+                  - POST
+                description: Determine if the callback event should be sent via HTTP GET or HTTP POST
+              fallbackUrl:
+                type: string
+                description: he full server URL used to send the callback event if the request to callbackUrl fails.
+              recordingEnabled:
+                type: boolean
+                description: Indicates if the call was recorded. 
+              recordingFileFormat:
+                type: string
+                description: The file format of the recorded call.
+                enum:
+                  - wav
+                  - mp3
+                default: wav
+              recordingMaxDuration:
+                type: number
+                desciption: Indicates the maximum duration of call recording in seconds.
+                default: 60  
+              transcriptionEnabled:
+                type: boolean
+                description: Whether all the recordings for this call was automatically transcribed.
+              transferTo:
+                type: string
+              transferCallerId:
+                type: string
+              whisperAudio:
+                $ref: '#/components/requestBodies/PlayAudioData'
     UpdateBridgeData:
       content:
         application/json:
@@ -791,7 +1234,64 @@ components:
                 default: en_US
               voice:
                 type: string
+    DtmfData:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              dtmfOut:
+                type: string
+                description: String containing the DTMF characters to be sent in a call. Allows a maximum of 92 characters.
 
+    CreateGatherData:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              maxDigits:
+                type: number
+                format: int32
+                description: The maximum number of digits to collect, not including terminating digits 
+                maximum: 30
+              interDigitTimeout:
+                type: number
+                description: Stop gathering if a DTMF digit is not detected in this many seconds
+                maximum: 30
+                default: 5
+              terminatingDigits:
+                type: string
+                description: A string of DTMF digits that end the gather operation immediately if any one of them is detected (default “#”; an empty string means collect all DTMF until maxDigits or the timeout).
+              tag:
+                type: string
+                description: A string you choose that will be included with the response and events for this gather operation.
+              prompt:
+                type: object
+                properties:
+                  sentence:
+                    type: string
+                    description: The text to speak for the prompt
+                  gender:
+                    type: string
+                    enum:
+                      - female
+                      - male
+                    description: The gender to use for the voice reading the prompt sentence
+                  locale:
+                    type: string
+                    description: The language and region to use for the voice reading the prompt sentence
+                  loopEnabled:
+                    type: boolean
+                    description: When value is true, the audio will keep playing in a loop.
+                    default: false
+                  bargeable:
+                    type: boolean
+                    description: Make the prompt (audio or sentence) bargeable
+                    default: true
+                  fileUrl:
+                    type: string
+                    description: The location of an audio file to play (WAV and MP3 supported).
   responses:
     Created:
       description: Created
