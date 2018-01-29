@@ -87,6 +87,20 @@ const apiData = {
 				query: Joi.any(),
 				body: Joi.any(),
 				bodyKeys: new Set([])
+			},
+			create: {
+				method: 'POST',
+				path: '/create',
+				query: Joi.any(),
+				body: Joi.any(),
+				bodyKeys: new Set(['test'])
+			},
+			createMultiple: {
+				method: 'POST',
+				path: '/createMultiple',
+				query: Joi.any(),
+				body: Joi.any(),
+				bodyKeys: new Set(['test'])
 			}
 		}
 	}
@@ -122,7 +136,11 @@ nock('http://fakeserver')
 	.post('/upload2', '1234', {reqheaders: {'Content-Type': 'text/plain'}})
 	.reply(200)
 	.get('/userId1/pathParam/id1/test')
-	.reply(200);
+	.reply(200)
+	.post('/create', {test: 'test'})
+	.reply(201, '', {Location: 'http://localhost/id'})
+	.post('/createMultiple', {test: 'test'})
+	.reply(201, [{location: 'http://localhost/id'}]);
 
 test('It should return factory function', t => {
 	t.true(util.isFunction(getBandwidthApi));
@@ -283,4 +301,24 @@ test('BandwidthApi should thow an error on network connection issue', async t =>
 		apiSecret: 'secret'
 	});
 	await t.throws(api.Test.action2({param1: 'param1', param2: 100}));
+});
+
+test('Action of BandwidthApi should handle response with 201 (simple)', async t => {
+	const api = getBandwidthApi({
+		baseUrl: 'http://fakeserver',
+		apiToken: 'token',
+		apiSecret: 'secret'
+	});
+	const id = await api.Test.create({test: 'test'});
+	t.is(id, 'id');
+});
+
+test('Action of BandwidthApi should handle response with 201 (multiple)', async t => {
+	const api = getBandwidthApi({
+		baseUrl: 'http://fakeserver',
+		apiToken: 'token',
+		apiSecret: 'secret'
+	});
+	const list = await api.Test.createMultiple({test: 'test'});
+	t.is(list[0].id, 'id');
 });
