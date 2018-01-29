@@ -629,6 +629,7 @@ paths:
       description: Gets the events that occurred during the call. 
       responses:
         '200':
+          description: list of call's events
           content:
             application/json:
               schema:
@@ -654,6 +655,7 @@ paths:
       description: Retrieve all recordings related to the call. 
       responses:
         '200':
+          description: list of call's recordings
           content:
             application/json:
               schema:
@@ -669,6 +671,7 @@ paths:
       description: Retrieve all transcriptions related to the call. 
       responses:
         '200':
+          description: list of call's transcriptions
           content:
             application/json:
               schema:
@@ -696,7 +699,7 @@ paths:
       description: Get the gather DTMF parameters and results.
       responses:
         '200':
-          $ref: '#/components/responses/Gather' 
+          $ref: '#/components/schemas/Gather' 
     post:
       tags:
         - Calls
@@ -985,8 +988,8 @@ components:
           description: Any string, it will be included in the callback events of the call.
         sipHeaders:
           type: object
-            additionalProperties:
-              type: string   
+          additionalProperties:
+            type: string   
           description: Map of Sip headers prefixed by "X-". Up to 5 headers can be sent per call. Max length for header and value is 256 characters.
     CallEvent:
       type: object
@@ -1004,19 +1007,52 @@ components:
         data:
           type: object
           description: Data about event
-     Recording:
+    Recording:
       type: object
       properties:
         id:
           type: string
           description: The recording id.
-     Transcription:
+    Transcription:
       type: object
       properties:
         id:
           type: string
           description: The transcription id.
-
+    Gather:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The gather id.      
+        state:
+          type: string
+          description: The state of the gather.
+        digits:
+          type: string
+          description: The digits collected from user.
+        reason:
+          type: string
+          description: Reason
+          enum:
+            - max-digits
+            - terminating-digit
+            - inter-digit-timeout
+            - hung-up
+        call:
+          type: string
+          description: The call id associated with the event.
+        gatherId:
+          type: string
+          description: The gather event unique id.
+        createdTime:
+          type: string
+          format: date-time
+          description: Date/time of event
+        completedTime:
+          type: string
+          format: date-time
+          description: Date/time of event
 
   requestBodies:
     CreateApplicationData:
@@ -1081,7 +1117,7 @@ components:
         application/json:
           schema:
             type: object
-             required:
+            required:
               - from
               - to
             properties:
@@ -1137,8 +1173,8 @@ components:
                 description: Any string, it will be included in the callback events of the call.
               sipHeaders:
                 type: object
-                  additionalProperties:
-                    type: string   
+                additionalProperties:
+                  type: string   
                 description: Map of Sip headers prefixed by "X-". Up to 5 headers can be sent per call. Max length for header and value is 256 characters.
     UpdateCallData:
       content:
@@ -1292,6 +1328,17 @@ components:
                   fileUrl:
                     type: string
                     description: The location of an audio file to play (WAV and MP3 supported).
+    UpdateGatherData:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              state:
+                type: string
+                description: Update the gather.
+                enum:
+                  - completed
   responses:
     Created:
       description: Created
