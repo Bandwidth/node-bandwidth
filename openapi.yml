@@ -15,6 +15,8 @@ tags:
     description: Applications allow you to receive incoming call and messaging events.
   - name: AvailableNumbers
     description: The Available Numbers resource lets you search for numbers that are available for use with your application.
+  - name: Bridges
+    description: The Bridges resource allows you to bridge two calls together allowing for two way audio between them.
   - name: Media
     description: The Media resource lets you upload your media files to Bandwidth API servers so they can be used in applications without requiring a separate hosting provider.
 paths:
@@ -397,8 +399,102 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/SearchAndOrderNumberData'
-
-
+  /v1/users/{userId}/bridges:
+    get:
+      tags:
+        - Bridges
+      summary: Get a list of your bridges.
+      operationId: list
+      description: Get a list of your bridges.
+      parameters:
+        - name: page
+          in: query
+          description: Used for pagination to indicate the page requested for querying a list of bridges.
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: size
+          in: query
+          description: Used for pagination to indicate the size of each page requested for querying a list of bridges.
+          schema:
+            type: integer
+            format: int32
+            default: 25
+            maximum: 1000
+      responses:
+        '200':
+          description: list of user's bridges
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Bridge'
+    post:
+      tags:
+        - Bridges
+      summary: Create a new bridge.
+      operationId: create
+      description: Create a new bridge.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateBridgeData'
+      responses:
+        '201':
+          $ref: '#/components/responses/Created'
+  /v1/users/{userId}/bridges/{id}:
+    get:
+      tags:
+        - Bridges
+      summary: Gets information about a specific bridge.
+      operationId: get
+      description: Gets information about a specific bridge.
+      responses:
+        '200':
+          description: Bridge's data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bridge'
+    post:
+      tags:
+        - Bridges
+      summary: Change calls in a bridge and bridge/unbridge the audio.
+      operationId: update
+      description: Change calls in a bridge and bridge/unbridge the audio.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateBridgeData'
+      responses:
+        '200':
+          $ref: '#/components/responses/Empty'
+  /v1/users/{userId}/bridges/{id}/audio:
+    post:
+      tags:
+        - Bridges
+      summary: Play an audio file or speak a sentence in a bridge.
+      operationId: playAudio
+      description: Play an audio file or speak a sentence in a bridge.
+      requestBody:
+        $ref: '#/components/requestBodies/PlayAudioData'
+      responses:
+        '200':
+          $ref: '#/components/responses/Empty'
+  /v1/users/{userId}/bridges/{id}/calls:
+    get:
+      tags:
+        - Bridges
+      summary: Get the list of calls that are on the bridge.
+      operationId: list
+      description: Get the list of calls that are on the bridge.
+      responses:
+        '200':
+          description: list of bridge's calls
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Call'
 components:
   schemas:
     Account:
@@ -552,7 +648,52 @@ components:
         location:
           type: string
           description: Url to number
-
+    Bridge:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique ID of the bridge.
+        state:
+          type: string
+          description: Bridge state. 
+          enum: 
+            - created
+            - active
+            - hold
+            - completed
+            - error
+        callIds:
+          type: array
+          description: List of call Ids that will be in the bridge.
+          items:
+            type: string
+        calls:
+          type: array
+          description: The URL used to retrieve the calls in a specific bridge.
+          items:
+            type: string
+        bridgeAudio:
+          type: string
+          description: Enable/Disable two way audio path.
+        completedTime:
+          type: string
+          format: date-time
+          description: The time when the bridge was completed.
+        createdTime:
+          type: string
+          format: date-time
+          description: The time that bridge was created.
+        activatedTime:
+          type: string
+          format: date-time
+          description: The time that the bridge got into active state.
+    Call:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique ID of the call.
   requestBodies:
     CreateApplicationData:
       content:
@@ -596,6 +737,60 @@ components:
                 type: boolean
                 default: true
                 description: Determines whether or not an incoming call should be automatically answered.
+    CreateBridgeData:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              callIds:
+                type: array
+                description: List of call Ids that will be in the bridge.
+                items:
+                  type: string
+              bridgeAudio:
+                type: string
+                default: 'true'
+                description: Enable/Disable two way audio path.
+    UpdateBridgeData:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              callIds:
+                type: array
+                description: List of call Ids that will be in the bridge.
+                items:
+                  type: string
+              bridgeAudio:
+                type: string
+                default: 'true'
+                description: Enable/Disable two way audio path.
+    PlayAudioData:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              fileUrl:
+                type: string
+                description: The location of an audio file to play (WAV and MP3 supported). 
+              sentence:
+                type: string
+                description: The sentence to speak.
+              gender: 
+                type: string
+                description: The gender of the voice used to synthesize the sentence.
+                enum:
+                  - female
+                  - male
+                default: female
+              locale:
+                type: string
+                default: en_US
+              voice:
+                type: string
 
   responses:
     Created:
