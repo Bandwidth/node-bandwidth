@@ -13,6 +13,8 @@ tags:
     description: The Account API allows you to retrieve your current balance, transaction list, account type and all elements related to your platform account.
   - name: Applications
     description: Applications allow you to receive incoming call and messaging events.
+  - name: AvailableNumbers
+    description: The Available Numbers resource lets you search for numbers that are available for use with your application.
   - name: Media
     description: The Media resource lets you upload your media files to Bandwidth API servers so they can be used in applications without requiring a separate hosting provider.
 paths:
@@ -227,7 +229,176 @@ paths:
       responses:
         '200':
           description: Success
-      
+  /v1/availableNumbers/local:
+    get:
+      tags:
+        - AvailableNumbers
+      summary: Search for available local numbers
+      operationId: searchLocalNumbers
+      description: Searches for available local numbers by location or pattern criteria. For more information about Bandwidth’s local phone numbers, see the [FAQ](http://dev.bandwidth.com/faq/#voice)
+      parameters:
+        - name: city
+          in: query
+          description: A city name.
+          schema:
+            type: string
+        - name: state
+          in: query
+          description: A two-letter US state abbreviation ("CA" for California).
+          schema:
+            type: string
+        - name: zip
+          in: query
+          description: A 5-digit US ZIP code.
+          schema:
+            type: number
+        - name: areaCode
+          in: query
+          description: A 3-digit telephone area code.
+          schema:
+            type: string            
+        - name: inLocalCallingArea
+          in: query
+          description: Boolean value to indicate that the search for available numbers must consider overlayed areas. Only applied for localNumber searching.
+          schema:
+            type: boolean            
+        - name: quantity
+          in: query
+          description: The maximum number of numbers to return
+          schema:
+            type: number
+            format: int32
+            default: 10,
+            maximum: 5000
+        - name: pattern
+          in: query
+          description: 'A number pattern that may include letters, digits, and the following wildcard characters: ? - matches any single digit, * - matches zero or more digits'
+          schema:
+            type: string
+      responses:
+        '200':
+          description: list of found numbers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SearchNumberData'
+    post:
+      tags:
+        - AvailableNumbers
+      summary: Searches and order available local numbers.
+      operationId: searchAndOrderLocalNumbers
+      description: Searches and order available local numbers by location criteria. For more information about Bandwidth’s local phone numbers, see the [FAQ](http://dev.bandwidth.com/faq/#voice)
+      parameters:
+        - name: city
+          in: query
+          description: A city name.
+          schema:
+            type: string
+        - name: state
+          in: query
+          description: A two-letter US state abbreviation ("CA" for California).
+          schema:
+            type: string
+        - name: zip
+          in: query
+          description: A 5-digit US ZIP code.
+          schema:
+            type: number
+        - name: areaCode
+          in: query
+          description: A 3-digit telephone area code.
+          schema:
+            type: string
+        - name: inLocalCallingArea
+          in: query
+          description: Boolean value to indicate that the search for available numbers must consider overlayed areas. Only applied for localNumber searching.
+          schema:
+            type: boolean
+        - name: localNumber
+          in: query
+          description: It is defined as the first digits of a telephone number inside an area code for filtering the results. It must have at least 3 digits and the areaCode field must be filled
+          schema:
+            type: string
+        - name: quantity
+          in: query
+          description: The maximum number of numbers to return
+          schema:
+            type: number
+            format: int32
+            default: 10,
+            maximum: 5000
+        - name: pattern
+          in: query
+          description: 'A number pattern that may include letters, digits, and the following wildcard characters: ? - matches any single digit, * - matches zero or more digits'
+          schema:
+            type: string
+      responses:
+        '201':
+          description: list of ordered numbers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SearchAndOrderNumberData'
+  /v1/availableNumbers/tollFree:
+    get:
+      tags:
+        - AvailableNumbers
+      summary: Search for available toll free numbers
+      operationId: searchTollFreeNumbers
+      description: For more information about Bandwidth’s toll free phone numbers, see the [FAQ](http://dev.bandwidth.com/faq/#voice)
+      parameters:
+        - name: quantity
+          in: query
+          description: The maximum number of numbers to return
+          schema:
+            type: number
+            format: int32
+            default: 10,
+            maximum: 5000
+        - name: pattern
+          in: query
+          description: 'A number pattern that may include letters, digits, and the following wildcard characters: ? - matches any single digit, * - matches zero or more digits'
+          schema:
+            type: string
+      responses:
+        '200':
+          description: list of found numbers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SearchNumberData'
+    post:
+      tags:
+        - AvailableNumbers
+      summary: Searches and order available toll free numbers.
+      operationId: searchAndOrderTollFreeNumbers
+      description: Searches and order available Toll Free numbers. For more information about Bandwidth’s local phone numbers, see the [FAQ](http://dev.bandwidth.com/faq/#voice)
+      parameters:
+        - name: quantity
+          in: query
+          description: The maximum number of numbers to return
+          schema:
+            type: number
+            format: int32
+            default: 10,
+            maximum: 5000
+      responses:
+        '201':
+          description: list of ordered numbers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SearchAndOrderNumberData'
+
+
 components:
   schemas:
     Account:
@@ -339,6 +510,49 @@ components:
         content:
           type: string
           description: URL to use to GET the specific media file.
+    SearchNumberData:
+      type: object
+      properties:
+        number:
+          type: string
+          description: The telephone number in E.164 format.
+        nationalNumber:
+          type: string
+          description: The telephone number in a friendly national format.
+        patternMatch:
+          type: string
+          description: The telephone number in a friendly national format with some numbers replaced by letters if a pattern was used to search the number.
+        city:
+          type: string
+          description: The city of the phone number.
+        lata:
+          type: string
+          description: Local access and transport area (LATA), represents an area within which a regional operating company is permitted to offer exchange telecommunications and exchange access services.
+        rateCenter:
+          type: string
+          description: The rate center is a term used to identify a telephone local exchange service area.
+        state:
+          type: string
+          description: The state of the phone number.
+        price:
+          type: string
+          description: The monthly price for the phone number.
+    SearchAndOrderNumberData:
+      type: object
+      properties:
+        number:
+          type: string
+          description: The telephone number in E.164 format.
+        nationalNumber:
+          type: string
+          description: The telephone number in a friendly national format.
+        price:
+          type: string
+          description: The monthly price for the phone number.
+        location:
+          type: string
+          description: Url to number
+
   requestBodies:
     CreateApplicationData:
       content:
