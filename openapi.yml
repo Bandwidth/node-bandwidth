@@ -21,6 +21,8 @@ tags:
     description: The Calls resource lets you make phone calls and view information about previous inbound and outbound calls.
   - name: Conferences
     description: The Conference resource allows you create conferences, add members to it, play audio, speak text, mute/unmute members, hold/unhold members and other things related to conferencing. 
+  - name: Domains
+    description: A domain is a way to logically group endpoints.
   - name: Media
     description: The Media resource lets you upload your media files to Bandwidth API servers so they can be used in applications without requiring a separate hosting provider.
 paths:
@@ -822,6 +824,59 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/Empty'
+  /v1/users/{userId}/domains:
+    get:
+      tags:
+        - Domains
+      summary: This returns a list of the domains that have been created
+      operationId: list
+      description: This returns a list of the domains that have been created
+      parameters:
+        - name: page
+          in: query
+          description: Used for pagination to indicate the page requested for querying a list of domains.
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: size
+          in: query
+          description: Used for pagination to indicate the size of each page requested for querying a list of domains.
+          schema:
+            type: integer
+            format: int32
+            default: 25
+            maximum: 100
+      responses:
+        '200':
+          description: List of domains
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Domain'
+    post:
+      tags:
+        - Domains
+      summary: This will create a domain.
+      operationId: create
+      description: This will create a domain.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateDomainData'
+      responses:
+        '201':
+          $ref: '#/components/responses/Created'
+  /v1/users/{userId}/domains/{id}:
+    delete:
+      tags:
+        - Domains
+      summary: This will delete a domain
+      operationId: delete
+      description: This will delete a domain
+      responses:
+        '200':
+          $ref: '#/components/responses/Empty'
 
 components:
   schemas:
@@ -1253,6 +1308,21 @@ components:
         call:
           type: string
           description: The URL of the call resource for this member.
+    Domain:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The domain id.
+        name:
+          type: string
+          description: The name is a unique URI to be used in DNS lookups
+        description:
+          type: string
+          description: String to describe the domain
+        endpoints:
+          type: string
+          description: URL to use to GET list of endpoints on this domain.
   requestBodies:
     CreateApplicationData:
       content:
@@ -1652,6 +1722,20 @@ components:
                 type: boolean
                 description: If true, member can’t hear or speak in the conference. If false, member can hear and speak in the conference (unless set at the conference level).  
 
+    CreateDomainData:
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - name
+            properties:
+              name:
+                type: string
+                description: The name is a unique URI to be used in DNS lookups
+              description:
+                type: string
+                description: String to describe the domain
   responses:
     Created:
       description: Created
