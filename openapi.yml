@@ -1163,7 +1163,7 @@ components:
                 default: wav
               recordingMaxDuration:
                 type: number
-                desciption: Indicates the maximum duration of call recording in seconds.
+                description: Indicates the maximum duration of call recording in seconds.
                 default: 60  
               transcriptionEnabled:
                 type: boolean
@@ -1220,7 +1220,7 @@ components:
                 default: wav
               recordingMaxDuration:
                 type: number
-                desciption: Indicates the maximum duration of call recording in seconds.
+                description: Indicates the maximum duration of call recording in seconds.
                 default: 60  
               transcriptionEnabled:
                 type: boolean
