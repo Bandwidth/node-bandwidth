@@ -19,6 +19,8 @@ tags:
     description: The Bridges resource allows you to bridge two calls together allowing for two way audio between them.
   - name: Calls
     description: The Calls resource lets you make phone calls and view information about previous inbound and outbound calls.
+  - name: Conferences
+    description: The Conference resource allows you create conferences, add members to it, play audio, speak text, mute/unmute members, hold/unhold members and other things related to conferencing. 
   - name: Media
     description: The Media resource lets you upload your media files to Bandwidth API servers so they can be used in applications without requiring a separate hosting provider.
 paths:
@@ -711,6 +713,115 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/Empty' 
+  /v1/users/{userId}/conferences:
+    post:
+      tags:
+        - Conferences
+      summary: Create a new conference
+      operationId: create
+      description: Creates a conference with no members.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateConferenceData'
+      responses:
+        '201':
+          $ref: '#/components/responses/Created'
+  /v1/users/{userId}/conferences/{id}:
+    get:
+      tags:
+        - Conferences
+      summary: Gets information about a conference.
+      operationId: get
+      description: Retrieve current properties for a conference.
+      responses:
+        '200':
+          description: Conference's data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Conference'
+    post:
+      tags:
+        - Conferences
+      summary: Update properties of an active conference.
+      operationId: update
+      description: Change the conference properties and/or status.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateConferenceData'
+      responses:
+        '200':
+          $ref: '#/components/responses/Empty'
+  /v1/users/{userId}/conferences/{id}/audio:
+    post:
+      tags:
+        - Conferences
+      summary: Play an audio file or speak a sentence in a conference.
+      operationId: playAudio
+      description: Play an audio file or speak a sentence in a conference.
+      requestBody:
+        $ref: '#/components/requestBodies/PlayAudioData'
+      responses:
+        '200':
+          $ref: '#/components/responses/Empty'
+  /v1/users/{userId}/conferences/{id}/members:
+    get:
+      tags:
+        - Conferences
+      summary: Get information about a conference members.
+      operationId: getMembers
+      description: List all members from a conference. If a member had already hung up or removed from conference it will be displayed as completed.
+      responses:
+        '200':
+          description: Conference members data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ConferenceMember'
+    post:
+      tags:
+        - Conferences
+      summary: Add members to a conference.
+      operationId: addMember
+      description: Add members to a conference.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateConferenceMemberData'
+      responses:
+        '201':
+          $ref: '#/components/responses/Created'
+  /v1/users/{userId}/conferences/{id}/members/{memberId}:
+    get:
+      tags:
+        - Conferences
+      summary: Retrieve a conference member properties.
+      operationId: getMember
+      description: Retrieve a conference member properties.
+      responses:
+        '200':
+          $ref: '#/components/schemas/ConferenceMember'
+    post:
+      tags:
+        - Conferences
+      summary: Update a member status/properties.
+      operationId: updateMember
+      description: Update a member status/properties.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateConferenceMemberData'
+      responses:
+        '200':
+          $ref: '#/components/responses/Empty'
+  /v1/users/{userId}/conferences/{id}/members/{memberId}/audio:
+    post:
+      tags:
+        - Conferences
+      summary: Speak text or play audio to only a single conference member
+      operationId: playAudio
+      description: Speak text or play audio to ONLY a single conference member
+      requestBody:
+        $ref: '#/components/requestBodies/PlayAudioData'
+      responses:
+        '200':
+          $ref: '#/components/responses/Empty'
 
 components:
   schemas:
@@ -1054,6 +1165,94 @@ components:
           format: date-time
           description: Date/time of event
 
+    Conference:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The conference id.
+        state:
+          type: string
+          description: Conference state
+          enum:
+            - created
+            - active
+            - completed
+        from:
+          type: string
+          description: The phone number that will host the conference. 
+        createdTime:
+          type: string
+          format: date-time
+          description: The time that the Conference was created (UTC).
+        completedTime:
+          type: string
+          format: date-time
+          description: The time that the Conference was completed (UTC).
+        activeMembers:
+          type: number
+          format: int32
+          description: The number of active conference members.
+        hold:
+          type: boolean
+          description: If true, all member can’t hear or speak in the conference. If false, all members can hear and speak in the conference (unless set at the member level).
+        mute:
+          type: boolean
+          description: If true, all member can’t speak in the conference. If false, all members can speak in the conference (unless set at the member level).
+        callbackTimeout:
+          type: number
+          description: Determine how long should the platform wait for callbackUrl’s response before timing out in milliseconds. 
+        callbackUrl:
+          type: string
+          description: The server URL where the call events related to the call will be sent.
+        callbackHttpMethod:  
+          type: string
+          enum:
+            - GET
+            - POST
+          description: Determine if the callback event should be sent via HTTP GET or HTTP POST
+        fallbackUrl:
+          type: string
+          description: he full server URL used to send the callback event if the request to callbackUrl fails.
+        profile:
+          type: string
+          enum:
+            - interpret_digits
+            - passthru_digits
+          default: interpret_digits
+          description: The conference profile that determines how DTMF is used
+        tag:
+          type: string
+          description: A string that will be included in the callback events of the conference.
+    ConferenceMember:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The conference member id.
+        joinTone:
+          type: boolean
+          description: If true, will play a tone when the member joins the conference. If false, no tone is played when the member joins the conference.
+        leavingTone:
+          type: boolean
+          description: If true, will play a tone when the member leaves the conference. If false, no tone is played when the member leaves the conference.  
+        mute:
+          type: boolean
+          description: If true, member can’t speak in the conference. If false, this members can speak in the conference (unless set at the conference level).
+        hold:
+          type: boolean
+          description: If true, member can’t hear or speak in the conference. If false, member can hear and speak in the conference (unless set at the conference level).  
+        addedTime:
+          type: string
+          format: date-time
+          description: Date and time when the member was added to the conference
+        removedTime:
+          type: string
+          format: date-time
+          description: Date and time when the member was removed to the conference
+        call:
+          type: string
+          description: The URL of the call resource for this member.
   requestBodies:
     CreateApplicationData:
       content:
@@ -1339,6 +1538,120 @@ components:
                 description: Update the gather.
                 enum:
                   - completed
+
+    CreateConferenceData:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              from:
+                type: string
+                description: The phone number that will host the conference.
+              callbackTimeout:
+                type: number
+                description: Determine how long should the platform wait for callbackUrl’s response before timing out in milliseconds. 
+              callbackUrl:
+                type: string
+                description: The server URL where the call events related to the call will be sent.
+              callbackHttpMethod:  
+                type: string
+                enum:
+                  - GET
+                  - POST
+                description: Determine if the callback event should be sent via HTTP GET or HTTP POST
+              fallbackUrl:
+                type: string
+                description: he full server URL used to send the callback event if the request to callbackUrl fails.
+              profile:
+                type: string
+                enum:
+                  - interpret_digits
+                  - passthru_digits
+                default: interpret_digits
+                description: The conference profile that determines how DTMF is used
+              tag:
+                type: string
+                description: A string that will be included in the callback events of the conference.
+    UpdateConferenceData:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              state:
+                type: string
+                description: Conference state.
+              hold:
+                type: boolean
+                description: If true, all member can’t hear or speak in the conference. If false, all members can hear and speak in the conference (unless set at the member level).
+              mute:
+                type: boolean
+                description: If true, all member can’t speak in the conference. If false, all members can speak in the conference (unless set at the member level).
+              callbackTimeout:
+                type: number
+                description: Determine how long should the platform wait for callbackUrl’s response before timing out in milliseconds. 
+              callbackUrl:
+                type: string
+                description: The server URL where the call events related to the call will be sent.
+              callbackHttpMethod:  
+                type: string
+                enum:
+                  - GET
+                  - POST
+                description: Determine if the callback event should be sent via HTTP GET or HTTP POST
+              fallbackUrl:
+                type: string
+                description: he full server URL used to send the callback event if the request to callbackUrl fails.
+              tag:
+                type: string
+                description: A string that will be included in the callback events of the conference.
+
+    CreateConferenceMemberData:
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - callId
+            properties:
+              callId:
+                type: string
+                description: The callId must refer to an active call that was created using this conferenceId.
+              joinTone:
+                type: boolean
+                description: If true, will play a tone when the member joins the conference. If false, no tone is played when the member joins the conference.
+              leavingTone:
+                type: boolean
+                description: If true, will play a tone when the member leaves the conference. If false, no tone is played when the member leaves the conference.  
+              mute:
+                type: boolean
+                description: If true, member can’t speak in the conference. If false, this members can speak in the conference (unless set at the conference level).
+              hold:
+                type: boolean
+                description: If true, member can’t hear or speak in the conference. If false, member can hear and speak in the conference (unless set at the conference level).  
+    UpdateConferenceMemberData:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              state:
+                type: string
+                description: If `completed`, member will be removed from the conference.
+              joinTone:
+                type: boolean
+                description: If true, will play a tone when the member joins the conference. If false, no tone is played when the member joins the conference.
+              leavingTone:
+                type: boolean
+                description: If true, will play a tone when the member leaves the conference. If false, no tone is played when the member leaves the conference.  
+              mute:
+                type: boolean
+                description: If true, member can’t speak in the conference. If false, this members can speak in the conference (unless set at the conference level).
+              hold:
+                type: boolean
+                description: If true, member can’t hear or speak in the conference. If false, member can hear and speak in the conference (unless set at the conference level).  
+
   responses:
     Created:
       description: Created
