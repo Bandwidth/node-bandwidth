@@ -13,7 +13,7 @@ function printValidator(schema, required) {
 	let code = '';
 	switch (schema.type) {
 		case 'object':
-			code = `Joi.object().keys({${Object.keys(schema.properties)
+			code = `Joi.object().keys({${Object.keys(schema.properties || {})
 				.map(
 					p =>
 						`${_.camelCase(p)}: ${printValidator(

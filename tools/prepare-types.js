@@ -12,7 +12,7 @@ const types = [];
 
 function findEmbededTypes(prefix, schema) {
 	if (schema.type === 'object') {
-		Object.keys(schema.properties).forEach(k =>
+		Object.keys(schema.properties || {}).forEach(k =>
 			findEmbededTypes(`${prefix}${_.upperFirst(k)}`, schema.properties[k])
 		);
 		types.push({type: prefix, schema});
@@ -82,8 +82,7 @@ function printApiName(name) {
 
 function extractParamsFromPath(path) {
 	const params = {};
-	path
-		.match(/\{\w+\}/gi)
+	(path.match(/\{\w+\}/gi) || [])
 		.map(p => p.substr(1, p.length - 2))
 		.filter(p => p !== 'userId')
 		.forEach(p => {
