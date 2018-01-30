@@ -23,6 +23,8 @@ tags:
     description: The Conference resource allows you create conferences, add members to it, play audio, speak text, mute/unmute members, hold/unhold members and other things related to conferencing. 
   - name: Domains
     description: A domain is a way to logically group endpoints.
+  - name: Errors
+    description: The Errors resource lets you see information about errors that happened in your API calls and during applications callbacks.
   - name: Media
     description: The Media resource lets you upload your media files to Bandwidth API servers so they can be used in applications without requiring a separate hosting provider.
 paths:
@@ -951,7 +953,48 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/Empty'
-
+  /v1/users/{userId}/errors:
+    get:
+      tags:
+        - Errors
+      summary: Gets the most recent user errors for the user
+      operationId: list
+      description: Gets the most recent user errors for the user
+      parameters:
+        - name: page
+          in: query
+          description: Used for pagination to indicate the page requested for querying a list of errors.
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: size
+          in: query
+          description: Used for pagination to indicate the size of each page requested for querying a list of errors.
+          schema:
+            type: integer
+            format: int32
+            default: 25
+            maximum: 1000
+      responses:
+        '200':
+          description: list of user's errors
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+  /v1/users/{userId}/errors/{id}:
+    get:
+      tags:
+        - Errors
+      summary: Gets information about one error.
+      operationId: get
+      description: Gets information about one error.
+      responses:
+        '200':
+          $ref: '#/components/schemas/Error'
 components:
   schemas:
     Account:
@@ -1432,6 +1475,38 @@ components:
         sipUri:
           type: string
           description: A SIP URI this device can be contacted at (via INVITE). This property is generated automatically and cannot be changed.      
+    Error:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The error id.
+        time:
+          type: string
+          format: date-time
+          description: The time the error occurred 
+        category:
+          type: string
+          enum:
+            - authentication
+            - authorization
+            - not-found
+            - bad-request
+            - conflict
+            - unavailable
+            - credit
+            - limit
+            - payment
+        code:
+          type: string
+          description: A specific error code string that identifies the type of error.
+        message:
+          type: string
+          description: A message that describes the error condition in detail.
+        details:
+          type: object
+          additionalProperties:
+            type: string
       
   requestBodies:
     CreateApplicationData:
