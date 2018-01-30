@@ -878,6 +878,80 @@ paths:
         '200':
           $ref: '#/components/responses/Empty'
 
+  /v1/users/{userId}/domains/{id}/endpoints:
+    get:
+      tags:
+        - Domains
+      summary: This returns a list of all endpoints associated with a domain.
+      operationId: getEndpoints
+      description: This returns a list of all endpoints associated with a domain.
+      parameters:
+        - name: page
+          in: query
+          description: Used for pagination to indicate the page requested for querying a list of endpoints.
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: size
+          in: query
+          description: Used for pagination to indicate the size of each page requested for querying a list of endpoints.
+          schema:
+            type: integer
+            format: int32
+            default: 25
+            maximum: 1000
+      responses:
+        '200':
+          description: List of endpoints
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Endpoint'
+    post:
+      tags:
+        - Domains
+      summary: This creates an endpoint.
+      operationId: createEndpoint
+      description: This creates an endpoint.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateEndpointData'
+      responses:
+        '201':
+          $ref: '#/components/responses/Created'
+  /v1/users/{userId}/domains/{id}/endpoints/{endpointId}:
+    get:
+      tags:
+        - Domains
+      summary: This returns a single endpoint.
+      operationId: getEndpoint
+      description: This returns a single endpoint.
+      responses:
+        '200':
+          $ref: '#/components/schemas/Endpoint'
+    post:
+      tags:
+        - Domains
+      summary: This will update an endpoint.
+      operationId: updateEndpoint
+      description: This will update an endpoint.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateEndpointData'
+      responses:
+        '200':
+          $ref: '#/components/responses/Empty'
+    delete:
+      tags:
+        - Domains
+      summary: Remove endpoint from domain.
+      operationId: deleteEndpoint
+      description: Remove endpoint from domain.
+      responses:
+        '200':
+          $ref: '#/components/responses/Empty'
+
 components:
   schemas:
     Account:
@@ -1323,6 +1397,42 @@ components:
         endpoints:
           type: string
           description: URL to use to GET list of endpoints on this domain.
+    Endpoint:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The enpoint id.
+        name:
+          type: string
+          description: The endpoint’s name, which SIP clients use as the address of record
+        description:
+          type: string
+          description: String to describe endpoint
+        domainId:
+          type: string
+          description: The id of the domain in which the endpoint will be created. This is the id of the domain resource created in an earlier step.
+        applicationId:
+          type: string
+          description: The id of the application associated with this endpoint. Application_id is used to determine the callback URL to be used when a client associated with the endpoint attempts to make a call.
+        enabled:
+          type: boolean
+          default: true
+          description: When set to true, SIP clients can register as this device to receive and make calls. When set to false, registration, inbound, and outbound calling will not succeed. 
+        credentials:
+          type: object
+          description: Contains SIP authentication credentials
+          properties:
+            realm:
+              type: string
+              description: Realm
+            username:  
+              type: string
+              description: User name
+        sipUri:
+          type: string
+          description: A SIP URI this device can be contacted at (via INVITE). This property is generated automatically and cannot be changed.      
+      
   requestBodies:
     CreateApplicationData:
       content:
@@ -1736,6 +1846,59 @@ components:
               description:
                 type: string
                 description: String to describe the domain
+    CreateEndpointData:
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - name
+              - credentials
+            properties:
+              name:
+                type: string
+                description: The endpoint’s name, which SIP clients use as the address of record
+              description:
+                type: string
+                description: String to describe endpoint
+              applicationId:
+                type: string
+                description: The id of the application associated with this endpoint. Application_id is used to determine the callback URL to be used when a client associated with the endpoint attempts to make a call.
+              enabled:
+                type: boolean
+                default: true
+                description: When set to true, SIP clients can register as this device to receive and make calls. When set to false, registration, inbound, and outbound calling will not succeed. 
+              credentials:
+                type: object
+                description: Contains SIP authentication credentials
+                properties:
+                  password:  
+                    type: string
+                    description: Password
+    UpdateEndpointData:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              description:
+                type: string
+                description: String to describe endpoint
+              applicationId:
+                type: string
+                description: The id of the application associated with this endpoint. Application_id is used to determine the callback URL to be used when a client associated with the endpoint attempts to make a call.
+              enabled:
+                type: boolean
+                default: true
+                description: When set to true, SIP clients can register as this device to receive and make calls. When set to false, registration, inbound, and outbound calling will not succeed. 
+              credentials:
+                type: object
+                description: Contains SIP authentication credentials
+                properties:
+                  password:  
+                    type: string
+                    description: Password
+
   responses:
     Created:
       description: Created
