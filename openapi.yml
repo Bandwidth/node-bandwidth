@@ -29,6 +29,8 @@ tags:
     description: The Media resource lets you upload your media files to Bandwidth API servers so they can be used in applications without requiring a separate hosting provider.
   - name: PhoneNumbers
     description: The Phone Numbers resource lets you get phone numbers for use with your programs and manage numbers you already have.
+  - name: Recordings
+    description: Retrieve information about call recordings.
 
 paths:
   /v1/users/{userId}/account:
@@ -1107,7 +1109,83 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/Empty'
-
+  /v1/users/{userId}/recordings:
+    get:
+      tags:
+        - Recordings
+      summary: List all users' call recordings.
+      operationId: list
+      description: List all users' call recordings.
+      parameters:
+        - name: page
+          in: query
+          description: Used for pagination to indicate the page requested for querying a list of recordings.
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: size
+          in: query
+          description: Used for pagination to indicate the size of each page requested for querying a list of recordings.
+          schema:
+            type: integer
+            format: int32
+            default: 25
+            maximum: 100
+      responses:
+        '200':
+          description: List of recordings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Recording'
+  /v1/users/{userId}/recordings/{id}:
+    get:
+      tags:
+        - Recordings
+      summary: Retrieve a specific call recording information
+      operationId: get
+      description: Retrieve a specific call recording information.
+      responses:
+        '200':
+          description: Recording information
+          content:
+            $ref: '#/components/schemas/Recording'
+  /v1/users/{userId}/recordings/{id}/transcriptions:
+    get:
+      tags:
+        - Recordings
+      summary: Get all the transcriptions that were made for the given recoding
+      operationId: getTranscriptions
+      description: Get all the transcriptions that were made for the given recoding
+      responses:
+        '200':
+          description: Transcriptions information
+          content:
+            $ref: '#/components/schemas/Transcription'
+    post:
+      tags:
+        - Recordings
+      summary: Request the transcription process to be started for the given recording id.
+      operationId: createTranscription
+      description: Request the transcription process to be started for the given recording id.
+      responses:
+        '201':
+          $ref: '#/components/responses/Created'
+  /v1/users/{userId}/recordings/{id}/transcriptions/{transcriptionId}:
+    get:
+      tags:
+        - Recordings
+      summary: Get information about the transcription, regardless its state.
+      operationId: getTranscription
+      description: Get information about the transcription, regardless its state.
+      responses:
+        '200':
+          description: Transcription's information
+          content:
+            $ref: '#/components/schemas/Transcription'
 components:
   schemas:
     Account:
@@ -1409,12 +1487,59 @@ components:
         id:
           type: string
           description: The recording id.
+        startTime:
+          type: string
+          format: date-time
+          description: Date/time when the recording started.
+        endTime:
+          type: string
+          format: date-time
+          description: Date/time when the recording ended.
+        call:
+          type: string
+          description: The complete URL to the call resource this recording is associated with.
+        media:
+          type: string
+          description: The complete URL to the media resource this recording is associated with.
+        state:
+          type: string
+          description: The state of the recording
+          enum:
+            - recording
+            - complete
+            - saving
+            - error
     Transcription:
       type: object
       properties:
         id:
           type: string
           description: The transcription id.
+        state:
+          type: string
+          description: The state of the transcription
+          enum:
+            - transcribing
+            - completed
+            - error
+        text:
+          type: string
+          description: The transcribed text.
+        time:
+          type: string
+          format: date-time
+          description: The date/time the transcription resource was created
+        chargeableDuration:
+          type: number
+          format: int32
+          description: The seconds between activeTime and endTime for the recording
+        textSize:
+          type: number
+          format: int32
+          description: The size of the transcribed text.
+        textUrl:
+          type: string
+          description: An url to the full text
     Gather:
       type: object
       properties:
