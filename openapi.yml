@@ -1745,7 +1745,48 @@ components:
           type: object
           additionalProperties:
             type: string
-      
+    PhoneNumber:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The phone number id.
+        name:
+          type: string
+          description: A name you choose for this number.
+        number:
+          type: string
+          description: The telephone number in E.164 format.
+        nationalNumber:
+          type: string
+          description: The telephone number in a friendly national format, e.g. (555) 5555-5555
+        city:
+          type: string
+          description: The city of the phone number.
+        state:
+          type: string
+          description: The state of the phone number.
+        applicationId:
+          type: string
+          description: The unique id of an Application you want to associate with this number.
+        application:
+          type: string
+          description: The URI of the application associated with the number for inbound phone calls and text messages.
+        fallbackNumber:
+          type: string
+          description: Number to transfer an incoming call when the callback/fallback events can’t be delivered.
+        price:
+          type: string
+          description: The monthly price for this number.
+        createdTime:
+          type: string
+          format: date-time
+          description: Date when the number was created. 
+        numberState:
+          type: string
+          enum:
+            - enabled
+            - released
   requestBodies:
     CreateApplicationData:
       content:
@@ -2211,6 +2252,41 @@ components:
                   password:  
                     type: string
                     description: Password
+    CreatePhoneNumberData:
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - number
+            properties:
+              name:
+                type: string
+                description: A name you choose for this number.
+              number:
+                type: string
+                description: The telephone number in E.164 format.
+              applicationId:
+                type: string
+                description: The unique id of an Application you want to associate with this number.
+              fallbackNumber:
+                type: string
+                description: Number to transfer an incoming call when the callback/fallback events can’t be delivered.
+    UpdatePhoneNumberData:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: A name you choose for this number.
+              applicationId:
+                type: string
+                description: The unique id of an Application you want to associate with this number.
+              fallbackNumber:
+                type: string
+                description: Number to transfer an incoming call when the callback/fallback events can’t be delivered.
 
   responses:
     Created:
