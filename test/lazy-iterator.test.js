@@ -16,7 +16,8 @@ test('async generator should return lazy list of data', async t => {
 			data: [{id: '1'}, {id: '2'}, {id: '3'}],
 			headers: {}
 		},
-		null
+		null,
+		() => {}
 	)) {
 		list.push(item);
 	}
@@ -40,7 +41,8 @@ test('async generator should make addiotional requests on demand', async t => {
 				link: `<http://fakeserver/lazy-list?size=25&page=0>; rel="first",<http://fakeserver/lazy-list?size=25&page=1>; rel="next",<http://fakeserver/lazy-list?size=25&page=1>; rel="last"`
 			}
 		},
-		axios
+		axios,
+		() => {}
 	)) {
 		list.push(item);
 	}

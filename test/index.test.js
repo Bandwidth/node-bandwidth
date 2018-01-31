@@ -101,6 +101,9 @@ const apiData = {
 				query: Joi.any(),
 				body: Joi.any(),
 				bodyKeys: new Set(['test'])
+			},
+			execute1: {
+				execute: () => {}
 			}
 		}
 	}
@@ -239,6 +242,8 @@ test('BandwidthApi should handle lazy list actions', async t => {
 	});
 	const generator = await api.Test.lazyList();
 	t.true(util.isFunction(generator.next));
+	await generator.next();
+	t.pass();
 });
 
 test('BandwidthApi should handle download of file', async t => {
@@ -321,4 +326,15 @@ test('Action of BandwidthApi should handle response with 201 (multiple)', async 
 	});
 	const list = await api.Test.createMultiple({test: 'test'});
 	t.is(list[0].id, 'id');
+});
+
+test('BandwidthApi should support custom actions', async t => {
+	const api = getBandwidthApi({
+		baseUrl: 'http://fakeserver',
+		userId: 'userId1',
+		apiToken: 'token',
+		apiSecret: 'secret'
+	});
+	await api.Test.execute1();
+	t.pass();
 });
