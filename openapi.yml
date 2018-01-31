@@ -656,7 +656,11 @@ paths:
       description: Gets information about one call event.  
       responses:
         '200':
-          $ref: '#/components/schemas/CallEvent'
+          description: information about call event
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEvent'
   /v1/users/{userId}/calls/{id}/recordings:
     get:
       tags:
@@ -710,7 +714,11 @@ paths:
       description: Get the gather DTMF parameters and results.
       responses:
         '200':
-          $ref: '#/components/schemas/Gather' 
+          description: Gather information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Gather' 
     post:
       tags:
         - Calls
@@ -721,7 +729,11 @@ paths:
         $ref: '#/components/requestBodies/UpdateGatherData'
       responses:
         '200':
-          $ref: '#/components/responses/Empty' 
+          description: Done
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/Empty' 
   /v1/users/{userId}/conferences:
     post:
       tags:
@@ -758,7 +770,11 @@ paths:
         $ref: '#/components/requestBodies/UpdateConferenceData'
       responses:
         '200':
-          $ref: '#/components/responses/Empty'
+          description: information about call event
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/Empty'
   /v1/users/{userId}/conferences/{id}/audio:
     post:
       tags:
@@ -770,7 +786,11 @@ paths:
         $ref: '#/components/requestBodies/PlayAudioData'
       responses:
         '200':
-          $ref: '#/components/responses/Empty'
+          description: Done
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/Empty'
   /v1/users/{userId}/conferences/{id}/members:
     get:
       tags:
@@ -807,7 +827,11 @@ paths:
       description: Retrieve a conference member properties.
       responses:
         '200':
-          $ref: '#/components/schemas/ConferenceMember'
+          description: information about conference
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConferenceMember'
     post:
       tags:
         - Conferences
@@ -818,7 +842,11 @@ paths:
         $ref: '#/components/requestBodies/UpdateConferenceMemberData'
       responses:
         '200':
-          $ref: '#/components/responses/Empty'
+          description: Done
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/Empty'
   /v1/users/{userId}/conferences/{id}/members/{memberId}/audio:
     post:
       tags:
@@ -830,7 +858,11 @@ paths:
         $ref: '#/components/requestBodies/PlayAudioData'
       responses:
         '200':
-          $ref: '#/components/responses/Empty'
+          description: Done
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/Empty'
   /v1/users/{userId}/domains:
     get:
       tags:
@@ -883,7 +915,11 @@ paths:
       description: This will delete a domain
       responses:
         '200':
-          $ref: '#/components/responses/Empty'
+          description: Done
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/Empty'
 
   /v1/users/{userId}/domains/{id}/endpoints:
     get:
@@ -937,7 +973,11 @@ paths:
       description: This returns a single endpoint.
       responses:
         '200':
-          $ref: '#/components/schemas/Endpoint'
+          description: Endpoint data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Endpoint'
     post:
       tags:
         - Domains
@@ -948,7 +988,11 @@ paths:
         $ref: '#/components/requestBodies/UpdateEndpointData'
       responses:
         '200':
-          $ref: '#/components/responses/Empty'
+          description: Done
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/Empty'
     delete:
       tags:
         - Domains
@@ -957,7 +1001,11 @@ paths:
       description: Remove endpoint from domain.
       responses:
         '200':
-          $ref: '#/components/responses/Empty'
+          description: Done
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/Empty'
   /v1/users/{userId}/errors:
     get:
       tags:
@@ -999,7 +1047,11 @@ paths:
       description: Gets information about one error.
       responses:
         '200':
-          $ref: '#/components/schemas/Error'
+          description: Error information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /v1/phoneNumbers/numberInfo/{number}:
     get:
       tags:
@@ -1088,7 +1140,10 @@ paths:
       responses:
         '200':
           description: Number information
-          $ref: '#/components/schemas/PhoneNumber'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhoneNumber'
     post:
       tags:
         - PhoneNumbers
@@ -1150,7 +1205,11 @@ paths:
       description: Retrieve a specific call recording information.
       responses:
         '200':
-            $ref: '#/components/schemas/Recording'
+          description: Recording information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recording'
   /v1/users/{userId}/recordings/{id}/transcriptions:
     get:
       tags:
@@ -1160,7 +1219,13 @@ paths:
       description: Get all the transcriptions that were made for the given recoding
       responses:
         '200':
-          $ref: '#/components/schemas/Transcription'
+          description: List of transcriptions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Transcription'
     post:
       tags:
         - Recordings
@@ -1179,7 +1244,11 @@ paths:
       description: Get information about the transcription, regardless its state.
       responses:
         '200':
-          $ref: '#/components/schemas/Transcription'
+          description: Done
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transcription'
 components:
   schemas:
     Account:

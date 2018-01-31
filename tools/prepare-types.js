@@ -48,6 +48,9 @@ function printProperties(prefix, properties) {
 						}
 					}
 					break;
+				case 'array':
+					text += `\t${k}: Array<${schema.items.type}>`;
+					break;
 				default:
 					text += `\t${k}: ${schema.type}`;
 					break;
