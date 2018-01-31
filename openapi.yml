@@ -1008,6 +1008,105 @@ paths:
       responses:
         '200':
           $ref: '#/components/schemas/NumberInfo'
+  /v1/users/{userId}/phoneNumbers:
+    get:
+      tags:
+        - PhoneNumbers
+      summary: Gets a list of your numbers. 
+      operationId: list
+      description: Gets a list of your numbers. 
+      parameters:
+        - name: applicationId
+          in: query
+          description: Used to filter the retrieved list of numbers by an associated application ID.
+          schema:
+            type: string
+        - name: state
+          in: query
+          description: Used to filter the retrieved list of numbers allocated for the authenticated user by a US state.
+          schema:
+            type: string
+        - name: name
+          in: query
+          description: Used to filter the retrieved list of numbers allocated for the authenticated user by it’s name.
+          schema:
+            type: string
+        - name: city
+          in: query
+          description: Used to filter the retrieved list of numbers allocated for the authenticated user by it’s city.
+          schema:
+            type: string
+        - name: numberState
+          in: query
+          description: Used to filter the retrieved list of numbers allocated for the authenticated user by the number state.
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: Used for pagination to indicate the page requested for querying a list of numbers.
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: size
+          in: query
+          description: Used for pagination to indicate the size of each page requested for querying a list of numbers.
+          schema:
+            type: integer
+            format: int32
+            default: 25
+            maximum: 100
+      responses:
+        '200':
+          description: List of numbers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PhoneNumber'
+    post:
+      tags:
+        - PhoneNumbers
+      summary: Allocates a number so you can use it to make and receive calls and send and receive messages.
+      operationId: create
+      description: Allocates a number so you can use it to make and receive calls and send and receive messages.
+      requestBody:
+        $ref: '#/components/requestBodies/CreatePhoneNumberData'
+      responses:
+        '201':
+          $ref: '#/components/responses/Created'
+  /v1/users/{userId}/phoneNumbers/{id}:
+    get:
+      tags:
+        - PhoneNumbers
+      summary: Gets information about one of your numbers using the number's ID or E.164 number string, like "+19195551212"
+      operationId: get
+      description: Gets information about one of your numbers using the number's ID or E.164 number string, like "+19195551212"
+      responses:
+        '200':
+          description: Number information
+          $ref: '#/components/schemas/PhoneNumber'
+    post:
+      tags:
+        - PhoneNumbers
+      summary: Makes changes to a number user has.
+      operationId: update
+      description: Makes changes to a number user has.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdatePhoneNumberData'
+      responses:
+        '201':
+          $ref: '#/components/responses/Created'
+    delete:
+      tags:
+        - PhoneNumbers
+      summary: Removes a number from your account so you can no longer make or receive calls, or send or receive messages with it. 
+      operationId: remove
+      description: Removes a number from your account so you can no longer make or receive calls, or send or receive messages with it. 
+      responses:
+        '200':
+          $ref: '#/components/responses/Empty'
 
 components:
   schemas:
