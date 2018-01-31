@@ -1150,8 +1150,6 @@ paths:
       description: Retrieve a specific call recording information.
       responses:
         '200':
-          description: Recording information
-          content:
             $ref: '#/components/schemas/Recording'
   /v1/users/{userId}/recordings/{id}/transcriptions:
     get:
@@ -1162,9 +1160,7 @@ paths:
       description: Get all the transcriptions that were made for the given recoding
       responses:
         '200':
-          description: Transcriptions information
-          content:
-            $ref: '#/components/schemas/Transcription'
+          $ref: '#/components/schemas/Transcription'
     post:
       tags:
         - Recordings
@@ -1183,9 +1179,7 @@ paths:
       description: Get information about the transcription, regardless its state.
       responses:
         '200':
-          description: Transcription's information
-          content:
-            $ref: '#/components/schemas/Transcription'
+          $ref: '#/components/schemas/Transcription'
 components:
   schemas:
     Account:
@@ -1745,6 +1739,24 @@ components:
           type: object
           additionalProperties:
             type: string
+    NumberInfo:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The Caller ID name information.
+        number:
+          type: string
+          description: The full phone number, specified in E.164 format.
+        created:
+          type: string
+          format: date-time
+          description: The time this Caller ID information was first queried 
+        updated:
+          type: string
+          format: date-time
+          description: The time this Caller ID information was last updated
+
     PhoneNumber:
       type: object
       properties:
