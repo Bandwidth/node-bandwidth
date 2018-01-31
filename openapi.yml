@@ -852,7 +852,7 @@ paths:
       tags:
         - Conferences
       summary: Speak text or play audio to only a single conference member
-      operationId: playAudio
+      operationId: playAudioToMember
       description: Speak text or play audio to ONLY a single conference member
       requestBody:
         $ref: '#/components/requestBodies/PlayAudioData'
@@ -2082,8 +2082,13 @@ components:
               locale:
                 type: string
                 default: en_US
+                description: The sentence to speak.
               voice:
                 type: string
+                description: The voice to speak the sentence
+              tag:
+                type: string
+                description: A string that will be included in the events delivered when the audio playback starts or finishes.
     DtmfData:
       content:
         application/json:
