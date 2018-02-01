@@ -27,7 +27,7 @@ tags:
     description: The Errors resource lets you see information about errors that happened in your API calls and during applications callbacks.
   - name: Media
     description: The Media resource lets you upload your media files to Bandwidth API servers so they can be used in applications without requiring a separate hosting provider.
-  - name: Message
+  - name: Messages
     description: The Messages resource lets you send SMS/MMS messages and view messages that were previously sent or received.
   - name: PhoneNumbers
     description: The Phone Numbers resource lets you get phone numbers for use with your programs and manage numbers you already have.
@@ -2014,8 +2014,7 @@ components:
         media:
           type: array
           items:
-            schema:
-              type: string
+            type: string
           description: array containing list of media urls to be sent as content for an mms.  
         state:
           type: string
@@ -2627,8 +2626,7 @@ components:
               media:  
                 type: array
                 items:
-                  schema:
-                    type: string
+                  type: string
                 description: For MMS messages, a media url to the location of the media or list of medias to be sent send with the message. 
               receiptRequested:  
                 type: string
@@ -2666,13 +2664,13 @@ components:
     Empty:
       description: Done
     
-    SendMessageResult:
+    SendMessageResults:
+      description: Results of multiple message sending
       content:
         application/json:
           schema:
             type: array
             items:
-              schema:
               type: object
               properties:
                 result:
