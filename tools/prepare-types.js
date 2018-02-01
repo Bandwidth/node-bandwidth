@@ -207,6 +207,73 @@ ${Object.keys(apiData)
 
 ${printTypes()}
 
+export interface Bridges {
+	speakSententence(id: string, sentence: string, options?: SpeakSententenceOptions, cancelToken?: CancelToken): Promise<any>;
+	playFileUrl(id: string, fileUrl: string, options?: PlayFileUrlOptions, cancelToken?: CancelToken): Promise<any>;
+	stopPlayFileUrl(id: string, cancelToken?: CancelToken): Promise<any>;
+}
+
+export interface Calls {
+	answer(id: string, cancelToken?: CancelToken): Promise<any>;
+	terminate(id: string, cancelToken?: CancelToken): Promise<any>;
+	hangup(id: string, cancelToken?: CancelToken): Promise<any>;
+	transfer(id: string, transferTo: string, options?: TransferOptions, cancelToken?: CancelToken): Promise<string>;
+	stopGather(id: string, gatherId: string, cancelToken?: CancelToken): Promise<any>;
+	speakSententence(id: string, sentence: string, options?: SpeakSententenceOptions, cancelToken?: CancelToken): Promise<any>;
+	playFileUrl(id: string, fileUrl: string, options?: PlayFileUrlOptions, cancelToken?: CancelToken): Promise<any>;
+	stopPlayFileUrl(id: string, cancelToken?: CancelToken): Promise<any>;
+}
+
+export interface Conferences {
+	stop(id: string, cancelToken?: CancelToken): Promise<any>;
+	mute(id: string, mute?: boolean, cancelToken?: CancelToken): Promise<any>;
+	hold(id: string, hold?: boolean, cancelToken?: CancelToken): Promise<any>;
+	deleteMember(id: string, memberId: string, cancelToken?: CancelToken): Promise<any>;
+	muteMember(id: string, memberId: string, mute?: boolean, cancelToken?: CancelToken): Promise<any>;
+	holdMember(id: string, memberId: string, hold?: boolean, cancelToken?: CancelToken): Promise<any>;
+	speakSententence(id: string, sentence: string, options?: SpeakSententenceOptions, cancelToken?: CancelToken): Promise<any>;
+	playFileUrl(id: string, fileUrl: string, options?: PlayFileUrlOptions, cancelToken?: CancelToken): Promise<any>;
+	stopPlayFileUrl(id: string, cancelToken?: CancelToken): Promise<any>;
+	speakSententenceToMember(id: string, memberId: string, sentence: string, options?: SpeakSententenceOptions, cancelToken?: CancelToken): Promise<any>;
+	playFileUrlToMember(id: string, memberId: string, fileUrl: string, options?: PlayFileUrlOptions, cancelToken?: CancelToken): Promise<any>;
+	stopPlayFileUrlToMember(id: string, memberId: string, cancelToken?: CancelToken): Promise<any>;
+}
+
+export interface PlayAudioOptions {
+	fileUrl: string;
+	sentence: string;
+	gender: 'female' | 'male';
+	locale: string;
+	voice: string;
+	tag: string;
+	id?: string;
+}
+
+export interface SpeakSententenceOptions {
+	gender: 'female' | 'male';
+	locale: string;
+	voice: string;
+	tag: string;
+}
+
+export interface PlayFileUrlOptions {
+	tag: string;
+}
+
+export interface TransferOptions {
+	callTimeout: number;
+	callbackTimeout: number;
+	callbackUrl: string;
+	callbackHttpMethod: 'GET' | 'POST';
+	fallbackUrl: string;
+	recordingEnabled: boolean;
+	recordingFileFormat: 'wav' | 'mp3';
+	recordingMaxDuration: number;
+	transcriptionEnabled: boolean;
+	transferCallerId: string;
+	whisperAudio: PlayAudioOptions;
+}
+
 export interface BandwidthApi {
 ${Object.keys(apiData)
 			.map(o => printApiName(o, apiData[o]))
