@@ -123,6 +123,9 @@ function getOutputTypes(prefix, data, {properties}) {
 			r => r.status === '201' && r.headers && r.headers.Location
 		)[0]
 	) {
+		if (outputTypes.length > 0) {
+			return `string | ${outputTypes.join(' | ')}`;
+		}
 		return 'string'; // Id of created object
 	}
 	if (outputTypes.length > 0) {
@@ -140,6 +143,10 @@ function getOutputTypes(prefix, data, {properties}) {
 
 function printApiMethod(apiName, name, data) {
 	const paramsFromPath = extractParamsFromPath(data.path);
+	const anyOf = data.body.anyOf;
+	if (anyOf) {
+		data.body = data.body.anyOf[0];
+	}
 	const params = {
 		type: 'object',
 		properties: Object.assign(
@@ -172,7 +179,9 @@ function printApiMethod(apiName, name, data) {
 	let paramsDesclaration = '';
 	if (hasParams) {
 		types.push({type: typeName, schema: params});
-		paramsDesclaration = `options${optional ? '?' : ''}: ${typeName}, `;
+		paramsDesclaration = `options${optional ? '?' : ''}: ${typeName}${
+			anyOf ? ` | ${typeName}[]` : ''
+		}, `;
 	}
 	return `\t${name}(${paramsDesclaration}cancelToken?: CancelToken): Promise<${getOutputTypes(
 		`${_.upperFirst(apiName)}${_.upperFirst(name)}`,

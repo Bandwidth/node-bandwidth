@@ -2060,6 +2060,53 @@ components:
           type: string
           description: Message delivery description for the respective delivery code
 
+    SendMessageItem:
+      type: object
+      required:
+        - from
+        - to
+      properties:
+        from:
+          type: string
+          description: One of your telephone numbers the message should come from (must be in E.164 format, like +19195551212).
+        to:
+          type: string
+          description: The phone number the message should be sent to (must be in E.164 format, like +19195551212).
+        text:  
+          type: string
+          description: The contents of the text message (must be 2048 characters or less).
+        media:  
+          type: array
+          items:
+            type: string
+          description: For MMS messages, a media url to the location of the media or list of medias to be sent send with the message. 
+        receiptRequested:  
+          type: string
+          description: Requested receipt option
+          enum:
+            - all
+            - none
+            - error
+        callbackUrl:  
+          type: string
+          description: The server URL where the events related to the outgoing message will be sent to.
+        callbackHttpMethod:  
+          type: string
+          description: Determine if the callback event should be sent
+          enum:
+            - post
+            - get
+        callbackTimeout:  
+          type: number
+          description: Determine how long should the platform wait for callbackUrl’s response before timing out (milliseconds). 
+        fallbackUrl:  
+          type: string
+          description: The server URL used to send the message events if the request to callbackUrl fails.
+        tag:  
+          type: string
+          description: Any string, it will be included in the callback events of the message.
+
+
   requestBodies:
     CreateApplicationData:
       content:
@@ -2609,50 +2656,11 @@ components:
       content:
         application/json:
           schema:
-            type: object
-            required:
-              - from
-              - to
-            properties:
-              from:
-                type: string
-                description: One of your telephone numbers the message should come from (must be in E.164 format, like +19195551212).
-              to:
-                type: string
-                description: The phone number the message should be sent to (must be in E.164 format, like +19195551212).
-              text:  
-                type: string
-                description: The contents of the text message (must be 2048 characters or less).
-              media:  
-                type: array
+            anyOf:
+              - $ref: '#/components/schemas/SendMessageItem'
+              - type: array
                 items:
-                  type: string
-                description: For MMS messages, a media url to the location of the media or list of medias to be sent send with the message. 
-              receiptRequested:  
-                type: string
-                description: Requested receipt option
-                enum:
-                  - all
-                  - none
-                  - error
-              callbackUrl:  
-                type: string
-                description: The server URL where the events related to the outgoing message will be sent to.
-              callbackHttpMethod:  
-                type: string
-                description: Determine if the callback event should be sent
-                enum:
-                  - post
-                  - get
-              callbackTimeout:  
-                type: number
-                description: Determine how long should the platform wait for callbackUrl’s response before timing out (milliseconds). 
-              fallbackUrl:  
-                type: string
-                description: The server URL used to send the message events if the request to callbackUrl fails.
-              tag:  
-                type: string
-                description: Any string, it will be included in the callback events of the message.
+                  $ref: '#/components/schemas/SendMessageItem'
 
   responses:
     Created:

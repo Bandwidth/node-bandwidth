@@ -11,6 +11,11 @@ const readFile = util.promisify(fs.readFile);
 
 function printValidator(schema, required) {
 	let code = '';
+	if (schema.anyOf) {
+		return `Joi.alternatives().try(${schema.anyOf
+			.map(s => printValidator(s))
+			.join(', ')})`;
+	}
 	switch (schema.type) {
 		case 'object':
 			code = `Joi.object().keys({${Object.keys(schema.properties || {})
@@ -22,6 +27,9 @@ function printValidator(schema, required) {
 						)}`
 				)
 				.join(', ')}})`;
+			break;
+		case 'array':
+			code = `Joi.array().items(${printValidator(schema.items)})`;
 			break;
 		case 'integer':
 			code = 'Joi.number().integer()';
