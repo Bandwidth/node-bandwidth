@@ -28,6 +28,22 @@ test('hold() should call update() with right params', async t => {
 	t.pass();
 });
 
+test('mute() should call update() with right params (default)', async t => {
+	const Conference = {update: td.function()};
+	td.when(Conference.update({id: 'id', mute: true}, null)).thenResolve();
+	conferencesExtensions(Conference);
+	await Conference.mute.execute.call(Conference, 'id');
+	t.pass();
+});
+
+test('hold() should call update() with right params (default)', async t => {
+	const Conference = {update: td.function()};
+	td.when(Conference.update({id: 'id', hold: true}, null)).thenResolve();
+	conferencesExtensions(Conference);
+	await Conference.hold.execute.call(Conference, 'id');
+	t.pass();
+});
+
 test('deleteMember() should call updateMember() with right params', async t => {
 	const Conference = {updateMember: td.function()};
 	td
@@ -65,5 +81,35 @@ test('holdMember() should call updateMember() with right params', async t => {
 		.thenResolve();
 	conferencesExtensions(Conference);
 	await Conference.holdMember.execute.call(Conference, 'id', 'memberId', true);
+	t.pass();
+});
+
+test('muteMember() should call updateMember() with right params (default params)', async t => {
+	const Conference = {updateMember: td.function()};
+	td
+		.when(
+			Conference.updateMember(
+				{id: 'id', memberId: 'memberId', mute: true},
+				null
+			)
+		)
+		.thenResolve();
+	conferencesExtensions(Conference);
+	await Conference.muteMember.execute.call(Conference, 'id', 'memberId');
+	t.pass();
+});
+
+test('holdMember() should call updateMember() with right params (default params)', async t => {
+	const Conference = {updateMember: td.function()};
+	td
+		.when(
+			Conference.updateMember(
+				{id: 'id', memberId: 'memberId', mute: true},
+				null
+			)
+		)
+		.thenResolve();
+	conferencesExtensions(Conference);
+	await Conference.holdMember.execute.call(Conference, 'id', 'memberId');
 	t.pass();
 });
