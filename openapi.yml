@@ -171,7 +171,7 @@ paths:
       operationId: update
       description: Makes changes to an application. 
       requestBody:
-        $ref: '#/components/requestBodies/CreateApplicationData'
+        $ref: '#/components/requestBodies/UpdateApplicationData'
       responses:
         '200':
           $ref: '#/components/responses/Empty'
@@ -1876,6 +1876,46 @@ components:
             type: object
             required:
               - name
+            properties:
+              name:
+                type: string
+                description: A name you choose for this application.
+              incomingCallUrl:
+                type: string
+                description: A URL where call events will be sent for an inbound call. This is the endpoint where the Application Platform will send all call events. Either incomingCallUrl or incomingMessageUrl is required.
+              incomingCallUrlCallbackTimeout:
+                type: integer
+                description: Determine how long should the platform wait for incomingCallUrl's response before timing out in milliseconds.
+                default: 10000
+              incomingCallFallbackUrl:
+                type: string
+                description: The URL used to send the callback event if the request to incomingCallUrl fails.
+              incomingMessageUrl:
+                type: string
+                description: The unique identifier for the application
+              incomingMessageUrlCallbackTimeout:
+                type: integer
+                description: The unique identifier for the application
+                default: 10000
+              incomingMessageFallbackUrl:
+                type: string
+                description: The unique identifier for the application
+              callbackHttpMethod:  
+                type: string
+                description: 'Determine if the callback event should be sent via HTTP GET or HTTP POST. Values are "get" or "post", default: "post".'
+                enum:
+                  - post
+                  - get
+                default: post
+              autoAnswer:
+                type: boolean
+                default: true
+                description: Determines whether or not an incoming call should be automatically answered.
+    UpdateApplicationData:
+      content:
+        application/json:
+          schema:
+            type: object
             properties:
               name:
                 type: string
