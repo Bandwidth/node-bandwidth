@@ -52,7 +52,7 @@ function printProperties(prefix, properties) {
 					text += `\t${k}: Array<${schema.items.type}>`;
 					break;
 				default:
-					text += `\t${k}: ${schema.type}`;
+					text += `\t${k}: ${schema.typ || 'any'}`;
 					break;
 			}
 			text += ';';
