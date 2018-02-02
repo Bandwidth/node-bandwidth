@@ -98,12 +98,18 @@ const apiData = {
 			createMultiple: {
 				method: 'POST',
 				path: '/createMultiple',
-				query: Joi.any(),
 				body: Joi.any(),
 				bodyKeys: new Set(['test'])
 			},
 			execute1: {
 				execute: () => {}
+			},
+			listWithIds: {
+				method: 'GET',
+				path: '/list-with-ids',
+				query: Joi.any(),
+				body: Joi.any(),
+				bodyKeys: new Set([])
 			}
 		}
 	}
@@ -143,7 +149,15 @@ nock('http://fakeserver')
 	.post('/create', {test: 'test'})
 	.reply(201, '', {Location: 'http://localhost/id'})
 	.post('/createMultiple', {test: 'test'})
-	.reply(201, [{location: 'http://localhost/id'}]);
+	.reply(201, [{location: 'http://localhost/id'}])
+	.get('/list-with-ids')
+	.reply(200, [
+		{
+			location: 'http://test/id',
+			media: 'http://test/mediaName',
+			call: 'http://test/callId'
+		}
+	]);
 
 test('It should return factory function', t => {
 	t.true(util.isFunction(getBandwidthApi));
@@ -337,4 +351,17 @@ test('BandwidthApi should support custom actions', async t => {
 	});
 	await api.Test.execute1();
 	t.pass();
+});
+
+test('BandwidthApi should extract ids and media names from urls', async t => {
+	const api = getBandwidthApi({
+		baseUrl: 'http://fakeserver',
+		userId: 'userId1',
+		apiToken: 'token',
+		apiSecret: 'secret'
+	});
+	const list = await api.Test.listWithIds();
+	t.is(list[0].id, 'id');
+	t.is(list[0].callId, 'callId');
+	t.is(list[0].mediaName, 'mediaName');
 });
