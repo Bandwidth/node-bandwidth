@@ -29,6 +29,8 @@ tags:
     description: The Media resource lets you upload your media files to Bandwidth API servers so they can be used in applications without requiring a separate hosting provider.
   - name: Messages
     description: The Messages resource lets you send SMS/MMS messages and view messages that were previously sent or received.
+  - name: MessagesV2
+    description: The next version of Messages resource lets you send SMS/MMS messages and view messages that were previously sent or received.
   - name: NumberInfo
     description: This resource provides a CNAM number info. 
   - name: PhoneNumbers
@@ -1185,7 +1187,18 @@ paths:
               schema:
                 $ref: '#/components/schemas/Message'
 
-
+  /v2/users/{userId}/messages:
+    post:
+      tags:
+        - MessagesV2
+      summary: Sends one or more messages.
+      operationId: send
+      description: Sends one or more messages.
+      requestBody:
+        $ref: '#/components/requestBodies/SendMessageDataV2'
+      responses:
+        '202':
+          $ref: '#/components/responses/SendMessageResultsV2'
   /v1/users/{userId}/phoneNumbers:
     get:
       tags:
@@ -2663,6 +2676,43 @@ components:
               - type: array
                 items:
                   $ref: '#/components/schemas/SendMessageItem'
+    SendMessageDataV2:
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - from
+              - to
+              - text
+              - applicationId
+            properties:
+              from:
+                type: string
+                description: One of your telephone numbers the message should come from (must be in E.164 format, like +19195551212).
+              to:
+                description: The phone number the message should be sent
+                anyOf:
+                  - type: string
+                  - type: array
+                    items:
+                      type: string
+              text:
+                type: string
+                description: The contents of the text message
+              applicationId:
+                type: string
+                description: The ID of the Application your from number is associated with in the Bandwidth Phone Number Dashboard.
+              media:
+                type: array
+                description: A list of URLs to include as media attachments as part of the message.
+                items:
+                  type: string
+
+              tag:
+                type: string
+                description: Any string which will be included in the callback events of the message.
+
 
   responses:
     Created:
@@ -2687,3 +2737,50 @@ components:
                   type: string
                 location:
                   type: string  
+
+    SendMessageResultsV2:
+      description: Results of multiple message sending
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: ID of message
+                time:
+                  type: string
+                  format: date-time
+                  description: Time when the message was sent
+                owner:
+                  type: string
+                  description: Owner of the message
+                direction:
+                  type: string
+                  description: Direction of message
+                from:
+                  type: string
+                  description: One of your telephone numbers the message should come from (must be in E.164 format, like +19195551212).
+                to:
+                  description: The phone number the message should be sent
+                  anyOf:
+                    - type: string
+                    - type: array
+                      items:
+                        type: string
+                text:
+                  type: string
+                  description: The contents of the text message
+                applicationId:
+                  type: string
+                  description: The ID of the Application your from number is associated with in the Bandwidth Phone Number Dashboard.
+                media:
+                  type: array
+                  description: A list of URLs to include as media attachments as part of the message.
+                  items:
+                    type: string
+                tag:
+                  type: string
+                  description: Any string which will be included in the callback events of the message.
