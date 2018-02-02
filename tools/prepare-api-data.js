@@ -89,12 +89,16 @@ function printApiMethod(name, data) {
 			const schema = r.schema || {};
 			return schema.type === 'string' && schema.format === 'binary';
 		}).length > 0;
+	let query = null;
+	if (data.query && Object.keys(data.query.properties).length > 0) {
+		query = printValidator(data.query);
+	}
 	return `\t\t\t${_.camelCase(name)}: {
 		\t\tmethod: '${data.method}',
 		\t\tpath: '${data.path}',${
 		data.contentType ? `\n\t\t\t\tcontentType: '${data.contentType}',` : ''
 	}${binaryResponse ? `\n\t\t\t\tbinaryResponse: ${binaryResponse},` : ''}
-		\t\tquery: ${printValidator(data.query)},
+		\t\tquery: ${query},
 		\t\tbody: ${printValidator(data.body)},
 		\t\tbodyKeys: ${printBodyKeys(data.body)}
 	\t\t}`;
