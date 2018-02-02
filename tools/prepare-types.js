@@ -310,19 +310,70 @@ export interface UnexpectedResponseErrorStatic {
 	new (message: string, status: number): UnexpectedResponseError;
 }
 
-export interface RateLimitErrorStatic {
-	new (message: string, status: number, limitReset: string): RateLimitError;
+export interface BxmlGatherOptions {
+	requestUrl: string;
+	requestUrlTimeout: string | number;
+	terminatingDigits: string;
+	maxDigits: string | number;
+	interDigitTimeout: string | number;
+	tag: string;
 }
+
+export interface BxmlSpeakSentenceOptions {
+	gender: 'female' | 'male';
+	locale: string,
+	voice: string
+}
+
+export interface BxmlTransferOptions {
+	transferTo: string;
+	transferCallerId: string;
+	callTimeout: string | number;
+	requestUrl: string;
+	requestUrlTimeout: string | number;
+	tag: string;
+}
+
+export interface BxmlRecordOptions {
+	requestUrl: string;
+	requestUrlTimeout: string | number;
+	fileFormat: string;
+	transcribe: string | boolean;
+	transcribeCallbackUrl: string;
+	multiChannel: string | boolean;
+	maxDuration: string | number;
+	silenceTimeout: string | number;
+	silenceThreshold: string | number;
+	terminatingDigits: string;
+}
+
+type Verb = string
+export interface BandwidthXml {
+	response(verbs: Verb | Verb[]): string;
+	gather(requestUrl: string, verbs?: Verb | Verb[], options?: BxmlGatherOptions): Verb;
+	hangup(): Verb;
+	playAudio(url: string): Verb;
+	redirect(requestUrl: string, requestUrlTimeout: number): Verb;
+	speakSentence(sentence: string, options?: BxmlSpeakSentenceOptions): Verb;
+	transfer(transferTo: string, verbs?: Verb | Verb[], options?: BxmlTransferOptions): Verb;
+	record(options?: BxmlRecordOptions): Verb;
+}
+
+declare const bandwidthXml: BandwidthXml;
 
 export interface GetBandwidthApiStatic {
 	(options: BandwidthApiOptions): BandwidthApi;
 	UnexpectedResponseError: UnexpectedResponseErrorStatic;
 	RateLimitError: RateLimitErrorStatic;
+	bandwidthXml: BandwidthXml;
 }
 
 declare const getBandwidthApi: GetBandwidthApiStatic;
 
+export {bandwidthXml};
+
 export default getBandwidthApi;
+
 `,
 		'utf-8'
 	);
