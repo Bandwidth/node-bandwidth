@@ -29,6 +29,8 @@ tags:
     description: The Media resource lets you upload your media files to Bandwidth API servers so they can be used in applications without requiring a separate hosting provider.
   - name: Messages
     description: The Messages resource lets you send SMS/MMS messages and view messages that were previously sent or received.
+  - name: NumberInfo
+    description: This resource provides a CNAM number info. 
   - name: PhoneNumbers
     description: The Phone Numbers resource lets you get phone numbers for use with your programs and manage numbers you already have.
   - name: Recordings
@@ -1057,9 +1059,9 @@ paths:
   /v1/phoneNumbers/numberInfo/{number}:
     get:
       tags:
-        - PhoneNumbers
+        - NumberInfo
       summary: Gets CNAM number info.
-      operationId: getNumberInfo
+      operationId: get
       description: This resource provides a CNAM number info. CNAM is an acronym which stands for Caller ID Name. CNAM can be used to display the calling party's name alongside the phone number, to help users easily identify a caller. CNAM API allows the user to get the CNAM information of a particular number.
       responses:
         '200':
