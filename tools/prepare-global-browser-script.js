@@ -36,13 +36,17 @@ async function main() {
 				var args = (module.dependencies || []).map(function (n){
 					return require(n, instance);
 				});
-				factory.apply(null, args);
+				module.factory.apply(null, args);
 				module.instance = instance;
 				return instance;
 			}
-			return window[name];
+			return window[name] || window[name[0].toUpperCase() + name.substr(1)];
 		};
-		window.bandwidth =  require('index', {}).default;
+		var index= require('index', {});
+		window.getBandwidthApi = index.default;
+		window.UnexpectedResponseError = index.UnexpectedResponseError;
+		window.RateLimitError = index.RateLimitError;
+		window.bandwidthXml = index.bandwidthXml;
 	}
 
 })(function(define){
