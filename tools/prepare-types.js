@@ -7,6 +7,7 @@ const prepareApiData = require('./prepare');
 
 const writeFile = util.promisify(fs.writeFile);
 const readFile = util.promisify(fs.readFile);
+const mkdir = util.promisify(fs.mkdir);
 
 const types = [];
 
@@ -205,6 +206,7 @@ async function main() {
 	const apiData = prepareApiData(
 		(await resolveRefs(yaml.safeLoad(openApiText))).resolved
 	);
+	await mkdir('./dist').catch(() => {});
 	await writeFile(
 		'./dist/index.d.ts',
 		`/// <reference types="@types/async" />
