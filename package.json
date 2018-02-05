@@ -1,6 +1,6 @@
 {
 	"name": "node-bandwidth",
-	"version": "3.0.0-alpha.1",
+	"version": "3.0.0-alpha.2",
 	"description": "NodeJS Client library for Bandwidth API",
 	"engines": {
 		"node": ">=9.0"
@@ -9,8 +9,9 @@
 	"scripts": {
 		"precommit": "npm run format",
 		"test": "node --harmony node_modules/ava/cli.js",
-		"test:coverage": "nyc npm test",
-		"test:ci": "npm run build:node && npm run lint && npm run test:coverage",
+		"test:coverage": "npm run prepare-api-data && nyc npm test",
+		"test:ci":
+			"npm run prepare-api-data && npm run build:node && npm run lint && npm run test:coverage",
 		"lint": "xo",
 		"format": "pretty-quick --staged && xo --fix",
 		"prepare-api-data": "node tools/prepare-api-data.js",
@@ -23,8 +24,7 @@
 			"tsc -m commonjs --outDir dist/node-bandwidth.commonjs",
 		"build:types": "node tools/prepare-types.js",
 		"build": "npm run prepare-api-data && npm-run-all --parallel build:*",
-		"watch": "tsc -t es2017 -m commonjs -w",
-		"install": "npm run prepare-api-data",
+		"watch": "npm run prepare-api-data && tsc -t es2017 -m commonjs -w",
 		"prepack": "npm run build"
 	},
 	"main": "dist/index.js",
