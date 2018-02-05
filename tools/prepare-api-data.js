@@ -75,6 +75,9 @@ function printValidator(schema, required) {
 	return code;
 }
 
+function hasKeys(obj) {
+	return Object.keys(obj || {}).length > 0;
+}
 function printBodyKeys(schema) {
 	const keys = Object.keys(schema.properties || {});
 	return `new Set([${keys.map(k => `'${_.camelCase(k)}'`).join(', ')}])`;
@@ -89,18 +92,15 @@ function printApiMethod(name, data) {
 			const schema = r.schema || {};
 			return schema.type === 'string' && schema.format === 'binary';
 		}).length > 0;
-	let query = null;
-	if (data.query && Object.keys(data.query.properties).length > 0) {
-		query = printValidator(data.query);
-	}
+	const hasQuery = hasKeys(data.query) && hasKeys(data.query.properties);
 	return `\t\t\t${_.camelCase(name)}: {
 		\t\tmethod: '${data.method}',
 		\t\tpath: '${data.path}',${
 		data.contentType ? `\n\t\t\t\tcontentType: '${data.contentType}',` : ''
 	}${binaryResponse ? `\n\t\t\t\tbinaryResponse: ${binaryResponse},` : ''}
-		\t\tquery: ${query},
-		\t\tbody: ${printValidator(data.body)},
-		\t\tbodyKeys: ${printBodyKeys(data.body)}
+		${hasQuery ? `\t\tquery: ${printValidator(data.query)},` : ''}
+		${hasKeys(data.body) ? `\t\tbody: ${printValidator(data.body)},` : ''}
+		${hasKeys(data.body) ? `\t\tbodyKeys: ${printBodyKeys(data.body)}` : ''}
 	\t\t}`;
 }
 

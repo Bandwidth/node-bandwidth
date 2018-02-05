@@ -34,7 +34,6 @@ const apiData = {
 				method: 'GET',
 				path: '/rate-limit',
 				query: Joi.any(),
-				body: Joi.any(),
 				bodyKeys: new Set([])
 			},
 			error: {
