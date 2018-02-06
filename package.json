@@ -1,6 +1,6 @@
 {
 	"name": "node-bandwidth",
-	"version": "3.0.0-alpha.3",
+	"version": "3.0.0-alpha.4",
 	"description": "NodeJS Client library for Bandwidth API",
 	"engines": {
 		"node": ">=9.0"
