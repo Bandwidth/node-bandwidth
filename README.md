@@ -13,6 +13,8 @@ A Node.js client library for the [Bandwidth Application Platform](http://bandwid
 
 ```bash
     npm install --save node-bandwidth@pre
+	# or
+	yarn add node-bandwidth@pre
 ```
 
 Also you can use it directly in tag `script`
@@ -25,14 +27,6 @@ Also you can use it directly in tag `script`
     <!-- node-bandwidth browser script -->
     <script src="https://unpkg.com/node-bandwidth@pre/dist/node-bandwidth.min.js"></script>
 ```
-
-## Supported Versions
-
-`node-bandwidth` should work on all versions of node newer than `0.10.*`. However, due to the rapid development in the Node and npm environment, we can only provide _support_ on [LTS versions of Node](https://github.com/nodejs/LTS)
-
-| Version | Support Level |
-| :------ | :------------ |
-| 9.\*    | Supported     |
 
 ## Initialization
 
@@ -134,6 +128,81 @@ await api.Message.create({from: '+12345678900', to: '+12345687901', text: 'Hello
 await api.Message.create({from: 123456, to: '+12345687901', text: 'Hello'}); // will throw validation error: field 'from' should be string
 ```
 
+### Helpers
+
+There are also some additional methods for `Calls`, `Conferences`, `Bridges` for more comfortable coding.
+
+Calls
+
+```javascript
+// next methods are wrappers for update()
+	answer(id[, cancelToken]);
+	terminate(id[, cancelToken]);
+	hangup(id[, cancelToken]);
+	transfer(id: string, transferTo: string[, options, cancelToken]);
+
+// next method is wrapper for updateGather()
+	stopGather(id: string, gatherId: string, cancelToken?: CancelToken): Promise<any>;
+
+// next methods are wrappers for playAudio()
+	speakSententence(id[, options, cancelToken]);
+	playFileUrl(id, fileUrl[, options, cancelToken]);
+	stopPlayFileUrl(id[, cancelToken]);
+```
+
+Bridges
+
+```javascript
+// next methods are wrappers for playAudio()
+	speakSententence(id[, options, cancelToken]);
+	playFileUrl(id, fileUrl[, options, cancelToken]);
+	stopPlayFileUrl(id[, cancelToken]);
+```
+
+Conferences
+
+```javascript
+// next methods are wrappers for update()
+	stop(id[, cancelToken]);
+	mute(id, mute = true[, cancelToken]);
+	hold(id, hold = true[, cancelToken]);
+
+// next methods are wrappers for updateMember()
+	deleteMember(id, memberId[, cancelToken]);
+	muteMember(id, memberId, mute = true[, cancelToken]);
+	holdMember(id, memberId, hold = true[, cancelToken]);
+
+// next methods are wrappers for playAudio()
+	speakSententence(id[, options, cancelToken]);
+	playFileUrl(id, fileUrl[, options, cancelToken]);
+	stopPlayFileUrl(id[, cancelToken]);
+
+
+// next methods are wrappers for playAudioToMember()
+	speakSententenceToMember(id, memberId[, options, cancelToken]);
+	playFileUrlToMember(id, memberId, fileUrl[, options, cancelToken]);
+	stopPlayFileUrlToMember(id, memberId[, cancelToken]);
+```
+
+Example
+
+```javascript
+await api.Calls.hangup('callId'); // it will call api.Calls.update({id: 'callId', state: 'completed'})
+
+await api.Conferences.mute('conferenceId', false); // it will call api.Conferences.update({id: 'conferenceId', mute: false})
+```
+
+### Bandwidth XML
+
+The library contains some functions to build Bandwidth XML more easy.
+
+```javascript
+import {bandwidthXml} from 'node-bandwidth';
+
+const xml = bandwidthXml.response(bandwidthXml.playAudio('http://url/to/media/file')),
+// xml contains now <?xml version="1.0" encoding="UTF-8"?><Response><PlayAudio>http://url/to/media/file</PlayAudio></Response>
+```
+
 ## Examples
 
 Making a call
@@ -198,10 +267,16 @@ const result = await api.Media.download({mediaName: 'file.jpg' responseType: 'st
 // result.content will be contain file content as stream (node js only)
 ```
 
-Download media file
+Upload media file
 
 ```javascript
 await api.Media.upload({mediaName: 'file.jpg', content: bufferOrStream, contentType: 'image/jpeg'});
+```
+
+Update a call
+
+```javascript
+await api.Call.update({id: 'callId', state: 'active'});
 ```
 
 ## Providing feedback
