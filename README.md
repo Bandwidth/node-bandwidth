@@ -118,7 +118,6 @@ setTimeout(() => {
 }, 5000);
 
 const numbers =  await api.AvailableNumbers.searchAndOrderLocalNumbers({areaCode: '910', quantity: 100}, cancelTokenSource.token);
-
 ```
 
 ### Parameters validation
@@ -197,6 +196,12 @@ const result = await api.Media.download({mediaName: 'file.jpg'});
 ```javascript
 const result = await api.Media.download({mediaName: 'file.jpg' responseType: 'stream'});
 // result.content will be contain file content as stream (node js only)
+```
+
+Download media file
+
+```javascript
+await api.Media.upload({mediaName: 'file.jpg', content: bufferOrStream, contentType: 'image/jpeg'});
 ```
 
 ## Providing feedback
