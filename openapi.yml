@@ -46,6 +46,7 @@ paths:
       summary: Get information about user account.
       operationId: get
       description: Get information about user account.
+      x-node-example: const balance = await api.Account.get();
       responses:
         '200':
           description: information about user account
