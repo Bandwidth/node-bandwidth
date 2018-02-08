@@ -1291,8 +1291,8 @@ paths:
       requestBody:
         $ref: '#/components/requestBodies/UpdatePhoneNumberData'
       responses:
-        '201':
-          $ref: '#/components/responses/Created'
+        '200':
+          $ref: '#/components/responses/Empty'
     delete:
       tags:
         - PhoneNumbers
