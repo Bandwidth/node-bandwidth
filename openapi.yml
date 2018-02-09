@@ -105,6 +105,7 @@ paths:
           description: Return only transactions that are from the specified number.
           schema:
             type: string
+      x-js-example: for await (const transaction of await api.Account.getTransactions()) {console.log(transaction);}
       responses:
         '200':
           description: information about user's account transactions
@@ -137,6 +138,7 @@ paths:
             format: int32
             default: 25
             maximum: 1000
+      x-js-example: for await (const app of await api.Application.list()) {console.log(app);}
       responses:
         '200':
           description: list of user's applications
@@ -154,6 +156,7 @@ paths:
       description: Creates an application that can handle calls and messages for one of your phone number. Many phone numbers can share an application. For more information on how to integrate voice and messaging in your application, visit the [FAQ](http://dev.bandwidth.com/faq/#general)
       requestBody:
         $ref: '#/components/requestBodies/CreateApplicationData'
+      x-js-example: 'const appId = await api.Application.create({name: "test"});'
       responses:
         '201':
           $ref: '#/components/responses/Created'
@@ -164,6 +167,7 @@ paths:
       summary: Gets information about one of your applications.
       operationId: get
       description: Gets information about one of your applications. No query parameters are supported.
+      x-js-example: 'const app = await api.Application.get({id: "appId"});'
       responses:
         '200':
           description: Application's data
@@ -179,6 +183,7 @@ paths:
       description: Makes changes to an application. 
       requestBody:
         $ref: '#/components/requestBodies/UpdateApplicationData'
+      x-js-example: 'await api.Application.update({id: "appId", name: "newName"});'
       responses:
         '200':
           $ref: '#/components/responses/Empty'
@@ -187,7 +192,8 @@ paths:
         - Applications
       summary: Permanently deletes an application.
       operationId: delete
-      description: Permanently deletes an application. 
+      description: Permanently deletes an application.
+      x-js-example: 'await api.Application.delete({id: "appId"});'
       responses:
         '200':
           $ref: '#/components/responses/Empty'  
@@ -198,6 +204,7 @@ paths:
       summary: Gets a list of your media files. 
       operationId: list
       description: Gets a list of your media files. No query parameters are supported.
+      x-js-example: 'const files = await api.Media.list();'
       responses:
         '200':
           description: list of media files data
@@ -214,6 +221,7 @@ paths:
       summary: Downloads a media file you previously uploaded. 
       operationId: download
       description: Downloads a media file you previously uploaded.
+      x-js-example: 'const result = await api.Media.download({mediaName: "image.jpg"});'
       responses:
         '200':
           description: Content of file
@@ -239,6 +247,7 @@ paths:
           description: The media type of the entity-body.
           schema:
             type: string
+      x-js-example: 'await api.Media.upload({mediaName: "file.jpg", content: bufferOrStream, contentType: "image/jpeg"});'
       responses:
         '200':
           description: Success
@@ -248,6 +257,7 @@ paths:
       summary: Deletes a media file from Bandwidth API server. 
       operationId: delete
       description: Deletes a media file from Bandwidth API server.
+      x-js-example: 'await api.Media.delete({mediaName: "file.jpg"});'
       responses:
         '200':
           description: Success
@@ -297,6 +307,7 @@ paths:
           description: 'A number pattern that may include letters, digits, and the following wildcard characters: ? - matches any single digit, * - matches zero or more digits'
           schema:
             type: string
+        x-js-example: 'const numbers = await api.AvailableNumbers.searchLocalNumbers({areaCode: "910"});'      
       responses:
         '200':
           description: list of found numbers
@@ -356,6 +367,7 @@ paths:
           description: 'A number pattern that may include letters, digits, and the following wildcard characters: ? - matches any single digit, * - matches zero or more digits'
           schema:
             type: string
+      x-js-example: 'const results = await api.AvailableNumbers.searchAndOrderLocalNumbers({areaCode: "910"});'            
       responses:
         '201':
           description: list of ordered numbers
@@ -386,6 +398,7 @@ paths:
           description: 'A number pattern that may include letters, digits, and the following wildcard characters: ? - matches any single digit, * - matches zero or more digits'
           schema:
             type: string
+      x-js-example: 'const numbers = await api.AvailableNumbers.searchTollFreeNumbers({quantity: 3});'                  
       responses:
         '200':
           description: list of found numbers
@@ -410,6 +423,7 @@ paths:
             format: int32
             default: 10,
             maximum: 5000
+      x-js-example: 'const results = await api.AvailableNumbers.searchAndOrderTollFreeNumbers({quantity: 3});'                        
       responses:
         '201':
           description: list of ordered numbers
@@ -442,6 +456,7 @@ paths:
             format: int32
             default: 25
             maximum: 1000
+      x-js-example: 'for await(const bridge of await api.Bridges.list()) {}'
       responses:
         '200':
           description: list of user's bridges
@@ -459,6 +474,7 @@ paths:
       description: Create a new bridge.
       requestBody:
         $ref: '#/components/requestBodies/CreateBridgeData'
+      x-js-example: 'const bridgeId = await api.Bridges.create({callIds: ["callId"]});'  
       responses:
         '201':
           $ref: '#/components/responses/Created'
@@ -469,6 +485,7 @@ paths:
       summary: Gets information about a specific bridge.
       operationId: get
       description: Gets information about a specific bridge.
+      x-js-example: 'const bridge = await api.Bridges.get({id: "bridgeId"});'
       responses:
         '200':
           description: Bridge's data
@@ -484,6 +501,7 @@ paths:
       description: Change calls in a bridge and bridge/unbridge the audio.
       requestBody:
         $ref: '#/components/requestBodies/UpdateBridgeData'
+      x-js-example: 'await api.Bridges.update({id: "bridgeId", bridgeAudio: false});'
       responses:
         '200':
           $ref: '#/components/responses/Empty'
@@ -496,6 +514,7 @@ paths:
       description: Play an audio file or speak a sentence in a bridge.
       requestBody:
         $ref: '#/components/requestBodies/PlayAudioData'
+      x-js-example: 'await api.Bridges.playAudio({id: "bridgeId", fileUrl: "url"});'
       responses:
         '200':
           $ref: '#/components/responses/Empty'
@@ -504,8 +523,9 @@ paths:
       tags:
         - Bridges
       summary: Get the list of calls that are on the bridge.
-      operationId: list
+      operationId: getCalls
       description: Get the list of calls that are on the bridge.
+      x-js-example: 'const calls = await api.Bridges.getCalls();'
       responses:
         '200':
           description: list of bridge's calls
@@ -567,6 +587,7 @@ paths:
             format: int32
             default: 25
             maximum: 1000
+      x-js-example: 'for await(const call of await api.Calls.list()){}'      
       responses:
         '200':
           description: list of user's calls
@@ -584,6 +605,7 @@ paths:
       description: Create a new call.
       requestBody:
         $ref: '#/components/requestBodies/CreateCallData'
+      x-js-example: 'const callId = await api.Calls.create({from: "from1", to: "to1"});'
       responses:
         '201':
           $ref: '#/components/responses/Created'
@@ -594,6 +616,7 @@ paths:
       summary: Gets information about an active or completed call.
       operationId: get
       description: Gets information about an active or completed call.
+      x-js-example: 'const call = await api.Calls.get({id: "callId"});'
       responses:
         '200':
           description: Call's data
@@ -609,6 +632,7 @@ paths:
       description: Update properties of an active phone call.
       requestBody:
         $ref: '#/components/requestBodies/UpdateCallData'
+      x-js-example: 'await api.Calls.update({id: "callId", state: "answer"});'
       responses:
         '200':
           $ref: '#/components/responses/Empty'
@@ -623,6 +647,7 @@ paths:
       description: Play an audio file or speak a sentence in a call.
       requestBody:
         $ref: '#/components/requestBodies/PlayAudioData'
+      x-js-example: 'await api.Calls.playAudio({id: "callId", fileUrl: "url"});'
       responses:
         '200':
           $ref: '#/components/responses/Empty'
@@ -635,6 +660,7 @@ paths:
       description: Send DTMF (phone keypad digit presses).
       requestBody:
         $ref: '#/components/requestBodies/DtmfData'
+      x-js-example: 'await api.Calls.sendDtmf({id: "callId", dtmfOut: "1"});'
       responses:
         '200':
           $ref: '#/components/responses/Empty'
@@ -645,6 +671,7 @@ paths:
       summary: Gets the events that occurred during the call. 
       operationId: getEvents
       description: Gets the events that occurred during the call. 
+      x-js-example: 'const events = await api.Calls.getEvents({id: "callId"});'
       responses:
         '200':
           description: list of call's events
@@ -661,6 +688,7 @@ paths:
       summary: Gets information about one call event.  
       operationId: getEvent
       description: Gets information about one call event.  
+      x-js-example: 'const ev = await api.Calls.getEvent({id: "callId", eventId: "eventId"});'
       responses:
         '200':
           description: information about call event
@@ -675,6 +703,7 @@ paths:
       summary: Retrieve all recordings related to the call. 
       operationId: getRecordings
       description: Retrieve all recordings related to the call. 
+      x-js-example: 'const recordings = await api.Calls.getRecordings({id: "callId"});'
       responses:
         '200':
           description: list of call's recordings
@@ -691,6 +720,7 @@ paths:
       summary: Retrieve all transcriptions related to the call. 
       operationId: getTranscriptions
       description: Retrieve all transcriptions related to the call. 
+      x-js-example: 'const transcriptions = await api.Calls.getTranscriptions({id: "callId"});'
       responses:
         '200':
           description: list of call's transcriptions
@@ -709,6 +739,7 @@ paths:
       description: Collects a series of DTMF digits from a phone call with an optional prompt. This request returns immediately. When gather finishes, an event with the results will be posted to the callback URL. 
       requestBody:
         $ref: '#/components/requestBodies/CreateGatherData'
+      x-js-example: 'const gatherId = await api.Calls.createGather({id: "callId", maxDigits: 1});'
       responses:
         '201':
           $ref: '#/components/responses/Created' 
@@ -719,6 +750,7 @@ paths:
       summary: Get the gather DTMF parameters and results.
       operationId: getGather
       description: Get the gather DTMF parameters and results.
+      x-js-example: 'const gather = await api.Calls.getGather({id: "callId", gatherId: "gatherId"});'
       responses:
         '200':
           description: Gather information
@@ -734,6 +766,7 @@ paths:
       description: Update the gather. 
       requestBody:
         $ref: '#/components/requestBodies/UpdateGatherData'
+      x-js-example: 'await api.Calls.updateGather({id: "callId", gatherId: "gatherId", state: "completed"});'
       responses:
         '200':
           description: Done
