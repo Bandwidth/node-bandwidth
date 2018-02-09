@@ -28,6 +28,14 @@ Also you can use it directly in tag `script`
     <script src="https://unpkg.com/node-bandwidth@pre/dist/node-bandwidth.min.js"></script>
 ```
 
+You can use any favorite build tool like `webpack`, `browserify`, `jspm`, etc with this library.
+
+If you use AMD module loader you can use script from `dist/node-bandwidth.amd.js` (or load it as https://unpkg.com/node-bandwidth@pre/dist/node-bandwidth.amd.js).
+
+If you use CommonJS module loader you can use script from `dist/node-bandwidth.common.js/index.js` (or load it as https://unpkg.com/node-bandwidth@pre/dist/node-bandwidth.common.js/index.js).
+
+For SystemJS module loader you can use script from `dist/node-bandwidth.system.js` (or load it as https://unpkg.com/node-bandwidth@pre/dist/node-bandwidth.system.js).
+
 ## Initialization
 
 All interaction with the API is done through a `api` Object. The api factory function takes an Object containing configuration options. The following options are supported:
@@ -139,10 +147,10 @@ Calls
 	answer(id[, cancelToken]);
 	terminate(id[, cancelToken]);
 	hangup(id[, cancelToken]);
-	transfer(id: string, transferTo: string[, options, cancelToken]);
+	transfer(id, transferTo[, options, cancelToken]);
 
 // next method is wrapper for updateGather()
-	stopGather(id: string, gatherId: string, cancelToken?: CancelToken): Promise<any>;
+	stopGather(id, gatherId[, cancelToken]);
 
 // next methods are wrappers for playAudio()
 	speakSententence(id[, options, cancelToken]);

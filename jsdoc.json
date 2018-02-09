@@ -13,7 +13,7 @@
 		"useLongnameInNav": false
 	},
 	"opts": {
-		"destination": "./dist/",
+		"destination": "./dist/docs/",
 		"encoding": "utf8",
 		"private": true,
 		"recurse": true,
