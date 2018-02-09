@@ -9,7 +9,10 @@ const writeFile = util.promisify(fs.writeFile);
 const readFile = util.promisify(fs.readFile);
 const mkdir = util.promisify(fs.mkdir);
 
-function getExamplesComments() {
+function getExamplesComments(data) {
+	if (data._example) {
+		return ['@example', data._example];
+	}
 	return [];
 }
 
@@ -27,7 +30,9 @@ function getReturnsComments(data) {
 
 function getParamsComments(prefix, data, required) {
 	let name = `${prefix}.${data.name}`;
-	let type = (data.type || 'any').replace('integer', 'number');
+	let type = (data.type || 'any')
+		.replace('integer', 'number')
+		.replace('any', '*');
 	if (!required) {
 		name = `[${name}]`;
 	}
@@ -63,14 +68,19 @@ function getParamsComments(prefix, data, required) {
 function getFunctionComments(name, data, params, optionalParams) {
 	const cancelToken =
 		'@param {axios.CancelToken} [cancelToken] Optional cancel token (read more here https://github.com/axios/axios#cancellation)';
-	return ['@description', data._description, '']
-		.concat(
+	let list = ['@description', data._description, ''];
+	if (Object.keys(params.properties).length > 0) {
+		list = list.concat(
 			[`@param {object} ${optionalParams ? '[options]' : 'options'} Options`],
-			getParamsComments('options', params),
-			[cancelToken]
-		)
-		.concat(getReturnsComments(data), [''])
-		.concat(getExamplesComments(data));
+			getParamsComments('options', params)
+		);
+	}
+	return list.concat(
+		[cancelToken],
+		getReturnsComments(data),
+		[''],
+		getExamplesComments(data)
+	);
 }
 
 function extractParamsFromPath(path) {
@@ -122,12 +132,14 @@ function printApiMethod(apiName, name, data) {
 ${getFunctionComments(name, data, params, optional)
 		.map(l => `\t* ${l}`)
 		.join('\n')}
-\t*/\n\t${name}(options, cancelToken = null){}`;
+\t*/\n\t${name}(${
+		Object.keys(params.properties).length > 0 ? 'options, ' : ''
+	}cancelToken = null){}`;
 }
 
 function printApiTypes(name, data) {
 	name = _.upperFirst(name);
-	return `class ${name} {
+	return `/** ${data._description || `${name} API`} */\nclass ${name} {
 ${Object.keys(data)
 		.filter(m => !m.startsWith('_'))
 		.map(m => printApiMethod(name, m, data[m]))
@@ -148,7 +160,50 @@ ${Object.keys(apiData)
 			.map(o => printApiTypes(o, apiData[o]))
 			.join('\n\n')}
 
-export default function getBandwidthApi() {}
+/** Bandwidth Api */
+class BandwidthApi {
+${Object.keys(apiData)
+			.map(o => {
+				const description = apiData[o]._description || `${o} API`;
+				return `\t/**
+\t@description
+\t${description}
+\t@type {${o}}
+\t*/
+\t${o} = new ${o}();`;
+			})
+			.join('\n\n')}
+
+}
+
+/** Bandwidth API request error */
+export class UnexpectedResponseError {
+	message = '';
+	status = 400;
+}
+
+/** Bandwidth API rate limit error */
+export class RateLimitError {
+	message = '';
+	status = 400;
+	limitReset = '';
+}
+
+
+/**
+ * @desciption
+ * Return Bandwidth API instance
+ * @param {object} options Options
+ * @param {string} options.userId Your Bandwidth user ID (not user name)
+ * @param {string} options.apiToken Your API Token
+ * @param {string} options.apiSecret Your API Secret
+ * @param {string} [options.baseUrl] The Bandwidth API base URL
+ * @returns {BandwidthApi} instance of BandwidthAPI
+*/
+export default function getBandwidthApi(options) {}
+
+getBandwidthApi.UnexpectedResponseError = UnexpectedResponseError;
+getBandwidthApi.RateLimitError = RateLimitError;
 `,
 		'utf-8'
 	);

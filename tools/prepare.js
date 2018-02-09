@@ -36,6 +36,7 @@ function prepareApiData(openapi) {
 					path,
 					data
 				);
+				apiData[tag][data.operationId]._example = data['x-js-example'];
 				apiData[tag][data.operationId]._description = data.summary;
 				apiData[tag][data.operationId]._responses = Object.keys(
 					data.responses

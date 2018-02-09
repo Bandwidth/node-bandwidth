@@ -1,0 +1,22 @@
+{
+	"tags": {
+		"allowUnknownTags": true,
+		"dictionaries": ["jsdoc"]
+	},
+	"source": {
+		"include": ["dist/index.stub.js", "package.json", "README.md"]
+	},
+	"plugins": ["plugins/markdown"],
+	"templates": {
+		"cleverLinks": false,
+		"monospaceLinks": true,
+		"useLongnameInNav": false
+	},
+	"opts": {
+		"destination": "./dist/",
+		"encoding": "utf8",
+		"private": true,
+		"recurse": true,
+		"template": "./node_modules/minami"
+	}
+}
