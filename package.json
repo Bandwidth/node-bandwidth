@@ -15,6 +15,7 @@
 		"lint": "xo",
 		"format": "pretty-quick --staged && xo --fix",
 		"prepare-api-data": "node tools/prepare-api-data.js",
+		"prepare-stubs-for-jsdoc": "node tools/prepare-stubs-for-jsdoc.js",
 		"build:node": "tsc -t es2017 -m commonjs",
 		"build:browser-amd":
 			"tsc -m amd --outFile dist/node-bandwidth.amd.js && node tools/prepare-global-browser-script.js && uglifyjs dist/node-bandwidth.js -c -m -o dist/node-bandwidth.min.js",
@@ -23,8 +24,11 @@
 		"build:browser-commonjs":
 			"tsc -m commonjs --outDir dist/node-bandwidth.commonjs",
 		"build:types": "node tools/prepare-types.js",
+		"build:docs":
+			"npm run prepare-stubs-for-jsdoc && jsdoc2md dist/index.stub.js > ./docs/api.md",
 		"build": "npm run prepare-api-data && npm-run-all --parallel build:*",
 		"watch": "npm run prepare-api-data && tsc -t es2017 -m commonjs -w",
+		"docs": "npm run prepare-stubs-for-jsdoc && jsdoc -c jsdoc.json",
 		"prepack": "npm run build"
 	},
 	"main": "dist/index.js",
@@ -53,6 +57,7 @@
 		"husky": "^0.14.3",
 		"js-yaml": "^3.10.0",
 		"jsdoc": "^3.5.5",
+		"jsdoc-to-markdown": "^4.0.1",
 		"json-refs": "^3.0.3",
 		"lodash": "^4.17.4",
 		"minami": "^1.2.3",

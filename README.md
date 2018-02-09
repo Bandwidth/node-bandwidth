@@ -7,6 +7,13 @@
 
 A Node.js client library for the [Bandwidth Application Platform](http://bandwidth.com/products/application-platform?utm_medium=social&utm_source=github&utm_campaign=dtolb&utm_content=_)
 
+## Full API Reference
+
+The Full API Reference is available either as an interactive site or as a single Markdown file:
+
+* [Site](http://dev.bandwidth.com/node-bandwidth/index.html).
+* [Single MD file](docs/api.md)
+
 ## Installing the SDK
 
 `node-bandwidth` is available on NPM:

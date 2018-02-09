@@ -10,7 +10,10 @@
 	"templates": {
 		"cleverLinks": false,
 		"monospaceLinks": true,
-		"useLongnameInNav": false
+		"useLongnameInNav": false,
+		"default": {
+			"outputSourceFiles": false
+		}
 	},
 	"opts": {
 		"destination": "./dist/docs/",

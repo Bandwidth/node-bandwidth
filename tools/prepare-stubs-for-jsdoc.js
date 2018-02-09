@@ -153,6 +153,7 @@ async function main() {
 		(await resolveRefs(yaml.safeLoad(openApiText))).resolved
 	);
 	await mkdir('./dist').catch(() => {});
+	await mkdir('./docs').catch(() => {});
 	await writeFile(
 		'./dist/index.stub.js',
 		`
