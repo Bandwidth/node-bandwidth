@@ -369,6 +369,237 @@ export const bandwidthXml = new BandwidthXml();
  * @returns {BandwidthApi} instance of BandwidthAPI
 */
 function getBandwidthApi(options) {};
+
+class Bridges {
+	/** Speak a sentence to the bridge
+	 * @param {string} id Bridge Id
+	 * @param {string} sentence Sentence to speak
+	 * @param {object} options Optional options
+	 * @param {string} [options.gender] A gender of voice to speak a sentence
+	 * @param {string} [options.locale] A locale of voice to speak a sentence
+	 * @param {string} [options.voice] A voice name to speak a sentence
+	 * @param {string} [options.tag] Additional data for callback
+	 * @param {axios.CancelToken} [cancelToken] Optional cancel token (read more here https://github.com/axios/axios#cancellation)
+	 * @returns {Promise} Promise
+	 * @example
+	 * await api.Bridges.speakSententence('bridgeId', 'Hello');
+	 */
+	speakSententence() {}
+	/** Play audio file to the bridge
+	 * @param {string} id Bridge Id
+	 * @param {string} fileUrl Url to media file
+	 * @param {object} options Optional options
+	 * @param {string} [options.tag] Additional data for callback
+	 * @param {axios.CancelToken} [cancelToken] Optional cancel token (read more here https://github.com/axios/axios#cancellation)
+	 * @returns {Promise} Promise
+ 	 * @example
+	 * await api.Bridges.playFileUrl('callId', 'https://url/to/file');
+	*/
+	playFileUrl(){}
+
+	/** Stop playing of audio file to the bridge
+	 * @param {string} id Bridge Id
+	 * @param {axios.CancelToken} [cancelToken] Optional cancel token (read more here https://github.com/axios/axios#cancellation)
+	 * @returns {Promise} Promise
+	 * @example
+	 * await api.Bridges.stopPlayFileUrl('callId');
+	*/
+	stopPlayFileUrl(){}
+}
+
+class Calls {
+	/** Answer incoming call
+	 * @param {string} id Call Id
+	 * @param {axios.CancelToken} [cancelToken] Optional cancel token (read more here https://github.com/axios/axios#cancellation)
+	 * @returns {Promise} Promise
+	 * @example
+	 * await api.Calls.answer('callId');
+	*/
+	answer() {}
+	/** Cancel incoming call
+	 * @param {string} id Call Id
+	 * @param {axios.CancelToken} [cancelToken] Optional cancel token (read more here https://github.com/axios/axios#cancellation)
+	 * @example
+	 * await api.Calls.terminate('callId');
+	 * @returns {Promise} Promise
+	*/
+	terminate() {}
+	/** Complete the active call
+	 * @param {string} id Call Id
+	 * @param {axios.CancelToken} [cancelToken] Optional cancel token (read more here https://github.com/axios/axios#cancellation)
+	 * @example
+	 * await api.Calls.hangup('callId');
+	 * @returns {Promise} Promise
+	*/
+	hangup() {}
+	/** Transfer the call
+	 * @param {string} id Call Id
+	 * @param {string} transferTo Phone number to transfer the call
+	 * @param {object} options Optional options
+	 * @param {string} [options.callbackUrl] The server URL where the call events for the new call will be sent upon transferring.
+	 * @param {boolean} [options.recordingEnabled] Indicates if the call should be recorded. Values true or false. You can turn recording on/off and have multiple recordings on a single call.
+	 * @param {string} [options.recordingFileFormat] The file format of the recorded call. Supported values are wav (default) and mp3.
+	 * @param {string} [options.transferCallerId] This is the caller id that will be used when the call is transferred.
+	 * @param {object} [options.whisperAudio] Audio to be played to the caller that the call will be transferred to.
+	 * @param {string} [options.whisperAudio.gender] A gender of voice to speak a sentence
+	 * @param {string} [options.whisperAudio.locale] A locale of voice to speak a sentence
+	 * @param {string} [options.whisperAudio.voice] A voice name to speak a sentence
+	 * @param {string} [options.whisperAudio.tag] Additional data for callback
+	 * @param {string} [options.whisperAudio.fileUrl] Url to media file
+	 * @param {axios.CancelToken} [cancelToken] Optional cancel token (read more here https://github.com/axios/axios#cancellation)
+	 * @example
+	 * const transferedCallId = await api.Calls.transfer('callId', '+12345678901');
+	 * @returns {Promise} Id of created call
+	*/
+	transfer() {}
+	/** Stop collection of gather data
+	 * @param {string} id Call Id
+	 * @param {string} gatherId Gather Id
+	 * @param {axios.CancelToken} [cancelToken] Optional cancel token (read more here https://github.com/axios/axios#cancellation)
+	 * @example
+	 * await api.Calls.stopGather('callId', 'gatherId');
+	 * @returns {Promise} Promise
+	*/
+	stopGather() {}
+	/** Speak a sentence to the call
+	 * @param {string} id Call Id
+	 * @param {string} sentence Sentence to speak
+	 * @param {object} options Optional options
+	 * @param {string} [options.gender] A gender of voice to speak a sentence
+	 * @param {string} [options.locale] A locale of voice to speak a sentence
+	 * @param {string} [options.voice] A voice name to speak a sentence
+	 * @param {string} [options.tag] Additional data for callback
+	 * @param {axios.CancelToken} [cancelToken] Optional cancel token (read more here https://github.com/axios/axios#cancellation)
+	 * @returns {Promise} Promise
+	 * @example
+	 * await api.Calls.speakSententence('callId', 'Hello');
+	 */
+	speakSententence() {}
+	/** Play audio file to the call
+	 * @param {string} id Call Id
+	 * @param {string} fileUrl Url to media file
+	 * @param {object} options Optional options
+	 * @param {string} [options.tag] Additional data for callback
+	 * @param {axios.CancelToken} [cancelToken] Optional cancel token (read more here https://github.com/axios/axios#cancellation)
+	 * @returns {Promise} Promise
+	 * @example
+	 * await api.Calls.playFileUrl('callId', 'https://url/to/file');
+	 */
+	playFileUrl() {}
+	/** Stop playing of audio file to the call
+	 * @param {string} id Bridge Id
+	 * @param {axios.CancelToken} [cancelToken] Optional cancel token (read more here https://github.com/axios/axios#cancellation)
+	 * @returns {Promise} Promise
+	 * @example
+	 * await api.Calls.stopPlayFileUrl('callId');
+	 */
+	stopPlayFileUrl() {}
+}
+
+class Conferences {
+	/** Stop the conference
+	 * @param {string} id Conference Id
+	 * @param {axios.CancelToken} [cancelToken] Optional cancel token (read more here https://github.com/axios/axios#cancellation)
+	 * @returns {Promise} Promise
+	*/
+	stop() {}
+	/** Mute or unmute the conference
+	 * @param {string} id Conference Id
+	 * @param {boolean} [mute] true if mute and false if unmute, default: true
+	 * @param {axios.CancelToken} [cancelToken] Optional cancel token (read more here https://github.com/axios/axios#cancellation)
+	 * @returns {Promise} Promise
+	*/
+	mute() {}
+	/** Hold or unhold the conference
+	 * @param {string} id Conference Id
+	 * @param {boolean} [hold] true if hold and false if unhold, default: true
+	 * @param {axios.CancelToken} [cancelToken] Optional cancel token (read more here https://github.com/axios/axios#cancellation)
+	 * @returns {Promise} Promise
+	*/
+	hold() {}
+	/** Remove a member from the conference
+	 * @param {string} id Conference Id
+	 * @param {string} memberId Confernece member id
+	 * @param {axios.CancelToken} [cancelToken] Optional cancel token (read more here https://github.com/axios/axios#cancellation)
+	 * @returns {Promise} Promise
+	*/
+	deleteMember() {}
+	/** Mute or unmute the conference member
+	 * @param {string} id Conference Id
+	 * @param {string} memberId Confernece member id
+	 * @param {boolean} [mute] true if mute and false if unmute, default: true
+	 * @param {axios.CancelToken} [cancelToken] Optional cancel token (read more here https://github.com/axios/axios#cancellation)
+	 * @returns {Promise} Promise
+	*/
+	muteMember() {}
+	/** Hold or unhold the conference member
+	 * @param {string} id Conference Id
+	 * @param {string} memberId Confernece member id
+	 * @param {boolean} [hold] true if hold and false if unhold, default: true
+	 * @param {axios.CancelToken} [cancelToken] Optional cancel token (read more here https://github.com/axios/axios#cancellation)
+	 * @returns {Promise} Promise
+	*/
+	holdMember() {}
+	/** Speak a sentence to the conference
+	 * @param {string} id Conference Id
+	 * @param {string} sentence Sentence to speak
+	 * @param {object} options Optional options
+	 * @param {string} [options.gender] A gender of voice to speak a sentence
+	 * @param {string} [options.locale] A locale of voice to speak a sentence
+	 * @param {string} [options.voice] A voice name to speak a sentence
+	 * @param {string} [options.tag] Additional data for callback
+	 * @param {axios.CancelToken} [cancelToken] Optional cancel token (read more here https://github.com/axios/axios#cancellation)
+	 * @returns {Promise} Promise
+	*/
+	speakSententence() {}
+	/** Play audio file to the conference
+	 * @param {string} id Conference Id
+	 * @param {string} fileUrl Url to media file
+	 * @param {object} options Optional options
+	 * @param {string} [options.tag] Additional data for callback
+	 * @param {axios.CancelToken} [cancelToken] Optional cancel token (read more here https://github.com/axios/axios#cancellation)
+	 * @returns {Promise} Promise
+	*/
+	playFileUrl() {}
+	/** Stop playing of audio file to the conference
+	 * @param {string} id Conference Id
+	 * @param {axios.CancelToken} [cancelToken] Optional cancel token (read more here https://github.com/axios/axios#cancellation)
+	 * @returns {Promise} Promise
+	*/
+	stopPlayFileUrl() {}
+	/** Speak a sentence to the conference member
+	 * @param {string} id Conference Id
+	 * @param {string} memberId Conference member Id
+	 * @param {string} sentence Sentence to speak
+	 * @param {object} options Optional options
+	 * @param {string} [options.gender] A gender of voice to speak a sentence
+	 * @param {string} [options.locale] A locale of voice to speak a sentence
+	 * @param {string} [options.voice] A voice name to speak a sentence
+	 * @param {string} [options.tag] Additional data for callback
+	 * @param {axios.CancelToken} [cancelToken] Optional cancel token (read more here https://github.com/axios/axios#cancellation)
+	 * @returns {Promise} Promise
+	*/
+	speakSententenceToMember() {}
+	/** Play audio file to the conference member
+	 * @param {string} id Conference Id
+	 * @param {string} memberId Conference member Id
+	 * @param {string} fileUrl Url to media file
+	 * @param {object} options Optional options
+	 * @param {string} [options.tag] Additional data for callback
+	 * @param {axios.CancelToken} [cancelToken] Optional cancel token (read more here https://github.com/axios/axios#cancellation)
+	 * @returns {Promise} Promise
+	*/
+	playFileUrlToMember() {}
+	/** Stop playing of audio file to the conference member
+	 * @param {string} id Conference Id
+	 * @param {string} memberId Conference member Id
+	 * @param {axios.CancelToken} [cancelToken] Optional cancel token (read more here https://github.com/axios/axios#cancellation)
+	 * @returns {Promise} Promise
+	*/
+	stopPlayFileUrlToMember() {}
+}
+
+
 `,
 		'utf-8'
 	);
