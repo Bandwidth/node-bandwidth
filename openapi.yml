@@ -307,7 +307,7 @@ paths:
           description: 'A number pattern that may include letters, digits, and the following wildcard characters: ? - matches any single digit, * - matches zero or more digits'
           schema:
             type: string
-        x-js-example: 'const numbers = await api.AvailableNumbers.searchLocalNumbers({areaCode: "910"});'      
+      x-js-example: 'const numbers = await api.AvailableNumbers.searchLocalNumbers({areaCode: "910"});'      
       responses:
         '200':
           description: list of found numbers
