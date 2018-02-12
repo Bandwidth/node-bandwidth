@@ -1,11 +1,11 @@
 {
 	"name": "node-bandwidth",
-	"version": "3.0.0-alpha.4",
+	"version": "3.0.0-alpha.5",
 	"description": "NodeJS Client library for Bandwidth API",
 	"engines": {
 		"node": ">=9.0"
 	},
-	"files": ["dist/**/*", "LICENSE"],
+	"files": ["dist/**/*", "LICENSE", "docs"],
 	"scripts": {
 		"precommit": "npm run format",
 		"test": "node --harmony node_modules/ava/cli.js",
@@ -29,7 +29,7 @@
 		"build": "npm run prepare-api-data && npm-run-all --parallel build:*",
 		"watch": "npm run prepare-api-data && tsc -t es2017 -m commonjs -w",
 		"docs": "npm run prepare-stubs-for-jsdoc && jsdoc -c jsdoc.json",
-		"prepack": "npm run build"
+		"prepack": "rimraf ./dist && npm run build"
 	},
 	"main": "dist/index.js",
 	"browser": {
@@ -66,6 +66,7 @@
 		"nyc": "^11.4.1",
 		"prettier": "^1.10.2",
 		"pretty-quick": "^1.2.1",
+		"rimraf": "^2.6.2",
 		"testdouble": "^3.3.3",
 		"typescript": "^2.6.2",
 		"uglify-js": "^3.3.7",
