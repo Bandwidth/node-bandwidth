@@ -336,7 +336,7 @@ Fields `x-js-example` are used for jsdoc as examples of code for api methods.
 
 ### Tools
 
-Directory `tools` contain some useful scripts which are used to build lib and docs
+Directory `tools` contains scripts which are used to build lib and docs
 
 `prepare-api-data.js` extracts data from openapi.yml and generates `lib/api-data.js`. This output file is used by library to make validations and api requests.
 
