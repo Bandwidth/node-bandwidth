@@ -324,9 +324,9 @@ Tag names become to api object names (i.e. tag `Applications` will be api `Appli
 
 Field `operationId` become to to action name (i.e. operation Id `list` with tag `Applications` will be api method `Applications.list` and will be accesible as `api.Applications.list`).
 
-All path parasmeters like `{param1}` become required parameters for api method (with type 'string').
+All path parameters like `{param1}` become required parameters for api method (with type 'string').
 
-All query paraqmeters and json request payloads become parameters of api method.
+All query parameters and json request payloads become parameters of api method.
 
 All opertions with name `upload` are treated as file uploading operations. Params `content` and `contentType` are added to api method params in such case.
 
