@@ -294,6 +294,58 @@ Update a call
 await api.Call.update({id: 'callId', state: 'active'});
 ```
 
+## Development/Testing
+
+The library uses "magic" of js type `Proxy` to wrap api object access and calls. Data from `lib/api-data.js` are used to look for available apis, api methods and parameters validations. This file is generated from OAS file `openapi.yml`.
+
+After extracting the sources from git run
+
+```bash
+yarn install # to install dependenices
+
+yarn run build # to build the library files to dist
+
+yarn test # to run unit tests
+```
+
+If you would like to compile files on fly (on changing) run `yarn run watch`
+
+Before each commit to git a command `npm run format` will be executed to autoformat js files. If some non-fixable styles and/or syntax issues are detected a commit will be canceled.
+
+Run `yarn run docs` to build API docs as html files. These files are used for github pages.
+
+To add/change api objects, actions, parameters make changes in `openapi.yml` and then run `yarn run build` to update output files.
+
+### OAS to JS transform
+
+`openapi.yml` should be valid OAS file before processing by build script.
+
+Tag names become to api object names (i.e. tag `Applications` will be api `Applications` and will be accesible as `api.Applications`).
+
+Field `operationId` become to to action name (i.e. operation Id `list` with tag `Applications` will be api method `Applications.list` and will be accesible as `api.Applications.list`).
+
+All path parasmeters like `{param1}` become required parameters for api method (with type 'string').
+
+All query paraqmeters and json request payloads become parameters of api method.
+
+All opertions with name `upload` are treated as file uploading operations. Params `content` and `contentType` are added to api method params in such case.
+
+If requests return data with `format: binary` such operation is treated as file downloading. Optional param `responseType` is added to api method parameters. Such api action will return object with fields `content` and `contentType`.
+
+Fields `x-js-example` are used for jsdoc as examples of code for api methods.
+
+### Tools
+
+Directory `tools` contain some useful scripts which are used to build lib and docs
+
+`prepare-api-data.js` extracts data from openapi.yml and generates `lib/api-data.js`. This output file is used by library to make validations and api requests.
+
+`prepare-global-browser-script.js` generates "global" lib file `dist/node-bandwidth.js` for browser. Users can include this file via tag `<script>` and use exported by library functions/objects as global variables.
+
+`prepare-global-browser-script.js` generates file `dist/index.stub.js` from openapi.yml with well-formed jsdoc-comments. This file is used to generate html and markdown docs then.
+
+`prepare-types.js` generates TypeScript definition file `dist/index.d.ts` from openapi.yml. Also this file is used by some of editors/IDEs for autocompletions.
+
 ## Providing feedback
 
 For current discussions on 3.0-pre please see the [3.0-pre issues section on GitHub](https://github.com/bandwidthcom/node-bandwidth/labels/3.0-pre). To start a new topic on 3.0-pre, please open an issue and use the `3.0-pre` tag. Your feedback is greatly appreciated!
