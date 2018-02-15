@@ -346,6 +346,52 @@ Directory `tools` contains scripts which are used to build lib and docs
 
 `prepare-types.js` generates TypeScript definition file `dist/index.d.ts` from openapi.yml. Also this file is used by some of editors/IDEs for autocompletions.
 
+## Migration from 2.X
+
+### Using ES-style modules
+
+Use `import` to use this library in your code
+
+```js
+import getBandwidthApi from 'node-bandwidth';
+```
+
+Current versions (8.x and 9.x) of node don't support such module usage way. You have to use transpliter like `babel` or `typescript`.
+
+To get factory function via `require()` you should add `default` at the end.
+
+```js
+const getBandwidthApi = require('node-bandwidth').default; //equal code for `import getBandwidthApi from 'node-bandwidth'`;
+```
+
+### Initialization via factory function
+
+To create api instance use factory function `getBandwidthApi`.
+
+```js
+const api = getBandwidthApi({userId: '', apiToken: '', apiSecret: ''});
+```
+
+### Promise only
+
+All api actions return `Promise` object (native JS Promise). No callback more supported.
+
+### All actions which creates new objects will return id of created object only
+
+```js
+const callId = await api.Call.create({from: '+12345678901', to: '+12345678902'}); // wil return created call id as string
+```
+
+### Pagination via async iteractors
+
+No more `getNextPage()` and etc.
+
+```js
+for await (const call of await api.Calls.list()) {
+	console.log(`${call.from} -> ${call.to}`);
+}
+```
+
 ## Providing feedback
 
 For current discussions on 3.0-pre please see the [3.0-pre issues section on GitHub](https://github.com/bandwidthcom/node-bandwidth/labels/3.0-pre). To start a new topic on 3.0-pre, please open an issue and use the `3.0-pre` tag. Your feedback is greatly appreciated!
