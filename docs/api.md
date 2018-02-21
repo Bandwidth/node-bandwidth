@@ -142,9 +142,9 @@ Applications allow you to receive incoming call and messaging events.
 * [Applications](#Applications)
   * [.list([options], [cancelToken])](#Applications+list) ⇒ <code>Promise</code>
   * [.create(options, [cancelToken])](#Applications+create) ⇒ <code>Promise</code>
-  * [.get(options, [cancelToken])](#Applications+get) ⇒ <code>Promise</code>
-  * [.update(options, [cancelToken])](#Applications+update) ⇒ <code>Promise</code>
-  * [.delete(options, [cancelToken])](#Applications+delete) ⇒ <code>Promise</code>
+  * [.get(id, [cancelToken])](#Applications+get) ⇒ <code>Promise</code>
+  * [.update(id, [options], [cancelToken])](#Applications+update) ⇒ <code>Promise</code>
+  * [.delete(id, [cancelToken])](#Applications+delete) ⇒ <code>Promise</code>
 
 <a name="Applications+list"></a>
 
@@ -199,28 +199,27 @@ const appId = await api.Application.create({name: "test"});
 
 <a name="Applications+get"></a>
 
-### applications.get(options, [cancelToken]) ⇒ <code>Promise</code>
+### applications.get(id, [cancelToken]) ⇒ <code>Promise</code>
 
 Gets information about one of your applications.
 
 **Kind**: instance method of [<code>Applications</code>](#Applications)  
 **Returns**: <code>Promise</code> - Application's data
 
-| Param         | Type                           | Description                                                                        |
-| ------------- | ------------------------------ | ---------------------------------------------------------------------------------- |
-| options       | <code>object</code>            | Options                                                                            |
-| [options.id]  | <code>string</code>            | id                                                                                 |
-| [cancelToken] | <code>axios.CancelToken</code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
+| Param         | Type                           | Default       | Description                                                                        |
+| ------------- | ------------------------------ | ------------- | ---------------------------------------------------------------------------------- |
+| id            | <code>string</code>            |               | id                                                                                 |
+| [cancelToken] | <code>axios.CancelToken</code> | <code></code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
 
 **Example**
 
 ```js
-const app = await api.Application.get({id: "appId"});
+const app = await api.Application.get("appId");
 ```
 
 <a name="Applications+update"></a>
 
-### applications.update(options, [cancelToken]) ⇒ <code>Promise</code>
+### applications.update(id, [options], [cancelToken]) ⇒ <code>Promise</code>
 
 Makes changes to an application.
 
@@ -229,7 +228,8 @@ Makes changes to an application.
 
 | Param                                       | Type                           | Description                                                                                                                                                                                        |
 | ------------------------------------------- | ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| options                                     | <code>object</code>            | Options                                                                                                                                                                                            |
+| id                                          | <code>string</code>            | id                                                                                                                                                                                                 |
+| [options]                                   | <code>object</code>            | Options                                                                                                                                                                                            |
 | [options.name]                              | <code>string</code>            | A name you choose for this application.                                                                                                                                                            |
 | [options.incomingCallUrl]                   | <code>string</code>            | A URL where call events will be sent for an inbound call. This is the endpoint where the Application Platform will send all call events. Either incomingCallUrl or incomingMessageUrl is required. |
 | [options.incomingCallUrlCallbackTimeout]    | <code>number</code>            | Determine how long should the platform wait for incomingCallUrl's response before timing out in milliseconds.                                                                                      |
@@ -239,34 +239,32 @@ Makes changes to an application.
 | [options.incomingMessageFallbackUrl]        | <code>string</code>            | The unique identifier for the application                                                                                                                                                          |
 | [options.callbackHttpMethod]                | <code>string</code>            | Determine if the callback event should be sent via HTTP GET or HTTP POST. Values are "get" or "post", default: "post".                                                                             |
 | [options.autoAnswer]                        | <code>boolean</code>           | Determines whether or not an incoming call should be automatically answered.                                                                                                                       |
-| [options.id]                                | <code>string</code>            | id                                                                                                                                                                                                 |
 | [cancelToken]                               | <code>axios.CancelToken</code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation)                                                                                                                 |
 
 **Example**
 
 ```js
-await api.Application.update({id: "appId", name: "newName"});
+await api.Application.update("appId", {name: "newName"});
 ```
 
 <a name="Applications+delete"></a>
 
-### applications.delete(options, [cancelToken]) ⇒ <code>Promise</code>
+### applications.delete(id, [cancelToken]) ⇒ <code>Promise</code>
 
 Permanently deletes an application.
 
 **Kind**: instance method of [<code>Applications</code>](#Applications)  
 **Returns**: <code>Promise</code> - Done
 
-| Param         | Type                           | Description                                                                        |
-| ------------- | ------------------------------ | ---------------------------------------------------------------------------------- |
-| options       | <code>object</code>            | Options                                                                            |
-| [options.id]  | <code>string</code>            | id                                                                                 |
-| [cancelToken] | <code>axios.CancelToken</code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
+| Param         | Type                           | Default       | Description                                                                        |
+| ------------- | ------------------------------ | ------------- | ---------------------------------------------------------------------------------- |
+| id            | <code>string</code>            |               | id                                                                                 |
+| [cancelToken] | <code>axios.CancelToken</code> | <code></code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
 
 **Example**
 
 ```js
-await api.Application.delete({id: "appId"});
+await api.Application.delete("appId");
 ```
 
 <a name="Media"></a>
@@ -279,9 +277,9 @@ The Media resource lets you upload your media files to Bandwidth API servers so 
 
 * [Media](#Media)
   * [.list([cancelToken])](#Media+list) ⇒ <code>Promise</code>
-  * [.download(options, [cancelToken])](#Media+download) ⇒ <code>Promise</code>
-  * [.upload(options, [cancelToken])](#Media+upload) ⇒ <code>Promise</code>
-  * [.delete(options, [cancelToken])](#Media+delete) ⇒ <code>Promise</code>
+  * [.download(mediaName, [options], [cancelToken])](#Media+download) ⇒ <code>Promise</code>
+  * [.upload(mediaName, [options], [cancelToken])](#Media+upload) ⇒ <code>Promise</code>
+  * [.delete(mediaName, [cancelToken])](#Media+delete) ⇒ <code>Promise</code>
 
 <a name="Media+list"></a>
 
@@ -304,7 +302,7 @@ const files = await api.Media.list();
 
 <a name="Media+download"></a>
 
-### media.download(options, [cancelToken]) ⇒ <code>Promise</code>
+### media.download(mediaName, [options], [cancelToken]) ⇒ <code>Promise</code>
 
 Downloads a media file you previously uploaded.
 
@@ -313,20 +311,20 @@ Downloads a media file you previously uploaded.
 
 | Param                  | Type                           | Description                                                                               |
 | ---------------------- | ------------------------------ | ----------------------------------------------------------------------------------------- |
-| options                | <code>object</code>            | Options                                                                                   |
-| [options.mediaName]    | <code>string</code>            | mediaName                                                                                 |
+| mediaName              | <code>string</code>            | mediaName                                                                                 |
+| [options]              | <code>object</code>            | Options                                                                                   |
 | [options.responseType] | <code>string</code>            | responseType Valid values are 'arraybuffer', 'blob', 'document', 'json', 'text', 'stream' |
 | [cancelToken]          | <code>axios.CancelToken</code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation)        |
 
 **Example**
 
 ```js
-const result = await api.Media.download({mediaName: "image.jpg"});
+const result = await api.Media.download("image.jpg");
 ```
 
 <a name="Media+upload"></a>
 
-### media.upload(options, [cancelToken]) ⇒ <code>Promise</code>
+### media.upload(mediaName, [options], [cancelToken]) ⇒ <code>Promise</code>
 
 Uploads a file the normal HTTP way.
 
@@ -335,8 +333,8 @@ Uploads a file the normal HTTP way.
 
 | Param                 | Type                           | Description                                                                        |
 | --------------------- | ------------------------------ | ---------------------------------------------------------------------------------- |
-| options               | <code>object</code>            | Options                                                                            |
-| [options.mediaName]   | <code>string</code>            | mediaName                                                                          |
+| mediaName             | <code>string</code>            | mediaName                                                                          |
+| [options]             | <code>object</code>            | Options                                                                            |
 | [options.content]     | <code>\*</code>                | content                                                                            |
 | [options.contentType] | <code>string</code>            | contentType                                                                        |
 | [cancelToken]         | <code>axios.CancelToken</code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
@@ -344,28 +342,27 @@ Uploads a file the normal HTTP way.
 **Example**
 
 ```js
-await api.Media.upload({mediaName: "file.jpg", content: bufferOrStream, contentType: "image/jpeg"});
+await api.Media.upload("file.jpg", {content: bufferOrStream, contentType: "image/jpeg"});
 ```
 
 <a name="Media+delete"></a>
 
-### media.delete(options, [cancelToken]) ⇒ <code>Promise</code>
+### media.delete(mediaName, [cancelToken]) ⇒ <code>Promise</code>
 
 Deletes a media file from Bandwidth API server.
 
 **Kind**: instance method of [<code>Media</code>](#Media)  
 **Returns**: <code>Promise</code> - Success
 
-| Param               | Type                           | Description                                                                        |
-| ------------------- | ------------------------------ | ---------------------------------------------------------------------------------- |
-| options             | <code>object</code>            | Options                                                                            |
-| [options.mediaName] | <code>string</code>            | mediaName                                                                          |
-| [cancelToken]       | <code>axios.CancelToken</code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
+| Param         | Type                           | Default       | Description                                                                        |
+| ------------- | ------------------------------ | ------------- | ---------------------------------------------------------------------------------- |
+| mediaName     | <code>string</code>            |               | mediaName                                                                          |
+| [cancelToken] | <code>axios.CancelToken</code> | <code></code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
 
 **Example**
 
 ```js
-await api.Media.delete({mediaName: "file.jpg"});
+await api.Media.delete("file.jpg");
 ```
 
 <a name="AvailableNumbers"></a>
@@ -491,10 +488,10 @@ The Bridges resource allows you to bridge two calls together allowing for two wa
 * [Bridges](#Bridges)
   * [.list([options], [cancelToken])](#Bridges+list) ⇒ <code>Promise</code>
   * [.create([options], [cancelToken])](#Bridges+create) ⇒ <code>Promise</code>
-  * [.get(options, [cancelToken])](#Bridges+get) ⇒ <code>Promise</code>
-  * [.update(options, [cancelToken])](#Bridges+update) ⇒ <code>Promise</code>
-  * [.playAudio(options, [cancelToken])](#Bridges+playAudio) ⇒ <code>Promise</code>
-  * [.getCalls(options, [cancelToken])](#Bridges+getCalls) ⇒ <code>Promise</code>
+  * [.get(id, [cancelToken])](#Bridges+get) ⇒ <code>Promise</code>
+  * [.update(id, [options], [cancelToken])](#Bridges+update) ⇒ <code>Promise</code>
+  * [.playAudio(id, [options], [cancelToken])](#Bridges+playAudio) ⇒ <code>Promise</code>
+  * [.getCalls(id, [cancelToken])](#Bridges+getCalls) ⇒ <code>Promise</code>
   * [.speakSententence(id, sentence, options, [cancelToken])](#Bridges+speakSententence) ⇒ <code>Promise</code>
   * [.playFileUrl(id, fileUrl, options, [cancelToken])](#Bridges+playFileUrl) ⇒ <code>Promise</code>
   * [.stopPlayFileUrl(id, [cancelToken])](#Bridges+stopPlayFileUrl) ⇒ <code>Promise</code>
@@ -545,28 +542,27 @@ const bridgeId = await api.Bridges.create({callIds: ["callId"]});
 
 <a name="Bridges+get"></a>
 
-### bridges.get(options, [cancelToken]) ⇒ <code>Promise</code>
+### bridges.get(id, [cancelToken]) ⇒ <code>Promise</code>
 
 Gets information about a specific bridge.
 
 **Kind**: instance method of [<code>Bridges</code>](#Bridges)  
 **Returns**: <code>Promise</code> - Bridge's data
 
-| Param         | Type                           | Description                                                                        |
-| ------------- | ------------------------------ | ---------------------------------------------------------------------------------- |
-| options       | <code>object</code>            | Options                                                                            |
-| [options.id]  | <code>string</code>            | id                                                                                 |
-| [cancelToken] | <code>axios.CancelToken</code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
+| Param         | Type                           | Default       | Description                                                                        |
+| ------------- | ------------------------------ | ------------- | ---------------------------------------------------------------------------------- |
+| id            | <code>string</code>            |               | id                                                                                 |
+| [cancelToken] | <code>axios.CancelToken</code> | <code></code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
 
 **Example**
 
 ```js
-const bridge = await api.Bridges.get({id: "bridgeId"});
+const bridge = await api.Bridges.get("bridgeId");
 ```
 
 <a name="Bridges+update"></a>
 
-### bridges.update(options, [cancelToken]) ⇒ <code>Promise</code>
+### bridges.update(id, [options], [cancelToken]) ⇒ <code>Promise</code>
 
 Change calls in a bridge and bridge/unbridge the audio.
 
@@ -575,21 +571,21 @@ Change calls in a bridge and bridge/unbridge the audio.
 
 | Param                 | Type                             | Description                                                                        |
 | --------------------- | -------------------------------- | ---------------------------------------------------------------------------------- |
-| options               | <code>object</code>              | Options                                                                            |
+| id                    | <code>string</code>              | id                                                                                 |
+| [options]             | <code>object</code>              | Options                                                                            |
 | [options.callIds]     | <code>Array.&lt;array&gt;</code> | List of call Ids that will be in the bridge.                                       |
 | [options.bridgeAudio] | <code>string</code>              | Enable/Disable two way audio path.                                                 |
-| [options.id]          | <code>string</code>              | id                                                                                 |
 | [cancelToken]         | <code>axios.CancelToken</code>   | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
 
 **Example**
 
 ```js
-await api.Bridges.update({id: "bridgeId", bridgeAudio: false});
+await api.Bridges.update("bridgeId", {bridgeAudio: false});
 ```
 
 <a name="Bridges+playAudio"></a>
 
-### bridges.playAudio(options, [cancelToken]) ⇒ <code>Promise</code>
+### bridges.playAudio(id, [options], [cancelToken]) ⇒ <code>Promise</code>
 
 Play an audio file or speak a sentence in a bridge.
 
@@ -598,41 +594,40 @@ Play an audio file or speak a sentence in a bridge.
 
 | Param              | Type                           | Description                                                                                        |
 | ------------------ | ------------------------------ | -------------------------------------------------------------------------------------------------- |
-| options            | <code>object</code>            | Options                                                                                            |
+| id                 | <code>string</code>            | id                                                                                                 |
+| [options]          | <code>object</code>            | Options                                                                                            |
 | [options.fileUrl]  | <code>string</code>            | The location of an audio file to play (WAV and MP3 supported).                                     |
 | [options.sentence] | <code>string</code>            | The sentence to speak.                                                                             |
 | [options.gender]   | <code>string</code>            | The gender of the voice used to synthesize the sentence.                                           |
 | [options.locale]   | <code>string</code>            | The sentence to speak.                                                                             |
 | [options.voice]    | <code>string</code>            | The voice to speak the sentence                                                                    |
 | [options.tag]      | <code>string</code>            | A string that will be included in the events delivered when the audio playback starts or finishes. |
-| [options.id]       | <code>string</code>            | id                                                                                                 |
 | [cancelToken]      | <code>axios.CancelToken</code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation)                 |
 
 **Example**
 
 ```js
-await api.Bridges.playAudio({id: "bridgeId", fileUrl: "url"});
+await api.Bridges.playAudio("bridgeId", {fileUrl: "url"});
 ```
 
 <a name="Bridges+getCalls"></a>
 
-### bridges.getCalls(options, [cancelToken]) ⇒ <code>Promise</code>
+### bridges.getCalls(id, [cancelToken]) ⇒ <code>Promise</code>
 
 Get the list of calls that are on the bridge.
 
 **Kind**: instance method of [<code>Bridges</code>](#Bridges)  
 **Returns**: <code>Promise</code> - list of bridge's calls
 
-| Param         | Type                           | Description                                                                        |
-| ------------- | ------------------------------ | ---------------------------------------------------------------------------------- |
-| options       | <code>object</code>            | Options                                                                            |
-| [options.id]  | <code>string</code>            | id                                                                                 |
-| [cancelToken] | <code>axios.CancelToken</code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
+| Param         | Type                           | Default       | Description                                                                        |
+| ------------- | ------------------------------ | ------------- | ---------------------------------------------------------------------------------- |
+| id            | <code>string</code>            |               | id                                                                                 |
+| [cancelToken] | <code>axios.CancelToken</code> | <code></code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
 
 **Example**
 
 ```js
-const calls = await api.Bridges.getCalls();
+const calls = await api.Bridges.getCalls("id");
 ```
 
 <a name="Bridges+speakSententence"></a>
@@ -715,17 +710,17 @@ The Calls resource lets you make phone calls and view information about previous
 * [Calls](#Calls)
   * [.list([options], [cancelToken])](#Calls+list) ⇒ <code>Promise</code>
   * [.create(options, [cancelToken])](#Calls+create) ⇒ <code>Promise</code>
-  * [.get(options, [cancelToken])](#Calls+get) ⇒ <code>Promise</code>
-  * [.update(options, [cancelToken])](#Calls+update) ⇒ <code>Promise</code>
-  * [.playAudio(options, [cancelToken])](#Calls+playAudio) ⇒ <code>Promise</code>
-  * [.sendDtmf(options, [cancelToken])](#Calls+sendDtmf) ⇒ <code>Promise</code>
-  * [.getEvents(options, [cancelToken])](#Calls+getEvents) ⇒ <code>Promise</code>
-  * [.getEvent(options, [cancelToken])](#Calls+getEvent) ⇒ <code>Promise</code>
-  * [.getRecordings(options, [cancelToken])](#Calls+getRecordings) ⇒ <code>Promise</code>
-  * [.getTranscriptions(options, [cancelToken])](#Calls+getTranscriptions) ⇒ <code>Promise</code>
-  * [.createGather(options, [cancelToken])](#Calls+createGather) ⇒ <code>Promise</code>
-  * [.getGather(options, [cancelToken])](#Calls+getGather) ⇒ <code>Promise</code>
-  * [.updateGather(options, [cancelToken])](#Calls+updateGather) ⇒ <code>Promise</code>
+  * [.get(id, [cancelToken])](#Calls+get) ⇒ <code>Promise</code>
+  * [.update(id, [options], [cancelToken])](#Calls+update) ⇒ <code>Promise</code>
+  * [.playAudio(id, [options], [cancelToken])](#Calls+playAudio) ⇒ <code>Promise</code>
+  * [.sendDtmf(id, [options], [cancelToken])](#Calls+sendDtmf) ⇒ <code>Promise</code>
+  * [.getEvents(id, [cancelToken])](#Calls+getEvents) ⇒ <code>Promise</code>
+  * [.getEvent(id, eventId, [cancelToken])](#Calls+getEvent) ⇒ <code>Promise</code>
+  * [.getRecordings(id, [cancelToken])](#Calls+getRecordings) ⇒ <code>Promise</code>
+  * [.getTranscriptions(id, [cancelToken])](#Calls+getTranscriptions) ⇒ <code>Promise</code>
+  * [.createGather(id, [options], [cancelToken])](#Calls+createGather) ⇒ <code>Promise</code>
+  * [.getGather(id, gatherId, [cancelToken])](#Calls+getGather) ⇒ <code>Promise</code>
+  * [.updateGather(id, gatherId, [options], [cancelToken])](#Calls+updateGather) ⇒ <code>Promise</code>
   * [.answer(id, [cancelToken])](#Calls+answer) ⇒ <code>Promise</code>
   * [.terminate(id, [cancelToken])](#Calls+terminate) ⇒ <code>Promise</code>
   * [.hangup(id, [cancelToken])](#Calls+hangup) ⇒ <code>Promise</code>
@@ -798,28 +793,27 @@ const callId = await api.Calls.create({from: "from1", to: "to1"});
 
 <a name="Calls+get"></a>
 
-### calls.get(options, [cancelToken]) ⇒ <code>Promise</code>
+### calls.get(id, [cancelToken]) ⇒ <code>Promise</code>
 
 Gets information about an active or completed call.
 
 **Kind**: instance method of [<code>Calls</code>](#Calls)  
 **Returns**: <code>Promise</code> - Call's data
 
-| Param         | Type                           | Description                                                                        |
-| ------------- | ------------------------------ | ---------------------------------------------------------------------------------- |
-| options       | <code>object</code>            | Options                                                                            |
-| [options.id]  | <code>string</code>            | id                                                                                 |
-| [cancelToken] | <code>axios.CancelToken</code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
+| Param         | Type                           | Default       | Description                                                                        |
+| ------------- | ------------------------------ | ------------- | ---------------------------------------------------------------------------------- |
+| id            | <code>string</code>            |               | id                                                                                 |
+| [cancelToken] | <code>axios.CancelToken</code> | <code></code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
 
 **Example**
 
 ```js
-const call = await api.Calls.get({id: "callId"});
+const call = await api.Calls.get("callId");
 ```
 
 <a name="Calls+update"></a>
 
-### calls.update(options, [cancelToken]) ⇒ <code>Promise</code>
+### calls.update(id, [options], [cancelToken]) ⇒ <code>Promise</code>
 
 Update properties of an active phone call.
 
@@ -828,7 +822,8 @@ Update properties of an active phone call.
 
 | Param                          | Type                           | Description                                                                                               |
 | ------------------------------ | ------------------------------ | --------------------------------------------------------------------------------------------------------- |
-| options                        | <code>object</code>            | Options                                                                                                   |
+| id                             | <code>string</code>            | id                                                                                                        |
+| [options]                      | <code>object</code>            | Options                                                                                                   |
 | [options.state]                | <code>string</code>            | The call state                                                                                            |
 | [options.callTimeout]          | <code>number</code>            | Determine how long should the platform wait for call answer before timing out in seconds.                 |
 | [options.callbackTimeout]      | <code>number</code>            | Determine how long should the platform wait for callbackUrl’s response before timing out in milliseconds. |
@@ -842,18 +837,17 @@ Update properties of an active phone call.
 | [options.transferTo]           | <code>string</code>            | transferTo                                                                                                |
 | [options.transferCallerId]     | <code>string</code>            | transferCallerId                                                                                          |
 | [options.whisperAudio]         | <code>\*</code>                | whisperAudio                                                                                              |
-| [options.id]                   | <code>string</code>            | id                                                                                                        |
 | [cancelToken]                  | <code>axios.CancelToken</code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation)                        |
 
 **Example**
 
 ```js
-await api.Calls.update({id: "callId", state: "answer"});
+await api.Calls.update("callId", {state: "answer"});
 ```
 
 <a name="Calls+playAudio"></a>
 
-### calls.playAudio(options, [cancelToken]) ⇒ <code>Promise</code>
+### calls.playAudio(id, [options], [cancelToken]) ⇒ <code>Promise</code>
 
 Play an audio file or speak a sentence in a call.
 
@@ -862,25 +856,25 @@ Play an audio file or speak a sentence in a call.
 
 | Param              | Type                           | Description                                                                                        |
 | ------------------ | ------------------------------ | -------------------------------------------------------------------------------------------------- |
-| options            | <code>object</code>            | Options                                                                                            |
+| id                 | <code>string</code>            | id                                                                                                 |
+| [options]          | <code>object</code>            | Options                                                                                            |
 | [options.fileUrl]  | <code>string</code>            | The location of an audio file to play (WAV and MP3 supported).                                     |
 | [options.sentence] | <code>string</code>            | The sentence to speak.                                                                             |
 | [options.gender]   | <code>string</code>            | The gender of the voice used to synthesize the sentence.                                           |
 | [options.locale]   | <code>string</code>            | The sentence to speak.                                                                             |
 | [options.voice]    | <code>string</code>            | The voice to speak the sentence                                                                    |
 | [options.tag]      | <code>string</code>            | A string that will be included in the events delivered when the audio playback starts or finishes. |
-| [options.id]       | <code>string</code>            | id                                                                                                 |
 | [cancelToken]      | <code>axios.CancelToken</code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation)                 |
 
 **Example**
 
 ```js
-await api.Calls.playAudio({id: "callId", fileUrl: "url"});
+await api.Calls.playAudio("callId", {fileUrl: "url"});
 ```
 
 <a name="Calls+sendDtmf"></a>
 
-### calls.sendDtmf(options, [cancelToken]) ⇒ <code>Promise</code>
+### calls.sendDtmf(id, [options], [cancelToken]) ⇒ <code>Promise</code>
 
 Send DTMF (phone keypad digit presses).
 
@@ -889,105 +883,101 @@ Send DTMF (phone keypad digit presses).
 
 | Param             | Type                           | Description                                                                                    |
 | ----------------- | ------------------------------ | ---------------------------------------------------------------------------------------------- |
-| options           | <code>object</code>            | Options                                                                                        |
+| id                | <code>string</code>            | id                                                                                             |
+| [options]         | <code>object</code>            | Options                                                                                        |
 | [options.dtmfOut] | <code>string</code>            | String containing the DTMF characters to be sent in a call. Allows a maximum of 92 characters. |
-| [options.id]      | <code>string</code>            | id                                                                                             |
 | [cancelToken]     | <code>axios.CancelToken</code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation)             |
 
 **Example**
 
 ```js
-await api.Calls.sendDtmf({id: "callId", dtmfOut: "1"});
+await api.Calls.sendDtmf("callId", {dtmfOut: "1"});
 ```
 
 <a name="Calls+getEvents"></a>
 
-### calls.getEvents(options, [cancelToken]) ⇒ <code>Promise</code>
+### calls.getEvents(id, [cancelToken]) ⇒ <code>Promise</code>
 
 Gets the events that occurred during the call.
 
 **Kind**: instance method of [<code>Calls</code>](#Calls)  
 **Returns**: <code>Promise</code> - list of call's events
 
-| Param         | Type                           | Description                                                                        |
-| ------------- | ------------------------------ | ---------------------------------------------------------------------------------- |
-| options       | <code>object</code>            | Options                                                                            |
-| [options.id]  | <code>string</code>            | id                                                                                 |
-| [cancelToken] | <code>axios.CancelToken</code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
+| Param         | Type                           | Default       | Description                                                                        |
+| ------------- | ------------------------------ | ------------- | ---------------------------------------------------------------------------------- |
+| id            | <code>string</code>            |               | id                                                                                 |
+| [cancelToken] | <code>axios.CancelToken</code> | <code></code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
 
 **Example**
 
 ```js
-const events = await api.Calls.getEvents({id: "callId"});
+const events = await api.Calls.getEvents("callId");
 ```
 
 <a name="Calls+getEvent"></a>
 
-### calls.getEvent(options, [cancelToken]) ⇒ <code>Promise</code>
+### calls.getEvent(id, eventId, [cancelToken]) ⇒ <code>Promise</code>
 
 Gets information about one call event.
 
 **Kind**: instance method of [<code>Calls</code>](#Calls)  
 **Returns**: <code>Promise</code> - information about call event
 
-| Param             | Type                           | Description                                                                        |
-| ----------------- | ------------------------------ | ---------------------------------------------------------------------------------- |
-| options           | <code>object</code>            | Options                                                                            |
-| [options.id]      | <code>string</code>            | id                                                                                 |
-| [options.eventId] | <code>string</code>            | eventId                                                                            |
-| [cancelToken]     | <code>axios.CancelToken</code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
+| Param         | Type                           | Default       | Description                                                                        |
+| ------------- | ------------------------------ | ------------- | ---------------------------------------------------------------------------------- |
+| id            | <code>string</code>            |               | id                                                                                 |
+| eventId       | <code>string</code>            |               | eventId                                                                            |
+| [cancelToken] | <code>axios.CancelToken</code> | <code></code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
 
 **Example**
 
 ```js
-const ev = await api.Calls.getEvent({id: "callId", eventId: "eventId"});
+const ev = await api.Calls.getEvent("callId", "eventId");
 ```
 
 <a name="Calls+getRecordings"></a>
 
-### calls.getRecordings(options, [cancelToken]) ⇒ <code>Promise</code>
+### calls.getRecordings(id, [cancelToken]) ⇒ <code>Promise</code>
 
 Retrieve all recordings related to the call.
 
 **Kind**: instance method of [<code>Calls</code>](#Calls)  
 **Returns**: <code>Promise</code> - list of call's recordings
 
-| Param         | Type                           | Description                                                                        |
-| ------------- | ------------------------------ | ---------------------------------------------------------------------------------- |
-| options       | <code>object</code>            | Options                                                                            |
-| [options.id]  | <code>string</code>            | id                                                                                 |
-| [cancelToken] | <code>axios.CancelToken</code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
+| Param         | Type                           | Default       | Description                                                                        |
+| ------------- | ------------------------------ | ------------- | ---------------------------------------------------------------------------------- |
+| id            | <code>string</code>            |               | id                                                                                 |
+| [cancelToken] | <code>axios.CancelToken</code> | <code></code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
 
 **Example**
 
 ```js
-const recordings = await api.Calls.getRecordings({id: "callId"});
+const recordings = await api.Calls.getRecordings("callId");
 ```
 
 <a name="Calls+getTranscriptions"></a>
 
-### calls.getTranscriptions(options, [cancelToken]) ⇒ <code>Promise</code>
+### calls.getTranscriptions(id, [cancelToken]) ⇒ <code>Promise</code>
 
 Retrieve all transcriptions related to the call.
 
 **Kind**: instance method of [<code>Calls</code>](#Calls)  
 **Returns**: <code>Promise</code> - list of call's transcriptions
 
-| Param         | Type                           | Description                                                                        |
-| ------------- | ------------------------------ | ---------------------------------------------------------------------------------- |
-| options       | <code>object</code>            | Options                                                                            |
-| [options.id]  | <code>string</code>            | id                                                                                 |
-| [cancelToken] | <code>axios.CancelToken</code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
+| Param         | Type                           | Default       | Description                                                                        |
+| ------------- | ------------------------------ | ------------- | ---------------------------------------------------------------------------------- |
+| id            | <code>string</code>            |               | id                                                                                 |
+| [cancelToken] | <code>axios.CancelToken</code> | <code></code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
 
 **Example**
 
 ```js
-const transcriptions = await api.Calls.getTranscriptions({id: "callId"});
+const transcriptions = await api.Calls.getTranscriptions("callId");
 ```
 
 <a name="Calls+createGather"></a>
 
-### calls.createGather(options, [cancelToken]) ⇒ <code>Promise</code>
+### calls.createGather(id, [options], [cancelToken]) ⇒ <code>Promise</code>
 
 Collects a series of DTMF digits from a phone call with an optional prompt.
 
@@ -996,7 +986,8 @@ Collects a series of DTMF digits from a phone call with an optional prompt.
 
 | Param                        | Type                           | Description                                                                                                                                                                            |
 | ---------------------------- | ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| options                      | <code>object</code>            | Options                                                                                                                                                                                |
+| id                           | <code>string</code>            | id                                                                                                                                                                                     |
+| [options]                    | <code>object</code>            | Options                                                                                                                                                                                |
 | [options.maxDigits]          | <code>number</code>            | The maximum number of digits to collect, not including terminating digits                                                                                                              |
 | [options.interDigitTimeout]  | <code>number</code>            | Stop gathering if a DTMF digit is not detected in this many seconds                                                                                                                    |
 | [options.terminatingDigits]  | <code>string</code>            | A string of DTMF digits that end the gather operation immediately if any one of them is detected (default “#”; an empty string means collect all DTMF until maxDigits or the timeout). |
@@ -1007,58 +998,56 @@ Collects a series of DTMF digits from a phone call with an optional prompt.
 | [options.prompt.loopEnabled] | <code>boolean</code>           | When value is true, the audio will keep playing in a loop.                                                                                                                             |
 | [options.prompt.bargeable]   | <code>boolean</code>           | Make the prompt (audio or sentence) bargeable                                                                                                                                          |
 | [options.prompt.fileUrl]     | <code>string</code>            | The location of an audio file to play (WAV and MP3 supported).                                                                                                                         |
-| [options.id]                 | <code>string</code>            | id                                                                                                                                                                                     |
 | [cancelToken]                | <code>axios.CancelToken</code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation)                                                                                                     |
 
 **Example**
 
 ```js
-const gatherId = await api.Calls.createGather({id: "callId", maxDigits: 1});
+const gatherId = await api.Calls.createGather("callId", {maxDigits: 1});
 ```
 
 <a name="Calls+getGather"></a>
 
-### calls.getGather(options, [cancelToken]) ⇒ <code>Promise</code>
+### calls.getGather(id, gatherId, [cancelToken]) ⇒ <code>Promise</code>
 
 Get the gather DTMF parameters and results.
 
 **Kind**: instance method of [<code>Calls</code>](#Calls)  
 **Returns**: <code>Promise</code> - Gather information
 
-| Param              | Type                           | Description                                                                        |
-| ------------------ | ------------------------------ | ---------------------------------------------------------------------------------- |
-| options            | <code>object</code>            | Options                                                                            |
-| [options.id]       | <code>string</code>            | id                                                                                 |
-| [options.gatherId] | <code>string</code>            | gatherId                                                                           |
-| [cancelToken]      | <code>axios.CancelToken</code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
+| Param         | Type                           | Default       | Description                                                                        |
+| ------------- | ------------------------------ | ------------- | ---------------------------------------------------------------------------------- |
+| id            | <code>string</code>            |               | id                                                                                 |
+| gatherId      | <code>string</code>            |               | gatherId                                                                           |
+| [cancelToken] | <code>axios.CancelToken</code> | <code></code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
 
 **Example**
 
 ```js
-const gather = await api.Calls.getGather({id: "callId", gatherId: "gatherId"});
+const gather = await api.Calls.getGather("callId", "gatherId");
 ```
 
 <a name="Calls+updateGather"></a>
 
-### calls.updateGather(options, [cancelToken]) ⇒ <code>Promise</code>
+### calls.updateGather(id, gatherId, [options], [cancelToken]) ⇒ <code>Promise</code>
 
 Update the gather.
 
 **Kind**: instance method of [<code>Calls</code>](#Calls)  
 **Returns**: <code>Promise</code> - Done
 
-| Param              | Type                           | Description                                                                        |
-| ------------------ | ------------------------------ | ---------------------------------------------------------------------------------- |
-| options            | <code>object</code>            | Options                                                                            |
-| [options.state]    | <code>string</code>            | Update the gather.                                                                 |
-| [options.id]       | <code>string</code>            | id                                                                                 |
-| [options.gatherId] | <code>string</code>            | gatherId                                                                           |
-| [cancelToken]      | <code>axios.CancelToken</code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
+| Param           | Type                           | Description                                                                        |
+| --------------- | ------------------------------ | ---------------------------------------------------------------------------------- |
+| id              | <code>string</code>            | id                                                                                 |
+| gatherId        | <code>string</code>            | gatherId                                                                           |
+| [options]       | <code>object</code>            | Options                                                                            |
+| [options.state] | <code>string</code>            | Update the gather.                                                                 |
+| [cancelToken]   | <code>axios.CancelToken</code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
 
 **Example**
 
 ```js
-await api.Calls.updateGather({id: "callId", gatherId: "gatherId", state: "completed"});
+await api.Calls.updateGather("callId", "gatherId", {state: "completed"});
 ```
 
 <a name="Calls+answer"></a>
@@ -1253,14 +1242,14 @@ The Conference resource allows you create conferences, add members to it, play a
 
 * [Conferences](#Conferences)
   * [.create([options], [cancelToken])](#Conferences+create) ⇒ <code>Promise</code>
-  * [.get(options, [cancelToken])](#Conferences+get) ⇒ <code>Promise</code>
-  * [.update(options, [cancelToken])](#Conferences+update) ⇒ <code>Promise</code>
-  * [.playAudio(options, [cancelToken])](#Conferences+playAudio) ⇒ <code>Promise</code>
-  * [.getMembers(options, [cancelToken])](#Conferences+getMembers) ⇒ <code>Promise</code>
-  * [.addMember(options, [cancelToken])](#Conferences+addMember) ⇒ <code>Promise</code>
-  * [.getMember(options, [cancelToken])](#Conferences+getMember) ⇒ <code>Promise</code>
-  * [.updateMember(options, [cancelToken])](#Conferences+updateMember) ⇒ <code>Promise</code>
-  * [.playAudioToMember(options, [cancelToken])](#Conferences+playAudioToMember) ⇒ <code>Promise</code>
+  * [.get(id, [cancelToken])](#Conferences+get) ⇒ <code>Promise</code>
+  * [.update(id, [options], [cancelToken])](#Conferences+update) ⇒ <code>Promise</code>
+  * [.playAudio(id, [options], [cancelToken])](#Conferences+playAudio) ⇒ <code>Promise</code>
+  * [.getMembers(id, [cancelToken])](#Conferences+getMembers) ⇒ <code>Promise</code>
+  * [.addMember(id, options, [cancelToken])](#Conferences+addMember) ⇒ <code>Promise</code>
+  * [.getMember(id, memberId, [cancelToken])](#Conferences+getMember) ⇒ <code>Promise</code>
+  * [.updateMember(id, memberId, [options], [cancelToken])](#Conferences+updateMember) ⇒ <code>Promise</code>
+  * [.playAudioToMember(id, memberId, [options], [cancelToken])](#Conferences+playAudioToMember) ⇒ <code>Promise</code>
   * [.stop(id, [cancelToken])](#Conferences+stop) ⇒ <code>Promise</code>
   * [.mute(id, [mute], [cancelToken])](#Conferences+mute) ⇒ <code>Promise</code>
   * [.hold(id, [hold], [cancelToken])](#Conferences+hold) ⇒ <code>Promise</code>
@@ -1303,28 +1292,27 @@ const conferenceId = await api.Conferences.create({from: "number"});
 
 <a name="Conferences+get"></a>
 
-### conferences.get(options, [cancelToken]) ⇒ <code>Promise</code>
+### conferences.get(id, [cancelToken]) ⇒ <code>Promise</code>
 
 Gets information about a conference.
 
 **Kind**: instance method of [<code>Conferences</code>](#Conferences)  
 **Returns**: <code>Promise</code> - Conference's data
 
-| Param         | Type                           | Description                                                                        |
-| ------------- | ------------------------------ | ---------------------------------------------------------------------------------- |
-| options       | <code>object</code>            | Options                                                                            |
-| [options.id]  | <code>string</code>            | id                                                                                 |
-| [cancelToken] | <code>axios.CancelToken</code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
+| Param         | Type                           | Default       | Description                                                                        |
+| ------------- | ------------------------------ | ------------- | ---------------------------------------------------------------------------------- |
+| id            | <code>string</code>            |               | id                                                                                 |
+| [cancelToken] | <code>axios.CancelToken</code> | <code></code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
 
 **Example**
 
 ```js
-const conference = await api.Conferences.get({id: "conferenceId"});
+const conference = await api.Conferences.get("conferenceId");
 ```
 
 <a name="Conferences+update"></a>
 
-### conferences.update(options, [cancelToken]) ⇒ <code>Promise</code>
+### conferences.update(id, [options], [cancelToken]) ⇒ <code>Promise</code>
 
 Update properties of an active conference.
 
@@ -1333,7 +1321,8 @@ Update properties of an active conference.
 
 | Param                        | Type                           | Description                                                                                                                                             |
 | ---------------------------- | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| options                      | <code>object</code>            | Options                                                                                                                                                 |
+| id                           | <code>string</code>            | id                                                                                                                                                      |
+| [options]                    | <code>object</code>            | Options                                                                                                                                                 |
 | [options.state]              | <code>string</code>            | Conference state.                                                                                                                                       |
 | [options.hold]               | <code>boolean</code>           | If true, all member can’t hear or speak in the conference. If false, all members can hear and speak in the conference (unless set at the member level). |
 | [options.mute]               | <code>boolean</code>           | If true, all member can’t speak in the conference. If false, all members can speak in the conference (unless set at the member level).                  |
@@ -1342,18 +1331,17 @@ Update properties of an active conference.
 | [options.callbackHttpMethod] | <code>string</code>            | Determine if the callback event should be sent via HTTP GET or HTTP POST                                                                                |
 | [options.fallbackUrl]        | <code>string</code>            | he full server URL used to send the callback event if the request to callbackUrl fails.                                                                 |
 | [options.tag]                | <code>string</code>            | A string that will be included in the callback events of the conference.                                                                                |
-| [options.id]                 | <code>string</code>            | id                                                                                                                                                      |
 | [cancelToken]                | <code>axios.CancelToken</code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation)                                                                      |
 
 **Example**
 
 ```js
-await api.Conferences.update({id: "conferenceId", mute: true});
+await api.Conferences.update("conferenceId", {mute: true});
 ```
 
 <a name="Conferences+playAudio"></a>
 
-### conferences.playAudio(options, [cancelToken]) ⇒ <code>Promise</code>
+### conferences.playAudio(id, [options], [cancelToken]) ⇒ <code>Promise</code>
 
 Play an audio file or speak a sentence in a conference.
 
@@ -1362,46 +1350,45 @@ Play an audio file or speak a sentence in a conference.
 
 | Param              | Type                           | Description                                                                                        |
 | ------------------ | ------------------------------ | -------------------------------------------------------------------------------------------------- |
-| options            | <code>object</code>            | Options                                                                                            |
+| id                 | <code>string</code>            | id                                                                                                 |
+| [options]          | <code>object</code>            | Options                                                                                            |
 | [options.fileUrl]  | <code>string</code>            | The location of an audio file to play (WAV and MP3 supported).                                     |
 | [options.sentence] | <code>string</code>            | The sentence to speak.                                                                             |
 | [options.gender]   | <code>string</code>            | The gender of the voice used to synthesize the sentence.                                           |
 | [options.locale]   | <code>string</code>            | The sentence to speak.                                                                             |
 | [options.voice]    | <code>string</code>            | The voice to speak the sentence                                                                    |
 | [options.tag]      | <code>string</code>            | A string that will be included in the events delivered when the audio playback starts or finishes. |
-| [options.id]       | <code>string</code>            | id                                                                                                 |
 | [cancelToken]      | <code>axios.CancelToken</code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation)                 |
 
 **Example**
 
 ```js
-await api.Conferences.playAudio({id: "conferenceId", fileUrl: "url"});
+await api.Conferences.playAudio("conferenceId", {fileUrl: "url"});
 ```
 
 <a name="Conferences+getMembers"></a>
 
-### conferences.getMembers(options, [cancelToken]) ⇒ <code>Promise</code>
+### conferences.getMembers(id, [cancelToken]) ⇒ <code>Promise</code>
 
 Get information about a conference members.
 
 **Kind**: instance method of [<code>Conferences</code>](#Conferences)  
 **Returns**: <code>Promise</code> - Conference members data
 
-| Param         | Type                           | Description                                                                        |
-| ------------- | ------------------------------ | ---------------------------------------------------------------------------------- |
-| options       | <code>object</code>            | Options                                                                            |
-| [options.id]  | <code>string</code>            | id                                                                                 |
-| [cancelToken] | <code>axios.CancelToken</code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
+| Param         | Type                           | Default       | Description                                                                        |
+| ------------- | ------------------------------ | ------------- | ---------------------------------------------------------------------------------- |
+| id            | <code>string</code>            |               | id                                                                                 |
+| [cancelToken] | <code>axios.CancelToken</code> | <code></code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
 
 **Example**
 
 ```js
-const members = await api.Conferences.getMembers({id: "conferenceId"});
+const members = await api.Conferences.getMembers("conferenceId");
 ```
 
 <a name="Conferences+addMember"></a>
 
-### conferences.addMember(options, [cancelToken]) ⇒ <code>Promise</code>
+### conferences.addMember(id, options, [cancelToken]) ⇒ <code>Promise</code>
 
 Add members to a conference.
 
@@ -1410,46 +1397,45 @@ Add members to a conference.
 
 | Param                 | Type                           | Description                                                                                                                                        |
 | --------------------- | ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| id                    | <code>string</code>            | id                                                                                                                                                 |
 | options               | <code>object</code>            | Options                                                                                                                                            |
 | options.callId        | <code>string</code>            | The callId must refer to an active call that was created using this conferenceId.                                                                  |
 | [options.joinTone]    | <code>boolean</code>           | If true, will play a tone when the member joins the conference. If false, no tone is played when the member joins the conference.                  |
 | [options.leavingTone] | <code>boolean</code>           | If true, will play a tone when the member leaves the conference. If false, no tone is played when the member leaves the conference.                |
 | [options.mute]        | <code>boolean</code>           | If true, member can’t speak in the conference. If false, this members can speak in the conference (unless set at the conference level).            |
 | [options.hold]        | <code>boolean</code>           | If true, member can’t hear or speak in the conference. If false, member can hear and speak in the conference (unless set at the conference level). |
-| [options.id]          | <code>string</code>            | id                                                                                                                                                 |
 | [cancelToken]         | <code>axios.CancelToken</code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation)                                                                 |
 
 **Example**
 
 ```js
-const memberId = await api.Conferences.addMember({id: "conferenceId", callId: "callId"});
+const memberId = await api.Conferences.addMember("conferenceId", {callId: "callId"});
 ```
 
 <a name="Conferences+getMember"></a>
 
-### conferences.getMember(options, [cancelToken]) ⇒ <code>Promise</code>
+### conferences.getMember(id, memberId, [cancelToken]) ⇒ <code>Promise</code>
 
 Retrieve a conference member properties.
 
 **Kind**: instance method of [<code>Conferences</code>](#Conferences)  
 **Returns**: <code>Promise</code> - information about conference
 
-| Param              | Type                           | Description                                                                        |
-| ------------------ | ------------------------------ | ---------------------------------------------------------------------------------- |
-| options            | <code>object</code>            | Options                                                                            |
-| [options.id]       | <code>string</code>            | id                                                                                 |
-| [options.memberId] | <code>string</code>            | memberId                                                                           |
-| [cancelToken]      | <code>axios.CancelToken</code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
+| Param         | Type                           | Default       | Description                                                                        |
+| ------------- | ------------------------------ | ------------- | ---------------------------------------------------------------------------------- |
+| id            | <code>string</code>            |               | id                                                                                 |
+| memberId      | <code>string</code>            |               | memberId                                                                           |
+| [cancelToken] | <code>axios.CancelToken</code> | <code></code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
 
 **Example**
 
 ```js
-const member = await api.Conferences.getMember({id: "conferenceId", memberId: "memberId"});
+const member = await api.Conferences.getMember("conferenceId", "memberId");
 ```
 
 <a name="Conferences+updateMember"></a>
 
-### conferences.updateMember(options, [cancelToken]) ⇒ <code>Promise</code>
+### conferences.updateMember(id, memberId, [options], [cancelToken]) ⇒ <code>Promise</code>
 
 Update a member status/properties.
 
@@ -1458,25 +1444,25 @@ Update a member status/properties.
 
 | Param                 | Type                           | Description                                                                                                                                        |
 | --------------------- | ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| options               | <code>object</code>            | Options                                                                                                                                            |
+| id                    | <code>string</code>            | id                                                                                                                                                 |
+| memberId              | <code>string</code>            | memberId                                                                                                                                           |
+| [options]             | <code>object</code>            | Options                                                                                                                                            |
 | [options.state]       | <code>string</code>            | If `completed`, member will be removed from the conference.                                                                                        |
 | [options.joinTone]    | <code>boolean</code>           | If true, will play a tone when the member joins the conference. If false, no tone is played when the member joins the conference.                  |
 | [options.leavingTone] | <code>boolean</code>           | If true, will play a tone when the member leaves the conference. If false, no tone is played when the member leaves the conference.                |
 | [options.mute]        | <code>boolean</code>           | If true, member can’t speak in the conference. If false, this members can speak in the conference (unless set at the conference level).            |
 | [options.hold]        | <code>boolean</code>           | If true, member can’t hear or speak in the conference. If false, member can hear and speak in the conference (unless set at the conference level). |
-| [options.id]          | <code>string</code>            | id                                                                                                                                                 |
-| [options.memberId]    | <code>string</code>            | memberId                                                                                                                                           |
 | [cancelToken]         | <code>axios.CancelToken</code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation)                                                                 |
 
 **Example**
 
 ```js
-await api.Conferences.updateMember({id: "conferenceId", memberId: "memberId", mute: true});
+await api.Conferences.updateMember("conferenceId", "memberId", {mute: true});
 ```
 
 <a name="Conferences+playAudioToMember"></a>
 
-### conferences.playAudioToMember(options, [cancelToken]) ⇒ <code>Promise</code>
+### conferences.playAudioToMember(id, memberId, [options], [cancelToken]) ⇒ <code>Promise</code>
 
 Speak text or play audio to only a single conference member
 
@@ -1485,21 +1471,21 @@ Speak text or play audio to only a single conference member
 
 | Param              | Type                           | Description                                                                                        |
 | ------------------ | ------------------------------ | -------------------------------------------------------------------------------------------------- |
-| options            | <code>object</code>            | Options                                                                                            |
+| id                 | <code>string</code>            | id                                                                                                 |
+| memberId           | <code>string</code>            | memberId                                                                                           |
+| [options]          | <code>object</code>            | Options                                                                                            |
 | [options.fileUrl]  | <code>string</code>            | The location of an audio file to play (WAV and MP3 supported).                                     |
 | [options.sentence] | <code>string</code>            | The sentence to speak.                                                                             |
 | [options.gender]   | <code>string</code>            | The gender of the voice used to synthesize the sentence.                                           |
 | [options.locale]   | <code>string</code>            | The sentence to speak.                                                                             |
 | [options.voice]    | <code>string</code>            | The voice to speak the sentence                                                                    |
 | [options.tag]      | <code>string</code>            | A string that will be included in the events delivered when the audio playback starts or finishes. |
-| [options.id]       | <code>string</code>            | id                                                                                                 |
-| [options.memberId] | <code>string</code>            | memberId                                                                                           |
 | [cancelToken]      | <code>axios.CancelToken</code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation)                 |
 
 **Example**
 
 ```js
-await api.Conferences.playAudioToMember({id: "conferenceId", memberId: "memberId", fileUrl: "url"});
+await api.Conferences.playAudioToMember("conferenceId", "memberId", {fileUrl: "url"});
 ```
 
 <a name="Conferences+stop"></a>
@@ -1709,12 +1695,12 @@ A domain is a way to logically group endpoints.
 * [Domains](#Domains)
   * [.list([options], [cancelToken])](#Domains+list) ⇒ <code>Promise</code>
   * [.create(options, [cancelToken])](#Domains+create) ⇒ <code>Promise</code>
-  * [.delete(options, [cancelToken])](#Domains+delete) ⇒ <code>Promise</code>
-  * [.getEndpoints(options, [cancelToken])](#Domains+getEndpoints) ⇒ <code>Promise</code>
-  * [.createEndpoint(options, [cancelToken])](#Domains+createEndpoint) ⇒ <code>Promise</code>
-  * [.getEndpoint(options, [cancelToken])](#Domains+getEndpoint) ⇒ <code>Promise</code>
-  * [.updateEndpoint(options, [cancelToken])](#Domains+updateEndpoint) ⇒ <code>Promise</code>
-  * [.deleteEndpoint(options, [cancelToken])](#Domains+deleteEndpoint) ⇒ <code>Promise</code>
+  * [.delete(id, [cancelToken])](#Domains+delete) ⇒ <code>Promise</code>
+  * [.getEndpoints(id, [options], [cancelToken])](#Domains+getEndpoints) ⇒ <code>Promise</code>
+  * [.createEndpoint(id, options, [cancelToken])](#Domains+createEndpoint) ⇒ <code>Promise</code>
+  * [.getEndpoint(id, endpointId, [cancelToken])](#Domains+getEndpoint) ⇒ <code>Promise</code>
+  * [.updateEndpoint(id, endpointId, [options], [cancelToken])](#Domains+updateEndpoint) ⇒ <code>Promise</code>
+  * [.deleteEndpoint(id, endpointId, [cancelToken])](#Domains+deleteEndpoint) ⇒ <code>Promise</code>
 
 <a name="Domains+list"></a>
 
@@ -1762,28 +1748,27 @@ const domainId = await api.Domains.create({name: "domain1"});
 
 <a name="Domains+delete"></a>
 
-### domains.delete(options, [cancelToken]) ⇒ <code>Promise</code>
+### domains.delete(id, [cancelToken]) ⇒ <code>Promise</code>
 
 This will delete a domain
 
 **Kind**: instance method of [<code>Domains</code>](#Domains)  
 **Returns**: <code>Promise</code> - Done
 
-| Param         | Type                           | Description                                                                        |
-| ------------- | ------------------------------ | ---------------------------------------------------------------------------------- |
-| options       | <code>object</code>            | Options                                                                            |
-| [options.id]  | <code>string</code>            | id                                                                                 |
-| [cancelToken] | <code>axios.CancelToken</code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
+| Param         | Type                           | Default       | Description                                                                        |
+| ------------- | ------------------------------ | ------------- | ---------------------------------------------------------------------------------- |
+| id            | <code>string</code>            |               | id                                                                                 |
+| [cancelToken] | <code>axios.CancelToken</code> | <code></code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
 
 **Example**
 
 ```js
-await api.Domains.delete({id: "domainId"});
+await api.Domains.delete("domainId");
 ```
 
 <a name="Domains+getEndpoints"></a>
 
-### domains.getEndpoints(options, [cancelToken]) ⇒ <code>Promise</code>
+### domains.getEndpoints(id, [options], [cancelToken]) ⇒ <code>Promise</code>
 
 This returns a list of all endpoints associated with a domain.
 
@@ -1792,21 +1777,21 @@ This returns a list of all endpoints associated with a domain.
 
 | Param          | Type                           | Description                                                                                       |
 | -------------- | ------------------------------ | ------------------------------------------------------------------------------------------------- |
-| options        | <code>object</code>            | Options                                                                                           |
+| id             | <code>string</code>            | id                                                                                                |
+| [options]      | <code>object</code>            | Options                                                                                           |
 | [options.page] | <code>number</code>            | Used for pagination to indicate the page requested for querying a list of endpoints.              |
 | [options.size] | <code>number</code>            | Used for pagination to indicate the size of each page requested for querying a list of endpoints. |
-| [options.id]   | <code>string</code>            | id                                                                                                |
 | [cancelToken]  | <code>axios.CancelToken</code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation)                |
 
 **Example**
 
 ```js
-for await(const endpoint of await api.Domains.getEndpoints({id: "domainId"})){}
+for await(const endpoint of await api.Domains.getEndpoints("domainId")){}
 ```
 
 <a name="Domains+createEndpoint"></a>
 
-### domains.createEndpoint(options, [cancelToken]) ⇒ <code>Promise</code>
+### domains.createEndpoint(id, options, [cancelToken]) ⇒ <code>Promise</code>
 
 This creates an endpoint.
 
@@ -1815,46 +1800,45 @@ This creates an endpoint.
 
 | Param                          | Type                           | Description                                                                                                                                                                                  |
 | ------------------------------ | ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| id                             | <code>string</code>            | id                                                                                                                                                                                           |
 | options                        | <code>object</code>            | Options                                                                                                                                                                                      |
 | options.name                   | <code>string</code>            | The endpoint’s name, which SIP clients use as the address of record                                                                                                                          |
 | [options.description]          | <code>string</code>            | String to describe endpoint                                                                                                                                                                  |
 | [options.applicationId]        | <code>string</code>            | The id of the application associated with this endpoint. Application_id is used to determine the callback URL to be used when a client associated with the endpoint attempts to make a call. |
 | [options.enabled]              | <code>boolean</code>           | When set to true, SIP clients can register as this device to receive and make calls. When set to false, registration, inbound, and outbound calling will not succeed.                        |
 | [options.credentials.password] | <code>string</code>            | Password                                                                                                                                                                                     |
-| [options.id]                   | <code>string</code>            | id                                                                                                                                                                                           |
 | [cancelToken]                  | <code>axios.CancelToken</code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation)                                                                                                           |
 
 **Example**
 
 ```js
-const enpointId = await api.Domains.createEndpoint({id: "domainId", name: "user1", applicationId: "appId", credentials: {password: "1234567890"}});
+const enpointId = await api.Domains.createEndpoint("domainId", {name: "user1", applicationId: "appId", credentials: {password: "1234567890"}});
 ```
 
 <a name="Domains+getEndpoint"></a>
 
-### domains.getEndpoint(options, [cancelToken]) ⇒ <code>Promise</code>
+### domains.getEndpoint(id, endpointId, [cancelToken]) ⇒ <code>Promise</code>
 
 This returns a single endpoint.
 
 **Kind**: instance method of [<code>Domains</code>](#Domains)  
 **Returns**: <code>Promise</code> - Endpoint data
 
-| Param                | Type                           | Description                                                                        |
-| -------------------- | ------------------------------ | ---------------------------------------------------------------------------------- |
-| options              | <code>object</code>            | Options                                                                            |
-| [options.id]         | <code>string</code>            | id                                                                                 |
-| [options.endpointId] | <code>string</code>            | endpointId                                                                         |
-| [cancelToken]        | <code>axios.CancelToken</code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
+| Param         | Type                           | Default       | Description                                                                        |
+| ------------- | ------------------------------ | ------------- | ---------------------------------------------------------------------------------- |
+| id            | <code>string</code>            |               | id                                                                                 |
+| endpointId    | <code>string</code>            |               | endpointId                                                                         |
+| [cancelToken] | <code>axios.CancelToken</code> | <code></code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
 
 **Example**
 
 ```js
-const endpoint = await api.Domains.getEndpoint({id: "domainId", endpointId: "enpointId"});
+const endpoint = await api.Domains.getEndpoint("domainId", "enpointId");
 ```
 
 <a name="Domains+updateEndpoint"></a>
 
-### domains.updateEndpoint(options, [cancelToken]) ⇒ <code>Promise</code>
+### domains.updateEndpoint(id, endpointId, [options], [cancelToken]) ⇒ <code>Promise</code>
 
 This will update an endpoint.
 
@@ -1863,41 +1847,40 @@ This will update an endpoint.
 
 | Param                          | Type                           | Description                                                                                                                                                                                  |
 | ------------------------------ | ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| options                        | <code>object</code>            | Options                                                                                                                                                                                      |
+| id                             | <code>string</code>            | id                                                                                                                                                                                           |
+| endpointId                     | <code>string</code>            | endpointId                                                                                                                                                                                   |
+| [options]                      | <code>object</code>            | Options                                                                                                                                                                                      |
 | [options.description]          | <code>string</code>            | String to describe endpoint                                                                                                                                                                  |
 | [options.applicationId]        | <code>string</code>            | The id of the application associated with this endpoint. Application_id is used to determine the callback URL to be used when a client associated with the endpoint attempts to make a call. |
 | [options.enabled]              | <code>boolean</code>           | When set to true, SIP clients can register as this device to receive and make calls. When set to false, registration, inbound, and outbound calling will not succeed.                        |
 | [options.credentials.password] | <code>string</code>            | Password                                                                                                                                                                                     |
-| [options.id]                   | <code>string</code>            | id                                                                                                                                                                                           |
-| [options.endpointId]           | <code>string</code>            | endpointId                                                                                                                                                                                   |
 | [cancelToken]                  | <code>axios.CancelToken</code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation)                                                                                                           |
 
 **Example**
 
 ```js
-await api.Domains.updateEndpoint({id: "domainId", endpointId: "enpointId", enabled: false});
+await api.Domains.updateEndpoint("domainId", "enpointId", {enabled: false});
 ```
 
 <a name="Domains+deleteEndpoint"></a>
 
-### domains.deleteEndpoint(options, [cancelToken]) ⇒ <code>Promise</code>
+### domains.deleteEndpoint(id, endpointId, [cancelToken]) ⇒ <code>Promise</code>
 
 Remove endpoint from domain.
 
 **Kind**: instance method of [<code>Domains</code>](#Domains)  
 **Returns**: <code>Promise</code> - Done
 
-| Param                | Type                           | Description                                                                        |
-| -------------------- | ------------------------------ | ---------------------------------------------------------------------------------- |
-| options              | <code>object</code>            | Options                                                                            |
-| [options.id]         | <code>string</code>            | id                                                                                 |
-| [options.endpointId] | <code>string</code>            | endpointId                                                                         |
-| [cancelToken]        | <code>axios.CancelToken</code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
+| Param         | Type                           | Default       | Description                                                                        |
+| ------------- | ------------------------------ | ------------- | ---------------------------------------------------------------------------------- |
+| id            | <code>string</code>            |               | id                                                                                 |
+| endpointId    | <code>string</code>            |               | endpointId                                                                         |
+| [cancelToken] | <code>axios.CancelToken</code> | <code></code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
 
 **Example**
 
 ```js
-await api.Domains.deleteEndpoint({id: "domainId", endpointId: "enpointId"});
+await api.Domains.deleteEndpoint("domainId", "enpointId");
 ```
 
 <a name="Errors"></a>
@@ -1910,7 +1893,7 @@ The Errors resource lets you see information about errors that happened in your 
 
 * [Errors](#Errors)
   * [.list([options], [cancelToken])](#Errors+list) ⇒ <code>Promise</code>
-  * [.get(options, [cancelToken])](#Errors+get) ⇒ <code>Promise</code>
+  * [.get(id, [cancelToken])](#Errors+get) ⇒ <code>Promise</code>
 
 <a name="Errors+list"></a>
 
@@ -1936,23 +1919,22 @@ for await(const error of await api.Errors.list()) {}
 
 <a name="Errors+get"></a>
 
-### errors.get(options, [cancelToken]) ⇒ <code>Promise</code>
+### errors.get(id, [cancelToken]) ⇒ <code>Promise</code>
 
 Gets information about one error.
 
 **Kind**: instance method of [<code>Errors</code>](#Errors)  
 **Returns**: <code>Promise</code> - Error information
 
-| Param         | Type                           | Description                                                                        |
-| ------------- | ------------------------------ | ---------------------------------------------------------------------------------- |
-| options       | <code>object</code>            | Options                                                                            |
-| [options.id]  | <code>string</code>            | id                                                                                 |
-| [cancelToken] | <code>axios.CancelToken</code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
+| Param         | Type                           | Default       | Description                                                                        |
+| ------------- | ------------------------------ | ------------- | ---------------------------------------------------------------------------------- |
+| id            | <code>string</code>            |               | id                                                                                 |
+| [cancelToken] | <code>axios.CancelToken</code> | <code></code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
 
 **Example**
 
 ```js
-const error = await api.Errors.get({id: "errorId"});
+const error = await api.Errors.get("errorId");
 ```
 
 <a name="NumberInfo"></a>
@@ -1964,23 +1946,22 @@ This resource provides a CNAM number info.
 **Kind**: global class  
 <a name="NumberInfo+get"></a>
 
-### numberInfo.get(options, [cancelToken]) ⇒ <code>Promise</code>
+### numberInfo.get(number, [cancelToken]) ⇒ <code>Promise</code>
 
 Gets CNAM number info.
 
 **Kind**: instance method of [<code>NumberInfo</code>](#NumberInfo)  
 **Returns**: <code>Promise</code> - Promise
 
-| Param            | Type                           | Description                                                                        |
-| ---------------- | ------------------------------ | ---------------------------------------------------------------------------------- |
-| options          | <code>object</code>            | Options                                                                            |
-| [options.number] | <code>string</code>            | number                                                                             |
-| [cancelToken]    | <code>axios.CancelToken</code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
+| Param         | Type                           | Default       | Description                                                                        |
+| ------------- | ------------------------------ | ------------- | ---------------------------------------------------------------------------------- |
+| number        | <code>string</code>            |               | number                                                                             |
+| [cancelToken] | <code>axios.CancelToken</code> | <code></code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
 
 **Example**
 
 ```js
-const numberInfo = await api.NumberInfo.get({number: "number"});
+const numberInfo = await api.NumberInfo.get("number");
 ```
 
 <a name="Messages"></a>
@@ -1994,7 +1975,7 @@ The Messages resource lets you send SMS/MMS messages and view messages that were
 * [Messages](#Messages)
   * [.list([options], [cancelToken])](#Messages+list) ⇒ <code>Promise</code>
   * [.send(options, [cancelToken])](#Messages+send) ⇒ <code>Promise</code>
-  * [.get(options, [cancelToken])](#Messages+get) ⇒ <code>Promise</code>
+  * [.get(id, [cancelToken])](#Messages+get) ⇒ <code>Promise</code>
 
 <a name="Messages+list"></a>
 
@@ -2058,23 +2039,22 @@ const messageId = await api.Messages.send({from: "from1", to: "to1", text: "text
 
 <a name="Messages+get"></a>
 
-### messages.get(options, [cancelToken]) ⇒ <code>Promise</code>
+### messages.get(id, [cancelToken]) ⇒ <code>Promise</code>
 
 Gets information about a previously sent or received message
 
 **Kind**: instance method of [<code>Messages</code>](#Messages)  
 **Returns**: <code>Promise</code> - Message's data
 
-| Param         | Type                           | Description                                                                        |
-| ------------- | ------------------------------ | ---------------------------------------------------------------------------------- |
-| options       | <code>object</code>            | Options                                                                            |
-| [options.id]  | <code>string</code>            | id                                                                                 |
-| [cancelToken] | <code>axios.CancelToken</code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
+| Param         | Type                           | Default       | Description                                                                        |
+| ------------- | ------------------------------ | ------------- | ---------------------------------------------------------------------------------- |
+| id            | <code>string</code>            |               | id                                                                                 |
+| [cancelToken] | <code>axios.CancelToken</code> | <code></code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
 
 **Example**
 
 ```js
-const message = await api.Messages.get({id: "messageId"});
+const message = await api.Messages.get("messageId");
 ```
 
 <a name="MessagesV2"></a>
@@ -2121,9 +2101,9 @@ The Phone Numbers resource lets you get phone numbers for use with your programs
 * [PhoneNumbers](#PhoneNumbers)
   * [.list([options], [cancelToken])](#PhoneNumbers+list) ⇒ <code>Promise</code>
   * [.create(options, [cancelToken])](#PhoneNumbers+create) ⇒ <code>Promise</code>
-  * [.get(options, [cancelToken])](#PhoneNumbers+get) ⇒ <code>Promise</code>
-  * [.update(options, [cancelToken])](#PhoneNumbers+update) ⇒ <code>Promise</code>
-  * [.remove(options, [cancelToken])](#PhoneNumbers+remove) ⇒ <code>Promise</code>
+  * [.get(id, [cancelToken])](#PhoneNumbers+get) ⇒ <code>Promise</code>
+  * [.update(id, [options], [cancelToken])](#PhoneNumbers+update) ⇒ <code>Promise</code>
+  * [.remove(id, [cancelToken])](#PhoneNumbers+remove) ⇒ <code>Promise</code>
 
 <a name="PhoneNumbers+list"></a>
 
@@ -2178,28 +2158,27 @@ const id = await api.PhoneNumbers.create({number: "+12345678900"});
 
 <a name="PhoneNumbers+get"></a>
 
-### phoneNumbers.get(options, [cancelToken]) ⇒ <code>Promise</code>
+### phoneNumbers.get(id, [cancelToken]) ⇒ <code>Promise</code>
 
 Gets information about one of your numbers using the number's ID or E.164 number string, like "+19195551212"
 
 **Kind**: instance method of [<code>PhoneNumbers</code>](#PhoneNumbers)  
 **Returns**: <code>Promise</code> - Number information
 
-| Param         | Type                           | Description                                                                        |
-| ------------- | ------------------------------ | ---------------------------------------------------------------------------------- |
-| options       | <code>object</code>            | Options                                                                            |
-| [options.id]  | <code>string</code>            | id                                                                                 |
-| [cancelToken] | <code>axios.CancelToken</code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
+| Param         | Type                           | Default       | Description                                                                        |
+| ------------- | ------------------------------ | ------------- | ---------------------------------------------------------------------------------- |
+| id            | <code>string</code>            |               | id                                                                                 |
+| [cancelToken] | <code>axios.CancelToken</code> | <code></code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
 
 **Example**
 
 ```js
-const phoneNumber = await api.PhoneNumbers.get({id: "numberId"});
+const phoneNumber = await api.PhoneNumbers.get("numberId");
 ```
 
 <a name="PhoneNumbers+update"></a>
 
-### phoneNumbers.update(options, [cancelToken]) ⇒ <code>Promise</code>
+### phoneNumbers.update(id, [options], [cancelToken]) ⇒ <code>Promise</code>
 
 Makes changes to a number user has.
 
@@ -2208,38 +2187,37 @@ Makes changes to a number user has.
 
 | Param                    | Type                           | Description                                                                               |
 | ------------------------ | ------------------------------ | ----------------------------------------------------------------------------------------- |
-| options                  | <code>object</code>            | Options                                                                                   |
+| id                       | <code>string</code>            | id                                                                                        |
+| [options]                | <code>object</code>            | Options                                                                                   |
 | [options.name]           | <code>string</code>            | A name you choose for this number.                                                        |
 | [options.applicationId]  | <code>string</code>            | The unique id of an Application you want to associate with this number.                   |
 | [options.fallbackNumber] | <code>string</code>            | Number to transfer an incoming call when the callback/fallback events can’t be delivered. |
-| [options.id]             | <code>string</code>            | id                                                                                        |
 | [cancelToken]            | <code>axios.CancelToken</code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation)        |
 
 **Example**
 
 ```js
-await api.PhoneNumbers.update({id: "numberId", applicationId: "appId"});
+await api.PhoneNumbers.update("numberId", {applicationId: "appId"});
 ```
 
 <a name="PhoneNumbers+remove"></a>
 
-### phoneNumbers.remove(options, [cancelToken]) ⇒ <code>Promise</code>
+### phoneNumbers.remove(id, [cancelToken]) ⇒ <code>Promise</code>
 
 Removes a number from your account so you can no longer make or receive calls, or send or receive messages with it.
 
 **Kind**: instance method of [<code>PhoneNumbers</code>](#PhoneNumbers)  
 **Returns**: <code>Promise</code> - Done
 
-| Param         | Type                           | Description                                                                        |
-| ------------- | ------------------------------ | ---------------------------------------------------------------------------------- |
-| options       | <code>object</code>            | Options                                                                            |
-| [options.id]  | <code>string</code>            | id                                                                                 |
-| [cancelToken] | <code>axios.CancelToken</code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
+| Param         | Type                           | Default       | Description                                                                        |
+| ------------- | ------------------------------ | ------------- | ---------------------------------------------------------------------------------- |
+| id            | <code>string</code>            |               | id                                                                                 |
+| [cancelToken] | <code>axios.CancelToken</code> | <code></code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
 
 **Example**
 
 ```js
-await api.PhoneNumbers.delete({id: "numberId"});
+await api.PhoneNumbers.delete("numberId");
 ```
 
 <a name="Recordings"></a>
@@ -2252,10 +2230,10 @@ Retrieve information about call recordings.
 
 * [Recordings](#Recordings)
   * [.list([options], [cancelToken])](#Recordings+list) ⇒ <code>Promise</code>
-  * [.get(options, [cancelToken])](#Recordings+get) ⇒ <code>Promise</code>
-  * [.getTranscriptions(options, [cancelToken])](#Recordings+getTranscriptions) ⇒ <code>Promise</code>
-  * [.createTranscription(options, [cancelToken])](#Recordings+createTranscription) ⇒ <code>Promise</code>
-  * [.getTranscription(options, [cancelToken])](#Recordings+getTranscription) ⇒ <code>Promise</code>
+  * [.get(id, [cancelToken])](#Recordings+get) ⇒ <code>Promise</code>
+  * [.getTranscriptions(id, [cancelToken])](#Recordings+getTranscriptions) ⇒ <code>Promise</code>
+  * [.createTranscription(id, [cancelToken])](#Recordings+createTranscription) ⇒ <code>Promise</code>
+  * [.getTranscription(id, transcriptionId, [cancelToken])](#Recordings+getTranscription) ⇒ <code>Promise</code>
 
 <a name="Recordings+list"></a>
 
@@ -2281,39 +2259,37 @@ for await(const recording of await api.Recordings.list()) {}
 
 <a name="Recordings+get"></a>
 
-### recordings.get(options, [cancelToken]) ⇒ <code>Promise</code>
+### recordings.get(id, [cancelToken]) ⇒ <code>Promise</code>
 
 Retrieve a specific call recording information
 
 **Kind**: instance method of [<code>Recordings</code>](#Recordings)  
 **Returns**: <code>Promise</code> - Recording information
 
-| Param         | Type                           | Description                                                                        |
-| ------------- | ------------------------------ | ---------------------------------------------------------------------------------- |
-| options       | <code>object</code>            | Options                                                                            |
-| [options.id]  | <code>string</code>            | id                                                                                 |
-| [cancelToken] | <code>axios.CancelToken</code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
+| Param         | Type                           | Default       | Description                                                                        |
+| ------------- | ------------------------------ | ------------- | ---------------------------------------------------------------------------------- |
+| id            | <code>string</code>            |               | id                                                                                 |
+| [cancelToken] | <code>axios.CancelToken</code> | <code></code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
 
 **Example**
 
 ```js
-const recording = await api.Recordings.get({id: "recordingId"});
+const recording = await api.Recordings.get("recordingId");
 ```
 
 <a name="Recordings+getTranscriptions"></a>
 
-### recordings.getTranscriptions(options, [cancelToken]) ⇒ <code>Promise</code>
+### recordings.getTranscriptions(id, [cancelToken]) ⇒ <code>Promise</code>
 
 Get all the transcriptions that were made for the given recoding
 
 **Kind**: instance method of [<code>Recordings</code>](#Recordings)  
 **Returns**: <code>Promise</code> - List of transcriptions
 
-| Param         | Type                           | Description                                                                        |
-| ------------- | ------------------------------ | ---------------------------------------------------------------------------------- |
-| options       | <code>object</code>            | Options                                                                            |
-| [options.id]  | <code>string</code>            | id                                                                                 |
-| [cancelToken] | <code>axios.CancelToken</code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
+| Param         | Type                           | Default       | Description                                                                        |
+| ------------- | ------------------------------ | ------------- | ---------------------------------------------------------------------------------- |
+| id            | <code>string</code>            |               | id                                                                                 |
+| [cancelToken] | <code>axios.CancelToken</code> | <code></code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
 
 **Example**
 
@@ -2323,45 +2299,43 @@ const list = await api.Recordings.getTranscriptions();
 
 <a name="Recordings+createTranscription"></a>
 
-### recordings.createTranscription(options, [cancelToken]) ⇒ <code>Promise</code>
+### recordings.createTranscription(id, [cancelToken]) ⇒ <code>Promise</code>
 
 Request the transcription process to be started for the given recording id.
 
 **Kind**: instance method of [<code>Recordings</code>](#Recordings)  
 **Returns**: <code>Promise</code> - Id of created instance
 
-| Param         | Type                           | Description                                                                        |
-| ------------- | ------------------------------ | ---------------------------------------------------------------------------------- |
-| options       | <code>object</code>            | Options                                                                            |
-| [options.id]  | <code>string</code>            | id                                                                                 |
-| [cancelToken] | <code>axios.CancelToken</code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
+| Param         | Type                           | Default       | Description                                                                        |
+| ------------- | ------------------------------ | ------------- | ---------------------------------------------------------------------------------- |
+| id            | <code>string</code>            |               | id                                                                                 |
+| [cancelToken] | <code>axios.CancelToken</code> | <code></code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
 
 **Example**
 
 ```js
-const transcriptionId = await api.Recordings.createTranscription({id: "recordingId"});
+const transcriptionId = await api.Recordings.createTranscription("recordingId");
 ```
 
 <a name="Recordings+getTranscription"></a>
 
-### recordings.getTranscription(options, [cancelToken]) ⇒ <code>Promise</code>
+### recordings.getTranscription(id, transcriptionId, [cancelToken]) ⇒ <code>Promise</code>
 
 Get information about the transcription, regardless its state.
 
 **Kind**: instance method of [<code>Recordings</code>](#Recordings)  
 **Returns**: <code>Promise</code> - Done
 
-| Param                     | Type                           | Description                                                                        |
-| ------------------------- | ------------------------------ | ---------------------------------------------------------------------------------- |
-| options                   | <code>object</code>            | Options                                                                            |
-| [options.id]              | <code>string</code>            | id                                                                                 |
-| [options.transcriptionId] | <code>string</code>            | transcriptionId                                                                    |
-| [cancelToken]             | <code>axios.CancelToken</code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
+| Param           | Type                           | Default       | Description                                                                        |
+| --------------- | ------------------------------ | ------------- | ---------------------------------------------------------------------------------- |
+| id              | <code>string</code>            |               | id                                                                                 |
+| transcriptionId | <code>string</code>            |               | transcriptionId                                                                    |
+| [cancelToken]   | <code>axios.CancelToken</code> | <code></code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
 
 **Example**
 
 ```js
-const transcription = await api.Recordings.get({id: "recordingId", transcriptionId: "transcriptionId"});
+const transcription = await api.Recordings.get("recordingId", "transcriptionId");
 ```
 
 <a name="BandwidthApi"></a>
