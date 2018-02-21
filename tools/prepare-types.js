@@ -84,17 +84,6 @@ function printApiName(name, data) {
 	return `\t/** ${data._description || `${name} API`} */\n\t${name}: ${name}`;
 }
 
-function extractParamsFromPath(path) {
-	const params = {};
-	(path.match(/\{\w+\}/gi) || [])
-		.map(p => p.substr(1, p.length - 2))
-		.filter(p => p !== 'userId')
-		.forEach(p => {
-			params[p] = {type: 'string'};
-		});
-	return params;
-}
-
 function getOutputTypes(prefix, data, {properties}) {
 	const outputTypes = [];
 	data._responses.filter(r => r.schema).forEach(r => {
@@ -143,7 +132,6 @@ function getOutputTypes(prefix, data, {properties}) {
 }
 
 function printApiMethod(apiName, name, data) {
-	const paramsFromPath = extractParamsFromPath(data.path);
 	const anyOf = data.body.anyOf;
 	if (anyOf) {
 		data.body = data.body.anyOf[0];
@@ -153,8 +141,7 @@ function printApiMethod(apiName, name, data) {
 		properties: Object.assign(
 			{},
 			(data.query || {}).properties,
-			(data.body || {}).properties,
-			paramsFromPath
+			(data.body || {}).properties
 		)
 	};
 	name = _.camelCase(name);
@@ -164,9 +151,7 @@ function printApiMethod(apiName, name, data) {
 	}
 	const typeName = `${_.upperFirst(apiName)}${_.upperFirst(name)}Options`;
 	const hasParams = Object.keys(params.properties).length > 0;
-	const optional =
-		(data.body.required || []).length === 0 &&
-		Object.keys(paramsFromPath).length === 0;
+	const optional = (data.body.required || []).length === 0;
 	const binaryResponse =
 		data._responses.filter(r => {
 			const schema = r.schema || {};
@@ -177,16 +162,18 @@ function printApiMethod(apiName, name, data) {
 			type: `'arraybuffer' | 'blob' | 'document' | 'json' | 'text' | 'stream'`
 		};
 	}
-	let paramsDesclaration = '';
+	let paramsDeclaration = `${(data.pathParams || [])
+		.map(p => `${p}: string, `)
+		.join('')}`;
 	if (hasParams) {
 		types.push({type: typeName, schema: params});
-		paramsDesclaration = `options${optional ? '?' : ''}: ${typeName}${
+		paramsDeclaration += `options${optional ? '?' : ''}: ${typeName}${
 			anyOf ? ` | ${typeName}[]` : ''
 		}, `;
 	}
 	return `\t/** ${
 		data._description
-	} */\n\t${name}(${paramsDesclaration}cancelToken?: CancelToken): Promise<${getOutputTypes(
+	} */\n\t${name}(${paramsDeclaration}cancelToken?: CancelToken): Promise<${getOutputTypes(
 		`${_.upperFirst(apiName)}${_.upperFirst(name)}`,
 		data,
 		params
@@ -288,7 +275,6 @@ export interface PlayAudioOptions {
 	voice: string;
 	/** Additional data for callback */
 	tag: string;
-	id?: string;
 }
 
 export interface SpeakSententenceOptions {

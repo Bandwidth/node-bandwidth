@@ -68,7 +68,9 @@ function getParamsComments(prefix, data, required) {
 function getFunctionComments(name, data, params, optionalParams) {
 	const cancelToken =
 		'@param {axios.CancelToken} [cancelToken] Optional cancel token (read more here https://github.com/axios/axios#cancellation)';
-	let list = ['@description', data._description, ''];
+	let list = ['@description', data._description, ''].concat(
+		(data.pathParams || []).map(p => `@param {string} ${p} ${p}`)
+	);
 	if (Object.keys(params.properties).length > 0) {
 		list = list.concat(
 			[`@param {object} ${optionalParams ? '[options]' : 'options'} Options`],
@@ -83,19 +85,7 @@ function getFunctionComments(name, data, params, optionalParams) {
 	);
 }
 
-function extractParamsFromPath(path) {
-	const params = {};
-	(path.match(/\{\w+\}/gi) || [])
-		.map(p => p.substr(1, p.length - 2))
-		.filter(p => p !== 'userId')
-		.forEach(p => {
-			params[p] = {type: 'string'};
-		});
-	return params;
-}
-
 function printApiMethod(apiName, name, data) {
-	const paramsFromPath = extractParamsFromPath(data.path);
 	const anyOf = data.body.anyOf;
 	if (anyOf) {
 		data.body = data.body.anyOf[0];
@@ -106,8 +96,7 @@ function printApiMethod(apiName, name, data) {
 		properties: Object.assign(
 			{},
 			(data.query || {}).properties,
-			(data.body || {}).properties,
-			paramsFromPath
+			(data.body || {}).properties
 		)
 	};
 	name = _.camelCase(name);
@@ -115,9 +104,7 @@ function printApiMethod(apiName, name, data) {
 		params.properties.content = {type: 'any'};
 		params.properties.contentType = {type: 'string'};
 	}
-	const optional =
-		(data.body.required || []).length === 0 &&
-		Object.keys(paramsFromPath).length === 0;
+	const optional = (data.body.required || []).length === 0;
 	const binaryResponse =
 		data._responses.filter(r => {
 			const schema = r.schema || {};
@@ -132,7 +119,7 @@ function printApiMethod(apiName, name, data) {
 ${getFunctionComments(name, data, params, optional)
 		.map(l => `\t* ${l}`)
 		.join('\n')}
-\t*/\n\t${name}(${
+\t*/\n\t${name}(${(data.pathParams || []).map(p => `${p}, `).join('')}${
 		Object.keys(params.properties).length > 0 ? 'options, ' : ''
 	}cancelToken = null){}`;
 }

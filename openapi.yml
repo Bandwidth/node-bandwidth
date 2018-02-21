@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   description: Bandwidth API specification
-  version: '3.0.0-alpha.1'
+  version: '3.0.0-alpha'
   title: Bandwidth API
   contact:
     email: openapi@bandwidth.com
@@ -167,7 +167,7 @@ paths:
       summary: Gets information about one of your applications.
       operationId: get
       description: Gets information about one of your applications. No query parameters are supported.
-      x-js-example: 'const app = await api.Application.get({id: "appId"});'
+      x-js-example: 'const app = await api.Application.get("appId");'
       responses:
         '200':
           description: Application's data
@@ -183,7 +183,7 @@ paths:
       description: Makes changes to an application. 
       requestBody:
         $ref: '#/components/requestBodies/UpdateApplicationData'
-      x-js-example: 'await api.Application.update({id: "appId", name: "newName"});'
+      x-js-example: 'await api.Application.update("appId", {name: "newName"});'
       responses:
         '200':
           $ref: '#/components/responses/Empty'
@@ -193,7 +193,7 @@ paths:
       summary: Permanently deletes an application.
       operationId: delete
       description: Permanently deletes an application.
-      x-js-example: 'await api.Application.delete({id: "appId"});'
+      x-js-example: 'await api.Application.delete("appId");'
       responses:
         '200':
           $ref: '#/components/responses/Empty'  
@@ -221,7 +221,7 @@ paths:
       summary: Downloads a media file you previously uploaded. 
       operationId: download
       description: Downloads a media file you previously uploaded.
-      x-js-example: 'const result = await api.Media.download({mediaName: "image.jpg"});'
+      x-js-example: 'const result = await api.Media.download("image.jpg");'
       responses:
         '200':
           description: Content of file
@@ -247,7 +247,7 @@ paths:
           description: The media type of the entity-body.
           schema:
             type: string
-      x-js-example: 'await api.Media.upload({mediaName: "file.jpg", content: bufferOrStream, contentType: "image/jpeg"});'
+      x-js-example: 'await api.Media.upload("file.jpg", {content: bufferOrStream, contentType: "image/jpeg"});'
       responses:
         '200':
           description: Success
@@ -257,7 +257,7 @@ paths:
       summary: Deletes a media file from Bandwidth API server. 
       operationId: delete
       description: Deletes a media file from Bandwidth API server.
-      x-js-example: 'await api.Media.delete({mediaName: "file.jpg"});'
+      x-js-example: 'await api.Media.delete("file.jpg");'
       responses:
         '200':
           description: Success
@@ -485,7 +485,7 @@ paths:
       summary: Gets information about a specific bridge.
       operationId: get
       description: Gets information about a specific bridge.
-      x-js-example: 'const bridge = await api.Bridges.get({id: "bridgeId"});'
+      x-js-example: 'const bridge = await api.Bridges.get("bridgeId");'
       responses:
         '200':
           description: Bridge's data
@@ -501,7 +501,7 @@ paths:
       description: Change calls in a bridge and bridge/unbridge the audio.
       requestBody:
         $ref: '#/components/requestBodies/UpdateBridgeData'
-      x-js-example: 'await api.Bridges.update({id: "bridgeId", bridgeAudio: false});'
+      x-js-example: 'await api.Bridges.update("bridgeId", {bridgeAudio: false});'
       responses:
         '200':
           $ref: '#/components/responses/Empty'
@@ -514,7 +514,7 @@ paths:
       description: Play an audio file or speak a sentence in a bridge.
       requestBody:
         $ref: '#/components/requestBodies/PlayAudioData'
-      x-js-example: 'await api.Bridges.playAudio({id: "bridgeId", fileUrl: "url"});'
+      x-js-example: 'await api.Bridges.playAudio("bridgeId", {fileUrl: "url"});'
       responses:
         '200':
           $ref: '#/components/responses/Empty'
@@ -525,7 +525,7 @@ paths:
       summary: Get the list of calls that are on the bridge.
       operationId: getCalls
       description: Get the list of calls that are on the bridge.
-      x-js-example: 'const calls = await api.Bridges.getCalls();'
+      x-js-example: 'const calls = await api.Bridges.getCalls("id");'
       responses:
         '200':
           description: list of bridge's calls
@@ -616,7 +616,7 @@ paths:
       summary: Gets information about an active or completed call.
       operationId: get
       description: Gets information about an active or completed call.
-      x-js-example: 'const call = await api.Calls.get({id: "callId"});'
+      x-js-example: 'const call = await api.Calls.get("callId");'
       responses:
         '200':
           description: Call's data
@@ -632,7 +632,7 @@ paths:
       description: Update properties of an active phone call.
       requestBody:
         $ref: '#/components/requestBodies/UpdateCallData'
-      x-js-example: 'await api.Calls.update({id: "callId", state: "answer"});'
+      x-js-example: 'await api.Calls.update("callId", {state: "answer"});'
       responses:
         '200':
           $ref: '#/components/responses/Empty'
@@ -647,7 +647,7 @@ paths:
       description: Play an audio file or speak a sentence in a call.
       requestBody:
         $ref: '#/components/requestBodies/PlayAudioData'
-      x-js-example: 'await api.Calls.playAudio({id: "callId", fileUrl: "url"});'
+      x-js-example: 'await api.Calls.playAudio("callId", {fileUrl: "url"});'
       responses:
         '200':
           $ref: '#/components/responses/Empty'
@@ -660,7 +660,7 @@ paths:
       description: Send DTMF (phone keypad digit presses).
       requestBody:
         $ref: '#/components/requestBodies/DtmfData'
-      x-js-example: 'await api.Calls.sendDtmf({id: "callId", dtmfOut: "1"});'
+      x-js-example: 'await api.Calls.sendDtmf("callId", {dtmfOut: "1"});'
       responses:
         '200':
           $ref: '#/components/responses/Empty'
@@ -671,7 +671,7 @@ paths:
       summary: Gets the events that occurred during the call. 
       operationId: getEvents
       description: Gets the events that occurred during the call. 
-      x-js-example: 'const events = await api.Calls.getEvents({id: "callId"});'
+      x-js-example: 'const events = await api.Calls.getEvents("callId");'
       responses:
         '200':
           description: list of call's events
@@ -688,7 +688,7 @@ paths:
       summary: Gets information about one call event.  
       operationId: getEvent
       description: Gets information about one call event.  
-      x-js-example: 'const ev = await api.Calls.getEvent({id: "callId", eventId: "eventId"});'
+      x-js-example: 'const ev = await api.Calls.getEvent("callId", "eventId");'
       responses:
         '200':
           description: information about call event
@@ -703,7 +703,7 @@ paths:
       summary: Retrieve all recordings related to the call. 
       operationId: getRecordings
       description: Retrieve all recordings related to the call. 
-      x-js-example: 'const recordings = await api.Calls.getRecordings({id: "callId"});'
+      x-js-example: 'const recordings = await api.Calls.getRecordings("callId");'
       responses:
         '200':
           description: list of call's recordings
@@ -720,7 +720,7 @@ paths:
       summary: Retrieve all transcriptions related to the call. 
       operationId: getTranscriptions
       description: Retrieve all transcriptions related to the call. 
-      x-js-example: 'const transcriptions = await api.Calls.getTranscriptions({id: "callId"});'
+      x-js-example: 'const transcriptions = await api.Calls.getTranscriptions("callId");'
       responses:
         '200':
           description: list of call's transcriptions
@@ -739,7 +739,7 @@ paths:
       description: Collects a series of DTMF digits from a phone call with an optional prompt. This request returns immediately. When gather finishes, an event with the results will be posted to the callback URL. 
       requestBody:
         $ref: '#/components/requestBodies/CreateGatherData'
-      x-js-example: 'const gatherId = await api.Calls.createGather({id: "callId", maxDigits: 1});'
+      x-js-example: 'const gatherId = await api.Calls.createGather("callId", {maxDigits: 1});'
       responses:
         '201':
           $ref: '#/components/responses/Created' 
@@ -750,7 +750,7 @@ paths:
       summary: Get the gather DTMF parameters and results.
       operationId: getGather
       description: Get the gather DTMF parameters and results.
-      x-js-example: 'const gather = await api.Calls.getGather({id: "callId", gatherId: "gatherId"});'
+      x-js-example: 'const gather = await api.Calls.getGather("callId", "gatherId");'
       responses:
         '200':
           description: Gather information
@@ -766,7 +766,7 @@ paths:
       description: Update the gather. 
       requestBody:
         $ref: '#/components/requestBodies/UpdateGatherData'
-      x-js-example: 'await api.Calls.updateGather({id: "callId", gatherId: "gatherId", state: "completed"});'
+      x-js-example: 'await api.Calls.updateGather("callId", "gatherId", {state: "completed"});'
       responses:
         '200':
           description: Done
@@ -794,7 +794,7 @@ paths:
       summary: Gets information about a conference.
       operationId: get
       description: Retrieve current properties for a conference.
-      x-js-example: 'const conference = await api.Conferences.get({id: "conferenceId"});'
+      x-js-example: 'const conference = await api.Conferences.get("conferenceId");'
       responses:
         '200':
           description: Conference's data
@@ -810,7 +810,7 @@ paths:
       description: Change the conference properties and/or status.
       requestBody:
         $ref: '#/components/requestBodies/UpdateConferenceData'
-      x-js-example: 'await api.Conferences.update({id: "conferenceId", mute: true});'
+      x-js-example: 'await api.Conferences.update("conferenceId", {mute: true});'
       responses:
         '200':
           description: information about call event
@@ -827,7 +827,7 @@ paths:
       description: Play an audio file or speak a sentence in a conference.
       requestBody:
         $ref: '#/components/requestBodies/PlayAudioData'
-      x-js-example: 'await api.Conferences.playAudio({id: "conferenceId", fileUrl: "url"});'
+      x-js-example: 'await api.Conferences.playAudio("conferenceId", {fileUrl: "url"});'
       responses:
         '200':
           description: Done
@@ -842,7 +842,7 @@ paths:
       summary: Get information about a conference members.
       operationId: getMembers
       description: List all members from a conference. If a member had already hung up or removed from conference it will be displayed as completed.
-      x-js-example: 'const members = await api.Conferences.getMembers({id: "conferenceId"});'
+      x-js-example: 'const members = await api.Conferences.getMembers("conferenceId");'
       responses:
         '200':
           description: Conference members data
@@ -860,7 +860,7 @@ paths:
       description: Add members to a conference.
       requestBody:
         $ref: '#/components/requestBodies/CreateConferenceMemberData'
-      x-js-example: 'const memberId = await api.Conferences.addMember({id: "conferenceId", callId: "callId"});'
+      x-js-example: 'const memberId = await api.Conferences.addMember("conferenceId", {callId: "callId"});'
       responses:
         '201':
           $ref: '#/components/responses/Created'
@@ -871,7 +871,7 @@ paths:
       summary: Retrieve a conference member properties.
       operationId: getMember
       description: Retrieve a conference member properties.
-      x-js-example: 'const member = await api.Conferences.getMember({id: "conferenceId", memberId: "memberId"});'
+      x-js-example: 'const member = await api.Conferences.getMember("conferenceId", "memberId");'
       responses:
         '200':
           description: information about conference
@@ -887,7 +887,7 @@ paths:
       description: Update a member status/properties.
       requestBody:
         $ref: '#/components/requestBodies/UpdateConferenceMemberData'
-      x-js-example: 'await api.Conferences.updateMember({id: "conferenceId", memberId: "memberId", mute: true});'
+      x-js-example: 'await api.Conferences.updateMember("conferenceId", "memberId", {mute: true});'
       responses:
         '200':
           description: Done
@@ -904,7 +904,7 @@ paths:
       description: Speak text or play audio to ONLY a single conference member
       requestBody:
         $ref: '#/components/requestBodies/PlayAudioData'
-      x-js-example: 'await api.Conferences.playAudioToMember({id: "conferenceId", memberId: "memberId", fileUrl: "url"});'
+      x-js-example: 'await api.Conferences.playAudioToMember("conferenceId", "memberId", {fileUrl: "url"});'
       responses:
         '200':
           description: Done
@@ -964,7 +964,7 @@ paths:
       summary: This will delete a domain
       operationId: delete
       description: This will delete a domain
-      x-js-example: 'await api.Domains.delete({id: "domainId"});'
+      x-js-example: 'await api.Domains.delete("domainId");'
       responses:
         '200':
           description: Done
@@ -996,7 +996,7 @@ paths:
             format: int32
             default: 25
             maximum: 1000
-      x-js-example: 'for await(const endpoint of await api.Domains.getEndpoints({id: "domainId"})){}'
+      x-js-example: 'for await(const endpoint of await api.Domains.getEndpoints("domainId")){}'
       responses:
         '200':
           description: List of endpoints
@@ -1014,7 +1014,7 @@ paths:
       description: This creates an endpoint.
       requestBody:
         $ref: '#/components/requestBodies/CreateEndpointData'
-      x-js-example: 'const enpointId = await api.Domains.createEndpoint({id: "domainId", name: "user1", applicationId: "appId", credentials: {password: "1234567890"}});'
+      x-js-example: 'const enpointId = await api.Domains.createEndpoint("domainId", {name: "user1", applicationId: "appId", credentials: {password: "1234567890"}});'
       responses:
         '201':
           $ref: '#/components/responses/Created'
@@ -1025,7 +1025,7 @@ paths:
       summary: This returns a single endpoint.
       operationId: getEndpoint
       description: This returns a single endpoint.
-      x-js-example: 'const endpoint = await api.Domains.getEndpoint({id: "domainId", endpointId: "enpointId"});'
+      x-js-example: 'const endpoint = await api.Domains.getEndpoint("domainId", "enpointId");'
       responses:
         '200':
           description: Endpoint data
@@ -1041,7 +1041,7 @@ paths:
       description: This will update an endpoint.
       requestBody:
         $ref: '#/components/requestBodies/UpdateEndpointData'
-      x-js-example: 'await api.Domains.updateEndpoint({id: "domainId", endpointId: "enpointId", enabled: false});'
+      x-js-example: 'await api.Domains.updateEndpoint("domainId", "enpointId", {enabled: false});'
       responses:
         '200':
           description: Done
@@ -1055,7 +1055,7 @@ paths:
       summary: Remove endpoint from domain.
       operationId: deleteEndpoint
       description: Remove endpoint from domain.
-      x-js-example: 'await api.Domains.deleteEndpoint({id: "domainId", endpointId: "enpointId"});'
+      x-js-example: 'await api.Domains.deleteEndpoint("domainId", "enpointId");'
       responses:
         '200':
           description: Done
@@ -1103,7 +1103,7 @@ paths:
       summary: Gets information about one error.
       operationId: get
       description: Gets information about one error.
-      x-js-example: 'const error = await api.Errors.get({id: "errorId"});'
+      x-js-example: 'const error = await api.Errors.get("errorId");'
       responses:
         '200':
           description: Error information
@@ -1118,7 +1118,7 @@ paths:
       summary: Gets CNAM number info.
       operationId: get
       description: This resource provides a CNAM number info. CNAM is an acronym which stands for Caller ID Name. CNAM can be used to display the calling party's name alongside the phone number, to help users easily identify a caller. CNAM API allows the user to get the CNAM information of a particular number.
-      x-js-example: 'const numberInfo = await api.NumberInfo.get({number: "number"});'
+      x-js-example: 'const numberInfo = await api.NumberInfo.get("number");'
       responses:
         '200':
           $ref: '#/components/schemas/NumberInfo'
@@ -1235,7 +1235,7 @@ paths:
       summary: Gets information about a previously sent or received message
       operationId: get
       description: Gets information about a previously sent or received message
-      x-js-example: 'const message = await api.Messages.get({id: "messageId"});'
+      x-js-example: 'const message = await api.Messages.get("messageId");'
       responses:
         '200':
           description: Message's data
@@ -1334,7 +1334,7 @@ paths:
       summary: Gets information about one of your numbers using the number's ID or E.164 number string, like "+19195551212"
       operationId: get
       description: Gets information about one of your numbers using the number's ID or E.164 number string, like "+19195551212"
-      x-js-example: 'const phoneNumber = await api.PhoneNumbers.get({id: "numberId"});'    
+      x-js-example: 'const phoneNumber = await api.PhoneNumbers.get("numberId");'    
       responses:
         '200':
           description: Number information
@@ -1350,7 +1350,7 @@ paths:
       description: Makes changes to a number user has.
       requestBody:
         $ref: '#/components/requestBodies/UpdatePhoneNumberData'
-      x-js-example: 'await api.PhoneNumbers.update({id: "numberId", applicationId: "appId"});'    
+      x-js-example: 'await api.PhoneNumbers.update("numberId", {applicationId: "appId"});'    
       responses:
         '200':
           $ref: '#/components/responses/Empty'
@@ -1360,7 +1360,7 @@ paths:
       summary: Removes a number from your account so you can no longer make or receive calls, or send or receive messages with it. 
       operationId: remove
       description: Removes a number from your account so you can no longer make or receive calls, or send or receive messages with it. 
-      x-js-example: 'await api.PhoneNumbers.delete({id: "numberId"});'    
+      x-js-example: 'await api.PhoneNumbers.delete("numberId");'    
       responses:
         '200':
           $ref: '#/components/responses/Empty'
@@ -1404,7 +1404,7 @@ paths:
       summary: Retrieve a specific call recording information
       operationId: get
       description: Retrieve a specific call recording information.
-      x-js-example: 'const recording = await api.Recordings.get({id: "recordingId"});'  
+      x-js-example: 'const recording = await api.Recordings.get("recordingId");'  
       responses:
         '200':
           description: Recording information
@@ -1435,7 +1435,7 @@ paths:
       summary: Request the transcription process to be started for the given recording id.
       operationId: createTranscription
       description: Request the transcription process to be started for the given recording id.
-      x-js-example: 'const transcriptionId = await api.Recordings.createTranscription({id: "recordingId"});'  
+      x-js-example: 'const transcriptionId = await api.Recordings.createTranscription("recordingId");'  
       responses:
         '201':
           $ref: '#/components/responses/Created'
@@ -1446,7 +1446,7 @@ paths:
       summary: Get information about the transcription, regardless its state.
       operationId: getTranscription
       description: Get information about the transcription, regardless its state.
-      x-js-example: 'const transcription = await api.Recordings.get({id: "recordingId", transcriptionId: "transcriptionId"});'  
+      x-js-example: 'const transcription = await api.Recordings.get("recordingId", "transcriptionId");'  
       responses:
         '200':
           description: Done
