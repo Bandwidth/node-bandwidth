@@ -3,6 +3,7 @@ import test from 'ava';
 import td from 'testdouble';
 import Joi from 'joi';
 import nock from 'nock';
+import axios from 'axios';
 
 const apiData = {
 	name: 'node-bandwidth-test',
@@ -85,7 +86,32 @@ const apiData = {
 				path: '/{userId}/pathParam/{id}/test',
 				query: Joi.any(),
 				body: Joi.any(),
-				bodyKeys: new Set([])
+				bodyKeys: new Set([]),
+				pathParams: ['id']
+			},
+			pathParam2: {
+				method: 'GET',
+				path: '/{userId}/pathParam/{id1}/test/{id2}',
+				query: Joi.any(),
+				body: Joi.any(),
+				bodyKeys: new Set([]),
+				pathParams: ['id1', 'id2']
+			},
+			pathParam3: {
+				method: 'GET',
+				path: '/{userId}/pathParam3/{id1}/test/{id2}',
+				query: Joi.any(),
+				body: Joi.any(),
+				bodyKeys: new Set([]),
+				pathParams: ['id1', 'id2']
+			},
+			pathParam4: {
+				method: 'GET',
+				path: '/{userId}/pathParam4/{id1}/test/{id2}',
+				query: Joi.any(),
+				body: Joi.any(),
+				bodyKeys: new Set([]),
+				pathParams: ['id1', 'id2']
 			},
 			create: {
 				method: 'POST',
@@ -144,6 +170,12 @@ nock('http://fakeserver')
 	.post('/upload2', '1234', {reqheaders: {'Content-Type': 'text/plain'}})
 	.reply(200)
 	.get('/userId1/pathParam/id1/test')
+	.reply(200)
+	.get('/userId1/pathParam/id1/test/id2?test=10')
+	.reply(200)
+	.get('/userId1/pathParam3/id1/test/id2?test=100')
+	.reply(200)
+	.get('/userId1/pathParam4/id1/test/id2')
 	.reply(200)
 	.post('/create', {test: 'test'})
 	.reply(201, '', {Location: 'http://localhost/id'})
@@ -308,7 +340,53 @@ test('BandwidthApi should handle parameters in path', async t => {
 		apiToken: 'token',
 		apiSecret: 'secret'
 	});
-	await api.Test.pathParam({id: 'id1'});
+	await api.Test.pathParam('id1');
+	t.pass();
+});
+
+test('BandwidthApi should handle some parameters in path', async t => {
+	const api = getBandwidthApi({
+		baseUrl: 'http://fakeserver',
+		userId: 'userId1',
+		apiToken: 'token',
+		apiSecret: 'secret'
+	});
+	await api.Test.pathParam2('id1', 'id2', {test: 10});
+	t.pass();
+});
+
+test('BandwidthApi should handle cancel token', async t => {
+	const api = getBandwidthApi({
+		baseUrl: 'http://fakeserver',
+		userId: 'userId1',
+		apiToken: 'token',
+		apiSecret: 'secret'
+	});
+	const source = axios.CancelToken.source();
+	await api.Test.pathParam3('id1', 'id2', {test: 100}, source.token);
+	t.pass();
+});
+
+test('BandwidthApi should handle cancel token (without data)', async t => {
+	const api = getBandwidthApi({
+		baseUrl: 'http://fakeserver',
+		userId: 'userId1',
+		apiToken: 'token',
+		apiSecret: 'secret'
+	});
+	const source = axios.CancelToken.source();
+	await api.Test.pathParam4('id1', 'id2', source.token);
+	t.pass();
+});
+
+test('BandwidthApi should throw error if path param is missing', async t => {
+	const api = getBandwidthApi({
+		baseUrl: 'http://fakeserver',
+		userId: 'userId1',
+		apiToken: 'token',
+		apiSecret: 'secret'
+	});
+	await t.throws(api.Test.pathParam4('id1'));
 	t.pass();
 });
 

@@ -93,6 +93,8 @@ function printApiMethod(name, data) {
 			return schema.type === 'string' && schema.format === 'binary';
 		}).length > 0;
 	const hasQuery = hasKeys(data.query) && hasKeys(data.query.properties);
+	const hasPathParams = data.pathParams.length > 0;
+	const pathParams = data.pathParams.map(p => `'${p}'`).join(', ');
 	return `\t\t\t${_.camelCase(name)}: {
 		\t\tmethod: '${data.method}',
 		\t\tpath: '${data.path}',${
@@ -100,7 +102,8 @@ function printApiMethod(name, data) {
 	}${binaryResponse ? `\n\t\t\t\tbinaryResponse: ${binaryResponse},` : ''}
 		${hasQuery ? `\t\tquery: ${printValidator(data.query)},` : ''}
 		${hasKeys(data.body) ? `\t\tbody: ${printValidator(data.body)},` : ''}
-		${hasKeys(data.body) ? `\t\tbodyKeys: ${printBodyKeys(data.body)}` : ''}
+		${hasKeys(data.body) ? `\t\tbodyKeys: ${printBodyKeys(data.body)},` : ''}
+		${hasPathParams ? `\t\tpathParams: [${pathParams}]` : ''}
 	\t\t}`;
 }
 

@@ -12,7 +12,8 @@ function prepareApiMethodData(method, path, data) {
 		path,
 		query,
 		body,
-		contentType
+		contentType,
+		pathParams: extractPathParams(path)
 	};
 }
 
@@ -22,6 +23,13 @@ function getFirstSchema(content) {
 	}
 	const firstKey = Object.keys(content)[0];
 	return (content[firstKey] || {}).schema;
+}
+
+function extractPathParams(path) {
+	const params = (path.match(/\{([\w_]+)\}/g) || []).map(p =>
+		p.substr(1, p.length - 2)
+	);
+	return params.filter(p => p !== 'userId');
 }
 function prepareApiData(openapi) {
 	const apiData = {};
