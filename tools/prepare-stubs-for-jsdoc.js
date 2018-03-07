@@ -400,6 +400,16 @@ class Calls {
 	 * await api.Calls.stopPlayFileUrl('callId');
 	 */
 	stopPlayFileUrl() {}
+	/** Enable/disable call recording
+	 * @param {string} id Call Id
+	 * @param {boolean} [enable] Enable or disable recording (default: true)
+	 * @param {axios.CancelToken} [cancelToken] Optional cancel token (read more here https://github.com/axios/axios#cancellation)
+	 * @returns {Promise} Promise
+	 * @example
+	 * await api.Calls.enableRecording('callId'); // enable recording
+	 * await api.Calls.enableRecording('callId', false); // disable recording
+	*/
+	enableRecording() {}
 }
 
 class Conferences {

@@ -4,7 +4,7 @@ import callsExtensions from '../../dist/extensions/calls';
 
 test('answer() should call update() with right params', async t => {
 	const Call = {update: td.function()};
-	td.when(Call.update({id: 'id', state: 'active'}, null)).thenResolve();
+	td.when(Call.update('id', {state: 'active'}, null)).thenResolve();
 	callsExtensions(Call);
 	await Call.answer.execute.call(Call, 'id');
 	t.pass();
@@ -12,7 +12,7 @@ test('answer() should call update() with right params', async t => {
 
 test('terminate() should call update() with right params', async t => {
 	const Call = {update: td.function()};
-	td.when(Call.update({id: 'id', state: 'completed'}, null)).thenResolve();
+	td.when(Call.update('id', {state: 'completed'}, null)).thenResolve();
 	callsExtensions(Call);
 	await Call.terminate.execute.call(Call, 'id');
 	t.pass();
@@ -20,7 +20,7 @@ test('terminate() should call update() with right params', async t => {
 
 test('hangup() should call update() with right params', async t => {
 	const Call = {update: td.function()};
-	td.when(Call.update({id: 'id', state: 'rejected'}, null)).thenResolve();
+	td.when(Call.update('id', {state: 'rejected'}, null)).thenResolve();
 	callsExtensions(Call);
 	await Call.hangup.execute.call(Call, 'id');
 	t.pass();
@@ -31,7 +31,8 @@ test('transfer() should call update() with right params', async t => {
 	td
 		.when(
 			Call.update(
-				{id: 'id', state: 'transferring', transferTo: '+12345678901'},
+				'id',
+				{state: 'transferring', transferTo: '+12345678901'},
 				null
 			)
 		)
@@ -44,14 +45,17 @@ test('transfer() should call update() with right params', async t => {
 test('stopGather() should call updateGather() with right params', async t => {
 	const Call = {updateGather: td.function()};
 	td
-		.when(
-			Call.updateGather(
-				{id: 'id', gatherId: 'gatherId', state: 'completed'},
-				null
-			)
-		)
+		.when(Call.updateGather('id', 'gatherId', {state: 'completed'}, null))
 		.thenResolve();
 	callsExtensions(Call);
 	await Call.stopGather.execute.call(Call, 'id', 'gatherId');
+	t.pass();
+});
+
+test('enableRecording() should call update() with right params', async t => {
+	const Call = {update: td.function()};
+	td.when(Call.update('id', {recordingEnabled: true}, null)).thenResolve();
+	callsExtensions(Call);
+	await Call.enableRecording.execute.call(Call, 'id');
 	t.pass();
 });

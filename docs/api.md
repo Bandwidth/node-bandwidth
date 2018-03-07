@@ -653,7 +653,7 @@ Speak a sentence to the bridge
 **Example**
 
 ```js
-await api.Bridges.speakSententence('bridgeId', 'Hello');
+await api.Bridges.speakSentence('bridgeId', 'Hello');
 ```
 
 <a name="Bridges+playFileUrl"></a>
@@ -729,6 +729,7 @@ The Calls resource lets you make phone calls and view information about previous
   * [.speakSentence(id, sentence, options, [cancelToken])](#Calls+speakSentence) ⇒ <code>Promise</code>
   * [.playFileUrl(id, fileUrl, options, [cancelToken])](#Calls+playFileUrl) ⇒ <code>Promise</code>
   * [.stopPlayFileUrl(id, [cancelToken])](#Calls+stopPlayFileUrl) ⇒ <code>Promise</code>
+  * [.enableRecording(id, [enable], [cancelToken])](#Calls+enableRecording) ⇒ <code>Promise</code>
 
 <a name="Calls+list"></a>
 
@@ -1186,7 +1187,7 @@ Speak a sentence to the call
 **Example**
 
 ```js
-await api.Calls.speakSententence('callId', 'Hello');
+await api.Calls.speakSentence('callId', 'Hello');
 ```
 
 <a name="Calls+playFileUrl"></a>
@@ -1230,6 +1231,28 @@ Stop playing of audio file to the call
 
 ```js
 await api.Calls.stopPlayFileUrl('callId');
+```
+
+<a name="Calls+enableRecording"></a>
+
+### calls.enableRecording(id, [enable], [cancelToken]) ⇒ <code>Promise</code>
+
+Enable/disable call recording
+
+**Kind**: instance method of [<code>Calls</code>](#Calls)  
+**Returns**: <code>Promise</code> - Promise
+
+| Param         | Type                           | Description                                                                        |
+| ------------- | ------------------------------ | ---------------------------------------------------------------------------------- |
+| id            | <code>string</code>            | Call Id                                                                            |
+| [enable]      | <code>boolean</code>           | Enable or disable recording (default: true)                                        |
+| [cancelToken] | <code>axios.CancelToken</code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
+
+**Example**
+
+```js
+await api.Calls.enableRecording('callId'); // enable recording
+await api.Calls.enableRecording('callId', false); // disable recording
 ```
 
 <a name="Conferences"></a>

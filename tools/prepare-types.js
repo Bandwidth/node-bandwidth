@@ -233,6 +233,8 @@ export interface Calls {
 	playFileUrl(id: string, fileUrl: string, options?: PlayFileUrlOptions, cancelToken?: CancelToken): Promise<any>;
 	/** Stop playing of audio file to the call */
 	stopPlayFileUrl(id: string, cancelToken?: CancelToken): Promise<any>;
+	/** Enable/disable call recording */
+	enableRecording(id: string, enable?: boolean, cancelToken?: CancelToken): Promise<any>;
 }
 
 export interface Conferences {
