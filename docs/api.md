@@ -492,7 +492,7 @@ The Bridges resource allows you to bridge two calls together allowing for two wa
   * [.update(id, [options], [cancelToken])](#Bridges+update) ⇒ <code>Promise</code>
   * [.playAudio(id, [options], [cancelToken])](#Bridges+playAudio) ⇒ <code>Promise</code>
   * [.getCalls(id, [cancelToken])](#Bridges+getCalls) ⇒ <code>Promise</code>
-  * [.speakSententence(id, sentence, options, [cancelToken])](#Bridges+speakSententence) ⇒ <code>Promise</code>
+  * [.speakSentence(id, sentence, options, [cancelToken])](#Bridges+speakSentence) ⇒ <code>Promise</code>
   * [.playFileUrl(id, fileUrl, options, [cancelToken])](#Bridges+playFileUrl) ⇒ <code>Promise</code>
   * [.stopPlayFileUrl(id, [cancelToken])](#Bridges+stopPlayFileUrl) ⇒ <code>Promise</code>
 
@@ -630,9 +630,9 @@ Get the list of calls that are on the bridge.
 const calls = await api.Bridges.getCalls("id");
 ```
 
-<a name="Bridges+speakSententence"></a>
+<a name="Bridges+speakSentence"></a>
 
-### bridges.speakSententence(id, sentence, options, [cancelToken]) ⇒ <code>Promise</code>
+### bridges.speakSentence(id, sentence, options, [cancelToken]) ⇒ <code>Promise</code>
 
 Speak a sentence to the bridge
 
@@ -726,7 +726,7 @@ The Calls resource lets you make phone calls and view information about previous
   * [.hangup(id, [cancelToken])](#Calls+hangup) ⇒ <code>Promise</code>
   * [.transfer(id, transferTo, options, [cancelToken])](#Calls+transfer) ⇒ <code>Promise</code>
   * [.stopGather(id, gatherId, [cancelToken])](#Calls+stopGather) ⇒ <code>Promise</code>
-  * [.speakSententence(id, sentence, options, [cancelToken])](#Calls+speakSententence) ⇒ <code>Promise</code>
+  * [.speakSentence(id, sentence, options, [cancelToken])](#Calls+speakSentence) ⇒ <code>Promise</code>
   * [.playFileUrl(id, fileUrl, options, [cancelToken])](#Calls+playFileUrl) ⇒ <code>Promise</code>
   * [.stopPlayFileUrl(id, [cancelToken])](#Calls+stopPlayFileUrl) ⇒ <code>Promise</code>
 
@@ -1163,9 +1163,9 @@ Stop collection of gather data
 await api.Calls.stopGather('callId', 'gatherId');
 ```
 
-<a name="Calls+speakSententence"></a>
+<a name="Calls+speakSentence"></a>
 
-### calls.speakSententence(id, sentence, options, [cancelToken]) ⇒ <code>Promise</code>
+### calls.speakSentence(id, sentence, options, [cancelToken]) ⇒ <code>Promise</code>
 
 Speak a sentence to the call
 
@@ -1256,10 +1256,10 @@ The Conference resource allows you create conferences, add members to it, play a
   * [.deleteMember(id, memberId, [cancelToken])](#Conferences+deleteMember) ⇒ <code>Promise</code>
   * [.muteMember(id, memberId, [mute], [cancelToken])](#Conferences+muteMember) ⇒ <code>Promise</code>
   * [.holdMember(id, memberId, [hold], [cancelToken])](#Conferences+holdMember) ⇒ <code>Promise</code>
-  * [.speakSententence(id, sentence, options, [cancelToken])](#Conferences+speakSententence) ⇒ <code>Promise</code>
+  * [.speakSentence(id, sentence, options, [cancelToken])](#Conferences+speakSentence) ⇒ <code>Promise</code>
   * [.playFileUrl(id, fileUrl, options, [cancelToken])](#Conferences+playFileUrl) ⇒ <code>Promise</code>
   * [.stopPlayFileUrl(id, [cancelToken])](#Conferences+stopPlayFileUrl) ⇒ <code>Promise</code>
-  * [.speakSententenceToMember(id, memberId, sentence, options, [cancelToken])](#Conferences+speakSententenceToMember) ⇒ <code>Promise</code>
+  * [.speakSentenceToMember(id, memberId, sentence, options, [cancelToken])](#Conferences+speakSentenceToMember) ⇒ <code>Promise</code>
   * [.playFileUrlToMember(id, memberId, fileUrl, options, [cancelToken])](#Conferences+playFileUrlToMember) ⇒ <code>Promise</code>
   * [.stopPlayFileUrlToMember(id, memberId, [cancelToken])](#Conferences+stopPlayFileUrlToMember) ⇒ <code>Promise</code>
 
@@ -1579,9 +1579,9 @@ Hold or unhold the conference member
 | [hold]        | <code>boolean</code>           | true if hold and false if unhold, default: true                                    |
 | [cancelToken] | <code>axios.CancelToken</code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
 
-<a name="Conferences+speakSententence"></a>
+<a name="Conferences+speakSentence"></a>
 
-### conferences.speakSententence(id, sentence, options, [cancelToken]) ⇒ <code>Promise</code>
+### conferences.speakSentence(id, sentence, options, [cancelToken]) ⇒ <code>Promise</code>
 
 Speak a sentence to the conference
 
@@ -1630,9 +1630,9 @@ Stop playing of audio file to the conference
 | id            | <code>string</code>            | Conference Id                                                                      |
 | [cancelToken] | <code>axios.CancelToken</code> | Optional cancel token (read more here https://github.com/axios/axios#cancellation) |
 
-<a name="Conferences+speakSententenceToMember"></a>
+<a name="Conferences+speakSentenceToMember"></a>
 
-### conferences.speakSententenceToMember(id, memberId, sentence, options, [cancelToken]) ⇒ <code>Promise</code>
+### conferences.speakSentenceToMember(id, memberId, sentence, options, [cancelToken]) ⇒ <code>Promise</code>
 
 Speak a sentence to the conference member
 

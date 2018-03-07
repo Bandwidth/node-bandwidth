@@ -160,7 +160,7 @@ Calls
 	stopGather(id, gatherId[, cancelToken]);
 
 // next methods are wrappers for playAudio()
-	speakSententence(id[, options, cancelToken]);
+	speakSentence(id[, options, cancelToken]);
 	playFileUrl(id, fileUrl[, options, cancelToken]);
 	stopPlayFileUrl(id[, cancelToken]);
 ```
@@ -169,7 +169,7 @@ Bridges
 
 ```javascript
 // next methods are wrappers for playAudio()
-	speakSententence(id[, options, cancelToken]);
+	speakSentence(id[, options, cancelToken]);
 	playFileUrl(id, fileUrl[, options, cancelToken]);
 	stopPlayFileUrl(id[, cancelToken]);
 ```
@@ -188,13 +188,13 @@ Conferences
 	holdMember(id, memberId, hold = true[, cancelToken]);
 
 // next methods are wrappers for playAudio()
-	speakSententence(id[, options, cancelToken]);
+	speakSentence(id[, options, cancelToken]);
 	playFileUrl(id, fileUrl[, options, cancelToken]);
 	stopPlayFileUrl(id[, cancelToken]);
 
 
 // next methods are wrappers for playAudioToMember()
-	speakSententenceToMember(id, memberId[, options, cancelToken]);
+	speakSentenceToMember(id, memberId[, options, cancelToken]);
 	playFileUrlToMember(id, memberId, fileUrl[, options, cancelToken]);
 	stopPlayFileUrlToMember(id, memberId[, cancelToken]);
 ```

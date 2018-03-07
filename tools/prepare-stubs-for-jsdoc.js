@@ -288,9 +288,9 @@ class Bridges {
 	 * @param {axios.CancelToken} [cancelToken] Optional cancel token (read more here https://github.com/axios/axios#cancellation)
 	 * @returns {Promise} Promise
 	 * @example
-	 * await api.Bridges.speakSententence('bridgeId', 'Hello');
+	 * await api.Bridges.speakSentence('bridgeId', 'Hello');
 	 */
-	speakSententence() {}
+	speakSentence() {}
 	/** Play audio file to the bridge
 	 * @param {string} id Bridge Id
 	 * @param {string} fileUrl Url to media file
@@ -378,9 +378,9 @@ class Calls {
 	 * @param {axios.CancelToken} [cancelToken] Optional cancel token (read more here https://github.com/axios/axios#cancellation)
 	 * @returns {Promise} Promise
 	 * @example
-	 * await api.Calls.speakSententence('callId', 'Hello');
+	 * await api.Calls.speakSentence('callId', 'Hello');
 	 */
-	speakSententence() {}
+	speakSentence() {}
 	/** Play audio file to the call
 	 * @param {string} id Call Id
 	 * @param {string} fileUrl Url to media file
@@ -457,7 +457,7 @@ class Conferences {
 	 * @param {axios.CancelToken} [cancelToken] Optional cancel token (read more here https://github.com/axios/axios#cancellation)
 	 * @returns {Promise} Promise
 	*/
-	speakSententence() {}
+	speakSentence() {}
 	/** Play audio file to the conference
 	 * @param {string} id Conference Id
 	 * @param {string} fileUrl Url to media file
@@ -485,7 +485,7 @@ class Conferences {
 	 * @param {axios.CancelToken} [cancelToken] Optional cancel token (read more here https://github.com/axios/axios#cancellation)
 	 * @returns {Promise} Promise
 	*/
-	speakSententenceToMember() {}
+	speakSentenceToMember() {}
 	/** Play audio file to the conference member
 	 * @param {string} id Conference Id
 	 * @param {string} memberId Conference member Id

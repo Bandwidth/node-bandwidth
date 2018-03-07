@@ -209,7 +209,7 @@ ${printTypes()}
 
 export interface Bridges {
 	/** Speak a sentence to the bridge */
-	speakSententence(id: string, sentence: string, options?: SpeakSententenceOptions, cancelToken?: CancelToken): Promise<any>;
+	speakSentence(id: string, sentence: string, options?: SpeakSentenceOptions, cancelToken?: CancelToken): Promise<any>;
 	/** Play audio file to the bridge */
 	playFileUrl(id: string, fileUrl: string, options?: PlayFileUrlOptions, cancelToken?: CancelToken): Promise<any>;
 	/** Stop playing of audio file to the bridge */
@@ -228,7 +228,7 @@ export interface Calls {
 	/** Stop collection of gather data */
 	stopGather(id: string, gatherId: string, cancelToken?: CancelToken): Promise<any>;
 	/** Speak a sentence to the call */
-	speakSententence(id: string, sentence: string, options?: SpeakSententenceOptions, cancelToken?: CancelToken): Promise<any>;
+	speakSentence(id: string, sentence: string, options?: SpeakSentenceOptions, cancelToken?: CancelToken): Promise<any>;
 	/** Play audio file to the call */
 	playFileUrl(id: string, fileUrl: string, options?: PlayFileUrlOptions, cancelToken?: CancelToken): Promise<any>;
 	/** Stop playing of audio file to the call */
@@ -249,13 +249,13 @@ export interface Conferences {
 	/** Hold or unhold the conference member */
 	holdMember(id: string, memberId: string, hold?: boolean, cancelToken?: CancelToken): Promise<any>;
 	/** Speak a sentence to the conference */
-	speakSententence(id: string, sentence: string, options?: SpeakSententenceOptions, cancelToken?: CancelToken): Promise<any>;
+	speakSentence(id: string, sentence: string, options?: SpeakSentenceOptions, cancelToken?: CancelToken): Promise<any>;
 	/** Play audio file to the conference */
 	playFileUrl(id: string, fileUrl: string, options?: PlayFileUrlOptions, cancelToken?: CancelToken): Promise<any>;
 	/** Stop playing of audio file to the conference */
 	stopPlayFileUrl(id: string, cancelToken?: CancelToken): Promise<any>;
 	/** Speak a sentence to the conference member*/
-	speakSententenceToMember(id: string, memberId: string, sentence: string, options?: SpeakSententenceOptions, cancelToken?: CancelToken): Promise<any>;
+	speakSentenceToMember(id: string, memberId: string, sentence: string, options?: SpeakSentenceOptions, cancelToken?: CancelToken): Promise<any>;
 	/** Play audio file to the conference member*/
 	playFileUrlToMember(id: string, memberId: string, fileUrl: string, options?: PlayFileUrlOptions, cancelToken?: CancelToken): Promise<any>;
 	/** Stop playing of audio file to the conference member*/
@@ -277,7 +277,7 @@ export interface PlayAudioOptions {
 	tag: string;
 }
 
-export interface SpeakSententenceOptions {
+export interface SpeakSentenceOptions {
 	/** A gender of voice to speak a sentence */
 	gender: 'female' | 'male';
 	/** A locale of voice to speak a sentence */

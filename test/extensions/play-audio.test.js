@@ -2,11 +2,11 @@ import test from 'ava';
 import td from 'testdouble';
 import playAudioExtensions from '../../dist/extensions/play-audio';
 
-test('speakSententence() should call playAudio() with right params', async t => {
+test('speakSentence() should call playAudio() with right params', async t => {
 	const Call = {playAudio: td.function()};
 	td.when(Call.playAudio({id: 'id', sentence: 'hello'}, null)).thenResolve();
 	playAudioExtensions(Call);
-	await Call.speakSententence.execute.call(Call, 'id', 'hello');
+	await Call.speakSentence.execute.call(Call, 'id', 'hello');
 	t.pass();
 });
 
@@ -26,7 +26,7 @@ test('stopPlayFileUrl() should call playAudio() with right params', async t => {
 	t.pass();
 });
 
-test('speakSententenceToMember() should call playAudio() with right params', async t => {
+test('speakSentenceToMember() should call playAudio() with right params', async t => {
 	const Call = {playAudioToMember: td.function(), playAudio: td.function()};
 	td
 		.when(
@@ -37,7 +37,7 @@ test('speakSententenceToMember() should call playAudio() with right params', asy
 		)
 		.thenResolve();
 	playAudioExtensions(Call);
-	await Call.speakSententenceToMember.execute.call(
+	await Call.speakSentenceToMember.execute.call(
 		Call,
 		'id',
 		'memberId',

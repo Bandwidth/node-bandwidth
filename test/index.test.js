@@ -127,7 +127,9 @@ const apiData = {
 				bodyKeys: new Set(['test'])
 			},
 			execute1: {
-				execute: () => {}
+				execute() {
+					return this;
+				}
 			},
 			listWithIds: {
 				method: 'GET',
@@ -426,7 +428,8 @@ test('BandwidthApi should support custom actions', async t => {
 		apiToken: 'token',
 		apiSecret: 'secret'
 	});
-	await api.Test.execute1();
+	const self = await api.Test.execute1();
+	t.is(self, api.Test);
 	t.pass();
 });
 
