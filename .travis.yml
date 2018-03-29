@@ -8,5 +8,13 @@ script: npm test
 after_success: bash ./deploy.sh
 env:
   global:
-    - ENCRYPTION_LABEL: 3985cea5a61f
-    - COMMIT_AUTHOR_EMAIL: openapi@bandwidth.com
+  - ENCRYPTION_LABEL: 3985cea5a61f
+  - COMMIT_AUTHOR_EMAIL: openapi@bandwidth.com
+deploy:
+  provider: npm
+  email: hi@dtolb.com
+  api_key:
+    secure: QsOhkofy49Q2hya3D1QlbGQnFK7eKuBPifygvNgIqN75aJT5mGPUFzLcYyLd+tLtnjIh/fOV+dFI+QAWJjJWa73C7y1pq8y7hD7VPd+jloZPegUOum0fqcM8sHyU5rJ8IIlqxpMHbJBSK4+l3+KmmOoWYcwxsksuD170uDA+Zpg=
+  on:
+    tags: true
+    repo: Bandwidth/node-bandwidth
