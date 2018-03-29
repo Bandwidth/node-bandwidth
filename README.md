@@ -1,17 +1,20 @@
 # node-bandwidth
 [![npm version](https://badge.fury.io/js/node-bandwidth.svg)](https://badge.fury.io/js/node-bandwidth)
-[![Build Status](https://travis-ci.org/bandwidthcom/node-bandwidth.svg?branch=master)](https://travis-ci.org/bandwidth/node-bandwidth)
-[![dependencies](https://david-dm.org/bandwidthcom/node-bandwidth.svg)](https://david-dm.org/bandwidth/node-bandwidth)
+[![Build Status](https://travis-ci.org/bandwidth/node-bandwidth.svg?branch=master)](https://travis-ci.org/bandwidth/node-bandwidth)
+[![dependencies](https://david-dm.org/bandwidth/node-bandwidth.svg)](https://david-dm.org/bandwidth/node-bandwidth)
 [![Known Vulnerabilities](https://snyk.io/package/npm/node-bandwidth/badge.svg)](https://snyk.io/package/npm/node-bandwidth)
 
-A Node.js client library for the [Bandwidth Application Platform](http://bandwidth.com/products/application-platform?utm_medium=social&utm_source=github&utm_campaign=dtolb&utm_content=_)
+A Node.js client library for [Bandwidth's Communications Platform](https://app.bandwidth.com/)
 
-## [Full API Reference](http://dev.bandwidth.com/node-bandwidth/index.html)
+## API Documentation
+
+The API documentation is located at [dev.bandwidth.com/ap-docs/](http://dev.bandwidth.com/ap-docs/)
+
+## [Full SDK Reference](http://dev.bandwidth.com/node-bandwidth/index.html)
 The Full API Reference is available either as an interactive site or as a single Markdown file:
 
 * [Site](http://dev.bandwidth.com/node-bandwidth/index.html).
 * [Single MD file](https://github.com/bandwidth/node-bandwidth/blob/master/docs/api.md)
-
 
 ## Installing the SDK
 
@@ -22,17 +25,20 @@ The Full API Reference is available either as an interactive site or as a single
 ## Supported Versions
 `node-bandwidth` should work on all versions of node newer than `0.10.*`. However, due to the rapid development in the Node and npm environment, we can only provide _support_ on [LTS versions of Node](https://github.com/nodejs/LTS)
 
-| Version                        | Support Level                   |
-|:-------------------------------|:--------------------------------|
-| <0.10.*                        | Unsupported                     |
-| 0.10.*                         | End-of-Life (2016-10-31)        |
-| 0.12.*                         | End-of-Life (2016-10-31)        |
-| >=4.0 <4.2                     | Unsupported                     |
-| >=4.2 <5.* (Node v4 argon LTS) | Supported - **Ends April 2018** |
-| 5.*                            | Unsupported                     |
-| _6.9.4 (Node v6 Boron LTS)_    | **Recommended**                 |
-| 7.*                            | Unsupported                     |
-| 8.*                            | Supported                       |
+| Version                        | Support Level            |
+|:-------------------------------|:-------------------------|
+| <0.10.*                        | Unsupported              |
+| 0.10.*                         | End-of-Life (2016-10-31) |
+| 0.12.*                         | End-of-Life (2016-10-31) |
+| >=4.0 <4.2                     | Unsupported              |
+| >=4.2 <5.* (Node v4 argon LTS) | End-of-Life (2018-04-30) |
+| 5.*                            | Unsupported              |
+| 6.9.4 (Node v6 Boron LTS)      | Supported                |
+| 7.*                            | Unsupported              |
+| 8.*                            | Supported                |
+| _8.11.0 (Node v8 Carbon LTS)_  | **Recommended**          |
+| 9.*                            | Unsupported              |
+| 10.x                           | Supported in [v-next](https://github.com/Bandwidth/node-bandwidth/tree/v-next)  |
 
 ## Client initialization
 
@@ -120,7 +126,7 @@ client.v2.Message.createMessagingApplication(dashboardAuth, {
 }).then(function (application) {
 	// application.applicationId contains id of created dashboard application
 	// application.locationId contains id of location
-	
+
 	// Now you should reserve 1 ore more numbers on  Bandwidth Dashboard
 	return client.v2.Message.searchAndOrderNumbers(dashboardAuth, application, new client.AreaCodeSearchAndOrderNumbersQuery({areaCode: "910", quantity: 1}))
 		.then(function (numbers) {
