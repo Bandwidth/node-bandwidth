@@ -107,6 +107,23 @@ _Warning:_ to use `for await` feature you should:
 * for Node 10.X +: do nothing
 * other: use transpilers like `babel`, `typescript`, etc
 
+If you don't like to use transpilers or flag `--harmony` (for Node < 10.X)>) you can use next code instead of `for await`.
+
+```js
+// Put these lines before require `node-bandwidth`
+if (!Symbol.asyncIterator) {
+  Symbol.asyncIterator = Symbol.for('Symbol.asyncIterator');
+}
+
+// `for await` replacement
+const asyncIterator = (await api.Messages.list())[Symbol.asyncIterator]();
+do {
+ iteration = await asyncIterator.next();
+ const message = iteration.value;
+ console.log(`${message.from} -> ${message.to}: ${message.text}`);
+} while(!iteration.done);
+```
+
 But if you add parameter `page` to such methods only simple http request will be executed
 
 ```javascript
