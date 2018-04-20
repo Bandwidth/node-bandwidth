@@ -3348,6 +3348,8 @@ client.Recording.getTranscriptions(recordingId, function(err, transcriptions){})
     * [.sendMessage(message, params)](#BXMLResponse+sendMessage) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
     * [.phoneNumber(phoneNumber)](#BXMLResponse+phoneNumber) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
     * [.transfer(params, callback)](#BXMLResponse+transfer) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
+    * [.pause(params)](#BXMLResponse+pause) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
+    * [.dtmf(value)](#BXMLResponse+dtmf) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
 
 <a name="new_BXMLResponse_new"></a>
 
@@ -3645,6 +3647,47 @@ myApp.speakSentence("Your call is somewhat important to us.")
 		this.speakSentence("A call is being transferred to you from Customer Service.");
 	});
 console.log(myApp.toString());
+```
+<a name="BXMLResponse+pause"></a>
+
+### bxmlResponse.pause(params) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
+Pause the execution of an ongoing BXML document
+
+**Kind**: instance method of <code>[BXMLResponse](#BXMLResponse)</code>  
+**Returns**: <code>[BXMLResponse](#BXMLResponse)</code> - this, for chaining.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| params | <code>Object</code> | The parameters for the Pause verb. |
+| params.length | <code>string</code> | How many seconds Bandwidth will wait silently before continuing on. |
+
+**Example**  
+```js
+// This app will transfer a call.
+var Bandwidth = require("node-bandwidth");
+var r = new Bandwidth.BXMLResponse();
+r.pause({length: 5})
+console.log(r.toString());
+```
+<a name="BXMLResponse+dtmf"></a>
+
+### bxmlResponse.dtmf(value) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
+Send digits on a live call
+
+**Kind**: instance method of <code>[BXMLResponse](#BXMLResponse)</code>  
+**Returns**: <code>[BXMLResponse](#BXMLResponse)</code> - this, for chaining.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| value | <code>string</code> | string containing the DTMF characters to be sent in a call (maximum of 92 characters) |
+
+**Example**  
+```js
+// This app will transfer a call.
+var Bandwidth = require("node-bandwidth");
+var r = new Bandwidth.BXMLResponse();
+r.dtmf('1');
+console.log(r.toString());
 ```
 <a name="getNextLink"></a>
 
