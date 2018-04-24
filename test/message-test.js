@@ -92,7 +92,7 @@ describe("Message API", function () {
 				.reply(200, testMessage)
 				.get("/v1/users/" + userId + "/messages?fromDateTime=" + fromDateTime + "&" + "toDateTime=" + toDateTime)
 				.reply(200, messagesList)
-				.patch("/v1/users/" + userId + "/messages/" + testMessage.id, {text: ""})
+				.patch("/v1/users/" + userId + "/messages/" + testMessage.id, { text : "" })
 				.reply(200);
 		});
 
@@ -176,11 +176,11 @@ describe("Message API", function () {
 		});
 
 		it("should patch a message, promise style", function () {
-			return client.Message.patch(testMessage.id, {text: ""});
+			return client.Message.patch(testMessage.id, { text : "" });
 		});
 
 		it("should patch a message, callback style", function (done) {
-			return client.Message.patch(testMessage.id, {text: ""}, done);
+			return client.Message.patch(testMessage.id, { text : "" }, done);
 		});
 	});
 
