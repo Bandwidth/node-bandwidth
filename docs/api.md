@@ -3365,7 +3365,7 @@ client.Recording.getTranscriptions(recordingId, function(err, transcriptions){})
     * [.phoneNumber(phoneNumber)](#BXMLResponse+phoneNumber) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
     * [.transfer(params, callback)](#BXMLResponse+transfer) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
     * [.pause(params)](#BXMLResponse+pause) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
-    * [.dtmf(value)](#BXMLResponse+dtmf) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
+    * [.sendDtmf(value)](#BXMLResponse+sendDtmf) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
 
 <a name="new_BXMLResponse_new"></a>
 
@@ -3685,9 +3685,9 @@ var r = new Bandwidth.BXMLResponse();
 r.pause({length: 5})
 console.log(r.toString());
 ```
-<a name="BXMLResponse+dtmf"></a>
+<a name="BXMLResponse+sendDtmf"></a>
 
-### bxmlResponse.dtmf(value) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
+### bxmlResponse.sendDtmf(value) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
 Send digits on a live call
 
 **Kind**: instance method of <code>[BXMLResponse](#BXMLResponse)</code>  

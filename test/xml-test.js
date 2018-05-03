@@ -14,7 +14,7 @@ var nestingResponse = fs.readFileSync("./test/bxml-responses/nesting.xml", "utf8
 var chainingResponse = fs.readFileSync("./test/bxml-responses/chaining.xml", "utf8");
 var multiTransferResponse = fs.readFileSync("./test/bxml-responses/multiTransfer.xml", "utf8");
 var pauseResponse = fs.readFileSync("./test/bxml-responses/pause.xml", "utf8");
-var dtmfResponse = fs.readFileSync("./test/bxml-responses/dtmf.xml", "utf8");
+var dtmfResponse = fs.readFileSync("./test/bxml-responses/sendDtmf.xml", "utf8");
 
 describe("Builder", function () {
 
@@ -148,11 +148,11 @@ describe("Builder", function () {
 			myApp.toString().should.equal(pauseResponse.trim());
 		});
 	});
-	describe("Individual verb - dtmf", function () {
+	describe("Individual verb - sendDtmf", function () {
 		var myApp;
 		before(function () {
 			myApp = new BXMLResponse();
-			myApp.dtmf("5");
+			myApp.sendDtmf("5");
 		});
 		it("Should generate correct BXML", function () {
 			myApp.toString().should.equal(dtmfResponse.trim());
