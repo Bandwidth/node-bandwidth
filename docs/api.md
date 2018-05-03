@@ -2730,6 +2730,7 @@ Remove a media file
     * [.send(params, [callback])](#Message+send) ⇒ <code>[MessageResponse](#MessageResponse)</code>
     * [.sendMultiple(params, [callback])](#Message+sendMultiple) ⇒ <code>[ExtendedMessageResponse](#ExtendedMessageResponse)</code>
     * [.get(messageId, [callback])](#Message+get) ⇒ <code>[MessageResponse](#MessageResponse)</code>
+    * [.patch(messageId, data, [callback])](#Message+patch) ⇒ <code>Promise</code>
     * [.list(params, [callback])](#Message+list) ⇒ <code>[MessageListResponse](#MessageListResponse)</code>
 
 <a name="new_Message_new"></a>
@@ -2861,6 +2862,21 @@ Get a message
 | Param | Type | Description |
 | --- | --- | --- |
 | messageId | <code>String</code> | The ID of the message to get |
+| [callback] | <code>function</code> | A callback for the message |
+
+<a name="Message+patch"></a>
+
+### message.patch(messageId, data, [callback]) ⇒ <code>Promise</code>
+Redact the text of a previously sent message
+
+**Kind**: instance method of <code>[Message](#Message)</code>  
+**Returns**: <code>Promise</code> - A promise for the message  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| messageId | <code>String</code> | The ID of the message to patch |
+| data | <code>Object</code> | data to patch (only text is supported now) |
+| data.text | <code>Object</code> | the contents of the text must be the empty string (""). Any other value will fail. |
 | [callback] | <code>function</code> | A callback for the message |
 
 <a name="Message+list"></a>
