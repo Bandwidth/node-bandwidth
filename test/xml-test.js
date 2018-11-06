@@ -13,6 +13,8 @@ var transferOnlyResponse = fs.readFileSync("./test/bxml-responses/transfer.xml",
 var nestingResponse = fs.readFileSync("./test/bxml-responses/nesting.xml", "utf8");
 var chainingResponse = fs.readFileSync("./test/bxml-responses/chaining.xml", "utf8");
 var multiTransferResponse = fs.readFileSync("./test/bxml-responses/multiTransfer.xml", "utf8");
+var pauseResponse = fs.readFileSync("./test/bxml-responses/pause.xml", "utf8");
+var dtmfResponse = fs.readFileSync("./test/bxml-responses/sendDtmf.xml", "utf8");
 
 describe("Builder", function () {
 
@@ -132,6 +134,28 @@ describe("Builder", function () {
 		});
 		it("Should generate correct BXML", function () {
 			myApp.toString().should.equal(transferOnlyResponse);
+		});
+	});
+	describe("Individual verb - pause", function () {
+		var myApp;
+		before(function () {
+			myApp = new BXMLResponse();
+			myApp.pause({
+				length : 5
+			});
+		});
+		it("Should generate correct BXML", function () {
+			myApp.toString().should.equal(pauseResponse.trim());
+		});
+	});
+	describe("Individual verb - sendDtmf", function () {
+		var myApp;
+		before(function () {
+			myApp = new BXMLResponse();
+			myApp.sendDtmf("5");
+		});
+		it("Should generate correct BXML", function () {
+			myApp.toString().should.equal(dtmfResponse.trim());
 		});
 	});
 	describe("Nesting", function () {

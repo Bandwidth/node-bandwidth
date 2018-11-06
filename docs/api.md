@@ -2730,6 +2730,7 @@ Remove a media file
     * [.send(params, [callback])](#Message+send) ⇒ <code>[MessageResponse](#MessageResponse)</code>
     * [.sendMultiple(params, [callback])](#Message+sendMultiple) ⇒ <code>[ExtendedMessageResponse](#ExtendedMessageResponse)</code>
     * [.get(messageId, [callback])](#Message+get) ⇒ <code>[MessageResponse](#MessageResponse)</code>
+    * [.patch(messageId, data, [callback])](#Message+patch) ⇒ <code>Promise</code>
     * [.list(params, [callback])](#Message+list) ⇒ <code>[MessageListResponse](#MessageListResponse)</code>
 
 <a name="new_Message_new"></a>
@@ -2861,6 +2862,21 @@ Get a message
 | Param | Type | Description |
 | --- | --- | --- |
 | messageId | <code>String</code> | The ID of the message to get |
+| [callback] | <code>function</code> | A callback for the message |
+
+<a name="Message+patch"></a>
+
+### message.patch(messageId, data, [callback]) ⇒ <code>Promise</code>
+Redact the text of a previously sent message
+
+**Kind**: instance method of <code>[Message](#Message)</code>  
+**Returns**: <code>Promise</code> - A promise for the message  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| messageId | <code>String</code> | The ID of the message to patch |
+| data | <code>Object</code> | data to patch (only text is supported now) |
+| data.text | <code>Object</code> | the contents of the text must be the empty string (""). Any other value will fail. |
 | [callback] | <code>function</code> | A callback for the message |
 
 <a name="Message+list"></a>
@@ -3348,6 +3364,8 @@ client.Recording.getTranscriptions(recordingId, function(err, transcriptions){})
     * [.sendMessage(message, params)](#BXMLResponse+sendMessage) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
     * [.phoneNumber(phoneNumber)](#BXMLResponse+phoneNumber) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
     * [.transfer(params, callback)](#BXMLResponse+transfer) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
+    * [.pause(params)](#BXMLResponse+pause) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
+    * [.sendDtmf(value)](#BXMLResponse+sendDtmf) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
 
 <a name="new_BXMLResponse_new"></a>
 
@@ -3645,6 +3663,47 @@ myApp.speakSentence("Your call is somewhat important to us.")
 		this.speakSentence("A call is being transferred to you from Customer Service.");
 	});
 console.log(myApp.toString());
+```
+<a name="BXMLResponse+pause"></a>
+
+### bxmlResponse.pause(params) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
+Pause the execution of an ongoing BXML document
+
+**Kind**: instance method of <code>[BXMLResponse](#BXMLResponse)</code>  
+**Returns**: <code>[BXMLResponse](#BXMLResponse)</code> - this, for chaining.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| params | <code>Object</code> | The parameters for the Pause verb. |
+| params.length | <code>string</code> | How many seconds Bandwidth will wait silently before continuing on. |
+
+**Example**  
+```js
+// This app will transfer a call.
+var Bandwidth = require("node-bandwidth");
+var r = new Bandwidth.BXMLResponse();
+r.pause({length: 5})
+console.log(r.toString());
+```
+<a name="BXMLResponse+sendDtmf"></a>
+
+### bxmlResponse.sendDtmf(value) ⇒ <code>[BXMLResponse](#BXMLResponse)</code>
+Send digits on a live call
+
+**Kind**: instance method of <code>[BXMLResponse](#BXMLResponse)</code>  
+**Returns**: <code>[BXMLResponse](#BXMLResponse)</code> - this, for chaining.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| value | <code>string</code> | string containing the DTMF characters to be sent in a call (maximum of 92 characters) |
+
+**Example**  
+```js
+// This app will transfer a call.
+var Bandwidth = require("node-bandwidth");
+var r = new Bandwidth.BXMLResponse();
+r.dtmf('1');
+console.log(r.toString());
 ```
 <a name="getNextLink"></a>
 
