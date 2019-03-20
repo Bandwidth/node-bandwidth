@@ -357,14 +357,14 @@ describe("Call API", function () {
 			return client.Call.setMaxRecordingDuration(testCall.id, maxRecordingDuration);
 		});
 
-		it("should create a call, callback style", function () {
-			return new Promise(function (resolve) {
+		it("should create a call, callback style", function (done) {
+			new Promise(function (resolve) {
 				client.Call.create(newTestCall, function (err, call) {
 					if (err) {
 						throw err;
 					}
 					call.should.eql(newTestCall);
-					resolve();
+					done();
 				});
 			});
 		});
@@ -387,8 +387,8 @@ describe("Call API", function () {
 			});
 		});
 
-		it("should get a list of calls, callback style", function () {
-			return new Promise(function (resolve) {
+		it("should get a list of calls, callback style", function (done) {
+			new Promise(function (resolve) {
 				client.Call.list({
 					fromDateTime : fromDateTime,
 					toDateTime   : toDateTime
@@ -398,7 +398,7 @@ describe("Call API", function () {
 					}
 					calls[0].should.eql(callsList[0]);
 					calls[1].should.eql(callsList[1]);
-					resolve();
+					done();
 				});
 			});
 		});

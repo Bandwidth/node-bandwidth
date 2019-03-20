@@ -108,14 +108,14 @@ describe("Message API", function () {
 			});
 		});
 
-		it("should send a message, callback style", function () {
-			return new Promise(function (resolve) {
+		it("should send a message, callback style", function (done) {
+			new Promise(function (resolve) {
 				client.Message.send(newTestMessage, function (err, message) {
 					if (err) {
 						throw err;
 					}
 					message.should.eql(newTestMessage);
-					resolve();
+					done();
 				});
 			});
 		});
@@ -163,8 +163,8 @@ describe("Message API", function () {
 			});
 		});
 
-		it("should get a list of messages, callback style", function () {
-			return new Promise(function (resolve) {
+		it("should get a list of messages, callback style", function (done) {
+			new Promise(function (resolve) {
 				client.Message.list({
 					fromDateTime : fromDateTime,
 					toDateTime   : toDateTime
@@ -174,7 +174,7 @@ describe("Message API", function () {
 					}
 					var messages = messageResponse.messages;
 					messages.should.eql(messagesList);
-					resolve();
+					done();
 				});
 			});
 		});
