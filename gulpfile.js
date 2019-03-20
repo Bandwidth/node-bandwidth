@@ -8,21 +8,21 @@ var rename = require("gulp-rename");
 var gulpJsdoc2md = require("gulp-jsdoc-to-markdown");
 var concat = require("gulp-concat")
 
-gulp.task("jshint", gulp.series([], function () {
+gulp.task("jshint", gulp.series(function () {
 	return gulp.src([ "./lib/*.js", "./test/*.js" ])
 		.pipe(jshint())
 		.pipe(jshint.reporter("jshint-stylish"))
 		.pipe(jshint.reporter("fail"));
 }));
 
-gulp.task("jscs", gulp.series([], function () {
+gulp.task("jscs", gulp.series(function () {
 	return gulp.src([ "./lib/*.js", "./test/*.js" ])
 		.pipe(jscs());
 }));
 
 gulp.task("styles", gulp.series("jshint", "jscs"));
 
-gulp.task("test", gulp.series([], function () {
+gulp.task("test", gulp.series(function () {
 	return gulp.src("coverage", { read : false })
 	.pipe(clean())
 		.on("end", function () {
@@ -43,7 +43,7 @@ gulp.task("test", gulp.series([], function () {
 		});
 }));
 
-gulp.task("doc", gulp.series([], function () {
+gulp.task("doc", gulp.series(function () {
 	return gulp.src([ "lib/*.js" ])
  		.pipe(concat("api.md"))
 		.pipe(gulpJsdoc2md())
