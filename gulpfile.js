@@ -23,7 +23,7 @@ gulp.task("jscs", gulp.series(function () {
 gulp.task("styles", gulp.series("jshint", "jscs"));
 
 gulp.task("test", gulp.series(function () {
-	return gulp.src("coverage", { read : false })
+	return gulp.src("coverage", { read : false, allowEmpty : true })
 	.pipe(clean())
 		.on("end", function () {
 			gulp.src([ "lib/*.js" ])
