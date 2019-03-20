@@ -112,19 +112,23 @@ describe("Media API", function () {
 			return client.Media.upload(mediaName2, mediaContentFile, "text/plain");
 		});
 
-		it("should throw error if uploaded data is invalid", function (done) {
-			return client.Media.upload(mediaName1, {}, function (err) {
-				err.should.be.ok;
-				done();
+		it("should throw error if uploaded data is invalid", function () {
+			return new Promise(function (resolve) {
+				return client.Media.upload(mediaName1, {}, function (err) {
+					err.should.be.ok;
+					resolve();
+				});
 			});
 		});
 
-		it("should throw error if fs.stat failed", function (done) {
-			var stub = sinon.stub(fs, "stat").callsArgWith(1, new Error());
-			return client.Media.upload(mediaName1, mediaContent, function (err) {
-				err.should.be.ok;
-				stub.restore();
-				done();
+		it("should throw error if fs.stat failed", function () {
+			return new Promise(function (resolve) {
+				var stub = sinon.stub(fs, "stat").callsArgWith(1, new Error());
+				return client.Media.upload(mediaName1, mediaContent, function (err) {
+					err.should.be.ok;
+					stub.restore();
+					resolve();
+				});
 			});
 		});
 
