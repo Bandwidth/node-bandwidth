@@ -108,13 +108,15 @@ describe("Message API", function () {
 			});
 		});
 
-		it("should send a message, callback style", function (done) {
-			client.Message.send(newTestMessage, function (err, message) {
-				if (err) {
-					throw err;
-				}
-				message.should.eql(newTestMessage);
-				done();
+		it("should send a message, callback style", function () {
+			return new Promise(function (resolve) {
+				client.Message.send(newTestMessage, function (err, message) {
+					if (err) {
+						throw err;
+					}
+					message.should.eql(newTestMessage);
+					resolve();
+				});
 			});
 		});
 
@@ -161,17 +163,19 @@ describe("Message API", function () {
 			});
 		});
 
-		it("should get a list of messages, callback style", function (done) {
-			client.Message.list({
-				fromDateTime : fromDateTime,
-				toDateTime   : toDateTime
-			}, function (err, messageResponse) {
-				if (err) {
-					throw err;
-				}
-				var messages = messageResponse.messages;
-				messages.should.eql(messagesList);
-				done();
+		it("should get a list of messages, callback style", function () {
+			return new Promise(function (resolve) {
+				client.Message.list({
+					fromDateTime : fromDateTime,
+					toDateTime   : toDateTime
+				}, function (err, messageResponse) {
+					if (err) {
+						throw err;
+					}
+					var messages = messageResponse.messages;
+					messages.should.eql(messagesList);
+					resolve();
+				});
 			});
 		});
 
@@ -180,7 +184,7 @@ describe("Message API", function () {
 		});
 
 		it("should patch a message, callback style", function (done) {
-			return client.Message.patch(testMessage.id, { text : "" }, done);
+			client.Message.patch(testMessage.id, { text : "" }, done);
 		});
 	});
 

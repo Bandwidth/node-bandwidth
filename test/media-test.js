@@ -89,11 +89,11 @@ describe("Media API", function () {
 		});
 
 		it("should upload a media file (Buffer), callback", function (done) {
-			return client.Media.upload(mediaName1, new Buffer(mediaContent), done);
+			client.Media.upload(mediaName1, new Buffer(mediaContent), done);
 		});
 
 		it("should upload a media file (Buffer) with content type, callback", function (done) {
-			return client.Media.upload(mediaName2, new Buffer(mediaContent), "text/plain", done);
+			client.Media.upload(mediaName2, new Buffer(mediaContent), "text/plain", done);
 		});
 
 		it("should upload a media file (stream), Promise", function () {
