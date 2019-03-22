@@ -1,6 +1,6 @@
 {
   "name": "node-bandwidth",
-  "version": "2.6.6",
+  "version": "3.0.0",
   "description": "NodeJS Client library for Bandwidth API",
   "main": "index.js",
   "scripts": {
