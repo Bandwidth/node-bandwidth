@@ -46,7 +46,6 @@
     "jshint": "^2.10.2",
     "jshint-stylish": "^2.1.0",
     "minami": "^1.1.1",
-    "mocha": "^6.0.2",
     "nock": "^10.0.6",
     "should": "^11.2.1",
     "sinon": "1.17.4"
