@@ -6,7 +6,6 @@ node_js:
 - '9'
 - '10'
 script: npm test
-after_success: bash ./deploy.sh
 env:
   global:
   - ENCRYPTION_LABEL: 3985cea5a61f
