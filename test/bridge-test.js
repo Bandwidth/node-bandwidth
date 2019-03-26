@@ -192,7 +192,7 @@ describe("Bridge API", function () {
 		});
 
 		it("should speak a sentence to the bridge, callback style", function (done) {
-			return client.Bridge.speakSentence(testBridge.id, sampleSentence, done);
+			client.Bridge.speakSentence(testBridge.id, sampleSentence, done);
 		});
 
 		it("should stop a sentence from speaking, promise style", function () {
@@ -200,7 +200,7 @@ describe("Bridge API", function () {
 		});
 
 		it("should stop a sentence from speaking, callback style", function (done) {
-			return client.Bridge.stopSpeaking(testBridge.id, done);
+			client.Bridge.stopSpeaking(testBridge.id, done);
 		});
 
 		it("should play an audio file on sentence to the bridge, promise style", function () {
@@ -208,7 +208,7 @@ describe("Bridge API", function () {
 		});
 
 		it("should play an audio file on sentence to the bridge, callback style", function (done) {
-			return client.Bridge.playAudioFile(testBridge.id, audioUrl, done);
+			client.Bridge.playAudioFile(testBridge.id, audioUrl, done);
 		});
 
 		it("should play an audio with custom params to the bridge, promise style", function () {
@@ -216,7 +216,7 @@ describe("Bridge API", function () {
 		});
 
 		it("should play an audio with custom params to the bridge, callback style", function (done) {
-			return client.Bridge.playAudioAdvanced(testBridge.id, { fileUrl : audioUrl }, done);
+			client.Bridge.playAudioAdvanced(testBridge.id, { fileUrl : audioUrl }, done);
 		});
 
 		it("should stop an audio file playback, promise style", function () {
@@ -224,7 +224,7 @@ describe("Bridge API", function () {
 		});
 
 		it("should stop an audio file playback, callback style", function (done) {
-			return client.Bridge.stopAudioFilePlayback(testBridge.id, done);
+			client.Bridge.stopAudioFilePlayback(testBridge.id, done);
 		});
 
 		it("should update the bridge, promise style", function () {
