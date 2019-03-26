@@ -89,11 +89,11 @@ describe("Media API", function () {
 		});
 
 		it("should upload a media file (Buffer), callback", function (done) {
-			return client.Media.upload(mediaName1, new Buffer(mediaContent), done);
+			client.Media.upload(mediaName1, new Buffer(mediaContent), done);
 		});
 
 		it("should upload a media file (Buffer) with content type, callback", function (done) {
-			return client.Media.upload(mediaName2, new Buffer(mediaContent), "text/plain", done);
+			client.Media.upload(mediaName2, new Buffer(mediaContent), "text/plain", done);
 		});
 
 		it("should upload a media file (stream), Promise", function () {
@@ -113,18 +113,22 @@ describe("Media API", function () {
 		});
 
 		it("should throw error if uploaded data is invalid", function (done) {
-			return client.Media.upload(mediaName1, {}, function (err) {
-				err.should.be.ok;
-				done();
+			new Promise(function (resolve) {
+				return client.Media.upload(mediaName1, {}, function (err) {
+					err.should.be.ok;
+					done();
+				});
 			});
 		});
 
 		it("should throw error if fs.stat failed", function (done) {
-			var stub = sinon.stub(fs, "stat").callsArgWith(1, new Error());
-			return client.Media.upload(mediaName1, mediaContent, function (err) {
-				err.should.be.ok;
-				stub.restore();
-				done();
+			new Promise(function (resolve) {
+				var stub = sinon.stub(fs, "stat").callsArgWith(1, new Error());
+				return client.Media.upload(mediaName1, mediaContent, function (err) {
+					err.should.be.ok;
+					stub.restore();
+					done();
+				});
 			});
 		});
 

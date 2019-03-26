@@ -275,7 +275,7 @@ describe("Call API", function () {
 		});
 
 		it("should speak a sentence to the call, callback style", function (done) {
-			return client.Call.speakSentence(testCall.id, sampleSentence, done);
+			client.Call.speakSentence(testCall.id, sampleSentence, done);
 		});
 
 		it("should stop audio file playback, promise style", function () {
@@ -283,7 +283,7 @@ describe("Call API", function () {
 		});
 
 		it("should stop audio file playback, callback style", function (done) {
-			return client.Call.stopSpeaking(testCall.id, done);
+			client.Call.stopSpeaking(testCall.id, done);
 		});
 
 		it("should play an audio file on sentence to the call, promise style", function () {
@@ -291,7 +291,7 @@ describe("Call API", function () {
 		});
 
 		it("should play an audio file on sentence to the call, callback style", function (done) {
-			return client.Call.playAudioFile(testCall.id, audioUrl, done);
+			client.Call.playAudioFile(testCall.id, audioUrl, done);
 		});
 
 		it("should play an audio with custom params to the call, promise style", function () {
@@ -299,7 +299,7 @@ describe("Call API", function () {
 		});
 
 		it("should play an audio with custom params to the call, callback style", function (done) {
-			return client.Call.playAudioAdvanced(testCall.id, { fileUrl : audioUrl }, done);
+			client.Call.playAudioAdvanced(testCall.id, { fileUrl : audioUrl }, done);
 		});
 
 		it("should stop audio file playback, promise style", function () {
@@ -307,7 +307,7 @@ describe("Call API", function () {
 		});
 
 		it("should stop audio file playback, callback style", function (done) {
-			return client.Call.stopAudioFilePlayback(testCall.id, done);
+			client.Call.stopAudioFilePlayback(testCall.id, done);
 		});
 
 		describe("Recording toggle", function () {
@@ -358,12 +358,14 @@ describe("Call API", function () {
 		});
 
 		it("should create a call, callback style", function (done) {
-			client.Call.create(newTestCall, function (err, call) {
-				if (err) {
-					throw err;
-				}
-				call.should.eql(newTestCall);
-				done();
+			new Promise(function (resolve) {
+				client.Call.create(newTestCall, function (err, call) {
+					if (err) {
+						throw err;
+					}
+					call.should.eql(newTestCall);
+					done();
+				});
 			});
 		});
 
@@ -386,16 +388,18 @@ describe("Call API", function () {
 		});
 
 		it("should get a list of calls, callback style", function (done) {
-			client.Call.list({
-				fromDateTime : fromDateTime,
-				toDateTime   : toDateTime
-			}, function (err, calls) {
-				if (err) {
-					throw err;
-				}
-				calls[0].should.eql(callsList[0]);
-				calls[1].should.eql(callsList[1]);
-				done();
+			new Promise(function (resolve) {
+				client.Call.list({
+					fromDateTime : fromDateTime,
+					toDateTime   : toDateTime
+				}, function (err, calls) {
+					if (err) {
+						throw err;
+					}
+					calls[0].should.eql(callsList[0]);
+					calls[1].should.eql(callsList[1]);
+					done();
+				});
 			});
 		});
 
