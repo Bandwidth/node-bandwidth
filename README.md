@@ -35,6 +35,11 @@ The Full API Reference is available either as an interactive site or as a single
 | 9.*                            | Unsupported              |
 | 10.x                           | Supported in [v-next](https://github.com/Bandwidth/node-bandwidth/tree/v-next)  |
 
+## Release Notes
+| Version | Notes |
+|:---|:---|
+| 3.0.0 | Dropped support for node versions less than 6 |
+
 ## Client initialization
 
 All interaction with the API is done through a `client` Object. The client constructor takes an Object containing configuration options. The following options are supported:
