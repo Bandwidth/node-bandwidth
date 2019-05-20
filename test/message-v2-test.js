@@ -506,9 +506,9 @@ describe("Message v2 API", function () {
 		};
 		before(function () {
 			nock.disableNetConnect();
-			nock("https://api.catapult.inetwork.com")
+			nock("https://messaging.bandwidth.com")
 			.persist()
-			.post("/v2/users/userId/messages", messageToSend)
+			.post("/api/v2/users/userId/messages", messageToSend)
 			.reply(201,
 				{
 					id        : "14762070468292kw2fuqty55yp2b2",
