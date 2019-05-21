@@ -2636,7 +2636,7 @@ Catapult API Client
 * [Media](#Media)
     * [new Media()](#new_Media_new)
     * [.upload(name, data, contentType, [callback])](#Media+upload) ⇒ <code>Promise</code>
-    * [.download(name, [callback])](#Media+download) ⇒ <code>[DownloadMediaFileResponse](#DownloadMediaFileResponse)</code>
+    * [.download(name, [,encoding='binary'][callback])](#Media+download) ⇒ <code>[DownloadMediaFileResponse](#DownloadMediaFileResponse)</code>
     * [.list([callback])](#Media+list) ⇒ <code>[Array.&lt;MediaFileResponse&gt;](#MediaFileResponse)</code>
     * [.delete(name, [callback])](#Media+delete) ⇒ <code>Promise</code>
 
@@ -2662,7 +2662,7 @@ Upload a media file
 
 <a name="Media+download"></a>
 
-### media.download(name, [callback]) ⇒ <code>[DownloadMediaFileResponse](#DownloadMediaFileResponse)</code>
+### media.download(name, [,encoding][callback]) ⇒ <code>[DownloadMediaFileResponse](#DownloadMediaFileResponse)</code>
 Download a media file
 
 **Kind**: instance method of <code>[Media](#Media)</code>  
@@ -2671,6 +2671,7 @@ Download a media file
 | Param | Type | Description |
 | --- | --- | --- |
 | name | <code>String</code> | The name of downloaded file. |
+| [encoding] | <code>String</code> &#124; <code>null</code> &#124; <code>Function</code> | The encoding that will be passed onto makeRequest, if null content will be a Buffer. If function is passed, it will be the callback |
 | [callback] | <code>function</code> | Callback for the operation |
 
 <a name="Media+list"></a>
