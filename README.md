@@ -39,6 +39,7 @@ The Full API Reference is available either as an interactive site or as a single
 | Version | Notes |
 |:---|:---|
 | 3.0.0 | Dropped support for node versions less than 6 |
+| 3.0.2 | Updated the URL used for Bandwidth's V2 Messaging |
 
 ## Client initialization
 
