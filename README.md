@@ -33,7 +33,6 @@ The Full API Reference is available either as an interactive site or as a single
 | 8.*                            | Supported                |
 | _8.11.0 (Node v8 Carbon LTS)_  | **Recommended**          |
 | 9.*                            | Unsupported              |
-| 10.x                           | Supported in [v-next](https://github.com/Bandwidth/node-bandwidth/tree/v-next)  |
 
 ## Release Notes
 | Version | Notes |
