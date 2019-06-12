@@ -27,12 +27,14 @@ The Full API Reference is available either as an interactive site or as a single
 
 | Version                        | Support Level            |
 |:-------------------------------|:-------------------------|
-| < 6.0.0 | Unsupported
-| 6.9.4 (Node v6 Boron LTS)      | Supported                |
-| 7.*                            | Unsupported              |
-| 8.*                            | Supported                |
-| _8.11.0 (Node v8 Carbon LTS)_  | **Recommended**          |
-| 9.*                            | Unsupported              |
+| < 6 | Unsupported
+| 6      | Supported                |
+| 7                            | Supported              |
+| 8                            | Supported                |
+| 9                            | Supported              |
+| 10                            | Supported              |
+| 11                           | Supported              |
+| 12                           | Supported              |
 
 ## Release Notes
 | Version | Notes |
