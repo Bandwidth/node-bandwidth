@@ -27,18 +27,15 @@ The Full API Reference is available either as an interactive site or as a single
 
 | Version                        | Support Level            |
 |:-------------------------------|:-------------------------|
-| < 6.0.0 | Unsupported
-| 6.9.4 (Node v6 Boron LTS)      | Supported                |
-| 7.*                            | Unsupported              |
-| 8.*                            | Supported                |
-| _8.11.0 (Node v8 Carbon LTS)_  | **Recommended**          |
-| 9.*                            | Unsupported              |
-| 10.x                           | Supported in [v-next](https://github.com/Bandwidth/node-bandwidth/tree/v-next)  |
+| < 6 | Unsupported
+| 6-12      | Supported                |
+| > 12 | N/A |
 
 ## Release Notes
 | Version | Notes |
 |:---|:---|
 | 3.0.0 | Dropped support for node versions less than 6 |
+| 3.0.2 | Updated the URL used for Bandwidth's V2 Messaging |
 
 ## Client initialization
 
