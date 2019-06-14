@@ -28,13 +28,8 @@ The Full API Reference is available either as an interactive site or as a single
 | Version                        | Support Level            |
 |:-------------------------------|:-------------------------|
 | < 6 | Unsupported
-| 6      | Supported                |
-| 7                            | Supported              |
-| 8                            | Supported                |
-| 9                            | Supported              |
-| 10                            | Supported              |
-| 11                           | Supported              |
-| 12                           | Supported              |
+| 6-12      | Supported                |
+| > 12 | N/A |
 
 ## Release Notes
 | Version | Notes |
