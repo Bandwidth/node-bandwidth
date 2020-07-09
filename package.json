@@ -1,8 +1,9 @@
 {
   "name": "node-bandwidth",
-  "version": "3.0.3",
+  "version": "4.0.0",
   "description": "NodeJS Client library for Bandwidth API",
   "main": "index.js",
+  "types": "types/index.d.ts",
   "scripts": {
     "test": "cross-env NODE_ENV=test gulp",
     "docs": "./node_modules/.bin/jsdoc --configure conf.json"

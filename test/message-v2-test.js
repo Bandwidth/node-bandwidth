@@ -27,7 +27,7 @@ describe("Message v2 API", function () {
 				method : "DELETE"
 			});
 			options.should.containDeep({
-				url                : "https://dashboard.bandwidth.com/v1.0/api/accounts/id/test",
+				url                : "https://dashboard.bandwidth.com/api/accounts/id/test",
 				headers            : {
 					"User-Agent"   : "agent",
 					"Content-Type" : "application/xml"
@@ -62,7 +62,7 @@ describe("Message v2 API", function () {
 					body       : templates.irisError1,
 					statusCode : 200
 				});
-			}, "Code: Description");
+			}, "Fails with Code: Description");
 		});
 		it("should handle iris error 2", function () {
 			var message = new Message({});
@@ -71,7 +71,7 @@ describe("Message v2 API", function () {
 					body       : templates.irisError2,
 					statusCode : 200
 				});
-			}, "Code: Description");
+			}, "Fails with Code: Description");
 		});
 		it("should handle iris error 3", function () {
 			var message = new Message({});
@@ -80,7 +80,7 @@ describe("Message v2 API", function () {
 					body       : templates.irisError3,
 					statusCode : 200
 				});
-			}, "Code: Description");
+			}, "Fails with Code: Description");
 		});
 		it("should handle iris error 4", function () {
 			var message = new Message({});
@@ -89,7 +89,7 @@ describe("Message v2 API", function () {
 					body       : templates.irisError4,
 					statusCode : 200
 				});
-			}, "Code: Description");
+			}, "Fails with Code: Description");
 		});
 		it("should handle iris undefined error", function () {
 			var message = new Message({});
@@ -98,7 +98,7 @@ describe("Message v2 API", function () {
 					body       : "",
 					statusCode : 400
 				});
-			}, "Http code 400");
+			}, "WerHttp code 400");
 		});
 	});
 	describe("makeIrisRequest()", function () {
@@ -106,7 +106,7 @@ describe("Message v2 API", function () {
 			nock.disableNetConnect();
 			nock("https://dashboard.bandwidth.com")
 				.persist()
-				.get("/v1.0/api/accounts/id/test")
+				.get("/api/accounts/id/test")
 				.reply(200, "<Test>test</Test>", {});
 		});
 
@@ -138,7 +138,7 @@ describe("Message v2 API", function () {
 			nock.disableNetConnect();
 			nock("https://dashboard.bandwidth.com")
 				.persist()
-				.post("/v1.0/api/accounts/id/applications", templates.createApplicationRequest)
+				.post("/api/accounts/id/applications", templates.createApplicationRequest)
 				.reply(200, templates.createApplicationResponse, {});
 		});
 
@@ -170,7 +170,7 @@ describe("Message v2 API", function () {
 			nock.disableNetConnect();
 			nock("https://dashboard.bandwidth.com")
 				.persist()
-				.post("/v1.0/api/accounts/id/sites/sub/sippeers", templates.createLocationRequest)
+				.post("/api/accounts/id/sites/sub/sippeers", templates.createLocationRequest)
 				.reply(201, "", { "Location" : "http://host/LocationId" });
 		});
 
@@ -198,12 +198,13 @@ describe("Message v2 API", function () {
 			}, done);
 		});
 	});
+
 	describe("enableSms()", function () {
 		before(function () {
 			nock.disableNetConnect();
 			nock("https://dashboard.bandwidth.com")
 				.persist()
-				.post("/v1.0/api/accounts/id/sites/sub/sippeers/locationId/products/messaging/features/sms",
+				.post("/api/accounts/id/sites/sub/sippeers/locationId/products/messaging/features/sms",
 					templates.enableSmsRequest)
 				.reply(200, "", {});
 		});
@@ -238,7 +239,7 @@ describe("Message v2 API", function () {
 			nock.disableNetConnect();
 			nock("https://dashboard.bandwidth.com")
 				.persist()
-				.post("/v1.0/api/accounts/id/sites/sub/sippeers/locationId/products/messaging/features/mms",
+				.post("/api/accounts/id/sites/sub/sippeers/locationId/products/messaging/features/mms",
 					templates.enableMmsRequest)
 				.reply(200, "", {});
 		});
@@ -267,12 +268,13 @@ describe("Message v2 API", function () {
 			}, done);
 		});
 	});
+
 	describe("assignApplicationToLocation()", function () {
 		before(function () {
 			nock.disableNetConnect();
 			nock("https://dashboard.bandwidth.com")
 				.persist()
-				.post("/v1.0/api/accounts/id/sites/sub/sippeers/locationId/products/messaging/applicationSettings",
+				.put("/api/accounts/id/sites/sub/sippeers/locationId/products/messaging/applicationSettings",
 					templates.assignApplicationToLocationRequest)
 				.reply(200, "", {});
 		});
@@ -352,10 +354,10 @@ describe("Message v2 API", function () {
 				nock.disableNetConnect();
 				nock("https://dashboard.bandwidth.com")
 					.persist()
-					.post("/v1.0/api/accounts/id/orders",
+					.post("/api/accounts/id/orders",
 						templates.createOrderRequest)
 					.reply(200, templates.createOrderResponse, {})
-				.get("/v1.0/api/accounts/id/orders/OrderId")
+				.get("/api/accounts/id/orders/OrderId")
 				.reply(200, templates.orderResponseSuccess);
 			});
 			after(function () {
@@ -400,10 +402,10 @@ describe("Message v2 API", function () {
 				nock.disableNetConnect();
 				nock("https://dashboard.bandwidth.com")
 					.persist()
-					.post("/v1.0/api/accounts/id/orders",
+					.post("/api/accounts/id/orders",
 						templates.createOrderRequest)
 					.reply(200, templates.createOrderResponse, {})
-				.get("/v1.0/api/accounts/id/orders/OrderId")
+				.get("/api/accounts/id/orders/OrderId")
 				.reply(200, templates.orderResponseFail);
 			});
 			after(function () {
@@ -450,10 +452,10 @@ describe("Message v2 API", function () {
 				nock.disableNetConnect();
 				nock("https://dashboard.bandwidth.com")
 					.persist()
-					.post("/v1.0/api/accounts/id/orders",
+					.post("/api/accounts/id/orders",
 						templates.createOrderRequest)
 					.reply(200, templates.createOrderResponse, {})
-				.get("/v1.0/api/accounts/id/orders/OrderId")
+				.get("/api/accounts/id/orders/OrderId")
 				.reply(200, templates.orderResponseWait);
 			});
 			after(function () {
