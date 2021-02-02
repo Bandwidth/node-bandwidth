@@ -1,6 +1,7 @@
 # node-bandwidth
 
-This project is archived. Please go to https://github.com/bandwidth/node-voice or https://github.com/bandwidth/node-messaging for using Bandwidth's voice and messaging APIs.
+> Deprecation Notice
+> This project is deprecated. Please go to https://github.com/bandwidth/node-voice or https://github.com/bandwidth/node-messaging for using Bandwidth's voice and messaging APIs.
 
 [![npm version](https://badge.fury.io/js/node-bandwidth.svg)](https://badge.fury.io/js/node-bandwidth)
 [![Build Status](https://travis-ci.org/bandwidth/node-bandwidth.svg?branch=master)](https://travis-ci.org/bandwidth/node-bandwidth)
