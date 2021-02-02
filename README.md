@@ -1,6 +1,6 @@
 # node-bandwidth
 
-> Deprecation Notice
+> # Deprecation Notice
 > This project is deprecated. Please go to https://github.com/bandwidth/node-voice or https://github.com/bandwidth/node-messaging for using Bandwidth's voice and messaging APIs.
 
 [![npm version](https://badge.fury.io/js/node-bandwidth.svg)](https://badge.fury.io/js/node-bandwidth)
